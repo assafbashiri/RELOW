@@ -1,11 +1,12 @@
-class Users_DAO:
+class UsersDAO:
 
     def __init__(self, conn):
         self._conn = conn
 
-    def add(self, user):
-        self._conn.execute("""INSERT INTO users (first_name, last_name, email, password) VALUES (?,?,?,?)""",
-                           [user.first_name, user.last_name, user.email, user.password])
+    def insert(self, user):
+        self._conn.execute("""INSERT INTO users (id, first_name, last_name, username, email, password, dateOfBirth, gender) VALUES (?,?,?,?,?,?,?,?)""",
+                           [user.id,user.first_name, user.last_name, user.username, user.email, user.password,user.dateOfBirth, user.gender])
+        self._conn.commit()
 
 
     def usersFirst_Name(self, name):
