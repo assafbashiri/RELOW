@@ -1,5 +1,5 @@
 
-class Offer():
+class Offer:
     def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, price_per_step, amount_per_step, start_date, end_date,  current_buyers):
         self.offer_id = next_id
         self.current_step = -1

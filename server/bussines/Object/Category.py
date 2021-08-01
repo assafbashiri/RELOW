@@ -1,6 +1,4 @@
-
-from bussines.Object import SubCategory
-
+from server.bussines.Object.SubCategory import SubCategory
 class Category:
     def __init__(self, name, nextId):
         self.sub_category_id = 0

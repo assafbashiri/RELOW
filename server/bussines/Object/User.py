@@ -1,5 +1,7 @@
 from datetime import date
-from bussines.Utils import CheckValidity
+
+from server.bussines.Utils import CheckValidity
+
 
 class User():
     def __init__(self,next_user_id,first_name, last_name,user_name, email, password):

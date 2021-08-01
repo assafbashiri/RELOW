@@ -1,4 +1,4 @@
-class Product():
+class Product:
     def __init__(self, name, company, color, size, description, photos, offer_id):
         self.name = name
         self.company = company
