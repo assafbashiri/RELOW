@@ -1,11 +1,12 @@
 from main import repository
-
+from bussines import Controllers
+from bussines.Controllers import UserController
 def one(argument): #sign in
-    print("1")
+    response = UserController.addUser(argument['first_name'], argument['last_name'], argument['email'], argument['password'])
+    return response
 
 def two(argument): #log in
-    argument.re
-    repository.addUser()
+    pass
 
 def three(argument): #log out
     print("3")

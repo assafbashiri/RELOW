@@ -4,3 +4,9 @@ class User():
         self.last_name = last_name
         self.email = email
         self.password = password
+        self.date_of_birth = None
+        self.gender = None
+
+
+
+
