@@ -1,4 +1,4 @@
-class Product_DTO:
+class ProductDTO:
     def __init__(self, offer_id,name, company, color, size, description, photos):
         self.offer_id = offer_id
         self.name = name

@@ -19,20 +19,6 @@ class repository:
             );
         """)
 
-    def addUser(self, user):
-        self._users.add(user)
-
-    def searchBYfirst(self, user):
-        self._users.usersFirst_Name(user)
-
-    def searchBYlast(self, user):
-        self._users.usersLast_Name(user)
-
-    def searchBYemail(self, user):
-        self._users.users_email(user)
-
-    def searchBYpassword(self, user):
-        self._users.usersPassword(user)
 
 
     def close(self):

@@ -1,5 +1,5 @@
-class Offer_DTO:
-    def __init__(self,offer_id,current_step,user_id,category_id,subCategory_id,status,start_date,end_date):
+class OfferDTO:
+    def __init__(self,offer_id,current_step,user_id,category_id, subCategory_id, status,start_date,end_date):
         self.offer_id = offer_id
         self.current_step = current_step
         self.user_id = user_id
