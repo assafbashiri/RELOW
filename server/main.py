@@ -3,7 +3,7 @@ import threading
 from _thread import *
 import pickle
 from Service import protocol
-from DB.database import repository
+from DB import Repository
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -55,7 +55,8 @@ def network():
 
 
 if __name__ == '__main__':
-    repository = repository()
+    repository = Repository.repository()
     repository.create_tables()
+    print('boo')
     t1 = threading.Thread(target=network)
     t1.start()

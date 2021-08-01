@@ -1,19 +1,19 @@
+from server.bussines.Object.SubCategory import SubCategory
 
-from bussines.Object import SubCategory
+category_id_counter = 0
+
+def inc(num):
+    num+=1
+    category_id_counter = num
+
 
 class Category:
-    def __init__(self, name, nextId):
-        self.sub_category_id = 0
-        self.name = name
-        self.category_id = nextId
+    def __init__(self,name):
+        self.category_id = category_id_counter
+        inc(category_id_counter)
         self.sub_list = None
 
-    def add_sub_category(self, name):
-        sub_category = SubCategory(name, self.sub_category_id)
-        self.sub_list.add(self.sub_category_id, sub_category)
-        self.sub_category_id += 1
+    def validName(self,name):
 
-    def remove_sub_category(self, sub_category_id):
-        if self.sub_list.get(sub_category_id) is None:
-            raise Exception("Sub Category does not exist")
-        self.sub_list.remove(sub_category_id)
+    def addSubCategory(self,name):
+        self.sub_list.add(SubCategory(name))

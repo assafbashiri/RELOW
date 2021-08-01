@@ -1,5 +1,3 @@
 class SubCategory:
-    def __init__(self, name, nextId):
-        self.name=name
+    def __init__(self,name):
         self.offer_list = None
-        self.id = nextId
