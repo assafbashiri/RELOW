@@ -1,42 +1,56 @@
-from main import repository
 from bussines import Controllers
-from bussines.Controllers import UserController
+from bussines.Controllers import UserController, CategoryController
+
+
 def one(argument): #sign in
     response = UserController.addUser(argument['first_name'], argument['last_name'], argument['email'], argument['password'])
     return response
 
 def two(argument): #log in
-    pass
+    response = UserController.getUser(argument['email'], argument['password'])
+    return response
 
 def three(argument): #log out
     print("3")
 
 def four(argument): #search for offer by name-buyer
-    print("4")
+    response = CategoryController.getOfferByNamw(argument['name'])
+    return response
+
 
 def five(argument): #search for offer by category-buyer
-    print("5")
+    response = CategoryController.getOfferByCategory(argument['category'])
+    return response
+
 
 def six(argument):  #buy - join offer- buyer
-    print("6")
+    response = CategoryController.joinOffer(argument['offer_id'])
+    return response
+
 
 def seven(argument): #sell- add offer-seller
-    print("76")
+    response = CategoryController.addOffer(argument['ofer_id'], argument['user_id'], argument['category_id'], argument['subCategory_id'], argument['start_date'], argument['end_date'], argument['details'], argument['steps'])
+    return response
+
 
 def eleven(argument): #update offer-seller
-    print("11")
-
+    response = CategoryController.updateOffer(argument['ofer_id'], argument['user_id'], argument['category_id'], argument['subCategory_id'], argument['start_date'], argument['end_date'], argument['details'], argument['steps'])
+    return response
 def eight(argument): #get buyer history-buyer
-    print("8")
+    response = UserController.getBuyerHistory(argument['user_id'])
+    return response
 
 def nine(argument): #get seller history-seller
-    print("9")
+    response = UserController.getSellerHistory(argument['user_id'])
+    return response
 
 def ten(argument): #get active offers -buyer
-    print("10")
+    response = UserController.getActiveOffers_buyer()
+    return response
 
 def eleven(argument): #get active offers -seller
-    print("11")
+    response = UserController.getActiveOffers_seller()
+    return response
 
 def eleven(argument): #get offer -buyer
     print("11")
