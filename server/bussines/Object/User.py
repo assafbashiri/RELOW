@@ -4,4 +4,3 @@ class User():
         self.last_name = last_name
         self.email = email
         self.password = password
-        self.one =1
