@@ -1,3 +1,5 @@
+from server.DB.DAO.OfferDAO import OfferDAO
+from server.DB.DAO.ProductDAO import ProductDAO
 from server.DB.DAO.UsersDAO import UsersDAO
 from server.DB.DTO.OfferDTO import OfferDTO
 from server.DB.DTO.UserDTO import UserDTO
@@ -6,7 +8,9 @@ from server.DB.DTO.UserDTO import UserDTO
 class UsersMapper:
 
     def __init__(self, conn):
-        self.dao = UsersDAO(conn)
+        self.users_dao = UsersDAO(conn)
+        self.offers_dao = OfferDAO(conn)
+        self.products_dao = ProductDAO(conn)
         self.usersDictionary = None  # dictionary [id,user]
 
     def addUser(self, user):

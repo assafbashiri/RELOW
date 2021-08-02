@@ -1,7 +1,8 @@
 import sqlite3
 
+
 class repository:
-    def __init__(self):
+    def _init_(self):
         self._conn = sqlite3.connect('database.db')
 
     # create the tabels for SQL
@@ -14,17 +15,18 @@ class repository:
                 user_name TEXT NOT NULL,
                 email TEXT NOT NULL  UNIQUE,
                 password TEXT NOT NULL,
-                valid BOOLEAN NOT NULL
-            );
-            
-            CREATE TABLE IF NOT EXISTS users_extra_details (
-                user_id	INTEGER NOT NULL,
                 birth_date	DATETIME,
                 gender	TEXT,
+                is_logged BOOLEAN NOT NULL,
+                active BOOLEAN NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS users_extra_details (
+                user_id	INTEGER NOT NULL,
                 PRIMARY KEY(user_id),
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS users_address (
                 user_id	INTEGER NOT NULL UNIQUE,
                 city TEXT NOT NULL,
@@ -34,7 +36,7 @@ class repository:
                 apt TEXT,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS users_payment (
                 user_id	INTEGER NOT NULL UNIQUE,
                 id_number INTEGER  UNIQUE,
@@ -45,14 +47,14 @@ class repository:
                 card_type TEXT,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS saved_offers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS offer_main (
                 offer_id INTEGER PRIMARY KEY  UNIQUE,
                 user_id INTEGER NOT NULL,
@@ -66,7 +68,14 @@ class repository:
                 FOREIGN KEY(category_id) REFERENCES category(category_id)
                 FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id)
             );
-            
+
+            CREATE TABLE IF NOT EXISTS price_per_step (
+                offer_id INTEGER PRIMARY KEY  UNIQUE,
+                step INTEGER NOT NULL,
+                quantity INTEGER NOT NULL,
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+            );
+
             CREATE TABLE IF NOT EXISTS offer_product (
                 offer_id INTEGER NOT NULL,
                 name TEXT NOT NULL,
@@ -86,19 +95,19 @@ class repository:
                 photo10 BOLB,
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS category (
                 category_id INTEGER PRIMARY KEY  UNIQUE,
                 name TEXT NOT NULL
             );
-            
+
             CREATE TABLE IF NOT EXISTS sub_category (
                 sub_category_id INTEGER PRIMARY KEY  UNIQUE,
                 category_id INTEGER NOT NULL,
                 name TEXT NOT NULL,
                 FOREIGN KEY(category_id) REFERENCES category(category_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
@@ -107,7 +116,7 @@ class repository:
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS buyers_in_offer_total (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
@@ -116,7 +125,7 @@ class repository:
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS history_buyers (
                 user_id INTEGER NOT NULL,
                 offer_id INTEGER NOT NULL,
@@ -125,7 +134,7 @@ class repository:
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
-            
+
             CREATE TABLE IF NOT EXISTS history_sellers (
                 user_id INTEGER NOT NULL,
                 offer_id INTEGER NOT NULL,
@@ -134,8 +143,6 @@ class repository:
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
         """)
-
-
 
     def close(self):
         self._conn.commit()
