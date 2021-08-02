@@ -21,7 +21,16 @@ class UsersDAO:
             [user.user_id,user.credit_card_number, user.credit_card_experation_date, user.cvv, user.card_type, user.id])
         self._conn.commit()
 
-
+    def add_address(self, user_id, city, street, zip_code, floor, apartmentNumber):
+        self._conn.execute(
+            """INSERT INTO users_address (user_id,city,street,zip_code,floor,apt) VALUES (?,?,?,?,?,?)""",
+            [user_id, city, street, zip_code, floor, apartmentNumber])
+        self._conn.commit()
+    def add_payment_method(self,user_id,credit_card,exp_date,cvv,card_type,id):
+        self._conn.execute(
+            """INSERT INTO users_payment (user_id,card_number,expire_date,cvv,card_type,id) VALUES (?,?,?,?,?,?)""",
+            [user_id,credit_card, exp_date, cvv, card_type, id])
+        self._conn.commit()
 # update users_submission
 
     def updateFirstname(self, id, name):
@@ -40,7 +49,10 @@ class UsersDAO:
         self._conn.execute("""UPDATE users_submission set password = ? where user_id = ?""",
                            [password,id])
         self._conn.commit()
-
+    def updateEmail(self, user_id, new_email):
+        self._conn.execute("""UPDATE users_submission set email = ? where user_id = ?""",
+                           [new_email, user_id])
+        self._conn.commit()
 # update users_extra_details
 
     def updateBirthdate(self, id, date):
@@ -92,14 +104,14 @@ class UsersDAO:
         self._conn.execute("""UPDATE users_payment set card_type = ? where user_id = ?""",
                            [card_type, id])
         self._conn.commit()
-    def updateCard_type(self, user_id, id):
+    def updateId(self, user_id, id):
         self._conn.execute("""UPDATE users_payment set id = ? where user_id = ?""",
                            [id, user_id])
         self._conn.commit()
 
 
 
-
+# getters
 
     def usersFirst_Name(self, name):
         this = self._conn.cursor()
@@ -128,6 +140,8 @@ class UsersDAO:
         output = this.fetchone()[0]
 
         return output
+
+
 
 
 
