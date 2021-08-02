@@ -12,3 +12,7 @@ class SubCategoriesMapper:
         categoryDTO = CategoryDTO(subCategory.category_id,subCategory.name)
         self.dao.insert(categoryDTO)
         self.subCategoriesMapper.put(subCategory)
+
+    def updateName(self, subCategory, name):
+        self.dao.updateName(subCategory.id, name)
+        self.UsersMapper.get(subCategory.id).name = name

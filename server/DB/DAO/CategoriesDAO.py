@@ -7,3 +7,12 @@ class CategoriesDAO:
         self._conn.execute("""INSERT INTO categories (id,name) VALUES (?,?)""",
                            [category.id, category.name])
         self._conn.commit()
+
+
+    def updateName(self, id, name):
+        self._conn.execute("""UPDATE categories set name = ? where id = ?""",
+                           [id, name])
+        self._conn.commit()
+
+
+

@@ -14,4 +14,8 @@ class CategoriesMapper:
         self.dao.insert(categoryDTO)
         self.CategoriesMapper.put(category)
 
+    def updateName(self, category, name):
+        self.dao.updateName(category.category_id, name)
+        self.UsersMapper.get(category.category_id).name = name
+
 
