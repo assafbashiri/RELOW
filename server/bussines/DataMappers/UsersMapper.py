@@ -12,11 +12,9 @@ class UsersMapper:
         userDTO = UserDTO(user.user_id,user.first_name,user.last_name,user.email,user.password)
         self.dao.insert(userDTO)
         self.UsersMapper.put(user)
-
     def removeUser(self,user):
         self.dao.delete(user.user_id)
         self.UsersMapper.remove(user.user_id)
-
     def updateFirstname(self, user, firstname):
         self.dao.updateFirstname(user.user_id, firstname)
         self.UsersMapper.get(user.user_id).first_name = firstname
