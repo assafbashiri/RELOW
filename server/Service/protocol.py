@@ -1,10 +1,10 @@
-from BussinesLayer import Controllers
-from BussinesLayer.Controllers import UserController, CategoryController
+from BussinessLayer import Controllers
+from BussinessLayer.Controllers import CategoryController, UserController
 
 
 class Protocol:
-    from BussinesLayer import Controllers
-    from BussinesLayer.Controllers import UserController, CategoryController
+    from BussinessLayer import Controllers
+    from BussinessLayer.Controllers import UserController, CategoryController
     def _init_(self):
         self.user = None
     #------------------------------------------------userController--------------------------------------------------------
@@ -225,10 +225,10 @@ class Protocol:
                 36: remove_offer,
                 37: update_category_name,
                 38: update_sub_category_name,
-                39: update_current_step,
+                #39: update_current_step,
                 40: update_category_for_offer,
                 41: update_sub_category_for_offer,
-                42: update_status,
+                42: 'update_status',
                 43: update_end_date,
                 44: update_start_date,
                 45: update_step,

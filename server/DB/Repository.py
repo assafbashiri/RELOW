@@ -1,11 +1,13 @@
 import sqlite3
 
 
-class repository:
-    def _init_(self):
-        self._conn = sqlite3.connect('database.db')
 
-    # create the tabels for SQL
+
+class repository:
+    def _init_(self, conn):
+        self._conn = conn #sqlite3.connect('database.db')
+
+    # create the tables for SQL
     def create_tables(self):
         self._conn.executescript("""
             CREATE TABLE IF NOT EXISTS users_submission (
