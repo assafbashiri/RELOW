@@ -42,7 +42,6 @@ class repository:
                 id_number INTEGER  UNIQUE,
                 card_number TEXT UNIQUE,
                 expire_date DATETIME,
-                user_id INTEGER,
                 cvv INTEGER,
                 card_type TEXT,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
@@ -139,6 +138,7 @@ class repository:
                 user_id INTEGER NOT NULL,
                 offer_id INTEGER NOT NULL,
                 status TEXT NOT NULL,
+                step INTEGER NOT NULL,
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );

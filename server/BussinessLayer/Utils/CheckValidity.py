@@ -3,7 +3,7 @@ import datetime
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 class checkValidity():
-    def checkValidityName(name):
+    def checkValidityName(self,name):
         if name.replace(" ", "").isalpha():
             print
             "Name is valid"
@@ -18,13 +18,16 @@ class checkValidity():
     def checkValidityPassword(self, password):
             if len(password) < 8:
                 raise Exception("Make sure your password is at lest 8 letters")
-            elif not password.isdigit():
+            elif len(password) > 20:
+                raise Exception("Make sure your password is less then 20 letters")
+            elif password.isdigit():
                 raise Exception("Make sure your password has a number in it")
-            elif not password.isupper():
+            elif password.isupper():
+                raise Exception("Make sure your password has a lower letter in it")
+            elif password.islower():
                 raise Exception("Make sure your password has a capital letter in it")
             else:
                 raise Exception("Your password seems fine")
-
 
     def checkValidityDateOfBirth(self, date):
         day, month, year = date.split('/')
@@ -33,6 +36,11 @@ class checkValidity():
             datetime.datetime(int(year), int(month), int(day))
         except ValueError:
             isValidDate = False
-
         if not isValidDate:
             raise Exception ("Input date is not valid..")
+        difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
+        difference_in_years = (difference.days + difference.seconds / 86400) / 365.2425
+        if difference_in_years > 12.0:
+            raise Exception("Input date is not valid..")
+        elif difference_in_years > 100.0:
+            raise Exception("Input date is not valid..")
