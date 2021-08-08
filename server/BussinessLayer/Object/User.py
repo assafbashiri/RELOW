@@ -1,6 +1,6 @@
 from datetime import date
-from BussinesLayer.Objects import Offer
-from BussinesLayer.Utils import CheckValidity
+from BussinessLayer.Object import Offer
+from BussinessLayer.Utils import CheckValidity
 
 
 class User():

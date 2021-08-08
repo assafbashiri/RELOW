@@ -1,6 +1,6 @@
 
-from server.DB.DAO.CategoriesDAO import CategoriesDAO
-from server.DB.DTO.CategoryDTO import CategoryDTO
+from DB.DAO.CategoriesDAO import CategoriesDAO
+from DB.DTO.CategoryDTO import CategoryDTO
 
 
 class CategoriesMapper:

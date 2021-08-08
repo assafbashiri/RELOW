@@ -1,9 +1,10 @@
 import socket
+import sqlite3
 import threading
 from _thread import *
 import pickle
 from Service import protocol
-from DB import Repository
+from DB.Repository import repository
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -55,7 +56,8 @@ def network():
 
 
 if __name__ == '__main__':
-    repository = Repository.repository()
+    conn = sqlite3.connect('database.db')
+    repository = repository(conn)
     repository.create_tables()
     print('boo')
     t1 = threading.Thread(target=network)

@@ -1,5 +1,5 @@
-from bussines.Utils import CheckValidity
-from bussines.Object.User import User
+from BussinessLayer.Utils import CheckValidity
+from BussinessLayer.Object.User import User
 
 
 class UserController():
