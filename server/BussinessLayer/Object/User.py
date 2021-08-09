@@ -41,6 +41,7 @@ class User():
         self.active_sale_offers = {}
         self.active_buy_offers = {} # with quantity and step
 
+
     def log_in(self):
         self.is_logged = True
 

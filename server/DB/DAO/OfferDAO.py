@@ -99,3 +99,5 @@ class OfferDAO:
                            [description, offer_id])
         self._conn.commit()
 
+
+

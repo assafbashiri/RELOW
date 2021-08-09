@@ -371,7 +371,7 @@ class UserController:
 
     def exist_offer_id_in_user(self, user_id, offer_id):
         user = self.usersDictionary[user_id]
-        for curr_offer in user.active_sale_offers:
-            if curr_offer.offer_id == offer_id:
-                return True
-            return False
+        if offer_id in user.active_sale_offers:
+            return True
+        return False
+
