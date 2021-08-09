@@ -11,8 +11,8 @@ from BussinessLayer.Controllers import CategoryController
 from BussinessLayer.Controllers import UserController
 from BussinessLayer.Utils import OfferStatus
 
-from server.BussinessLayer.Object.Offer import Offer
-from server.BussinessLayer.Object.Product import Product
+from BussinessLayer.Object.Offer import Offer
+from BussinessLayer.Object.Product import Product
 
 
 class Struct(object):

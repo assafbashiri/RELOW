@@ -1,4 +1,4 @@
-from BussinessLayer.Controllers.UserController import  UserController
+from BussinessLayer.Controllers.UserController import UserController
 from BussinessLayer.Controllers.CategoryController import CategoryController
 
 
@@ -8,7 +8,7 @@ class Protocol:
         self.conn = conn
         self.user = None
 
-        self.category_controller = categoryController.getInstance()
+        self.category_controller = CategoryController.getInstance()
         self.user_controller = UserController.getInstance()
         self.switcher =  {1: self.register,
                           2: self.unregister,
@@ -106,6 +106,13 @@ class Protocol:
     def add_active_buy_offer(self, argument):
         offer = self.categoryController.get_offer_by_offer_id(argument['offer_id'])
         response = self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
+        if response.get_response != 'ACK':
+            return response
+        else:
+            response = self.category_controller.add_buyer_to_offer(offer.offer_id,
+                                                                   offer.category_id,
+                                                                   offer.subCategory_id,
+                                                                   self.user.user_id)
         return response
 
     def add_active_sell_offer(self, argument):
@@ -129,12 +136,17 @@ class Protocol:
 
 
     def add_liked_offer(self, argument):
-        offer = self.categoryController.get_offer_by_offer_id(argument['offer_id'])
+        offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
         response = self.user_controller.add_like_offer(self.user.user_id, offer)
         return response
 
     def add_address_details(self, argument): #user_id city street zip code floor apt
-        response = UserController.add_address_details(argument['user_id'], argument['city'], argument['street'], argument['zip_code'], argument['floor'], argument['apt'])
+        response = self.user_controller.add_address_details(argument['user_id'],
+                                                            argument['city'],
+                                                            argument['street'],
+                                                            argument['zip_code'],
+                                                            argument['floor'],
+                                                            argument['apt'])
         return response
 
     # def update_city(argument): user_id *
@@ -144,7 +156,12 @@ class Protocol:
     # def update_apt(argument): user_id *
 
     def add_payment_method(self, argument): # user_id , cc number, cc expire date, cvv, card_type, id
-        response = UserController.add_payment_method(argument['user_id'], argument['credit_card_number'], argument['expire_date'], argument['cvv'], argument['card_type'], argument['id_number'])
+        response = self.user_controller.add_payment_method(argument['user_id'],
+                                                           argument['credit_card_number'],
+                                                           argument['expire_date'],
+                                                           argument['cvv'],
+                                                           argument['card_type'],
+                                                           argument['id_number'])
         return response
 
     # def update_card_number(argument): user_id *
@@ -156,110 +173,150 @@ class Protocol:
 
     def remove_liked_offer(self, argument):
         response = self.user_controller.remove_liked_offer(self.user.user_id)
+        return response
 
     def remove_active_sell_offer(self, argument):
-        pass
+        response = self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
+        if response.get_response() != 'ACK':
+            return response
+        else:
+            response = self.category_controller.remove_offer(argument['offer_id'], argument['category_id'], argument['sub_category_id'])
+        return response
 
     def remove_active_buy_offer(self, argument):
-        pass
+        response = self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
+        if response.get_response != 'ACK':
+            return response
+        else:
+            response = self.category_controller.remove_buyer_from_offer(self.user.user_id, argument['offer_id'])
+        return response
 
-    #-------------------------------------------------UPDATE------------------------------------------------------------------
+# -------------------------------------------------UPDATE----------------------------------------------------------------
 
     def update_first_name(self, argument): #user_id first name
-        response = UserController.update_first_name(argument['user_id'], argument['first_name'])
+        response = self.user_controller.update_first_name(argument['user_id'], argument['first_name'])
         return response
 
     def update_last_name(self, argument):#user_id last name
-        response = self.UserController.update_last_name(argument['user_id'], argument['last_name'])
+        response = self.user_controller.update_last_name(argument['user_id'], argument['last_name'])
         return response
 
     def update_username(self, argument): #user_id username
-        response = UserController.update_username(argument['user_id'], argument['user_name'])
+        response = self.user_controller.update_username(argument['user_id'], argument['user_name'])
         return response
 
     def update_email(self, argument): #user_id email
-        response = UserController.update_mail(argument['user_id'], argument['email'])
+        response = self.user_controller.update_email(argument['user_id'], argument['email'])
         return response
+
     def update_password(self, argument): #user_id old new
-        response = UserController.update_password(argument['user_id'], argument['old_password'], argument['new_password'])
+        response = self.user_controller.update_password(argument['user_id'], argument['old_password'], argument['new_password'])
         return response
+
     def update_birth_date(self, argument): #user_id date of birth
-        response = UserController.update_birth_date(argument['user_id'], argument['birth_date'])
+        response = self.user_controller.update_birth_date(argument['user_id'], argument['birth_date'])
         return response
+
     def update_gender(self, argument): #user-id gender
-        response = UserController.gender(argument['user_id'], argument['gender'])
+        response = self.user_controller.gender(argument['user_id'], argument['gender'])
         return response
-    #-------------------------------------------------GET------------------------------------------------------------------
+
+# -------------------------------------------------GET------------------------------------------------------------------
+
     def get_all_history_buy_offers(self, argument):
-        pass
+        response = self.user_controller.get_all_history_buy_offer(self.user.user_id)
+        return response
+
     def get_all_history_sell_offers(self, argument):
-        pass
+        response = self.user_controller.get_all_history_sell_offer(self.user.user_id)
+        return response
+
     def get_history_buy_offer(self, argument):
         pass
     def get_history_sell_offer(self, argument):
         pass
+
     def get_all_active_buy_offers(self, argument):
-        pass
+        response = self.user_controller.get_all_buy_offer(self.user.user_id)
+        return response
+
     def get_all_active_sell_offers(self, argument):
-        pass
+        response = self.user_controller.get_all_sell_offer(self.user.user_id)
+        return response
+
     def get_active_buy_offer(self, argument):
-        pass
+        response = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
+        return response
+
     def get_active_sell_offer(self, argument):
-        pass
+        response = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
+        return response
+
     def get_liked_offers(self, argument):
-        pass
+        response = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
+        return response
+
     def get_all_liked_offers(self, argument):
-        pass
+        response = self.user_controller.get_all_liked_offer(self.user.user_id)
+        return response
 
-    # --------------------------------------------------categoryController-------------------------------------------------------
+# --------------------------------------------------categoryController-------------------------------------------------------
 
-    # -----------------------------------------------------ADD-------------------------------------------------------------------
+# -----------------------------------------------------ADD-------------------------------------------------------------------
 
     def add_category(self, argument):
-        pass
+        response = self.category_controller.add_category(argument['name'])
+        return response
 
-    def add_aub_category(self, argument):
-        pass
+    def add_sub_category(self, argument):
+        response = self.category_controller.add_sub_category(argument['name'], argument['category_id'])
+        return response
 
-    def add_offer(self, argument):
+    def add_offer(self, argument): #implemented in user_controller
         pass
 
     def add_photo(self, argument):
         pass
 
-    def add_buyer_to_offer(self, argument):
+    def add_buyer_to_offer(self, argument):#implemented in user_controller
         pass
 
     def add_to_hot_deals(self, argument):
-        pass
+        response = self.category_controller.add_to_hot_deals(argument['offer_id'])
+        return response
 
     #------------------------------------------------REMOVE------------------------------------------------------------------
 
     def remove_category(self, argument):
-        pass
+        response = self.category_controller.remove_category(argument['category_id'])
+        return response
 
     def remove_sub_category(self, argument):
-        pass
+        response = self.category_controller.remove_category(argument['sub_category_id'],
+                                                            argument['category_id'])
+        return response
 
     def remove_photo(self, argument):
         pass
 
-    def remove_offer(self, argument):
+    def remove_offer(self, argument): #implemented in user_controller
         pass
 
-    def remove_buyer_from_offer(self, argument):
+    def remove_buyer_from_offer(self, argument):#implemented in user_controller
         pass
 
-    def remove_to_hot_deals(self, argument):
-        pass
+    def remove_from_hot_deals(self, argument):
+        response = self.category_controller.remove_from_hot_deals(argument['offer_id'])
+        return response
 
     # -------------------------------------------------------UPDATE----------------------------------------------------------------------
-
     def update_category_name(self, argument):
-        pass
+        response = self.category_controller.update_category_name(argument['category_id'], argument['name'] )
+        return response
 
     def update_sub_category_name(self, argument):
-        pass
+        response = self.category_controller.update_sub_category_name(argument['category_id'], argument['sub_category_id'], argument['name'])
+        return response
 
     #def update_current_step automatic
     
