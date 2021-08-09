@@ -36,11 +36,12 @@ class UserController:
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         user = User(self.user_id, first_name, last_name, user_name, email, password, birth_date, gender)
-        userDTO = UserDTO(self.user_id, user.first_name, user.last_name, user.user_name, user.email, user.password, user.birth_date, gender)
-        self.usersDictionary[user.user_id]= user
+        userDTO = UserDTO(self.user_id, user.first_name, user.last_name, user.user_name, user.email, user.password,
+                          user.birth_date, gender)
+        self.usersDictionary[user.user_id] = user
         self.users_dao.insert(userDTO)
-        self.user_id+=1
-        self.log_in(user_name,password)
+        self.user_id += 1
+        self.log_in(user_name, password)
 
     def unregister(self, user_id):
         user = self.usersDictionary.get(user_id)
@@ -50,11 +51,11 @@ class UserController:
             raise Exception("user is not active")
         if user.is_logged is not True:
             raise Exception("user is not logged")
-        #check if the user is in offer
+        # check if the user is in offer
         self.log_out(user_id)
         self.usersDictionary.get(user_id).active = False  # check
         self.users_dao.unregister(user_id)
-        #self.usersDictionary.get(user_id).key = None
+        # self.usersDictionary.get(user_id).key = None
         # dont sure that we really want to delete the user from DB
         # self.usersDictionary.remove(user_id)
 
@@ -80,6 +81,7 @@ class UserController:
         user_to_add = self.get_user_by_id(user_id)
         user_to_add.set_card_details(id, credit_card_number, credit_card_experation_date, cvv, card_type)
         self.users_dao.add_payment_method(user_id, credit_card_number, credit_card_experation_date, cvv, card_type, id)
+
     def add_address(self, user_id, city, street, zip_code, floor, apartmentNumber):
         user_to_add = self.get_user_by_id(user_id)
         user_to_add.add_address_details(city, street, apartmentNumber, zip_code, floor)
@@ -207,18 +209,96 @@ class UserController:
         temp.set_id(new_id)
         self.users_dao.updateId(user_id, new_id)
 
+        # -------------------------------- update offers
+
+    def update_end_date(self, user_id, offer_id, new_end_date):
+            if not (self.exist_user_id(user_id)):
+                raise Exception("User does not exist")
+            if not (self.exist_offer_id_in_user(user_id, offer_id)):
+                raise Exception("Offer does not exist")
+            offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+            offer_temp.set_end_date(new_end_date)
+            self.offers_dao.update_end_date(offer_id, new_end_date)
+
+    def update_start_date(self, user_id, offer_id, new_start_date):
+            if not (self.exist_user_id(user_id)):
+                raise Exception("User does not exist")
+            if not (self.exist_offer_id_in_user(user_id, offer_id)):
+                raise Exception("Offer does not exist")
+            offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+            offer_temp.set_start_date(new_start_date)
+            self.offers_dao.update_start_date(offer_id, new_start_date)
+
+    def update_step(self, user_id, offer_id, step):
+            if not (self.exist_user_id(user_id)):
+                raise Exception("User does not exist")
+            if not (self.exist_offer_id_in_user(user_id, offer_id)):
+                raise Exception("Offer does not exist")
+            offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+            offer_temp.set_step(step)
+            self.offers_dao.update_step(offer_id, step)
+
+    def update_status(self, user_id, offer_id, step):
+            return False
+            # to implement
+
+    def update_product_name(self, user_id, offer_id, name):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        if not (self.exist_offer_id_in_user(user_id, offer_id)):
+            raise Exception("Offer does not exist")
+        offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+        offer_temp.product.set_name(name)
+        self.offers_dao.update_product_name(offer_id, name)
+
+    def update_product_company(self, user_id, offer_id, company):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        if not (self.exist_offer_id_in_user(user_id, offer_id)):
+            raise Exception("Offer does not exist")
+        offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+        offer_temp.product.set_company(company)
+        self.offers_dao.update_product_company(offer_id, company)
+
+    def update_product_color(self, user_id, offer_id, color):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        if not (self.exist_offer_id_in_user(user_id, offer_id)):
+            raise Exception("Offer does not exist")
+        offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+        offer_temp.product.set_color(color)
+        self.offers_dao.update_product_color(offer_id, color)
+
+    def update_product_size(self, user_id, offer_id, size):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        if not (self.exist_offer_id_in_user(user_id, offer_id)):
+            raise Exception("Offer does not exist")
+        offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+        offer_temp.product.set_size(size)
+        self.offers_dao.update_product_size(offer_id, size)
+
+    def update_product_description(self, user_id, offer_id, description):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        if not (self.exist_offer_id_in_user(user_id, offer_id)):
+            raise Exception("Offer does not exist")
+        offer_temp = self.usersDictionary[user_id].active_sale_offers[offer_id]
+        offer_temp.product.set_description(description)
+        self.offers_dao.update_product_description(offer_id, description)
+
         # ------------------------------- offers
 
     def add_active_sale_offer(self, offer):
         if not (self.exist_user_id(offer.user_id)):
             raise Exception("User does not exist")
         saler = self.usersDictionary.get(offer.user_id)
-        saler.active_sale_offers.add(offer.offer_id, offer)
+        saler.active_sale_offers[offer.offer_id] = offer
         offerDTO = OfferDTO(offer)
         productDTO = ProductDTO(offer.product)
         self.offers_dao.insert(offerDTO, productDTO)
 
-# add a buyer into an offer
+    # add a buyer into an offer
     def add_active_buy_offer(self, user_id, offer, quantity, step):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
@@ -228,13 +308,22 @@ class UserController:
         buyer.active_buy_offers[offer.offer_id] = offer
         offerDTO = OfferDTO(offer)
         self.offers_dao.add_active_buy_offer(offerDTO, user_id, quantity, step)
+        # update buyers_in_offer_total :::
+        # offer.updateStep()
 
     def add_like_offer(self, user_id, offer):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
-        temp = self.usersDictionary.get(user_id)
-        temp.liked_offers.add(offer.offer_id, offer)
-        self.offers_dao.add_like_offer()
+        user_temp = self.usersDictionary[user_id]
+        user_temp.liked_offers[offer.offer_id] = offer
+        self.offers_dao.add_like_offer(user_id, offer.offer_id)
+
+    def remove_like_offer(self, user_id, offer):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        user_temp = self.usersDictionary[user_id]
+        user_temp.liked_offers.pop(offer.offer_id, None)
+        self.offers_dao.remove_like_offer(user_id, offer.offer_id)
 
     def move_to_history(self):
         pass
@@ -242,8 +331,8 @@ class UserController:
     def remove_active_sale_offer(self, user_id, offer_id):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
-        temp = self.usersDictionary.get(user_id)
-        temp.active_sale_offers.remove(offer_id)
+        temp = self.usersDictionary[user_id]
+        temp.active_sale_offers.pop(offer_id, None)
         self.offers_dao.delete_sale_offer(user_id, offer_id)
 
         # -------------------------- private functions -- to implement!!!
@@ -279,4 +368,10 @@ class UserController:
     def get_user_by_id(self, user_id):
         print(self.usersDictionary.__len__())
         return self.usersDictionary[user_id]
+
+    def exist_offer_id_in_user(self, user_id, offer_id):
+        user = self.usersDictionary[user_id]
+        if offer_id in user.active_sale_offers:
+            return True
+        return False
 

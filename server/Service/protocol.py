@@ -1,6 +1,6 @@
 from BussinessLayer.Controllers.UserController import UserController
 from BussinessLayer.Controllers.CategoryController import CategoryController
-
+import Response
 
 class Protocol:
 
@@ -40,7 +40,7 @@ class Protocol:
                          28: self.remove_active_buy_offer,
                      ## for userController
                          29: self.add_category,
-                         30: self.add_aub_category,
+                         30: self.add_sub_category,
                          31: self.add_offer,
                          32: self.add_photo,
                          33: self.remove_category,
@@ -77,8 +77,14 @@ class Protocol:
     # -------------------------------------------------BASIC------------------------------------------------------------
 
     def unregister(self, argument): #user_id
+        # try:
         response = self.user_controller.unregister(argument['user_id'])
+        # except Exception as e:
+        #     out = Response.Response(None,str(e), False)
+        #     return out
+        # out = Response.Response(response, , True)
         return response
+
 
     def register(self, argument): #first_name, last_name , username , email , password, gender, date of birth
         response = self.user_controller.register(
@@ -102,17 +108,17 @@ class Protocol:
         return response
 
 
-    #-------------------------------------------------ADD------------------------------------------------------------------
+# -------------------------------------------------ADD------------------------------------------------------------------
     def add_active_buy_offer(self, argument):
         offer = self.categoryController.get_offer_by_offer_id(argument['offer_id'])
         response = self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
         if response.get_response != 'ACK':
             return response
         else:
-            response = self.category_controller.add_buyer_to_offer(offer.offer_id,
-                                                                   offer.category_id,
-                                                                   offer.subCategory_id,
-                                                                   self.user.user_id)
+            response = self.category_controller.add_buyer_to_offer(offer,
+                                                                   self.user.user_id,
+                                                                   argument['quantity'],
+                                                                   argument['step'])
         return response
 
     def add_active_sell_offer(self, argument):
@@ -233,6 +239,7 @@ class Protocol:
 
     def get_history_buy_offer(self, argument):
         pass
+
     def get_history_sell_offer(self, argument):
         pass
 
@@ -311,63 +318,87 @@ class Protocol:
 
     # -------------------------------------------------------UPDATE----------------------------------------------------------------------
     def update_category_name(self, argument):
-        response = self.category_controller.update_category_name(argument['category_id'], argument['name'] )
+        response = self.category_controller.update_category_name(argument['category_id'],
+                                                                 argument['name'])
         return response
 
     def update_sub_category_name(self, argument):
-        response = self.category_controller.update_sub_category_name(argument['category_id'], argument['sub_category_id'], argument['name'])
+        response = self.category_controller.update_sub_category_name(argument['category_id'],
+                                                                     argument['sub_category_id'],
+                                                                     argument['name'])
         return response
 
     #def update_current_step automatic
     
     def update_category_for_offer(self, argument):
-        pass
+        response = self.category_controller(argument['offer_id'],
+                                            argument['category_id'],
+                                            argument['sub_category_id'])
+        return response
 
     def update_sub_category_for_offer(self, argument):
-        pass
+        response = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
+                                                                          argument['sub_category_id'])
+        return response
 
     #def update_status automatic
 
     def update_end_date(self, argument):
-        pass
+        response = self.user_controller.update_end_date(argument['offer_id'], argument['end_date'])
+        return response
 
     def update_start_date(self, argument):
-        pass
+        response = self.user_controller.update_start_date(argument['offer_id'], argument['start_date'])
+        return response
 
     def update_step(self, argument):
-        pass
+        response = self.user_controller.update_step(argument['offer_id'], argument['step'])
+        return response
 
     def update_product_name(self, argument):
-        pass
+        response = self.user_controller.update_product_name(argument['offer_id'], argument['name'])
+        return response
 
     def update_product_company(self, argument):
-        pass
+        response = self.user_controller.update_product_company(argument['offer_id'], argument['company'])
+        return response
 
     def update_product_color(self, argument):
-        pass
+        response = self.user_controller.update_product_color(argument['offer_id'], argument['color'])
+        return response
 
     def update_product_size(self, argument):
-        pass
+        response = self.user_controller.update_size(argument['offer_id'], argument['size'])
+        return response
 
     def update_product_description(self, argument):
-        pass
+        response = self.user_controller.update_product_description(argument['offer_id'], argument['description'])
+        return response
 
     # -------------------------------------------------------GET---------------------------------------------------------------
 
     def get_offers_by_category(self, argument):
-        pass
+        response = self.category_controller.get_offers_by_category(argument['category_id'])
+        return response
 
     def get_offers_by_subcategory(self, argument):
-        pass
+        response = self.category_controller.get_offers_by_sub_category(argument['category_id'], argument['sub_categoru_id'])
+        return response
 
     def get_offers_by_product_name(self, argument):
-        pass
+        response = self.category_controller.get_offers_by_product_name(argument['name'])
+        return response
 
     def get_offers_by_status(self, argument):
-        pass
+        response = self.category_controller.get_offers_by_status(argument['status'])
 
     def get_hot_deals(self, argument):
-        pass
+        response = self.category_controller.get_hot_deals()
+        return response
+
+    def remove_to_hot_deals(self, argument):
+        response = self.category_controller.remove_from_hot_deals(argument['offer_id'])
+        return response
 
     def handling(self, argument):
         print("in protocol handling step 1")
