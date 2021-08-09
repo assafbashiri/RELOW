@@ -7,3 +7,12 @@ class ProductDTO:
         self.size = size
         self.description = description
         self.photos
+
+    def __init__(self, product):
+        self.offer_id = product.offer_id
+        self.name = product.name
+        self.company = product.company
+        self.color = product.color
+        self.size = product.size
+        self.description = product.description
+        self.photos = product.photos

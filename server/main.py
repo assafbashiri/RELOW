@@ -11,6 +11,10 @@ from BussinessLayer.Controllers import CategoryController
 from BussinessLayer.Controllers import UserController
 from BussinessLayer.Utils import OfferStatus
 
+from server.BussinessLayer.Object.Offer import Offer
+from server.BussinessLayer.Object.Product import Product
+
+
 class Struct(object):
 
     def __init__(self, **entries):
@@ -64,6 +68,7 @@ def network():
 
 
 if __name__ == '__main__':
+
     conn = sqlite3.connect('database.db', check_same_thread=False)
     repository = repository(conn)
     #repository.create_tables()
@@ -83,3 +88,11 @@ if __name__ == '__main__':
     repository.delete_all_db()
     t1 = threading.Thread(target=network)
     t1.start()
+
+    repository.create_tables()
+    
+    #us.add_payment_method( 1, "1234", "19/04/2022", "048", "master", "31354888")
+
+    #t1 = threading.Thread(target=network)
+    #t1.start()
+
