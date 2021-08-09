@@ -1,5 +1,4 @@
 from BussinessLayer.Object import Category
-from BussinessLayer.DataMappers import CategoriesMapper
 from BussinessLayer.Object import SubCategory
 from DB.DAO import CategoriesDAO
 from DB.DAO import SubCategoriesDAO

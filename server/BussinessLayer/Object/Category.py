@@ -1,5 +1,4 @@
 from BussinessLayer.Object.SubCategory import SubCategory
-from BussinessLayer.DataMappers import SubCategoriesMapper
 
 
 from BussinessLayer.Object.SubCategory import SubCategory
