@@ -15,14 +15,11 @@ class SubCategory:
         return offer_to_add
 
 
-
-
     def remove_offer(self, offer_id):
         offer_to_remove = self.offers_dictionary[offer_id]
-        if offer_to_remove is None:
-            raise Exception("Offer Does Not Exist")
         self.offers_dictionary.pop(offer_id, None)
         return offer_to_remove
+
 
 
     def set_name(self, new_name):
@@ -58,10 +55,6 @@ class SubCategory:
                     ans.add(curr_offer)
         return ans
 
-    def add_buyer_to_offer(self, offer_id, user_id):
-        if not offer_id in self.offers_dictionary:
-            raise Exception("No Such Offer")
-        self.offers_dictionary[offer_id].add_buyer(user_id)
 
     def remove_buyer_from_offer(self, offer_id, user_id):
         if not offer_id in self.offers_dictionary:

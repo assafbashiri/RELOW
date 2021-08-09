@@ -16,15 +16,8 @@ class SubCategoriesDAO:
         self._conn.commit()
 
 
-
-
-    def update_name(self, sub_categoryDTO):
-        self._conn.execute("""UPDATE sub_categories set name = ? where category_id = ? AND sub_category_id = ?""",
-                           [sub_categoryDTO.name, sub_categoryDTO.categoty_id, sub_categoryDTO.id])
-        self._conn.commit()
-
-    def updateName(self, id, name):
-        self._conn.execute("""UPDATE categories set name = ? where id = ?""",
-                           [id, name])
+    def update(self,sub_category):
+        self._conn.execute("""UPDATE sub_category set category_id = ? , name = ? where sub_category_id = ?""",
+                           [sub_category.father_category_id, sub_category.name, sub_category.id])
         self._conn.commit()
 

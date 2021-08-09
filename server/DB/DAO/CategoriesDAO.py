@@ -16,7 +16,7 @@ class CategoriesDAO:
         self._conn.commit()
 
 
-    def updateName(self, id, name):
-        self._conn.execute("""UPDATE categories set name = ? where id = ?""",
-                           [id, name])
+    def update(self, category):
+        self._conn.execute("""UPDATE category set name = ? where category_id = ?""",
+                           [category.name, category.id])
         self._conn.commit()

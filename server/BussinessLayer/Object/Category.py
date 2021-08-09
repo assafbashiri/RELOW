@@ -30,10 +30,7 @@ class Category:
 
     def remove_offer(self, offer_id, sub_category_id):
         #already checked if sub category exist
-        try:
-            return self.sub_categories_dictionary[sub_category_id].remove_offer(offer_id)
-        except Exception as e:
-            raise e
+        return self.sub_categories_dictionary[sub_category_id].remove_offer(offer_id)
 
 
     def set_name(self, new_name):
@@ -45,17 +42,9 @@ class Category:
         self.sub_categories_dictionary[sub_category_id].set_name(new_sub_category_name)
         return self.sub_categories_dictionary[sub_category_id]
 
-    def add_buyer_to_offer(self, offer_id, offer_sub_category_id , user_id):
-        try:
-            self.sub_categories_dictionary[offer_sub_category_id].add_buyer_to_offer(offer_id, user_id)
-        except Exception as e:
-            raise e
 
-    def remove_buyer_from_offer(self, offer_id, offer_sub_category_id , user_id):
-        try:
-            self.sub_categories_dictionary[offer_sub_category_id].remove_buyer_from_offer(offer_id, user_id)
-        except Exception as e:
-            raise e
+
+
 
 
 #----------------------------------------------------getters----------------------------------------------------

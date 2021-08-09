@@ -3,6 +3,8 @@ from DB.DTO import CategoryDTO
 from DB.DTO import SubCategotyDTO
 from DB.DAO import CategoriesDAO
 from DB.DAO import SubCategoriesDAO
+from BussinessLayer.Object import Product
+from BussinessLayer.Object import Purchase
 class CategoryController:
     __instance = None
 
@@ -65,13 +67,12 @@ class CategoryController:
 
 
     # return offer that added
-    def add_offer(self, user_id, product, category_id, sub_category_id, steps, end_date ):
+    def add_offer(self, user_id, name, company, color, size, description, photos , category_id, sub_category_id, steps, end_date ):
+        product = Product.Product(name, company, color, size, description, photos)
         self.check_category_exist(category_id)
         if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist")
-
         offer_to_add = self.category_dictionary[category_id].add_offer(self.offer_id, user_id, product, sub_category_id, steps, end_date )
-        #checkif needed
         if offer_to_add is None:
             raise Exception("Fail To Add Offer")
         self.offer_id += 1
@@ -79,76 +80,39 @@ class CategoryController:
         #add to the userrrrr
 
     # return id of the offer to remove
-    def remove_offer(self, offer_id, category_id, sub_category_id):
-        self.check_category_exist(category_id)
-        if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
-            raise Exception("Sub Category Does Not Exist")
-        try:
-            offer_to_remove = self.category_dictionary[category_id].remove_offer(offer_id, sub_category_id)
-        except Exception as e:
-            raise e
-
-        #remove offer from DB
-        self.sub_categoriesDAO.remove(offer_to_remove)
-
-    def add_photo(self, argument):
-        pass
-
-    def remove_photo(self, argument):
-        pass
-
-    def add_to_hot_deals(self, argument):
-        pass
-
-    def remove_from_hot_deals(self, argument):
-        pass
-
-    def remove_buyer_from_offer(self):
-        return 6
-
-
-#------------------------------------------------update -----------------------------------------------------
+    def remove_offer(self, offer_id):
+        offer_to_remove = self.get_offer_by_offer_id(offer_id)
+        return self.category_dictionary[offer_to_remove.category_id].remove_offer(offer_id, offer_to_remove.sub_category_id)
 
 
 
 
+    def add_to_hot_deals(self, offer_id):
+        offer_to_add = self.get_offer_by_offer_id(offer_id)
+        self.hot_deals[offer_id] = offer_to_add
+
+
+    def remove_from_hot_deals(self, offer_id):
+        if offer_id not in self.hot_deals:
+            raise Exception("Offer Does Not Exist In Hot Deals")
+        self.hot_deals.pop(offer_id, None)
+
+
+    def add_buyer_to_offer(self,offer_id, user_id, quantity, step):
+        offer = self.get_offer_by_offer_id(offer_id)
+        purchase = Purchase.Purchase(quantity, step)
+        offer.add_buyer(user_id, purchase)
+        # update offer in DB - "buyers in offer" table
+
+
+    def remove_buyer_from_offer(self,offer_id,  user_id):
+        offer = self.get_offer_by_offer_id(offer_id)
+        offer.remove_buyer(user_id)
+        # update offer in DB - "buyers in offer" table
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        # -------------------------------------------------------UPDATE----------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-        # -------------------------------------------------------GET---------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-    #----------------------------------------------------------------------------------------------------------------
-
+    #------------------------------------------------update -----------------------------------------------------
 
 
     # check input validity in client layer
@@ -156,7 +120,7 @@ class CategoryController:
         self.check_category_exist(category_id)
         self.category_dictionary[category_id].set_name(new_category_name)
         #update in DB
-        self.categoriesDAO.update(self.category_dictionary[category_id])
+        self.categoriesDAO.update(CategoryDTO.CategoryDTO(self.category_dictionary[category_id]))
 
 
     def update_sub_category_name(self, category_id, sub_category_id, new_sub_category_name):
@@ -165,7 +129,7 @@ class CategoryController:
         if updated_sub_category is None:
             raise Exception ("No Such Sub Category")
         # update in DB
-        self.sub_categoriesDAO.update(updated_sub_category)
+        self.sub_categoriesDAO.update(SubCategotyDTO.SubCategoryDTO(updated_sub_category))
 
    
 
@@ -219,36 +183,22 @@ class CategoryController:
     def get_hot_deals(self, argument):
         pass
 
-    def update_category_for_offer(self, argument):
+    def update_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
+        # call to update sub category
         pass
 
     def update_sub_category_for_offer(self, argument):
         pass
 
-#check if possible to replace 3 functions them with one generic function
+#check if possible to replace 3 functions with one generic function
 
 
 
 
-    def add_buyer_to_offer(self, offer_id, offer_category_id,offer_sub_category_id , user_id):
-        self.check_category_exist(offer_category_id)
-        if not self.category_dictionary[offer_category_id].is_exist_sub_category(offer_sub_category_id):
-            raise Exception("Sub Category Does Not Exist")
-        try:
-            self.category_dictionary[offer_category_id].add_buyer_to_offer(offer_id, offer_sub_category_id, user_id)
-        except Exception as e:
-            raise e
-        # update offer in DB - "buyers in offer" table
 
-    def remove_buyer_from_offer(self, offer_id, offer_category_id,offer_sub_category_id , user_id):
-        self.check_category_exist(offer_category_id)
-        if not self.category_dictionary[offer_category_id].is_exist_sub_category(offer_sub_category_id):
-            raise Exception("Sub Category Does Not Exist")
-        try:
-            self.category_dictionary[offer_category_id].remove_buyer_from_offer(offer_id, offer_sub_category_id, user_id)
-        except Exception as e:
-            raise e
-        # update offer in DB - "buyers in offer" table
+
+
+
 
 #-------------------------------------------------privatemethods ------------------------------------------
     def is_category_exist(self, category_id):
