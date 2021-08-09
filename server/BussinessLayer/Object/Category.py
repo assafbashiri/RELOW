@@ -4,7 +4,7 @@ from BussinessLayer.DataMappers import SubCategoriesMapper
 
 from BussinessLayer.Object.SubCategory import SubCategory
 class Category:
-    def _init_(self, name, id, con):
+    def __init__(self, name, id, con):
         self.name = name
         self.id = id
         self.sub_categories_dictionary  = None

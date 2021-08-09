@@ -3,13 +3,19 @@ from BussinessLayer.DataMappers import CategoriesMapper
 from BussinessLayer.Object import SubCategory
 from DB.DAO import CategoriesDAO
 from DB.DAO import SubCategoriesDAO
-class categoryController():
-    def _init_(self, con):
+class categoryController:
+
+    def __init__(self, conn):
+        print('starting category')
         self.category_id = 0
         self.sub_category_id = 0
         self.category_dictionary = None # <category id, category>
-        self.categoriesDAO = CategoriesDAO(con)
-        self.sub_categoriesDAO = SubCategoriesDAO(con)
+        self.categoriesDAO = CategoriesDAO
+        self.sub_categoriesDAO = SubCategoriesDAO
+
+    def getme(self):
+        print('return singelton')
+        return self
 
     def add_category(self, name):
         category_to_add = Category(name, self.category_id)
@@ -37,7 +43,7 @@ class categoryController():
 
     def remove_sub_category(self, sub_category_id, category_id ):
         self.check_category_exist(category_id)
-        sub_category_to_remove = self.category_dictionary[category_id].remove_sub_category(name, sub_category_id)
+        sub_category_to_remove = self.category_dictionary[category_id].remove_sub_category(sub_category_id)
         if sub_category_to_remove is None:
             raise Exception("No Such Sub Category")
         #removing sub category from DB

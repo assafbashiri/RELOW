@@ -3,9 +3,13 @@ import sqlite3
 import threading
 from _thread import *
 import pickle
-from Service import protocol
+from Service.protocol import Protocol
 from DB.Repository import repository
+from BussinessLayer.Controllers import CategoryController
+from BussinessLayer.Controllers import UserController
+
 class Struct(object):
+
     def __init__(self, **entries):
         self.__dict__.update(entries)
 
@@ -29,7 +33,8 @@ def network():
     ServerSocket.listen(5)
 
     def threaded_client(connection):
-        opening = 'Welcome to the Servern'
+        pro = Protocol(conn)
+        opening = 'Welcome to the Server'
         step1 = pickle.dumps(opening)
         print(step1)
         connection.send(step1)
@@ -40,9 +45,9 @@ def network():
             # reply = 'Server Says: ' + data1
             if not data:
                 break
-            res = protocol.hendeling(data1)
-            a = vars(res)
-            b = pickle.dumps(a)
+            res = pro.handling(data1)
+            # a = vars(res)
+            b = pickle.dumps(res)
             connection.sendall(b)
         connection.close()
 
@@ -56,9 +61,10 @@ def network():
 
 
 if __name__ == '__main__':
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('database.db', check_same_thread=False)
     repository = repository(conn)
     repository.create_tables()
-    print('boo')
+    UserController.UserController(conn)
+    CategoryController.categoryController(conn)
     t1 = threading.Thread(target=network)
     t1.start()

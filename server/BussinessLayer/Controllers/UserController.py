@@ -1,38 +1,51 @@
 from BussinessLayer.Utils import CheckValidity
 from BussinessLayer.Object.User import User
 
-from server.DB.DAO.OfferDAO import OfferDAO
-from server.DB.DAO.ProductDAO import ProductDAO
-from server.DB.DAO.UsersDAO import UsersDAO
-from server.DB.DTO.OfferDTO import OfferDTO
-from server.DB.DTO.UserDTO import UserDTO
+from DB.DAO.OfferDAO import OfferDAO
+from DB.DAO.ProductDAO import ProductDAO
+from DB.DAO.UsersDAO import UsersDAO
+from DB.DTO.OfferDTO import OfferDTO
+from DB.DTO.UserDTO import UserDTO
 
 
-class UserController():
-
+class UserController:
 
     def __init__(self, conn):
+        print('starting user')
         self.user_id = 1
         self.users_dao = UsersDAO(conn)
         self.offers_dao = OfferDAO(conn)
         self.products_dao = ProductDAO(conn)
-        self.usersDictionary = None  # dictionary [id,user]
+        self.usersDictionary = {}  # dictionary [id,user]
 
-    def register(self, user_id, first_name, last_name, email, password, gender, date_of_birth):
-        user = User(user_id, first_name, last_name, email, password, gender, date_of_birth)
-        userDTO = UserDTO(user.user_id, user.first_name, user.last_name, user.email, user.password, user.gender,
-                          user.date_of_birth)
-        self.usersDictionary.add(user.user_id, user)
-        self.users_dao.insert(userDTO)
+    def getme(self):
+        print('return singelton')
+        return self
 
-    def removeUser(self, user_id):
-        if self.usersDictionary.get(user_id) is None:
+    def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
+        user = User(self.user_id, first_name, last_name, user_name, email, password, birth_date, gender)
+        userDTO = UserDTO(self.user_id, user.first_name, user.last_name, user.user_name, user.email, user.password, user.birth_date, gender)
+        self.usersDictionary[user.user_id]= user
+        self.users_dao.insert(user)
+        self.user_id+=1
+
+    def unregister(self, user_id):
+        user = self.usersDictionary.get(user_id)
+        if user is None:
             raise Exception("User does not exist")
+        if user.active is not True:
+            raise Exception("user is not active")
+        if user.is_logged is not True:
+            raise Exception("user is not logged")
+        self.users_dao.unregister(user_id)
+
+        #check if the user is in offer
         self.usersDictionary.get(user_id).active = False  # check
-        self.usersDictionary.get(user_id).key = None
+        self.users_dao.unregister(user_id)
+        #self.usersDictionary.get(user_id).key = None
         # dont sure that we really want to delete the user from DB
-        # self.users_dao.delete(user_id)
-        self.usersDictionary.remove(user_id)
+        self.users_dao.unregister(user_id)
+        # self.usersDictionary.remove(user_id)
 
     def log_in(self, user_name, password):
         if not self.exist_user_name1(user_name):
@@ -42,7 +55,8 @@ class UserController():
         if password_of_user != password:
             raise Exception("Illegal Password")
         user_to_log_in = self.get_user_by_user_name(user_name)
-        user_to_log_in.log_in(self)  # check this line
+        user_to_log_in.log_in(user_to_log_in.user_id)  # check this line
+        return user_to_log_in
 
     def log_out(self, user_id):
         if user_id not in self.usersDictionary.keys:

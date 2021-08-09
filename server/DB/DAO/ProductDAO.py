@@ -1,6 +1,6 @@
 class ProductDAO:
 
-    def _init_(self, conn):
+    def __init__(self, conn):
         self._conn = conn
 
     def insert(self, product):

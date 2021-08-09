@@ -3,8 +3,8 @@ import sqlite3
 
 
 
-class repository:
-    def _init_(self, conn):
+class repository():
+    def __init__(self, conn):
         self._conn = conn #sqlite3.connect('database.db')
 
     # create the tables for SQL
@@ -15,7 +15,7 @@ class repository:
                 first_name TEXT NOT NULL,
                 last_name TEXT NOT NULL,
                 user_name TEXT NOT NULL,
-                email TEXT NOT NULL  UNIQUE,
+                email TEXT NOT NULL ,
                 password TEXT NOT NULL,
                 birth_date	DATETIME,
                 gender	TEXT,
@@ -25,13 +25,12 @@ class repository:
 
             CREATE TABLE IF NOT EXISTS users_extra_details (
                 user_id	INTEGER NOT NULL,
-                PRIMARY KEY(user_id),
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
             CREATE TABLE IF NOT EXISTS users_address (
                 user_id	INTEGER NOT NULL UNIQUE,
-                city TEXT NOT NULL,
+                city TEXT ,
                 street TEXT,
                 zip_code INTEGER,
                 floor INTEGER,
@@ -41,8 +40,8 @@ class repository:
 
             CREATE TABLE IF NOT EXISTS users_payment (
                 user_id	INTEGER NOT NULL UNIQUE,
-                id_number INTEGER  UNIQUE,
-                card_number TEXT UNIQUE,
+                id_number INTEGER  ,
+                card_number TEXT ,
                 expire_date DATETIME,
                 cvv INTEGER,
                 card_type TEXT,
@@ -74,7 +73,7 @@ class repository:
                 offer_id INTEGER PRIMARY KEY  UNIQUE,
                 step INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
             );
 
             CREATE TABLE IF NOT EXISTS offer_product (

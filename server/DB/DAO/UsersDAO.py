@@ -4,26 +4,35 @@ class UsersDAO:
         self._conn = conn
 
     def insert(self, user):
+        print( "in insert in UserDAO step 1")
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password) VALUES (?,?,?,?,?,?)""",
-                           [user.user_id,user.first_name, user.last_name, user.username, user.email, user.password])
+            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, is_logged, active) VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                           [user.user_id, user.first_name, user.last_name, user.user_name, user.email, user.password, user.birth_date, user.gender, True, True])
         self._conn.commit()
+        print( "in insert in UserDAO step 2")
+
         self._conn.execute(
-            """INSERT INTO users_extra_details (user_id,birth_date,gender) VALUES (?,?,?)""",
-            [user.user_id, user.date_of_birth, user.gender])
+            """INSERT INTO users_extra_details (user_id) VALUES (?)""",
+            [user.user_id])
         self._conn.commit()
+        print( "in insert in UserDAO step 3")
+
         self._conn.execute(
             """INSERT INTO users_address (user_id,city,street,zip_code,floor,apt) VALUES (?,?,?,?,?,?)""",
-            [user.user_id,user.city, user.street, user.zip_code, user.floor, user.apartmentNumber])
+            [user.user_id, user.city, user.street, user.zip_code, user.floor, user.apartment_number])
         self._conn.commit()
+        print( "in insert in UserDAO step 4")
+
         self._conn.execute(
-            """INSERT INTO users_payment (user_id,card_number,expire_date,cvv,card_type,id) VALUES (?,?,?,?,?,?)""",
-            [user.user_id,user.credit_card_number, user.credit_card_experation_date, user.cvv, user.card_type, user.id])
+            """INSERT INTO users_payment (user_id,card_number,expire_date,cvv,card_type, id_number) VALUES (?,?,?,?,?,?)""",
+            [user.user_id, user.credit_card_number, user.credit_card_experation_date, user.cvv, user.card_type, user.id_number])
         self._conn.commit()
+        print( "in insert in UserDAO step 5")
+
 
     def add_address(self, user_id, city, street, zip_code, floor, apartmentNumber):
         self._conn.execute(
-            """INSERT INTO users_address (user_id,city,street,zip_code,floor,apt) VALUES (?,?,?,?,?,?)""",
+            """INSERT INTO users_address (user_id, city, street, zip_code, floor, apt) VALUES (?,?,?,?,?,?)""",
             [user_id, city, street, zip_code, floor, apartmentNumber])
         self._conn.commit()
     def add_payment_method(self,user_id,credit_card,exp_date,cvv,card_type,id):
@@ -32,6 +41,16 @@ class UsersDAO:
             [user_id,credit_card, exp_date, cvv, card_type, id])
         self._conn.commit()
 # update users_submission
+
+    def unregister(self, user_id):
+        self._conn.execute("""UPDATE users_submission set active = ? WHERE user_id = ?""",
+                           [False, user_id])
+        self._conn.commit()
+
+    def log_in(self, user_id):
+        self._conn.execute("""UPDATE user_submission set is_logged = ? WHERE user_id = ?""",
+                           [True, user_id])
+        self._conn.commit()
 
     def updateFirstname(self, id, name):
         self._conn.execute("""UPDATE users_submission set first_name = ? where user_id = ?""",

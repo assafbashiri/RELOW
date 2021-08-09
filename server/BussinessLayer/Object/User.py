@@ -4,22 +4,22 @@ from BussinessLayer.Utils import CheckValidity
 
 
 class User():
-    def __init__(self, next_user_id, first_name, last_name, user_name, email, password, gender, date_of_birth):
+    def __init__(self, next_user_id, first_name, last_name, user_name, email, password, birth_date, gender):
         self.active = True
         self.is_logged = False
-        CheckValidity.checkValidityName(first_name)
-        CheckValidity.date.today() - self.date_of_birthcheckValidityName(last_name)
-        CheckValidity.checkValidityEmail(email)
-        CheckValidity.checkValidityPassword(password)
+        #CheckValidity.checkValidityName(first_name)
+        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
+        #CheckValidity.checkValidityEmail(email)
+        #CheckValidity.checkValidityPassword(password)
         self.user_id = next_user_id
         self.first_name = first_name
         self.last_name = last_name
         self.user_name = user_name
         self.email = email
         self.password = password
-        self.date_of_birth = date_of_birth
+        self.birth_date = birth_date
         self.gender = gender
-        self.age = date.today() - self.date_of_birth
+
 
         # user address
         self.city = None
@@ -29,7 +29,7 @@ class User():
         self.floor = None
 
         # payment method
-        self.id = None
+        self.id_number = None
         self.credit_card_number = None
         self.credit_card_experation_date = None
         self.cvv = None
