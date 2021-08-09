@@ -14,7 +14,7 @@ class OfferDTO:
         self.current_step = offer.current_step
         self.user_id = offer.user_id
         self.category_id = offer.category_id
-        self.subCategory_id = offer.subCategory_id
+        self.sub_category_id = offer.subCategory_id
         self.status = offer.status
         self.start_date = offer.start_date
         self.end_date = offer.end_date
