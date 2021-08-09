@@ -23,9 +23,10 @@ class Category:
         self.sub_categories_dictionary.pop(sub_category_id, None)
         return sub_category_to_remove
 
-    def add_offer(self,offer_id, user_id, product, sub_category_id, status, steps, end_date, current_buyers ):
+
+    def add_offer(self,offer_id, user_id, product, sub_category_id, steps, end_date ):
         # already checked if sub category exist
-        self.sub_categories_dictionary[sub_category_id].add_offer(offer_id, user_id, product, status, steps, end_date, current_buyers )
+        return self.sub_categories_dictionary[sub_category_id].add_offer(offer_id, user_id, product, steps, end_date )
 
     def remove_offer(self, offer_id, sub_category_id):
         #already checked if sub category exist
