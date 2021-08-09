@@ -23,6 +23,7 @@ class CategoryController:
             self.category_dictionary = {}  # <category id, category>
             self.categoriesDAO = CategoriesDAO.CategoriesDAO(conn)
             self.sub_categoriesDAO = SubCategoriesDAO.SubCategoriesDAO(conn)
+            self.hot_deals = {}
             self.conn = conn
 
     def getme(self):
@@ -54,7 +55,6 @@ class CategoryController:
         # adding to DB (maybe do it in sub category)
         self.sub_categoriesDAO.insert(SubCategotyDTO.SubCategoryDTO(sub_category_to_add))
 
-
     def remove_sub_category(self, sub_category_id, category_id ):
         self.check_category_exist(category_id)
         sub_category_to_remove = self.category_dictionary[category_id].remove_sub_category(sub_category_id)
@@ -65,11 +65,12 @@ class CategoryController:
 
 
     # return offer that added
-    def add_offer(self, user_id, product, category_id, sub_category_id, status, steps, end_date, current_buyers ):
+    def add_offer(self, user_id, product, category_id, sub_category_id, steps, end_date ):
         self.check_category_exist(category_id)
         if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist")
-        offer_to_add = self.category_dictionary[category_id].add_offer(self.offer_id, user_id, product, sub_category_id, status, steps, end_date, current_buyers )
+
+        offer_to_add = self.category_dictionary[category_id].add_offer(self.offer_id, user_id, product, sub_category_id, steps, end_date )
         #checkif needed
         if offer_to_add is None:
             raise Exception("Fail To Add Offer")
@@ -90,6 +91,21 @@ class CategoryController:
         #remove offer from DB
         self.sub_categoriesDAO.remove(offer_to_remove)
 
+    def add_photo(self, argument):
+        pass
+
+    def remove_photo(self, argument):
+        pass
+
+    def add_to_hot_deals(self, argument):
+        pass
+
+    def remove_from_hot_deals(self, argument):
+        pass
+
+    def remove_buyer_from_offer(self):
+        return 6
+
 
 #------------------------------------------------update -----------------------------------------------------
 
@@ -100,7 +116,38 @@ class CategoryController:
 
 
 
-#----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+        # -------------------------------------------------------UPDATE----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+        # -------------------------------------------------------GET---------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+    #----------------------------------------------------------------------------------------------------------------
 
 
 
@@ -168,6 +215,15 @@ class CategoryController:
             if offer_to_return is not None:
                 return offer_to_return
         raise Exception("Offer Does Not Exist")
+
+    def get_hot_deals(self, argument):
+        pass
+
+    def update_category_for_offer(self, argument):
+        pass
+
+    def update_sub_category_for_offer(self, argument):
+        pass
 
 #check if possible to replace 3 functions them with one generic function
 

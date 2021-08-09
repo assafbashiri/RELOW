@@ -8,7 +8,7 @@ class Protocol:
         self.conn = conn
         self.user = None
 
-        self.category_controller = categoryController.getInstance()
+        self.category_controller = CategoryController.getInstance()
         self.user_controller = UserController.getInstance()
         self.switcher =  {1: self.register,
                           2: self.unregister,

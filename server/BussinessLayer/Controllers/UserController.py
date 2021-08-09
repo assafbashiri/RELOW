@@ -7,7 +7,7 @@ from DB.DAO.UsersDAO import UsersDAO
 from DB.DTO.OfferDTO import OfferDTO
 from DB.DTO.UserDTO import UserDTO
 
-from server.DB.DTO.ProductDTO import ProductDTO
+from DB.DTO.ProductDTO import ProductDTO
 
 
 class UserController:
