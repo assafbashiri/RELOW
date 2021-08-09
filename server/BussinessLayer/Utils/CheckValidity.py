@@ -3,6 +3,7 @@ import datetime
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 class checkValidity():
+
     def checkValidityName(self,name):
         if name.replace(" ", "").isalpha():
             print

@@ -7,6 +7,9 @@ from Service.protocol import Protocol
 from DB.Repository import repository
 from BussinessLayer.Controllers import CategoryController
 from BussinessLayer.Controllers import UserController
+from server.BussinessLayer.Object.Offer import Offer
+from server.BussinessLayer.Object.Product import Product
+
 
 class Struct(object):
 
@@ -61,10 +64,26 @@ def network():
 
 
 if __name__ == '__main__':
+
     conn = sqlite3.connect('database.db', check_same_thread=False)
     repository = repository(conn)
     repository.create_tables()
-    UserController.UserController(conn)
-    CategoryController.categoryController(conn)
-    t1 = threading.Thread(target=network)
-    t1.start()
+    us = UserController.UserController(conn)
+    cs = CategoryController.categoryController(conn)
+    us.register( "amit",  "mosko",  "amitmos",  "mosko@gmail.com",  "1234",  "19/04/1995",  "male")
+    us.add_address(1,"TA","BRIGA","855","6","3/3")
+    us.add_payment_method( 1, "1234", "19/04/2022", "048", "master", "31354888")
+    us.updateFirstname(1,"asssaf")
+    us.updateCvv(1,"155")
+
+    product = Product("shorts","fila","blue","5/6","nice shorts","nophoto")
+    offer = Offer(6, 1, product, 1, 4, "proccess", 5, 6, "19/04/2020", "19/04/2023")
+    product.set_offer_id(6)
+    us.add_active_sale_offer(offer)
+    us.unregister(1)
+
+    #us.add_payment_method( 1, "1234", "19/04/2022", "048", "master", "31354888")
+
+    #t1 = threading.Thread(target=network)
+    #t1.start()
+

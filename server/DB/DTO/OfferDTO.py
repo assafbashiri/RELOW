@@ -8,3 +8,13 @@ class OfferDTO:
         self.status = status
         self.start_date = start_date
         self.end_date = end_date
+
+    def __init__(self,offer):
+        self.offer_id = offer.offer_id
+        self.current_step = offer.current_step
+        self.user_id = offer.user_id
+        self.category_id = offer.category_id
+        self.subCategory_id = offer.subCategory_id
+        self.status = offer.status
+        self.start_date = offer.start_date
+        self.end_date = offer.end_date

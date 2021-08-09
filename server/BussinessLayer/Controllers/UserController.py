@@ -7,16 +7,28 @@ from DB.DAO.UsersDAO import UsersDAO
 from DB.DTO.OfferDTO import OfferDTO
 from DB.DTO.UserDTO import UserDTO
 
+from server.DB.DTO.ProductDTO import ProductDTO
+
 
 class UserController:
+    __instance = None
+
+    def getInstance():
+        """ Static access method. """
+        if UserController.__instance == None:
+            UserController()
+        return UserController.__instance
 
     def __init__(self, conn):
-        print('starting user')
-        self.user_id = 1
-        self.users_dao = UsersDAO(conn)
-        self.offers_dao = OfferDAO(conn)
-        self.products_dao = ProductDAO(conn)
-        self.usersDictionary = {}  # dictionary [id,user]
+        if UserController.__instance != None:
+            raise Exception("This class is a singleton!")
+        else:
+            UserController.__instance = self
+            self.user_id = 1
+            self.users_dao = UsersDAO(conn)
+            self.offers_dao = OfferDAO(conn)
+            self.products_dao = ProductDAO(conn)
+            self.usersDictionary = {}
 
     def getme(self):
         print('return singelton')
@@ -26,8 +38,9 @@ class UserController:
         user = User(self.user_id, first_name, last_name, user_name, email, password, birth_date, gender)
         userDTO = UserDTO(self.user_id, user.first_name, user.last_name, user.user_name, user.email, user.password, user.birth_date, gender)
         self.usersDictionary[user.user_id]= user
-        self.users_dao.insert(user)
+        self.users_dao.insert(userDTO)
         self.user_id+=1
+        self.log_in(user_name,password)
 
     def unregister(self, user_id):
         user = self.usersDictionary.get(user_id)
@@ -37,14 +50,12 @@ class UserController:
             raise Exception("user is not active")
         if user.is_logged is not True:
             raise Exception("user is not logged")
-        self.users_dao.unregister(user_id)
-
         #check if the user is in offer
+        self.log_out(user_id)
         self.usersDictionary.get(user_id).active = False  # check
         self.users_dao.unregister(user_id)
         #self.usersDictionary.get(user_id).key = None
         # dont sure that we really want to delete the user from DB
-        self.users_dao.unregister(user_id)
         # self.usersDictionary.remove(user_id)
 
     def log_in(self, user_name, password):
@@ -55,19 +66,20 @@ class UserController:
         if password_of_user != password:
             raise Exception("Illegal Password")
         user_to_log_in = self.get_user_by_user_name(user_name)
-        user_to_log_in.log_in(user_to_log_in.user_id)  # check this line
+        user_to_log_in.log_in()  # check this line
+        self.users_dao.log_in(user_to_log_in.user_id)
         return user_to_log_in
 
     def log_out(self, user_id):
-        if user_id not in self.usersDictionary.keys:
+        if user_id not in self.usersDictionary.keys():
             raise Exception("User Does Not Exist")
-        self.usersDictionary.get(user_id).log_out()
+        self.usersDictionary[user_id].log_out()
+        self.users_dao.log_out(user_id)
 
     def add_payment_method(self, user_id, credit_card_number, credit_card_experation_date, cvv, card_type, id):
         user_to_add = self.get_user_by_id(user_id)
         user_to_add.set_card_details(id, credit_card_number, credit_card_experation_date, cvv, card_type)
         self.users_dao.add_payment_method(user_id, credit_card_number, credit_card_experation_date, cvv, card_type, id)
-
     def add_address(self, user_id, city, street, zip_code, floor, apartmentNumber):
         user_to_add = self.get_user_by_id(user_id)
         user_to_add.add_address_details(city, street, apartmentNumber, zip_code, floor)
@@ -95,15 +107,14 @@ class UserController:
         temp.set_user_name(username)
         self.users_dao.updateUsername(user_id, username)
 
-    def updatePassword(self, user_id, old_password, new_passsord):
+    def updatePassword(self, user_id, old_password, new_password):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         if not old_password == self.get_password_by_user_name(temp.user_name):
             raise Exception("incorrect old password")
-
-        temp.set_password(new_passsord)
-        self.users_dao.updatePassword(user_id, new_passsord)
+        temp.set_password(new_password)
+        self.users_dao.updatePassword(user_id, new_password)
 
     def updateEmail(self, user_id, new_email):
         if not (self.exist_user_id(user_id)):
@@ -204,15 +215,19 @@ class UserController:
         saler = self.usersDictionary.get(offer.user_id)
         saler.active_sale_offers.add(offer.offer_id, offer)
         offerDTO = OfferDTO(offer)
-        self.offers_dao.add_active_sale_offer(offerDTO)
+        productDTO = ProductDTO(offer.product)
+        self.offers_dao.insert(offerDTO, productDTO)
 
-    def add_active_buy_offer(self, user_id, offer):
+# add a buyer into an offer
+    def add_active_buy_offer(self, user_id, offer, quantity, step):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
-        temp = self.usersDictionary.get(user_id)
-        temp.active_buy_offers.add(offer.offer_id, offer)
+        buyer = self.usersDictionary.get(user_id)
+        # add the quantity and the step to the active_buy_offers
+        offer.add_buyer(buyer, quantity, step)
+        buyer.active_buy_offers[offer.offer_id] = offer
         offerDTO = OfferDTO(offer)
-        self.offers_dao.add_active_buy_offer(offerDTO, user_id)
+        self.offers_dao.add_active_buy_offer(offerDTO, user_id, quantity, step)
 
     def add_like_offer(self, user_id, offer):
         if not (self.exist_user_id(user_id)):
@@ -234,29 +249,34 @@ class UserController:
         # -------------------------- private functions -- to implement!!!
 
     def exist_user_name1(self, user_name):
-        user_ids = self.usersDictionary.keys
+        user_ids = self.usersDictionary.keys()
         for curr_user_id in user_ids:
             if user_name == self.usersDictionary.get(curr_user_id).user_name:
                 return True
         return False
 
     def exist_user_id(self, user_id):
+        user_ids = self.usersDictionary.keys()
+        for curr_user_id in user_ids:
+            if user_id == curr_user_id:
+                return True
         return False
 
     def get_password_by_user_name(self, user_name):
-        user_ids = self.usersDictionary.keys
+        user_ids = self.usersDictionary.keys()
         for curr_user_id in user_ids:
             if user_name == self.usersDictionary.get(curr_user_id).user_name:
                 return self.usersDictionary.get(curr_user_id).password
         return None
 
     def get_user_by_user_name(self, user_name):
-        user_ids = self.usersDictionary.keys
+        user_ids = self.usersDictionary.keys()
         for curr_user_id in user_ids:
             if user_name == self.usersDictionary.get(curr_user_id).user_name:
                 return self.usersDictionary.get(curr_user_id)
         return None
 
     def get_user_by_id(self, user_id):
-        return self.usersDictionary.get(user_id)
+        print(self.usersDictionary.__len__())
+        return self.usersDictionary[user_id]
 
