@@ -51,7 +51,7 @@ class repository():
             CREATE TABLE IF NOT EXISTS liked_offers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
@@ -73,7 +73,7 @@ class repository():
                 offer_id INTEGER PRIMARY KEY  UNIQUE,
                 step INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
             );
 
             CREATE TABLE IF NOT EXISTS products (
@@ -93,7 +93,7 @@ class repository():
                 photo8 BOLB,
                 PHOTO9 BOLB,
                 photo10 BOLB,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
             );
 
             CREATE TABLE IF NOT EXISTS category (
@@ -113,7 +113,7 @@ class repository():
                 user_id INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
@@ -122,7 +122,7 @@ class repository():
                 user_id INTEGER NOT NULL,
                 total_quantity INTEGER NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
@@ -131,7 +131,7 @@ class repository():
                 offer_id INTEGER NOT NULL,
                 status TEXT NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
@@ -140,7 +140,7 @@ class repository():
                 offer_id INTEGER NOT NULL,
                 status TEXT NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
         """)
