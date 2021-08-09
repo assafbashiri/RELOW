@@ -1,5 +1,5 @@
 from BussinessLayer.Controllers.UserController import  UserController
-from BussinessLayer.Controllers.CategoryController import categoryController
+from BussinessLayer.Controllers.CategoryController import CategoryController
 
 
 class Protocol:
@@ -7,7 +7,7 @@ class Protocol:
     def __init__(self, conn):
         self.conn = conn
         self.user = None
-        self.category_controller = categoryController
+        self.category_controller = CategoryController(conn)
         self.user_controller = UserController(conn)
         self.switcher =  {1: self.register,
                           2: self.unregister,

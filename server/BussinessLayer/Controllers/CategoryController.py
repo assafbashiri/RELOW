@@ -1,34 +1,49 @@
 from BussinessLayer.Object import Category
-from BussinessLayer.Object import SubCategory
+from DB.DTO import CategoryDTO
+from DB.DTO import SubCategotyDTO
 from DB.DAO import CategoriesDAO
 from DB.DAO import SubCategoriesDAO
-class categoryController:
+class CategoryController:
+    __instance = None
+
+    def getInstance():
+        """ Static access method. """
+        if CategoryController.__instance == None:
+            CategoryController
+        return CategoryController.__instance
 
     def __init__(self, conn):
-        print('starting category')
-        self.category_id = 0
-        self.sub_category_id = 0
-        self.category_dictionary = None # <category id, category>
-        self.categoriesDAO = CategoriesDAO
-        self.sub_categoriesDAO = SubCategoriesDAO
+        if CategoryController.__instance != None:
+            raise Exception("This class is a singleton!")
+        else:
+            CategoryController.__instance = self
+            self.category_id = 0
+            self.sub_category_id = 0
+            self.offer_id = 0
+            self.category_dictionary = {}  # <category id, category>
+            self.categoriesDAO = CategoriesDAO.CategoriesDAO(conn)
+            self.sub_categoriesDAO = SubCategoriesDAO.SubCategoriesDAO(conn)
+            self.conn = conn
 
     def getme(self):
         print('return singelton')
         return self
 
     def add_category(self, name):
-        category_to_add = Category(name, self.category_id)
+        if self.check_category_exist_by_name(name):
+            raise Exception("Category Name Already Exist")
+        category_to_add = Category.Category(name, self.category_id)
         self.category_dictionary[self.category_id] = category_to_add
         self.category_id += 1
         # adding to DB
-        self.categoriesDAO.insert(category_to_add)
+        self.categoriesDAO.insert(CategoryDTO.CategoryDTO(category_to_add))
 
     def remove_category(self, category_id):
         self.check_category_exist(category_id)
         category_to_remove = self.category_dictionary[category_id]
         self.category_dictionary.pop(category_id, None) # check
         #remove category from DB
-        self.categoriesDAO.delete(category_to_remove)
+        self.categoriesDAO.delete(CategoryDTO.CategoryDTO(category_to_remove))
         #self.categoriesDAO.delete(category_id)
 
     def add_sub_category(self, name, category_id):
@@ -37,7 +52,7 @@ class categoryController:
         if sub_category_to_add is None :
             raise Exception("Sub Category already exist")
         # adding to DB (maybe do it in sub category)
-        self.sub_categoriesDAO.insert(sub_category_to_add)
+        self.sub_categoriesDAO.insert(SubCategotyDTO.SubCategoryDTO(sub_category_to_add))
 
 
     def remove_sub_category(self, sub_category_id, category_id ):
@@ -46,7 +61,7 @@ class categoryController:
         if sub_category_to_remove is None:
             raise Exception("No Such Sub Category")
         #removing sub category from DB
-        self.sub_categoriesDAO.remove(sub_category_to_remove)
+        self.sub_categoriesDAO.delete(SubCategotyDTO.SubCategoryDTO(sub_category_to_remove))
 
 
     # return offer that added
@@ -54,10 +69,11 @@ class categoryController:
         self.check_category_exist(category_id)
         if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist")
-        offer_to_add = self.category_dictionary[category_id].add_offer(user_id, product, sub_category_id, status, steps, end_date, current_buyers )
+        offer_to_add = self.category_dictionary[category_id].add_offer(self.offer_id, user_id, product, sub_category_id, status, steps, end_date, current_buyers )
         #checkif needed
         if offer_to_add is None:
             raise Exception("Fail To Add Offer")
+        self.offer_id += 1
         return offer_to_add
         #add to the userrrrr
 
@@ -76,51 +92,6 @@ class categoryController:
 
 
 #------------------------------------------------update -----------------------------------------------------
-
-    def update_current_step(self, offer, current_step):
-        self.check_category_exist(offer.category_id)
-        self.category_dictionary[offer.category_id].update_current_step(offer, current_step)
-        # update in DB
-
-    def update_category_for_offer(self, offer, category_id):
-        return 3
-
-    def update_sub_category_for_offer(self, offer, subCategory_id):
-        return 3
-
-    def update_status(self, offer, status):
-        return 2
-
-    def update_start_date(self, offer, subCategory_id):
-        return 3
-
-    def update_end_date(self, offer, end_date):
-        return 2
-
-    def update_step(self, offer, category_id):
-        return 3
-
-    def update_product_name(self, offer, subCategory_id):
-        return 3
-
-    def update_product_company(self, offer, subCategory_id):
-        return 3
-
-    def update_product_color(self, offer, subCategory_id):
-        return 3
-
-    def update_product_size(self, offer, subCategory_id):
-        return 3
-
-    def update_product_description(self, offer, subCategory_id):
-        return 3
-
-    def add_product_photo(self, offer, subCategory_id):
-        return 3
-
-    def remove_product_photo(self, offer, subCategory_id):
-        return 3
-
 
 
 
@@ -191,6 +162,13 @@ class categoryController:
                 ans.add(category_offers)
         return ans
 
+    def get_offer_by_offer_id(self, offer_id):
+        for category_id in self.category_dictionary.keys():
+            offer_to_return = self.category_dictionary[category_id].get_offer_by_offer_id(offer_id)
+            if offer_to_return is not None:
+                return offer_to_return
+        raise Exception("Offer Does Not Exist")
+
 #check if possible to replace 3 functions them with one generic function
 
 
@@ -225,3 +203,11 @@ class categoryController:
     def check_category_exist(self, category_id):
         if category_id not in self.category_dictionary:
             raise Exception("Category Does Not Exist")
+
+    def check_category_exist_by_name(self, name):
+        for id in self.category_dictionary.keys():
+            if self.category_dictionary[id].name == name:
+                return True
+        return False
+
+
