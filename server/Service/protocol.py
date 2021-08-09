@@ -7,68 +7,68 @@ class Protocol:
     def __init__(self, conn):
         self.conn = conn
         self.user = None
-        self.category_controller = categoryController
-        self.user_controller = UserController(conn)
+        self.category_controller = categoryController.getInstance()
+        self.user_controller = UserController.getInstance()
         self.switcher =  {1: self.register,
                           2: self.unregister,
                           3: self.log_in,
-                    # 4: self.logout(argument),
-                    # 5: self.update_first_name(argument),
-                    # 6: self.update_last_name(argument),
-                    # 7: self.update_username(argument),
-                    # 8: self.update_email(argument),
-                    # 9: self.update_birth_date(argument),
-                    # 10: self.update_gender(argument),
-                    # 11: self.add_address_details(argument),
-                    # 12: self.add_payment_method(argument),
-                    # 13: self.get_all_history_buy_offers(argument),
-                    # 14: self.get_all_history_sell_offers(argument),
-                    # 15: self.get_history_buy_offer(argument),
-                    # 16: self.get_history_sell_offer(argument),
-                    # 17: self.get_all_active_buy_offers(argument),
-                    # 18: self.get_all_active_sell_offers(argument),
-                    # 19: self.get_active_buy_offer(argument),
-                    # 20: self.get_active_sell_offer(argument),
-                    # 21: self.get_liked_offers(argument),
-                    # 22: self.get_all_liked_offers(argument),
-                    # 23: self.add_active_buy_offer(argument),
-                    # 24: self.add_active_sell_offer(argument),
-                    # 25: self.add_liked_offer(argument),
-                    # 26: self.remove_liked_offer(argument),
-                    # 27: self.remove_active_sell_offer(argument),
-                    # 28: self.remove_active_buy_offer(argument),
-                    # # for userController
-                    # 29: self.add_category(argument),
-                    # 30: self.add_aub_category(argument),
-                    # 31: self.add_offer(argument),
-                    # 32: self.add_photo(argument),
-                    # 33: self.remove_category(argument),
-                    # 34: self.remove_sub_category(argument),
-                    # 35: self.remove_photo(argument),
-                    # 36: self.remove_offer(argument),
-                    # 37: self.update_category_name(argument),
-                    # 38: self.update_sub_category_name(argument),
+                          4: self.logout,
+                          5: self.update_first_name,
+                          6: self.update_last_name,
+                          7: self.update_username,
+                          8: self.update_email,
+                          9: self.update_birth_date,
+                         10: self.update_gender,
+                         11: self.add_address_details,
+                         12: self.add_payment_method,
+                         13: self.get_all_history_buy_offers,
+                         14: self.get_all_history_sell_offers,
+                         15: self.get_history_buy_offer,
+                         16: self.get_history_sell_offer,
+                         17: self.get_all_active_buy_offers,
+                         18: self.get_all_active_sell_offers,
+                         19: self.get_active_buy_offer,
+                         20: self.get_active_sell_offer,
+                         21: self.get_liked_offers,
+                         22: self.get_all_liked_offers,
+                         23: self.add_active_buy_offer,
+                         24: self.add_active_sell_offer,
+                         25: self.add_liked_offer,
+                         26: self.remove_liked_offer,
+                         27: self.remove_active_sell_offer,
+                         28: self.remove_active_buy_offer,
+                     ## for userController
+                         29: self.add_category,
+                         30: self.add_aub_category,
+                         31: self.add_offer,
+                         32: self.add_photo,
+                         33: self.remove_category,
+                         34: self.remove_sub_category,
+                         35: self.remove_photo,
+                         36: self.remove_offer,
+                         37: self.update_category_name,
+                         38: self.update_sub_category_name,
                     # # 39: update_current_step,
-                    # 40: self.update_category_for_offer(argument),
-                    # 41: self.update_sub_category_for_offer(argument),
+                         40: self.update_category_for_offer,
+                         41: self.update_sub_category_for_offer,
                     # 42: 'update_status',
-                    # 43: self.update_end_date(argument),
-                    # 44: self.update_start_date(argument),
-                    # 45: self.update_step(argument),
-                    # 46: self.add_buyer_to_offer(argument),
-                    # 47: self.remove_buyer_from_offer(argument),
-                    # 48: self.update_product_name(argument),
-                    # 49: self.update_product_company(argument),
-                    # 50: self.update_product_color(argument),
-                    # 51: self.update_product_size(argument),
-                    # 52: self.update_product_description(argument),
-                    # 53: self.get_offers_by_category(argument),
-                    # 54: self.get_offers_by_subcategory(argument),
-                    # 55: self.get_offers_by_product_name(argument),
-                    # 56: self.get_offers_by_status(argument),
-                    # 57: self.get_hot_deals(argument),
-                    # 58: self.add_to_hot_deals(argument),
-                    # 59: self.remove_to_hot_deals(argument)
+                         43: self.update_end_date,
+                         44: self.update_start_date,
+                         45: self.update_step,
+                         46: self.add_buyer_to_offer,
+                         47: self.remove_buyer_from_offer,
+                         48: self.update_product_name,
+                         49: self.update_product_company,
+                         50: self.update_product_color,
+                         51: self.update_product_size,
+                         52: self.update_product_description,
+                         53: self.get_offers_by_category,
+                         54: self.get_offers_by_subcategory,
+                         55: self.get_offers_by_product_name,
+                         56: self.get_offers_by_status,
+                         57: self.get_hot_deals,
+                         58: self.add_to_hot_deals,
+                         59: self.remove_to_hot_deals
                     }
 
     # ------------------------------------------------userController----------------------------------------------------
@@ -80,7 +80,7 @@ class Protocol:
         return response
 
     def register(self, argument): #first_name, last_name , username , email , password, gender, date of birth
-        self.user_controller.register(
+        response = self.user_controller.register(
                                       argument['first_name'],
                                       argument['last_name'],
                                       argument['user_name'],
@@ -89,7 +89,7 @@ class Protocol:
                                       argument['birth_date'],
                                       argument['gender'])
         print("in register in protocol step 2")
-        return {'op':1}
+        return response
 
     def log_in(self, argument): #user_name , password
         user = self.user_controller.log_in(argument['user_name'], argument['password'])
@@ -102,15 +102,35 @@ class Protocol:
 
 
     #-------------------------------------------------ADD------------------------------------------------------------------
-
     def add_active_buy_offer(self, argument):
-        pass
+        offer = self.categoryController.get_offer_by_offer_id(argument['offer_id'])
+        response = self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
+        return response
 
     def add_active_sell_offer(self, argument):
-        pass
+        response = self.category_controller.add_offer(argument['user_id'],
+                                                      argument['product'],
+                                                      argument['category_id'],
+                                                      argument['sub_category_id'],
+                                                      argument['status'],
+                                                      argument['steps'],
+                                                      argument['end_date'],
+                                                      0)
+        if response.get_response() != 'ACK':
+            return response
+        else:
+            response = self.user_controller.add_active_sale_offer(response.get_data())
+            if response != 'ACK':
+                self.category_controller.remove_offer(argument['offer_id'], argument['category_id'],
+                                                      argument['sub_category_id'])
+        return response
+
+
 
     def add_liked_offer(self, argument):
-        pass
+        offer = self.categoryController.get_offer_by_offer_id(argument['offer_id'])
+        response = self.user_controller.add_like_offer(self.user.user_id, offer)
+        return response
 
     def add_address_details(self, argument): #user_id city street zip code floor apt
         response = UserController.add_address_details(argument['user_id'], argument['city'], argument['street'], argument['zip_code'], argument['floor'], argument['apt'])
@@ -134,7 +154,7 @@ class Protocol:
     # -------------------------------------------------REMOVE------------------------------------------------------------------
 
     def remove_liked_offer(self, argument):
-        pass
+        response = self.user_controller.remove_liked_offer(self.user.user_id)
 
     def remove_active_sell_offer(self, argument):
         pass

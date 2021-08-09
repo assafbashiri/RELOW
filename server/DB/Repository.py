@@ -48,14 +48,14 @@ class repository():
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
-            CREATE TABLE IF NOT EXISTS saved_offers (
+            CREATE TABLE IF NOT EXISTS liked_offers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
 
-            CREATE TABLE IF NOT EXISTS offer_main (
+            CREATE TABLE IF NOT EXISTS offers_main (
                 offer_id INTEGER PRIMARY KEY  UNIQUE,
                 user_id INTEGER NOT NULL,
                 start_date DATETIME NOT NULL,
@@ -76,7 +76,7 @@ class repository():
                 FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id)
             );
 
-            CREATE TABLE IF NOT EXISTS offer_product (
+            CREATE TABLE IF NOT EXISTS products (
                 offer_id INTEGER NOT NULL,
                 name TEXT NOT NULL,
                 company TEXT NOT NULL,
