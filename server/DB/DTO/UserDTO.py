@@ -11,3 +11,17 @@ class UserDTO:
         self.gender = gender
         self.active = True
         self.is_logged = False
+
+        # user address
+        self.city = None
+        self.street = None
+        self.apartment_number = None
+        self.zip_code = None
+        self.floor = None
+
+        # payment method
+        self.id_number = None
+        self.credit_card_number = None
+        self.credit_card_experation_date = None
+        self.cvv = None
+        self.card_type = None

@@ -105,7 +105,7 @@ class repository():
                 sub_category_id INTEGER PRIMARY KEY  UNIQUE,
                 category_id INTEGER NOT NULL,
                 name TEXT NOT NULL,
-                FOREIGN KEY(category_id) REFERENCES category(category_id)
+                FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer (
@@ -144,6 +144,23 @@ class repository():
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
             );
         """)
+
+    def delete_all_db(self):
+        self._conn.execute("""Delete FROM users_submission""")
+        self._conn.execute("""Delete FROM users_extra_details""")
+        self._conn.execute("""Delete FROM users_payment""")
+        self._conn.execute("""Delete FROM saved_offers""")
+        self._conn.execute("""Delete FROM offer_main""")
+        self._conn.execute("""Delete FROM price_per_step""")
+        self._conn.execute("""Delete FROM offer_product""")
+        self._conn.execute("""Delete FROM category""")
+        self._conn.execute("""Delete FROM sub_category""")
+        self._conn.execute("""Delete FROM buyers_in_offer_per_buyer""")
+        self._conn.execute("""Delete FROM buyers_in_offer_total""")
+        self._conn.execute("""Delete FROM history_buyers""")
+        self._conn.execute("""Delete FROM history_sellers""")
+        self._conn.commit()
+
 
     def close(self):
         self._conn.commit()

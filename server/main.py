@@ -3,10 +3,17 @@ import sqlite3
 import threading
 from _thread import *
 import pickle
+import datetime
+from BussinessLayer.Object.Product import Product
 from Service.protocol import Protocol
 from DB.Repository import repository
 from BussinessLayer.Controllers import CategoryController
 from BussinessLayer.Controllers import UserController
+from BussinessLayer.Utils import OfferStatus
+
+from server.BussinessLayer.Object.Offer import Offer
+from server.BussinessLayer.Object.Product import Product
+
 
 class Struct(object):
 
@@ -61,10 +68,31 @@ def network():
 
 
 if __name__ == '__main__':
+
     conn = sqlite3.connect('database.db', check_same_thread=False)
     repository = repository(conn)
-    repository.create_tables()
-    UserController.UserController(conn)
-    CategoryController.categoryController(conn)
+    #repository.create_tables()
+    u = UserController.UserController(conn)
+    c = CategoryController.CategoryController(conn)
+    # ------- check -------------------------------------------------
+    c.add_category("sport")
+    c.add_sub_category("soccer", 0)
+
+    product = Product("shorts", "fila", "blue", "5/6", "nice shorts", "nophoto")
+    date = datetime.datetime(2020, 5, 17)
+    c.add_offer(1, product, 0, 0, OfferStatus.OfferStatus.NOT_EXPIRED_UNCOMPLETED, {}, date, {})
+    c.remove_sub_category(0, 0)
+    c.remove_category(0)
+    # ------- check -------------------------------------------------
+    print("tom")
+    repository.delete_all_db()
     t1 = threading.Thread(target=network)
     t1.start()
+
+    repository.create_tables()
+    
+    #us.add_payment_method( 1, "1234", "19/04/2022", "048", "master", "31354888")
+
+    #t1 = threading.Thread(target=network)
+    #t1.start()
+

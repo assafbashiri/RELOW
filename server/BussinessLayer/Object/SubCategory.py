@@ -1,20 +1,18 @@
 from BussinessLayer.Object import Offer
-from BussinessLayer.Utils import CheckValidity
 from BussinessLayer.Utils import OfferStatus
 from datetime import date
 class SubCategory:
-    def _init_(self, name, id, father_category_id):
+    def __init__(self, name, id, father_category_id):
         self.name=name
-        self.offers_dictionary = None
+        self.offers_dictionary = {}
         self.id = id
-        self.offer_id = 0
         self.father_category_id = father_category_id
 
-    def add_offer(self, user_id, product, steps, end_date ):
+    def add_offer(self,offer_id, user_id, product, steps, end_date ):
         status = OfferStatus.OfferStatus.NOT_EXPIRED_UNCOMPLETED #initial state
-        offer_to_add = Offer(self.offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date , None)
-        self.offers_dictionary[self.offer_id] = offer_to_add
-        self.offer_id += 1
+        offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date , None)
+        self.offers_dictionary[offer_id] = offer_to_add
+
 
 
 
@@ -68,3 +66,8 @@ class SubCategory:
         if not offer_id in self.offers_dictionary:
             raise Exception("No Such Offer")
         self.offers_dictionary[offer_id].remove_buyer(user_id)
+
+    def get_offer_by_offer_id(self, offer_id):
+        if offer_id in self.offers_dictionary:
+            return self.offers_dictionary[offer_id]
+        return None

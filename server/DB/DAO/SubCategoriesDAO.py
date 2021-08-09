@@ -1,19 +1,21 @@
+table_name = "sub_category"
 class SubCategoriesDAO:
 
     def __init__(self, conn):
         self._conn = conn
 
     def insert(self, sub_category):
-        self._conn.execute("""INSERT INTO SubCategories (id,name) VALUES (?,?)""",
-                           [sub_category.id, sub_category.name])
+        self._conn.execute("""INSERT INTO sub_category (sub_category_id, category_id,name) VALUES (?,?,?)""",
+                           [sub_category.id,sub_category.father_category_id, sub_category.name])
         self._conn.commit()
 
 
-       ############ check thissss
-    def delete(self, sub_category_id, category_id):
-        self._conn.execute("DELETE FROM %s \n" +
-         "WHERE %s=\"%s\" AND %s=\"%s\";", "sub_categories", "category_id", category_id, "sub_category_id", sub_category_id);
+
+    def delete(self, sub_category_to_remove):
+        self._conn.execute("""DELETE FROM sub_category WHERE  sub_category_id = ? """, [sub_category_to_remove.id])
         self._conn.commit()
+
+
 
 
     def update_name(self, sub_categoryDTO):
@@ -25,3 +27,4 @@ class SubCategoriesDAO:
         self._conn.execute("""UPDATE categories set name = ? where id = ?""",
                            [id, name])
         self._conn.commit()
+

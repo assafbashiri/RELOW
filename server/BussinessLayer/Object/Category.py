@@ -1,16 +1,16 @@
-from BussinessLayer.Object.SubCategory import SubCategory
 
 
-from BussinessLayer.Object.SubCategory import SubCategory
+from BussinessLayer.Object import SubCategory
 class Category:
-    def __init__(self, name, id, con):
+    def __init__(self, name, id):
         self.name = name
         self.id = id
-        self.sub_categories_dictionary  = None
+        self.sub_categories_dictionary  = {}
 
     def add_sub_category(self, name, sub_category_id):
-        sub_category_to_add = SubCategory(name, self.id, sub_category_id)
-        if sub_category_id in self.sub_categories_dictionary:
+        sub_category_to_add = SubCategory.SubCategory(name, sub_category_id, self.id)
+
+        if sub_category_id in self.sub_categories_dictionary.keys():
             return None
         self.sub_categories_dictionary[sub_category_id] = sub_category_to_add
         return sub_category_to_add
@@ -23,9 +23,9 @@ class Category:
         self.sub_categories_dictionary.pop(sub_category_id, None)
         return sub_category_to_remove
 
-    def add_offer(self, user_id, product, sub_category_id, status, steps, end_date, current_buyers ):
+    def add_offer(self,offer_id, user_id, product, sub_category_id, status, steps, end_date, current_buyers ):
         # already checked if sub category exist
-        self.sub_categories_dictionary[sub_category_id].add_offer(user_id, product, status, steps, end_date, current_buyers )
+        self.sub_categories_dictionary[sub_category_id].add_offer(offer_id, user_id, product, status, steps, end_date, current_buyers )
 
     def remove_offer(self, offer_id, sub_category_id):
         #already checked if sub category exist
@@ -96,6 +96,16 @@ class Category:
             if not curr_sub_category_offers is None:
                 ans.extend(curr_sub_category_offers)
         return ans
+
+    def get_offer_by_offer_id(self, offer_id):
+        for sub_categoty_id in self.sub_categories_dictionary.keys():
+            offer_to_return = self.sub_categories_dictionary[sub_categoty_id].get_offer_by_offer_id(offer_id)
+            if offer_to_return is not None:
+                return offer_to_return
+        return None
+
+
+
 
 
 
