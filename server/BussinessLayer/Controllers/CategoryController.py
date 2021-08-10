@@ -32,6 +32,7 @@ class CategoryController:
         print('return singelton')
         return self
 
+    # no return, throw exceptions
     def add_category(self, name):
         if self.check_category_exist_by_name(name):
             raise Exception("Category Name Already Exist")
@@ -41,6 +42,7 @@ class CategoryController:
         # adding to DB
         self.categoriesDAO.insert(CategoryDTO.CategoryDTO(category_to_add))
 
+    # no return, throw exceptions
     def remove_category(self, category_id):
         self.check_category_exist(category_id)
         category_to_remove = self.category_dictionary[category_id]
@@ -49,6 +51,7 @@ class CategoryController:
         self.categoriesDAO.delete(CategoryDTO.CategoryDTO(category_to_remove))
         #self.categoriesDAO.delete(category_id)
 
+    # no return, throw exceptions
     def add_sub_category(self, name, category_id):
         self.check_category_exist(category_id)
         sub_category_to_add = self.category_dictionary[category_id].add_sub_category(name, category_id)
@@ -57,6 +60,7 @@ class CategoryController:
         # adding to DB (maybe do it in sub category)
         self.sub_categoriesDAO.insert(SubCategotyDTO.SubCategoryDTO(sub_category_to_add))
 
+    # no return, throw exceptions
     def remove_sub_category(self, sub_category_id, category_id ):
         self.check_category_exist(category_id)
         sub_category_to_remove = self.category_dictionary[category_id].remove_sub_category(sub_category_id)
@@ -66,7 +70,7 @@ class CategoryController:
         self.sub_categoriesDAO.delete(SubCategotyDTO.SubCategoryDTO(sub_category_to_remove))
 
 
-    # return offer that added
+    # return offer that added, throw exceptions
     def add_offer(self, user_id, name, company, color, size, description, photos , category_id, sub_category_id, steps, end_date ):
         product = Product.Product(name, company, color, size, description, photos)
         self.check_category_exist(category_id)
@@ -79,32 +83,32 @@ class CategoryController:
         return offer_to_add
         #add to the userrrrr
 
-    # return id of the offer to remove
+    # return id of the offer to remove, throw exceptions
     def remove_offer(self, offer_id):
         offer_to_remove = self.get_offer_by_offer_id(offer_id)
         return self.category_dictionary[offer_to_remove.category_id].remove_offer(offer_id, offer_to_remove.sub_category_id)
 
 
 
-
+    # no return, throw exceptions
     def add_to_hot_deals(self, offer_id):
         offer_to_add = self.get_offer_by_offer_id(offer_id)
         self.hot_deals[offer_id] = offer_to_add
 
-
+    # no return, throw exceptions
     def remove_from_hot_deals(self, offer_id):
         if offer_id not in self.hot_deals:
             raise Exception("Offer Does Not Exist In Hot Deals")
         self.hot_deals.pop(offer_id, None)
 
-
+    # no return, throw exceptions
     def add_buyer_to_offer(self,offer_id, user_id, quantity, step):
         offer = self.get_offer_by_offer_id(offer_id)
         purchase = Purchase.Purchase(quantity, step)
         offer.add_buyer(user_id, purchase)
         # update offer in DB - "buyers in offer" table
 
-
+    # no return, throw exceptions
     def remove_buyer_from_offer(self,offer_id,  user_id):
         offer = self.get_offer_by_offer_id(offer_id)
         offer.remove_buyer(user_id)
@@ -116,13 +120,14 @@ class CategoryController:
 
 
     # check input validity in client layer
+    # no return, throw exceptions
     def update_category_name(self, category_id, new_category_name):
         self.check_category_exist(category_id)
         self.category_dictionary[category_id].set_name(new_category_name)
         #update in DB
         self.categoriesDAO.update(CategoryDTO.CategoryDTO(self.category_dictionary[category_id]))
 
-
+    # no return, throw exceptions
     def update_sub_category_name(self, category_id, sub_category_id, new_sub_category_name):
         self.check_category_exist(category_id)
         updated_sub_category = self.category_dictionary[category_id].update_sub_category_name(sub_category_id,new_sub_category_name)
@@ -135,44 +140,49 @@ class CategoryController:
 
 
 #--------------------------------------------getters-------------------------------------------------
-    #return regular list
+
+    #return regular list, throw exceptions
     def get_offers_by_category(self, category_id):
         self.check_category_exist(category_id)
         return self.category_dictionary[category_id].get_offers()
 
-    #return regular list
+    #return regular list, throw exceptions
     def get_offers_by_sub_category(self, category_id, sub_category_id):
         self.check_category_exist(category_id)
         if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist")
         return self.category_dictionary[category_id].get_offers_by_sub_category(sub_category_id)
 
+    # check if possible to replace those 3 functions with one generic function
 
+    # return regular list, throw exceptions
     def get_offers_by_product_name(self, product_name):
         ans = None
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_offers_by_product_name(product_name)
-            if not category_offers is None:
-                ans.add(category_offers)
+            if category_offers is not None:
+                ans.extend(category_offers)
         return ans
 
-
+    # return regular list, throw exceptions
     def get_offers_by_status(self, status):
         ans = None
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_offers_by_status(status)
-            if not category_offers is None:
+            if category_offers is not None:
                 ans.add(category_offers)
         return ans
 
+    # return regular list, throw exceptions
     def get_offers_by_company_name(self, company_name):
         ans = None
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_offers_by_company_name(company_name)
-            if not category_offers is None:
+            if category_offers is not None:
                 ans.add(category_offers)
         return ans
 
+    # return regular list, throw exceptions
     def get_offer_by_offer_id(self, offer_id):
         for category_id in self.category_dictionary.keys():
             offer_to_return = self.category_dictionary[category_id].get_offer_by_offer_id(offer_id)
@@ -180,17 +190,39 @@ class CategoryController:
                 return offer_to_return
         raise Exception("Offer Does Not Exist")
 
-    def get_hot_deals(self, argument):
-        pass
+    # return regular list
+    def get_hot_deals(self):
+        return self.hot_deals.values()
 
+    #return the updated offer, throw exceptions
     def update_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
-        # call to update sub category
-        pass
+        offer_to_move = self.get_offer_by_offer_id(offer_id)
+        self.is_category_exist(new_category_id)
+        if not self.category_dictionary[new_category_id].is_exist_sub_category(new_sub_category_id):
+            raise Exception("No Such Sub Category")
+        #removing the offer from the old category
+        self.category_dictionary.pop(offer_to_move.offer_id, None)
+        # adding the offer to the new sub category
+        self.category_dictionary[new_category_id] = offer_to_move
 
-    def update_sub_category_for_offer(self, argument):
-        pass
+        offer_to_move.set_category_id(new_category_id)
+        offer_to_move.set_sub_category_id(new_category_id)
+        return offer_to_move
 
-#check if possible to replace 3 functions with one generic function
+
+
+        self.update_sub_category_for_offer(offer_id, new_sub_category_id)
+
+
+    #return the updated offer, throw exceptions
+
+    def update_sub_category_for_offer(self, offer_id, new_sub_category_id):
+        offer_to_move = self.get_offer_by_offer_id(offer_id)
+        self.category_dictionary[offer_to_move.category_id].update_sub_category_for_offer(offer_id, new_sub_category_id)
+
+        offer_to_move.set_sub_category_id(new_category_id)
+        return offer_to_move
+
 
 
 

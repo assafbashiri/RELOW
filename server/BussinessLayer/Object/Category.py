@@ -67,7 +67,7 @@ class Category:
         ans = None
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_product_name(product_name)
-            if not curr_sub_category_offers is None:
+            if curr_sub_category_offers is not None:
                 ans.extend(curr_sub_category_offers)
         return ans
 
@@ -75,7 +75,7 @@ class Category:
         ans = None
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_company_name(company_name)
-            if not curr_sub_category_offers is None:
+            if curr_sub_category_offers is not None:
                 ans.extend(curr_sub_category_offers)
         return ans
 
@@ -94,7 +94,15 @@ class Category:
                 return offer_to_return
         return None
 
+    def update_category_for_offer(self, offer_to_move, new_category_id, new_sub_category_id):
+        return  7
 
+    def update_sub_category_for_offer(self, offer_to_move, new_sub_category_id):
+        #already checked if new sub category exist
+        if new_sub_category_id not in self.sub_categories_dictionary.keys():
+            raise Exception("No Such Sub Category")
+        self.sub_categories_dictionary[offer_to_move.sub_category_id].remove_offer_for_update_sub_category(offer_to_move.offer_id)
+        self.sub_categories_dictionary[new_sub_category_id].add_offer_for_update_sub_category(offer_to_move)
 
 
 

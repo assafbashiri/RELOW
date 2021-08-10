@@ -3,7 +3,7 @@ from BussinessLayer.Utils import OfferStatus
 from datetime import date
 class SubCategory:
     def __init__(self, name, id, father_category_id):
-        self.name=name
+        self.name = name
         self.offers_dictionary = {}
         self.id = id
         self.father_category_id = father_category_id
@@ -30,29 +30,26 @@ class SubCategory:
 
     def get_offers_by_product_name(self, product_name):
         ans = None
-        for offer_id in self.offers_dictionary:
-            all_offers = self.offers_dictionary[offer_id]
-            for curr_offer in all_offers:
-                if curr_offer.product.name == product_name:
-                    ans.add(curr_offer)
+        for offer_id in self.offers_dictionary.keys():
+            curr_offer = self.offers_dictionary[offer_id]
+            if curr_offer.product.name == product_name:
+                ans.add(curr_offer)
         return ans
 
     def get_offers_by_company_name(self, company_name):
         ans = None
-        for offer_id in self.offers_dictionary:
-            all_offers = self.offers_dictionary[offer_id]
-            for curr_offer in all_offers:
-                if curr_offer.product.company == company_name:
-                    ans.add(curr_offer)
+        for offer_id in self.offers_dictionary.keys():
+            curr_offer = self.offers_dictionary[offer_id]
+            if curr_offer.product.company_name == company_name:
+                ans.add(curr_offer)
         return ans
 
     def get_offers_by_status(self, status):
         ans = None
-        for offer_id in self.offers_dictionary:
-            all_offers = self.offers_dictionary[offer_id]
-            for curr_offer in all_offers:
-                if curr_offer.status == status:
-                    ans.add(curr_offer)
+        for offer_id in self.offers_dictionary.keys():
+            curr_offer = self.offers_dictionary[offer_id]
+            if curr_offer.product.status == status:
+                ans.add(curr_offer)
         return ans
 
 
@@ -65,3 +62,11 @@ class SubCategory:
         if offer_id in self.offers_dictionary:
             return self.offers_dictionary[offer_id]
         return None
+
+    def remove_offer_for_update_sub_category(self, offer_id):
+        self.offers_dictionary.pop(offer_id, None)
+
+
+    def add_offer_for_update_sub_category(self, offer_to_add):
+        #have to check if the offer already exist
+        self.offers_dictionary[offer_to_add.offer_id] = offer_to_add

@@ -51,3 +51,9 @@ class Offer:
 
     def set_current_buyers(self, current_buyers):
         self.current_buyers = current_buyers
+
+    def set_category_id(self,new_category_id):
+        self.category_id = new_category_id
+
+    def set_sub_category_id(self,new_sub_category_id):
+        self.sub_category_id = new_sub_category_id
