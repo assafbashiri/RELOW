@@ -1,14 +1,19 @@
 from BussinessLayer.Controllers.UserController import UserController
 from BussinessLayer.Controllers.CategoryController import CategoryController
-import Response
-
+from Response import Response
+from Service.Object.UserService import UserService
+from Service.Object.CategoryService import CategoryService
+from Service.Object.StepService import StepService
+from Service.Object.SubCategoryService import SubCategoryService
+from Service.Object.OfferService import OfferService
+from Service.Object.ProductService import ProductService
 class Protocol:
 
     def __init__(self, conn):
         self.conn = conn
         self.user = None
 
-        self.category_controller = CategoryController.getInstance()
+        self. category_controller = CategoryController.getInstance()
         self.user_controller = UserController.getInstance()
         self.switcher =  {1: self.register,
                           2: self.unregister,
@@ -77,83 +82,91 @@ class Protocol:
     # -------------------------------------------------BASIC------------------------------------------------------------
 
     def unregister(self, argument): #user_id
-        # try:
-        response = self.user_controller.unregister(argument['user_id'])
-        # except Exception as e:
-        #     out = Response.Response(None,str(e), False)
-        #     return out
-        # out = Response.Response(response, , True)
-        return response
+        try:
+            self.user_controller.unregister(argument['user_id'])
+            return Response(None, 'Unregistered Successfully', True)
+        except Exception as e:
+            return Response(None,str(e), False)
+
 
 
     def register(self, argument): #first_name, last_name , username , email , password, gender, date of birth
-        response = self.user_controller.register(
-                                      argument['first_name'],
-                                      argument['last_name'],
-                                      argument['user_name'],
-                                      argument['email'],
-                                      argument['password'],
-                                      argument['birth_date'],
-                                      argument['gender'])
-        print("in register in protocol step 2")
-        return response
+        try:
+            user = self.user_controller.register(
+                                          argument['first_name'],
+                                          argument['last_name'],
+                                          argument['user_name'],
+                                          argument['email'],
+                                          argument['password'],
+                                          argument['birth_date'],
+                                          argument['gender'])
+            return Response(user, "Registered Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def log_in(self, argument): #user_name , password
-        user = self.user_controller.log_in(argument['user_name'], argument['password'])
-        self.user = user
-        return 1
+        try:
+            user = self.user_controller.log_in(argument['user_name'], argument['password'])
+            self.user = user
+            return Response(UserService(user), "Log-In Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def logout(self, argument): #user_id
-        response = UserController.logout(argument['user_id'])
-        return response
+        try:
+            self.user_controller.logout(argument['user_id'])
+            return Response(None, "Log-Out Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
 
 # -------------------------------------------------ADD------------------------------------------------------------------
     def add_active_buy_offer(self, argument):
-        offer = self.categoryController.get_offer_by_offer_id(argument['offer_id'])
-        response = self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
-        if response.get_response != 'ACK':
-            return response
-        else:
-            response = self.category_controller.add_buyer_to_offer(offer,
-                                                                   self.user.user_id,
-                                                                   argument['quantity'],
-                                                                   argument['step'])
-        return response
+        try:
+            offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
+            self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
+            self.category_controller.add_buyer_to_offer(offer,
+                                                        self.user.user_id,
+                                                        argument['quantity'],
+                                                        argument['step'])
+            return Response(OfferService(offer), "Joined To Offer Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def add_active_sell_offer(self, argument):
-        response = self.category_controller.add_offer(argument['user_id'],
-                                                      argument['product'],
-                                                      argument['category_id'],
-                                                      argument['sub_category_id'],
-                                                      argument['status'],
-                                                      argument['steps'],
-                                                      argument['end_date'],
-                                                      0)
-        if response.get_response() != 'ACK':
-            return response
-        else:
-            response = self.user_controller.add_active_sale_offer(response.get_data())
-            if response != 'ACK':
-                self.category_controller.remove_offer(argument['offer_id'], argument['category_id'],
-                                                      argument['sub_category_id'])
-        return response
-
-
+        try:
+            offer = self.category_controller.add_offer(argument['user_id'],
+                                                          argument['product'],
+                                                          argument['category_id'],
+                                                          argument['sub_category_id'],
+                                                          argument['status'],
+                                                          argument['steps'],
+                                                          argument['end_date'],
+                                                          0)
+            self.user_controller.add_active_sale_offer(offer)
+            return Response(None, "Offer Added Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def add_liked_offer(self, argument):
-        offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
-        response = self.user_controller.add_like_offer(self.user.user_id, offer)
-        return response
+        try:
+            offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
+            self.user_controller.add_like_offer(self.user.user_id, offer)
+            return Response(OfferService(offer), "Offer Added Successfully")
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def add_address_details(self, argument): #user_id city street zip code floor apt
-        response = self.user_controller.add_address_details(argument['user_id'],
-                                                            argument['city'],
-                                                            argument['street'],
-                                                            argument['zip_code'],
-                                                            argument['floor'],
-                                                            argument['apt'])
-        return response
+        try:
+            self.user_controller.add_address_details(argument['user_id'],
+                                                                argument['city'],
+                                                                argument['street'],
+                                                                argument['zip_code'],
+                                                                argument['floor'],
+                                                                argument['apt'])
+            return Response(None, "Address Added Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     # def update_city(argument): user_id *
     # def update_street(argument): user_id *
@@ -162,13 +175,16 @@ class Protocol:
     # def update_apt(argument): user_id *
 
     def add_payment_method(self, argument): # user_id , cc number, cc expire date, cvv, card_type, id
-        response = self.user_controller.add_payment_method(argument['user_id'],
-                                                           argument['credit_card_number'],
-                                                           argument['expire_date'],
-                                                           argument['cvv'],
-                                                           argument['card_type'],
-                                                           argument['id_number'])
-        return response
+        try:
+            self.user_controller.add_payment_method(argument['user_id'],
+                                                               argument['credit_card_number'],
+                                                               argument['expire_date'],
+                                                               argument['cvv'],
+                                                               argument['card_type'],
+                                                               argument['id_number'])
+            return Response(None, "Payment Adedd Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     # def update_card_number(argument): user_id *
     # def update_expire_date(argument): user_id *
@@ -178,59 +194,89 @@ class Protocol:
     # -------------------------------------------------REMOVE------------------------------------------------------------------
 
     def remove_liked_offer(self, argument):
-        response = self.user_controller.remove_liked_offer(self.user.user_id)
-        return response
+        try:
+            self.user_controller.remove_like_offer(self.user.user_id)
+            return Response(None, "Offer Removed")
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def remove_active_sell_offer(self, argument):
-        response = self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
-        if response.get_response() != 'ACK':
-            return response
-        else:
-            response = self.category_controller.remove_offer(argument['offer_id'], argument['category_id'], argument['sub_category_id'])
-        return response
+        try:
+            self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
+            offer_id = self.category_controller.remove_offer(argument['offer_id'],
+                                                             argument['category_id'],
+                                                             argument['sub_category_id'])
+            return Response(offer_id, "Offer Removed Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def remove_active_buy_offer(self, argument):
-        response = self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
-        if response.get_response != 'ACK':
-            return response
-        else:
-            response = self.category_controller.remove_buyer_from_offer(self.user.user_id, argument['offer_id'])
-        return response
+        try:
+            self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
+            self.category_controller.remove_buyer_from_offer(self.user.user_id, argument['offer_id'])
+            return Response(None, "Offer Removed Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
 # -------------------------------------------------UPDATE----------------------------------------------------------------
 
     def update_first_name(self, argument): #user_id first name
-        response = self.user_controller.update_first_name(argument['user_id'], argument['first_name'])
-        return response
+        try:
+            self.user_controller.update_first_name(argument['user_id'], argument['first_name'])
+            return Response(None, "First Name Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_last_name(self, argument):#user_id last name
-        response = self.user_controller.update_last_name(argument['user_id'], argument['last_name'])
-        return response
+        try:
+            self.user_controller.update_last_name(argument['user_id'], argument['last_name'])
+            return Response(None, "Last Name Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
-    def update_username(self, argument): #user_id username
-        response = self.user_controller.update_username(argument['user_id'], argument['user_name'])
-        return response
+    def update_user_name(self, argument): #user_id username
+        try:
+            self.user_controller.update_username(argument['user_id'], argument['user_name'])
+            return Response(None, "Username Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_email(self, argument): #user_id email
-        response = self.user_controller.update_email(argument['user_id'], argument['email'])
-        return response
+        try:
+            self.user_controller.update_email(argument['user_id'], argument['email'])
+            return Response(None, "Email Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_password(self, argument): #user_id old new
-        response = self.user_controller.update_password(argument['user_id'], argument['old_password'], argument['new_password'])
-        return response
+        try:
+            self.user_controller.update_password(argument['user_id'], argument['old_password'], argument['new_password'])
+            return Response(None, "Password Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_birth_date(self, argument): #user_id date of birth
-        response = self.user_controller.update_birth_date(argument['user_id'], argument['birth_date'])
-        return response
+        try:
+            self.user_controller.update_birth_date(argument['user_id'], argument['birth_date'])
+            return Response(None, "Birth Date Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_gender(self, argument): #user-id gender
-        response = self.user_controller.gender(argument['user_id'], argument['gender'])
-        return response
+        try:
+            self.user_controller.gender(argument['user_id'], argument['gender'])
+            return Response(None, "gender Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
 # -------------------------------------------------GET------------------------------------------------------------------
 
     def get_all_history_buy_offers(self, argument):
-        response = self.user_controller.get_all_history_buy_offer(self.user.user_id)
+        try:
+            lis  = []
+            offer_list = self.user_controller.get_all_history_buy_offer(self.user.user_id)
+            for offer in offer_list:
+                lis.append()
         return response
 
     def get_all_history_sell_offers(self, argument):
