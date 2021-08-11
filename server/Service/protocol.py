@@ -275,6 +275,7 @@ class Protocol:
 # -------------------------------------------------GET------------------------------------------------------------------
 
     def get_all_history_buy_offers(self, argument):
+
         try:
             lis  = []
             offer_list = self.user_controller.get_all_history_buy_offer(self.user.user_id)
@@ -282,6 +283,7 @@ class Protocol:
             #     lis.append()
         except Exception as e:
             return Response(None, str(e), False)
+
 
     def get_all_history_sell_offers(self, argument):
         response = self.user_controller.get_all_history_sell_offer(self.user.user_id)

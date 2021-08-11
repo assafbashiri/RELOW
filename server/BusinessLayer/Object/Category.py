@@ -51,20 +51,22 @@ class Category:
 
     def get_offers(self):
         all_category_offers = []
-        curr_sub_category_offers = None
+
+
+        curr_sub_category_offers = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers()
-            if not curr_sub_category_offers is None:
-                all_category_offers.append(curr_sub_category_offers)
+            if curr_sub_category_offers is not None:
+                all_category_offers.extend(curr_sub_category_offers)
 
         return all_category_offers
 
     def get_offers_by_sub_category(self, sub_category_id):
         #already checked if sub category exist
-        return self.sub_categories_dictionary[sub_category_id].get_offers()
-
+        s= self.sub_categories_dictionary[sub_category_id].get_offers()
+        return s
     def get_offers_by_product_name(self, product_name):
-        ans = None
+        ans = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_product_name(product_name)
             if curr_sub_category_offers is not None:
@@ -72,7 +74,7 @@ class Category:
         return ans
 
     def get_offers_by_company_name(self, company_name):
-        ans = None
+        ans = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_company_name(company_name)
             if curr_sub_category_offers is not None:
@@ -80,15 +82,15 @@ class Category:
         return ans
 
     def get_offers_by_status(self, status):
-        ans = None
+        ans = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_status(status)
-            if not curr_sub_category_offers is None:
+            if  curr_sub_category_offers is not None:
                 ans.extend(curr_sub_category_offers)
         return ans
 
     def get_offer_by_offer_id(self, offer_id):
-        for sub_categoty_id in self.sub_categories_dictionary.keys():
+        for sub_category_id in self.sub_categories_dictionary.keys():
             offer_to_return = self.sub_categories_dictionary[sub_categoty_id].get_offer_by_offer_id(offer_id)
             if offer_to_return is not None:
                 return offer_to_return
