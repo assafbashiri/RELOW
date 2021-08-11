@@ -1,6 +1,6 @@
 
 
-from BussinessLayer.Object import SubCategory
+from BusinessLayer.Object import SubCategory
 class Category:
     def __init__(self, name, id):
         self.name = name
@@ -52,10 +52,10 @@ class Category:
     def get_offers(self):
         all_category_offers = None
         curr_sub_category_offers = None
-        for sub_category_id in self.sub_categories_dictionary.keys:
+        for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers()
             if not curr_sub_category_offers is None:
-                all_category_offers.extend(curr_sub_category_offers)
+                all_category_offers.append(curr_sub_category_offers)
 
         return all_category_offers
 

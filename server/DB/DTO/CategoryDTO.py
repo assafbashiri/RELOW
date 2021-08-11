@@ -1,4 +1,4 @@
-from BussinessLayer.Object import Category
+from BusinessLayer.Object import Category
 class CategoryDTO:
     def __init__(self, id, name):
         self.id = id

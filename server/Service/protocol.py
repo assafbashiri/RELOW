@@ -1,5 +1,5 @@
-from BussinessLayer.Controllers.UserController import UserController
-from BussinessLayer.Controllers.CategoryController import CategoryController
+from BusinessLayer.Controllers.UserController import UserController
+from BusinessLayer.Controllers.CategoryController import CategoryController
 import Response
 
 class Protocol:

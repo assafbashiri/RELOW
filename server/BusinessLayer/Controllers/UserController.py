@@ -1,5 +1,5 @@
-from BussinessLayer.Utils import CheckValidity
-from BussinessLayer.Object.User import User
+from BusinessLayer.Utils import CheckValidity
+from BusinessLayer.Object.User import User
 
 from DB.DAO.OfferDAO import OfferDAO
 from DB.DAO.ProductDAO import ProductDAO

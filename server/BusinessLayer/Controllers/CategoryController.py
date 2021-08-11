@@ -1,10 +1,10 @@
-from BussinessLayer.Object import Category
+from BusinessLayer.Object import Category
 from DB.DTO import CategoryDTO
 from DB.DTO import SubCategotyDTO
 from DB.DAO import CategoriesDAO
 from DB.DAO import SubCategoriesDAO
-from BussinessLayer.Object import Product
-from BussinessLayer.Object import Purchase
+from BusinessLayer.Object import Product
+from BusinessLayer.Object import Purchase
 class CategoryController:
     __instance = None
 
@@ -59,6 +59,10 @@ class CategoryController:
             raise Exception("Sub Category already exist")
         # adding to DB (maybe do it in sub category)
         self.sub_categoriesDAO.insert(SubCategotyDTO.SubCategoryDTO(sub_category_to_add))
+
+    def add_sub_category_by_name(self, name, category_name):
+        category = self.get_category_by_name(category_name)
+        self.add_sub_category(name, category.id)
 
     # no return, throw exceptions
     def remove_sub_category(self, sub_category_id, category_id ):
@@ -220,7 +224,7 @@ class CategoryController:
         offer_to_move = self.get_offer_by_offer_id(offer_id)
         self.category_dictionary[offer_to_move.category_id].update_sub_category_for_offer(offer_id, new_sub_category_id)
 
-        offer_to_move.set_sub_category_id(new_category_id)
+        offer_to_move.set_sub_category_id(new_sub_category_id)
         return offer_to_move
 
 
@@ -234,13 +238,19 @@ class CategoryController:
 
 #-------------------------------------------------privatemethods ------------------------------------------
     def is_category_exist(self, category_id):
-        if category_id in self.category_dictionary:
+        if category_id in self.category_dictionary.keys():
             return True
         return False
 
     def check_category_exist(self, category_id):
-        if category_id not in self.category_dictionary:
+        if category_id not in self.category_dictionary.keys():
             raise Exception("Category Does Not Exist")
+
+    def get_category_by_name(self, category_name):
+        for category_id in self.category_dictionary.keys():
+            if self.category_dictionary[category_id].name == category_name:
+                return self.category_dictionary[category_id]
+        raise Exception("Category Does Not Exist")
 
     def check_category_exist_by_name(self, name):
         for id in self.category_dictionary.keys():

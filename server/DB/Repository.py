@@ -25,7 +25,7 @@ class repository():
 
             CREATE TABLE IF NOT EXISTS users_extra_details (
                 user_id	INTEGER NOT NULL,
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS users_address (
@@ -35,7 +35,7 @@ class repository():
                 zip_code INTEGER,
                 floor INTEGER,
                 apt TEXT,
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS users_payment (
@@ -45,14 +45,14 @@ class repository():
                 expire_date DATETIME,
                 cvv INTEGER,
                 card_type TEXT,
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS liked_offers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS offers_main (
@@ -64,16 +64,16 @@ class repository():
                 current_step INTEGER NOT NULL,
                 category_id INTEGER NOT NULL,
                 sub_category_id INTEGER NOT NULL,
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
-                FOREIGN KEY(category_id) REFERENCES category(category_id)
-                FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id)
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
+                FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
+                FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS price_per_step (
                 offer_id INTEGER PRIMARY KEY  UNIQUE,
                 step INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS products (
@@ -93,7 +93,7 @@ class repository():
                 photo8 BOLB,
                 PHOTO9 BOLB,
                 photo10 BOLB,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS category (
@@ -113,8 +113,8 @@ class repository():
                 user_id INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS buyers_in_offer_total (
@@ -122,8 +122,8 @@ class repository():
                 user_id INTEGER NOT NULL,
                 total_quantity INTEGER NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS history_buyers (
@@ -131,8 +131,8 @@ class repository():
                 offer_id INTEGER NOT NULL,
                 status TEXT NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE 
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS history_sellers (
@@ -140,14 +140,15 @@ class repository():
                 offer_id INTEGER NOT NULL,
                 status TEXT NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id)
-                FOREIGN KEY(user_id) REFERENCES users_submission(user_id)
+                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
         """)
 
     def delete_all_db(self):
         self._conn.execute("""Delete FROM users_submission""")
         self._conn.execute("""Delete FROM users_extra_details""")
+        self._conn.execute("""Delete FROM users_address""")
         self._conn.execute("""Delete FROM users_payment""")
         self._conn.execute("""Delete FROM saved_offers""")
         self._conn.execute("""Delete FROM offer_main""")

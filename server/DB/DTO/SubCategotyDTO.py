@@ -1,4 +1,4 @@
-from BussinessLayer.Object import SubCategory
+from BusinessLayer.Object import SubCategory
 class SubCategoryDTO:
     def __init__(self, id, name, father_category_id):
         self.id = id

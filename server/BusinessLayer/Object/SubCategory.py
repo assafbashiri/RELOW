@@ -1,5 +1,5 @@
-from BussinessLayer.Object import Offer
-from BussinessLayer.Utils import OfferStatus
+from BusinessLayer.Object import Offer
+from BusinessLayer.Utils import OfferStatus
 from datetime import date
 class SubCategory:
     def __init__(self, name, id, father_category_id):

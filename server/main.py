@@ -4,15 +4,15 @@ import threading
 from _thread import *
 import pickle
 import datetime
-from BussinessLayer.Object.Product import Product
+from BusinessLayer.Object.Product import Product
 from Service.protocol import Protocol
 from DB.Repository import repository
-from BussinessLayer.Controllers import CategoryController
-from BussinessLayer.Controllers import UserController
-from BussinessLayer.Utils import OfferStatus
+from BusinessLayer.Controllers import CategoryController
+from BusinessLayer.Controllers import UserController
+from BusinessLayer.Utils import OfferStatus
 
-from BussinessLayer.Object.Offer import Offer
-from BussinessLayer.Object.Product import Product
+from BusinessLayer.Object.Offer import Offer
+from BusinessLayer.Object.Product import Product
 
 
 class Struct(object):
@@ -38,6 +38,7 @@ def network():
 
     print('Waitiing for a Connection..')
     ServerSocket.listen(5)
+
 
     def threaded_client(connection):
         pro = Protocol(conn)
@@ -77,12 +78,27 @@ if __name__ == '__main__':
     # ------- check -------------------------------------------------
     repository.delete_all_db()
 
-    c.add_category("sport")
-    c.add_sub_category("soccer", 0)
+    bdate = datetime.datetime(1996, 12, 15)
+    c.add_category("sport")#0
+    c.add_category("cars")#1
+    c.add_sub_category_by_name("soccer", "sport")
+    c.add_sub_category_by_name("bmw", "cars")
+    u.register("t1","n1","tn1","tomnisim1@gmail.com", 123, bdate, "male")
+    u.register("t2","n2","tn2","tomnisim2@gmail.com", 123, bdate, "male")
+    u.register("t3","n3","tn3","tomnisim3@gmail.com", 123, bdate, "male")
 
-    product = Product("shorts", "fila", "blue", "5/6", "nice shorts", "nophoto")
+    #product1 = Product("shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto")
+    #product2 = Product("shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto")
+    #product3 = Product("shorts3", "fila", "blue", "5/6", "nice shorts", "nophoto")
+
     date = datetime.datetime(2022, 5, 17)
-    c.add_offer(1, product, 0, 0,  {}, date)
+    c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {}, date)
+    c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {}, date)
+    c.add_offer(2, "shorts3", "fila", "blue", "5/6", "nice shorts", "nophoto", 1, 1,  {}, date)
+    res_to_check = c.get_offers_by_category(0)
+
+
+
     c.remove_sub_category(0, 0)
     c.remove_category(0)
     # ------- check -------------------------------------------------
