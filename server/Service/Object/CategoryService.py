@@ -1,4 +1,4 @@
-from BussinessLayer.Object import *
+from BusinessLayer.Object import *
 
 class CategoryService:
     def __init__(self, name, id, con):
