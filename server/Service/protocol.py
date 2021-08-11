@@ -38,7 +38,7 @@ class Protocol:
                          18: self.get_all_active_sell_offers,
                          19: self.get_active_buy_offer,
                          20: self.get_active_sell_offer,
-                         21: self.get_liked_offers,
+                         21: self.get_liked_offer,
                          22: self.get_all_liked_offers,
                          23: self.add_active_buy_offer,
                          24: self.add_active_sell_offer,
@@ -275,14 +275,15 @@ class Protocol:
 # -------------------------------------------------GET------------------------------------------------------------------
 
     def get_all_history_buy_offers(self, argument):
-        pass
-        #try:
-          #  lis  = []
-            #offer_list = self.user_controller.get_all_history_buy_offer(self.user.user_id)
-            #for offer in offer_list:
 
+        try:
+            lis  = []
+            offer_list = self.user_controller.get_all_history_buy_offer(self.user.user_id)
+            # for offer in offer_list:
+            #     lis.append()
+        except Exception as e:
+            return Response(None, str(e), False)
 
-        #return response
 
     def get_all_history_sell_offers(self, argument):
         response = self.user_controller.get_all_history_sell_offer(self.user.user_id)
@@ -295,40 +296,73 @@ class Protocol:
         pass
 
     def get_all_active_buy_offers(self, argument):
-        response = self.user_controller.get_all_buy_offer(self.user.user_id)
-        return response
+        try:
+            offer_buy_list = self.user_controller.get_all_buy_offer(self.user.user_id)
+            lis = []
+            for offer in offer_buy_list:
+                lis.append(OfferService(offer))
+            return Response(lis, "All Active Buy Offers", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_all_active_sell_offers(self, argument):
-        response = self.user_controller.get_all_sell_offer(self.user.user_id)
-        return response
+        try:
+            offer_sell_list = self.user_controller.get_all_sell_offer(self.user.user_id)
+            lis = []
+            for offer in offer_sell_list:
+                lis.append(OfferService(offer))
+            return Response(lis, "All Active Sell Offers", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_active_buy_offer(self, argument):
-        response = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
-        return response
+        try:
+            offer = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
+            return Response(OfferService(offer), "Got Offer Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_active_sell_offer(self, argument):
-        response = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
-        return response
+        try:
+            offer = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
+            return Response(OfferService(offer), "Got Offer Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
-    def get_liked_offers(self, argument):
-        response = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
-        return response
+    def get_liked_offer(self, argument):
+        try:
+            offer = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
+            return Response(OfferService(offer), "Update Sub-Category Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_all_liked_offers(self, argument):
-        response = self.user_controller.get_all_liked_offer(self.user.user_id)
-        return response
+        try:
+            liked_offers_list = self.user_controller.get_all_liked_offer(self.user.user_id)
+            lis = []
+            for offer in liked_offers_list:
+                lis.append(OfferService(offer))
+            return Response(lis, "All Liked Sell Offers", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
 # --------------------------------------------------categoryController-------------------------------------------------------
 
 # -----------------------------------------------------ADD-------------------------------------------------------------------
 
     def add_category(self, argument):
-        response = self.category_controller.add_category(argument['name'])
-        return response
+        try:
+            self.category_controller.add_category(argument['name'])
+            return Response(None, "Category Added Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def add_sub_category(self, argument):
-        response = self.category_controller.add_sub_category(argument['name'], argument['category_id'])
-        return response
+        try:
+            self.category_controller.add_sub_category(argument['name'], argument['category_id'])
+            return Response(None, "Sub-Category Added Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def add_offer(self, argument): #implemented in user_controller
         pass
@@ -374,82 +408,136 @@ class Protocol:
         return response
 
     def update_sub_category_name(self, argument):
-        response = self.category_controller.update_sub_category_name(argument['category_id'],
+        try:
+            self.category_controller.update_sub_category_name(argument['category_id'],
                                                                      argument['sub_category_id'],
                                                                      argument['name'])
-        return response
+            return Response(None, "Update Sub-Category Name Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     #def update_current_step automatic
     
     def update_category_for_offer(self, argument):
-        response = self.category_controller(argument['offer_id'],
+        try:
+            response = self.category_controller(argument['offer_id'],
                                             argument['category_id'],
                                             argument['sub_category_id'])
-        return response
+            return Response(None, "Update Category Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_sub_category_for_offer(self, argument):
-        response = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
+        try:
+            offer = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
                                                                           argument['sub_category_id'])
-        return response
+            return Response(OfferService(offer), "Update Sub-Category For Offer Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     #def update_status automatic
 
     def update_end_date(self, argument):
-        response = self.user_controller.update_end_date(argument['offer_id'], argument['end_date'])
-        return response
+        try:
+            self.user_controller.update_end_date(argument['offer_id'], argument['end_date'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
 
     def update_start_date(self, argument):
-        response = self.user_controller.update_start_date(argument['offer_id'], argument['start_date'])
-        return response
+        try:
+            self.user_controller.update_start_date(argument['offer_id'], argument['start_date'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_step(self, argument):
-        response = self.user_controller.update_step(argument['offer_id'], argument['step'])
-        return response
+        try:
+            self.user_controller.update_step(argument['offer_id'], argument['step'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_product_name(self, argument):
-        response = self.user_controller.update_product_name(argument['offer_id'], argument['name'])
-        return response
+        try:
+            self.user_controller.update_product_name(argument['offer_id'], argument['name'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_product_company(self, argument):
-        response = self.user_controller.update_product_company(argument['offer_id'], argument['company'])
-        return response
+        try:
+            self.user_controller.update_product_company(argument['offer_id'], argument['company'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_product_color(self, argument):
-        response = self.user_controller.update_product_color(argument['offer_id'], argument['color'])
-        return response
+        try:
+            self.user_controller.update_product_color(argument['offer_id'], argument['color'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_product_size(self, argument):
-        response = self.user_controller.update_size(argument['offer_id'], argument['size'])
-        return response
+        try:
+            self.user_controller.update_size(argument['offer_id'], argument['size'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def update_product_description(self, argument):
-        response = self.user_controller.update_product_description(argument['offer_id'], argument['description'])
-        return response
+        try:
+            self.user_controller.update_product_description(argument['offer_id'], argument['description'])
+            return Response(None, "Update Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     # -------------------------------------------------------GET---------------------------------------------------------------
 
     def get_offers_by_category(self, argument):
-        response = self.category_controller.get_offers_by_category(argument['category_id'])
-        return response
+        try:
+            offers_list = self.category_controller.get_offers_by_category(argument['category_id'])
+            return Response(offers_list, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_offers_by_subcategory(self, argument):
-        response = self.category_controller.get_offers_by_sub_category(argument['category_id'], argument['sub_categoru_id'])
-        return response
+        try:
+            offers_list = self.category_controller.get_offers_by_sub_category(argument['category_id'], argument['sub_category_id'])
+            return Response(offers_list, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
 
     def get_offers_by_product_name(self, argument):
-        response = self.category_controller.get_offers_by_product_name(argument['name'])
-        return response
+        try:
+            offers_list = self.category_controller.get_offers_by_product_name(argument['name'])
+            return Response(offers_list, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_offers_by_status(self, argument):
-        response = self.category_controller.get_offers_by_status(argument['status'])
+        try:
+            offers_list = self.category_controller.get_offers_by_status(argument['status'])
+            return Response(offers_list, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_hot_deals(self, argument):
-        response = self.category_controller.get_hot_deals()
-        return response
+        try:
+            offers_list = self.category_controller.get_hot_deals()
+            return Response(offers_list, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def remove_to_hot_deals(self, argument):
-        response = self.category_controller.remove_from_hot_deals(argument['offer_id'])
-        return response
+        try:
+            self.category_controller.remove_from_hot_deals(argument['offer_id'])
+            return Response(None, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def handling(self, argument):
         print("in protocol handling step 1")
