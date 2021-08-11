@@ -13,6 +13,7 @@ from BusinessLayer.Utils import OfferStatus
 
 from BusinessLayer.Object.Offer import Offer
 from BusinessLayer.Object.Product import Product
+from server.BusinessLayer.Object.Step import Step
 
 
 class Struct(object):
@@ -87,16 +88,24 @@ if __name__ == '__main__':
     u.register("t2","n2","tn2","tomnisim2@gmail.com", 123, bdate, "male")
     u.register("t3","n3","tn3","tomnisim3@gmail.com", 123, bdate, "male")
 
-    #product1 = Product("shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto")
+    product1 = Product("shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto")
     #product2 = Product("shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto")
     #product3 = Product("shorts3", "fila", "blue", "5/6", "nice shorts", "nophoto")
 
     date = datetime.datetime(2022, 5, 17)
-    c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {}, date)
-    c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {}, date)
+    step1 = Step(50,20)
+    step2 = Step(100,15)
+    step3 = Step(150,10)
+    of1 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {"1": step1, 2: step2, 3: step3}, "19.04.2022")
+    c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {"1": step1, 2: step2, 3: step3}, date)
     c.add_offer(2, "shorts3", "fila", "blue", "5/6", "nice shorts", "nophoto", 1, 1,  {}, date)
+    u.add_active_sale_offer(of1)
+    u.update_status(1, 0, 'a')
+    u.add_active_buy_offer(3,of1,51,1)
+    u.add_active_buy_offer(2,of1,60,2)
     res_to_check1 = c.get_offers_by_category(0)
     res_to_check2 = c.get_offers_by_sub_category(1,1)
+
 
 
     c.remove_sub_category(0, 0)

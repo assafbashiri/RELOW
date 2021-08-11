@@ -1,6 +1,7 @@
 
 class Offer:
-    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, price_per_step, amount_per_step, start_date, end_date):
+
+    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date):
         self.offer_id = next_id
         self.current_step = 1
         self.user_id = user_id #seller
@@ -8,10 +9,11 @@ class Offer:
         self.category_id = category_id
         self.sub_category_id = sub_category_id
         self.status = status
-        self.steps = {} # dictionary <int(numOfStep), Step)
+        self.steps = steps #
         self.start_date = start_date
         self.end_date = end_date
         self.current_buyers = {} # with buyer_id, quantity and step
+        self.total_products = 0
 
     def add_buyer(self, user_id, purchase):
         self.current_buyers[user_id] = purchase
@@ -57,3 +59,24 @@ class Offer:
 
     def set_sub_category_id(self,new_sub_category_id):
         self.sub_category_id = new_sub_category_id
+
+    def get_offer_id(self):
+        return self.offer_id
+
+    def get_current_step(self):
+        return self.current_step
+
+    def update_curr_step(self):
+        ans = 0
+        for user_id in self.current_buyers.keys():
+            # sum of all quantity of buyers from curr step and less
+            curr_purchase = self.current_buyers[user_id]
+            if curr_purchase.get_step() <= self.current_step:
+                ans += curr_purchase.get_quantity()
+        self.total_products = ans
+        for step in self.steps.keys():
+            if self.total_products < self.steps[step].products_amount:
+                self.current_step = step
+                break
+
+
