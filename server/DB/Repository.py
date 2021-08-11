@@ -72,7 +72,7 @@ class repository():
             );
 
             CREATE TABLE IF NOT EXISTS steps_per_offer (
-	            offer_id INTEGER NOT NULL UNIQUE,
+	            offer_id INTEGER NOT NULL,
 	            step INTEGER NOT NULL,
 	            quantity INTEGER NOT NULL,
 	            price INTEGER NOT NULL,
@@ -112,7 +112,7 @@ class repository():
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
             );
 
-            CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer (
+            CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer(
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
@@ -140,15 +140,7 @@ class repository():
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
             
-            CREATE TRIGGER IF NOT EXISTS calculate_total_products 
-            AFTER INSERT  
-            ON buyers_in_offer_per_buyer
-            BEGIN
-            update offers_main set total_products = (SELECT SUM(quantity) FROM buyers_in_offer_per_buyer
-
-            WHERE buyers_in_offer_per_buyer.offer_id = offers_main.offer_id) 
-            where buyers_in_offer_per_buyer.offer_id = offers_main.offer_id;
-            END;
+        
             """)
 
     def delete_all_db(self):

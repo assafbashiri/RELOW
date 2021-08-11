@@ -4,10 +4,10 @@ class OfferDAO:
         self._conn = conn
 
     def insert(self, offerDTO, productDTO):
-        self._conn.execute("""INSERT INTO offers_main (offer_id,current_step,user_id,category_id,sub_category_id,status,start_date, end_date, total_products)
-         VALUES (?,?,?,?,?,?,?,?,?)""",
+        self._conn.execute("""INSERT INTO offers_main (offer_id,current_step,user_id,category_id,sub_category_id,status,start_date,end_date,total_products,hot_deals)
+         VALUES (?,?,?,?,?,?,?,?,?,?)""",
                            [offerDTO.offer_id, offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
-                            "aa", offerDTO.start_date, "aaaa", offerDTO.total_products])
+                            "1567", offerDTO.start_date, offerDTO.end_date, offerDTO.total_products,0])
         self._conn.commit()
         self._conn.execute(
             """INSERT INTO products (offer_id,name, company, color, size, description) VALUES (?,?,?,?,?,?)""",
