@@ -88,28 +88,28 @@ class UserController:
         self.users_dao.add_address(user_id, city, street, zip_code, floor, apartmentNumber)
         # update users_submission
 
-    def updateFirstname(self, user_id, firstname):
+    def update_first_name(self, user_id, firstname):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_first_name(firstname)
         self.users_dao.updateFirstname(user_id, firstname)
 
-    def updateLastname(self, user_id, lastname):
+    def update_last_name(self, user_id, lastname):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_last_name(lastname)
         self.users_dao.updateLastname(user_id, lastname)
 
-    def updateUsername(self, user_id, username):
+    def update_user_name(self, user_id, username):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_user_name(username)
         self.users_dao.updateUsername(user_id, username)
 
-    def updatePassword(self, user_id, old_password, new_password):
+    def update_password(self, user_id, old_password, new_password):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
@@ -118,91 +118,91 @@ class UserController:
         temp.set_password(new_password)
         self.users_dao.updatePassword(user_id, new_password)
 
-    def updateEmail(self, user_id, new_email):
+    def update_email(self, user_id, new_email):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_email(new_email)
         self.users_dao.updateEmail(user_id, new_email)
 
-    def updateBirthdate(self, user_id, new_birthdate):
+    def update_birth_date(self, user_id, new_birthdate):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_date_of_birth(new_birthdate)
         self.users_dao.updateBirthdate(user_id, new_birthdate)
 
-    def updateGender(self, user_id, new_gender):
+    def update_gender(self, user_id, new_gender):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_gender(new_gender)
         self.users_dao.updateGender(user_id, new_gender)
 
-    def updateCity(self, user_id, new_city):
+    def update_city(self, user_id, new_city):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_city(new_city)
         self.users_dao.updateCity(user_id, new_city)
 
-    def updateStreet(self, user_id, new_street):
+    def update_street(self, user_id, new_street):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_street(new_street)
         self.users_dao.updateStreet(user_id, new_street)
 
-    def updateZipcode(self, user_id, new_zip_code):
+    def update_zip_code(self, user_id, new_zip_code):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_zip_code(new_zip_code)
         self.users_dao.updateZipcode(user_id, new_zip_code)
 
-    def updateFloor(self, user_id, new_floor):
+    def update_floor(self, user_id, new_floor):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_floor(new_floor)
         self.users_dao.updateFloor(user_id, new_floor)
 
-    def updateApartment(self, user_id, new_apartmentNumber):
+    def update_apartment(self, user_id, new_apartmentNumber):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_apartment_number(new_apartmentNumber)
         self.users_dao.updateApartmentNumber(user_id, new_apartmentNumber)
 
-    def updateCardNumber(self, user_id, new_card_number):
+    def update_card_number(self, user_id, new_card_number):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_card_number(new_card_number)
         self.users_dao.updateCardNumber(user_id, new_card_number)
 
-    def updateExpDate(self, user_id, new_expire_date):
+    def update_exp_date(self, user_id, new_expire_date):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_exp_date(new_expire_date)
         self.users_dao.updateExpireDate(user_id, new_expire_date)
 
-    def updateCvv(self, user_id, new_cvv):
+    def update_cvv(self, user_id, new_cvv):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_cvv(new_cvv)
         self.users_dao.updateCvv(user_id, new_cvv)
 
-    def updateCardType(self, user_id, new_card_type):
+    def update_card_type(self, user_id, new_card_type):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)
         temp.set_card_type(new_card_type)
         self.users_dao.updateCard_type(user_id, new_card_type)
 
-    def updateId(self, user_id, new_id):
+    def update_id(self, user_id, new_id):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         temp = self.usersDictionary.get(user_id)

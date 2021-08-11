@@ -17,6 +17,24 @@ class OfferService:
         self.end_date = end_date
         self.current_buyers = current_buyers
 
+    def __init__(self, business_offer):
+        self.offer_id = business_offer.get_offer()
+        self.current_step = business_offer.get_current_step
+        self.user_id = business_offer.gey_offer_id()  # seller
+        self.product = business_offer.get_product
+        self.category_id = business_offer.get_category_id()
+        self.subCategory_id = business_offer.get_sub_category_id()
+        self.status = business_offer.get_status()
+
+        # self.price_per_step = price_per_step
+        # self.amount_per_step = amount_per_step
+        self.steps = business_offer.get_steps()  # dictionary <int(numOfStep), Step)
+
+        self.start_date = business_offer.get_start_date()
+        self.end_date = business_offer.get_end_date()
+        self.current_buyers = business_offer.get_current_buyers()
+
+
 # --------------------------------------------GETTERS--------------------------------------------------------------
     def get_offer_id(self):
         return self.offer_id
