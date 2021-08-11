@@ -95,16 +95,16 @@ if __name__ == '__main__':
     c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {}, date)
     c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {}, date)
     c.add_offer(2, "shorts3", "fila", "blue", "5/6", "nice shorts", "nophoto", 1, 1,  {}, date)
-    res_to_check = c.get_offers_by_category(0)
-
+    res_to_check1 = c.get_offers_by_category(0)
+    res_to_check2 = c.get_offers_by_sub_category(1,1)
 
 
     c.remove_sub_category(0, 0)
     c.remove_category(0)
     # ------- check -------------------------------------------------
     print("tom")
-    t1 = threading.Thread(target=network)
-    t1.start()
+    #t1 = threading.Thread(target=network)
+    #t1.start()
 
 
     

@@ -26,7 +26,8 @@ class SubCategory:
         self.name = new_name
 
     def get_offers(self):
-        return self.offers_dictionary.values()
+        ans = []
+        return ans.extend(self.offers_dictionary.values())
 
     def get_offers_by_product_name(self, product_name):
         ans = None
