@@ -1,10 +1,13 @@
 from BusinessLayer.Object import Category
 from DB.DTO import CategoryDTO
 from DB.DTO import SubCategotyDTO
+from DB.DTO.OfferDTO import OfferDTO
 from DB.DAO import CategoriesDAO
+from DB.DAO import OfferDAO
 from DB.DAO import SubCategoriesDAO
 from BusinessLayer.Object import Product
 from BusinessLayer.Object import Purchase
+from BusinessLayer.Object.Step import Step
 class CategoryController:
     __instance = None
 
@@ -25,7 +28,9 @@ class CategoryController:
             self.category_dictionary = {}  # <category id, category>
             self.categoriesDAO = CategoriesDAO.CategoriesDAO(conn)
             self.sub_categoriesDAO = SubCategoriesDAO.SubCategoriesDAO(conn)
+            self.offerDAO = OfferDAO.OfferDAO(conn)
             self.hot_deals = {}
+
             self.conn = conn
 
     def getme(self):
@@ -76,6 +81,7 @@ class CategoryController:
 
     # return offer that added, throw exceptions
     def add_offer(self, user_id, name, company, color, size, description, photos , category_id, sub_category_id, steps, end_date ):
+
         product = Product.Product(name, company, color, size, description, photos)
         self.check_category_exist(category_id)
         if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
@@ -86,6 +92,13 @@ class CategoryController:
         self.offer_id += 1
         return offer_to_add
         #add to the userrrrr
+
+
+        # update total_products field
+        self.get_sum_of_products_quantity()
+
+
+
 
     # return id of the offer to remove, throw exceptions
     def remove_offer(self, offer_id):
@@ -98,26 +111,21 @@ class CategoryController:
     def add_to_hot_deals(self, offer_id):
         offer_to_add = self.get_offer_by_offer_id(offer_id)
         self.hot_deals[offer_id] = offer_to_add
+        #update in db
+        self.offerDAO.update(OfferDTO(offer_to_add))
 
     # no return, throw exceptions
     def remove_from_hot_deals(self, offer_id):
         if offer_id not in self.hot_deals:
             raise Exception("Offer Does Not Exist In Hot Deals")
+        offer_to_remove = self.hot_deals[offer_id]
         self.hot_deals.pop(offer_id, None)
+        self.offerDAO.update(OfferDTO(offer_to_remove))
 
-    # no return, throw exceptions
-    def add_buyer_to_offer(self,offer_id, user_id, quantity, step):
-        offer = self.get_offer_by_offer_id(offer_id)
-        purchase = Purchase.Purchase(quantity, step)
-        offer.add_buyer(user_id, purchase)
-        # update offer in DB - "buyers in offer" table
 
-    # no return, throw exceptions
-    def remove_buyer_from_offer(self,offer_id,  user_id):
-        offer = self.get_offer_by_offer_id(offer_id)
-        offer.remove_buyer(user_id)
-        # update offer in DB - "buyers in offer" table
 
+    def add_step(self, products_amount, price):
+        step = Step(products_amount, price)
 
 
     #------------------------------------------------update -----------------------------------------------------
@@ -257,5 +265,6 @@ class CategoryController:
             if self.category_dictionary[id].name == name:
                 return True
         return False
+
 
 

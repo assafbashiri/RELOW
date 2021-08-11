@@ -4,10 +4,10 @@ class OfferDAO:
         self._conn = conn
 
     def insert(self, offerDTO, productDTO):
-        self._conn.execute("""INSERT INTO offers_main (offer_id,current_step,user_id,category_id,sub_category_id,status,start_date, end_date)
-         VALUES (?,?,?,?,?,?,?,?)""",
+        self._conn.execute("""INSERT INTO offers_main (offer_id,current_step,user_id,category_id,sub_category_id,status,start_date,end_date,total_products,hot_deals)
+         VALUES (?,?,?,?,?,?,?,?,?,?)""",
                            [offerDTO.offer_id, offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
-                            offerDTO.status, offerDTO.start_date, offerDTO.end_date])
+                            "1567", offerDTO.start_date, offerDTO.end_date, offerDTO.total_products,0])
         self._conn.commit()
         self._conn.execute(
             """INSERT INTO products (offer_id,name, company, color, size, description) VALUES (?,?,?,?,?,?)""",
@@ -18,7 +18,7 @@ class OfferDAO:
             currStep = offerDTO.steps[numOfStep]
             self._conn.execute("""INSERT INTO steps_per_offer (offer_id ,step , quantity, price)
             VALUES (?,?,?,?)""",
-                           [offerDTO.offer_id, numOfStep, currStep.get_products_amount, currStep.get_price])
+                           [offerDTO.offer_id, numOfStep, currStep.get_products_amount(), currStep.get_price()])
             self._conn.commit()
 
     def get(self, offer):
@@ -27,6 +27,13 @@ class OfferDAO:
 
     def remove(self, offer):
         self._conn.execute("DELETE FROM offers_main WHERE offer_main.offer_id=?", [offer.offer_id])
+        self._conn.commit()
+
+    def update(self, offerDTO):
+        self._conn.execute("""UPDATE offers_main set current_step=?,user_id=?,category_id=?,sub_category_id=?,status=?,start_date=?, end_date=?, total_products=?
+         WHERE offer_id=?""",
+                           [ offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
+                            offerDTO.status, offerDTO.start_date, offerDTO.end_date, offerDTO.total_products , offerDTO.offer_id])
         self._conn.commit()
 
     def add_active_buy_offer(self, offerDTO, user_id, quantity, step):
@@ -64,6 +71,11 @@ class OfferDAO:
     def update_start_date(self, offer_id, new_start_date):
         self._conn.execute("""UPDATE offers_main set start_date = ? WHERE offer_id = ?""",
                            [new_start_date, offer_id])
+        self._conn.commit()
+
+    def update_step(self, offer_id, step):
+        self._conn.execute("""UPDATE offers_main set current_step = ? WHERE offer_id = ?""",
+                           [step, offer_id])
         self._conn.commit()
 
     def update_step(self, offer_id, step):

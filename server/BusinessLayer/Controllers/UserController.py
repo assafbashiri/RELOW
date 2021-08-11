@@ -9,6 +9,8 @@ from DB.DTO.UserDTO import UserDTO
 
 from DB.DTO.ProductDTO import ProductDTO
 
+from server.BusinessLayer.Object import Purchase
+
 
 class UserController:
     __instance = None
@@ -277,10 +279,14 @@ class UserController:
             raise Exception("User does not exist")
         buyer = self.usersDictionary.get(user_id)
         # add the quantity and the step to the active_buy_offers
-        offer.add_buyer(buyer, quantity, step)
+        purchase = Purchase.Purchase(quantity, step)
+        offer.add_buyer(user_id, purchase)
         buyer.active_buy_offers[offer.offer_id] = offer
         offerDTO = OfferDTO(offer)
         self.offers_dao.add_active_buy_offer(offerDTO, user_id, quantity, step)
+        self.update_curr_step(offer)
+        
+        
         # update buyers_in_offer_total :::
         # offer.updateStep()
     def add_like_offer(self, user_id, offer):
@@ -302,8 +308,11 @@ class UserController:
         temp.active_sale_offers.pop(offer_id, None)
         self.offers_dao.delete_sale_offer(user_id, offer_id)
     def remove_active_buy_offer(self, user_id, offer):
-        # to implement
-        return False
+        offer.remove_buyer(user_id)
+        self.update_curr_step(offer)
+
+    def update_active_buy_offer(self, user_id, offer, quantity):
+        self.update_curr_step(offer)
     def get_active_buy_offers(self,user_id):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
@@ -402,4 +411,10 @@ class UserController:
         if offer_id in user.active_sale_offers:
             return True
         return False
+
+    def update_curr_step(self, offer):
+        offer.update_curr_step()
+        offerDTO = OfferDTO(offer)
+        self.offers_dao.update(offerDTO)
+
 

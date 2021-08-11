@@ -8,9 +8,9 @@ class SubCategory:
         self.id = id
         self.father_category_id = father_category_id
 
-    def add_offer(self,offer_id, user_id, product, steps, end_date ):
+    def add_offer(self,offer_id, user_id, product, steps, end_date):
         status = OfferStatus.OfferStatus.NOT_EXPIRED_UNCOMPLETED #initial state
-        offer_to_add = Offer.Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date ,{})
+        offer_to_add = Offer.Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date)
         self.offers_dictionary[offer_id] = offer_to_add
         return offer_to_add
 
@@ -71,3 +71,4 @@ class SubCategory:
     def add_offer_for_update_sub_category(self, offer_to_add):
         #have to check if the offer already exist
         self.offers_dictionary[offer_to_add.offer_id] = offer_to_add
+

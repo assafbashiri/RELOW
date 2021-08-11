@@ -65,13 +65,14 @@ class repository():
                 total_products INTEGER NOT NULL,
                 category_id INTEGER NOT NULL,
                 sub_category_id INTEGER NOT NULL,
+                hot_deals BOOLEAN NOT NULL,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
                 FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS steps_per_offer (
-	            offer_id INTEGER NOT NULL UNIQUE,
+	            offer_id INTEGER NOT NULL,
 	            step INTEGER NOT NULL,
 	            quantity INTEGER NOT NULL,
 	            price INTEGER NOT NULL,
@@ -111,7 +112,7 @@ class repository():
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
             );
 
-            CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer (
+            CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer(
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
@@ -138,7 +139,9 @@ class repository():
                 FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
-        """)
+            
+        
+            """)
 
     def delete_all_db(self):
         self._conn.execute("""Delete FROM users_submission""")
