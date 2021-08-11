@@ -51,6 +51,8 @@ class Category:
 
     def get_offers(self):
         all_category_offers = []
+
+
         curr_sub_category_offers = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers()

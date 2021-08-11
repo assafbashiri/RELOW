@@ -14,10 +14,12 @@ class OfferDAO:
             [productDTO.offer_id, productDTO.name, productDTO.company, productDTO.color, productDTO.size, productDTO.description
              ])
         self._conn.commit()
-        self._conn.execute("""INSERT INTO buyers_in_offer_total (offer_id,user_id,total_quantity,step)
-         VALUES (?,?,?,?)""",
-                           [offerDTO.offer_id, offerDTO.user_id, 0, 1])
-        self._conn.commit()
+        for numOfStep in offerDTO.steps.keys():
+            currStep = offerDTO.steps[numOfStep]
+            self._conn.execute("""INSERT INTO steps_per_offer (offer_id ,step , quantity, price)
+            VALUES (?,?,?,?)""",
+                           [offerDTO.offer_id, numOfStep, currStep.get_products_amount, currStep.get_price])
+            self._conn.commit()
 
     def get(self, offer):
         self._conn.execute("SELECT * FROM offers_main WHERE offer_main.offer_id=?", [offer.offer_id])
@@ -97,6 +99,11 @@ class OfferDAO:
     def update_product_description(self, offer_id, description):
         self._conn.execute("""UPDATE products set description = ? WHERE offer_id = ?""",
                            [description, offer_id])
+        self._conn.commit()
+
+    def update_status(self, offer_id, status):
+        self._conn.execute("""UPDATE offers_main set status = ? WHERE offer_id = ?""",
+                           [status, offer_id])
         self._conn.commit()
 
 
