@@ -27,8 +27,8 @@ class SubCategory:
 
     def get_offers(self):
         ans = []
-        return ans.extend(self.offers_dictionary.values())
-
+        ans.extend(self.offers_dictionary.values())
+        return ans
     def get_offers_by_product_name(self, product_name):
         ans = []
         for offer_id in self.offers_dictionary.keys():
@@ -41,16 +41,16 @@ class SubCategory:
         ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
-            if curr_offer.product.company_name == company_name:
-                ans.add(curr_offer)
+            if curr_offer.get_product().get_company() == company_name:
+                ans.append(curr_offer)
         return ans
 
     def get_offers_by_status(self, status):
         ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
-            if curr_offer.product.status == status:
-                ans.add(curr_offer)
+            if curr_offer.get_status().name == status:
+                ans.append(curr_offer)
         return ans
 
 

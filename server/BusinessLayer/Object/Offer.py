@@ -67,6 +67,9 @@ class Offer:
     def get_current_step(self):
         return self.current_step
 
+    def get_product(self):
+        return self.product
+
     def get_status(self):
         return self.status
 

@@ -190,7 +190,7 @@ class CategoryController:
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_offers_by_status(status)
             if category_offers is not None:
-                ans.add(category_offers)
+                ans.extend(category_offers)
         return ans
 
     # return regular list, throw exceptions
@@ -199,7 +199,7 @@ class CategoryController:
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_offers_by_company_name(company_name)
             if category_offers is not None:
-                ans.add(category_offers)
+                ans.extend(category_offers)
         return ans
 
     # return regular list, throw exceptions

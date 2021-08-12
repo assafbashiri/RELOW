@@ -98,15 +98,15 @@ if __name__ == '__main__':
     step3 = Step(150,10)
     of1 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {1: step1, 2: step2, 3: step3}, date)
     c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {1: step1, 2: step2, 3: step3}, date)
-    c.add_offer(2, "shorts3", "fila", "blue", "5/6", "nice shorts", "nophoto", 1, 1,  {1: step1, 2: step2, 3: step3}, date)
+    c.add_offer(2, "shorts3", "fila1", "blue", "5/6", "nice shorts", "nophoto", 1, 1,  {1: step1, 2: step2, 3: step3}, date)
     u.add_active_sale_offer(of1)
-    u.update_status(1, 0, 'a')
     u.add_active_buy_offer(3,of1,51,1)
     u.add_active_buy_offer(2,of1,60,2)
     res_to_check1 = c.get_offers_by_category(0)
     res_to_check2 = c.get_offers_by_sub_category(1,1)
-    res_to_check2 = c.get_offers_by_product_name("shorts2")
-
+    res_to_check3 = c.get_offers_by_product_name("shorts2")
+    res_to_check4 = c.get_offers_by_status("NOT_EXPIRED_UNCOMPLETED")
+    res_to_check5 = c.get_offers_by_company_name("fila1")
 
 
     c.remove_sub_category(0, 0)

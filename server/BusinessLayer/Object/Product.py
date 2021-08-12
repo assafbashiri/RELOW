@@ -28,3 +28,6 @@ class Product:
 
     def set_offer_id(self, offer_id):
         self.offer_id = offer_id
+
+    def get_company(self):
+        return self.company
