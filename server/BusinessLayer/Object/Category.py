@@ -42,7 +42,15 @@ class Category:
         self.sub_categories_dictionary[sub_category_id].set_name(new_sub_category_name)
         return self.sub_categories_dictionary[sub_category_id]
 
+    def get_all_expired_offers(self):
+        ans = []
+        curr_sub_category_offers = []
+        for sub_category_id in self.sub_categories_dictionary.keys():
+            curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_all_expired_offers()
+            if curr_sub_category_offers is not None:
+                ans.extend(curr_sub_category_offers)
 
+        return ans
 
 
 
@@ -51,8 +59,6 @@ class Category:
 
     def get_offers(self):
         all_category_offers = []
-
-
         curr_sub_category_offers = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers()

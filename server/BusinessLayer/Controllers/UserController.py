@@ -9,7 +9,7 @@ from DB.DTO.UserDTO import UserDTO
 
 from DB.DTO.ProductDTO import ProductDTO
 
-from server.BusinessLayer.Object import Purchase
+from BusinessLayer.Object import Purchase
 
 
 class UserController:
@@ -44,6 +44,7 @@ class UserController:
         self.users_dao.insert(userDTO)
         self.user_id += 1
         self.log_in(user_name, password)
+        return user
     def unregister(self, user_id):
         user = self.usersDictionary.get(user_id)
         if user is None:
@@ -301,14 +302,28 @@ class UserController:
         user_temp = self.usersDictionary[user_id]
         user_temp.liked_offers.pop(offer.offer_id, None)
         self.offers_dao.remove_like_offer(user_id, offer.offer_id)
-    def remove_active_sale_offer(self, user_id, offer_id):
+    def remove_active_sale_offer(self, user_id, offer):
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
-        temp = self.usersDictionary[user_id]
-        temp.active_sale_offers.pop(offer_id, None)
-        self.offers_dao.delete_sale_offer(user_id, offer_id)
+        user = self.usersDictionary[user_id]
+        user.move_to_history_seller(offer)
+        current_buyers = offer.get_current_buyers()
+        for user_id in current_buyers.keys():
+            self.remove_active_buy_offer(user_id,offer)
+            # this function above update the DB
+
+        self.offers_dao.delete_sale_offer(user_id, offer.get_offer_id())
+        self.offers_dao.insert_to_history_sellers(offer.get_user_id(), offer.get_offer_id(), offer.get_status(), offer.get_current_step())
     def remove_active_buy_offer(self, user_id, offer):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
         offer.remove_buyer(user_id)
+        user = self.usersDictionary[user_id]
+        user.move_to_history_buyer(offer)
+        self.offers_dao.delete_buy_offer(offer.get_user_id(), offer.get_offer_id(), offer.get_status(),
+                                         offer.get_current_step())
+        self.offers_dao.insert_to_history_buyers(offer.get_user_id(), offer.get_offer_id(), offer.get_status(),
+                                                 offer.get_current_step())
         self.update_curr_step(offer)
 
     def update_active_buy_offer(self, user_id, offer, quantity):
@@ -373,9 +388,33 @@ class UserController:
         if offer_id not in user_temp.history_sale_offers.keys():
             raise Exception("offer does not exist")
         return user_temp.history_sale_offers[offer_id]
-    def move_to_history(self):
-        pass
+    #----------------------------------------------------------------------------------------------------------
+    def move_all_expired_to_history(self, expired_offers):#expired_offers - regular list
+        # move all expired offers
+        for curr_offer in expired_offers:
+            if not (self.exist_user_id(curr_offer.user_id)):
+                raise Exception("User does not exist")
+            self.usersDictionary[curr_offer.offer_id].move_to_history_seller(curr_offer)
+            current_buyers = curr_offer.get_current_buyers()
+            for user_id in current_buyers.keys():
+                if not (self.exist_user_id(user_id)):
+                    raise Exception("User does not exist")
+                self.usersDictionary[user_id].move_to_history_buyer(curr_offer)
 
+
+    # maybe delete those 2 functions
+    def add_to_history_buyer(self,user_id, offer_to_add):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        user = self.usersDictionary[user_id]
+        user.add_to_history_buyer(offer_to_add)
+
+    def add_to_history_seller(self, user_id, offer_to_add):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        user = self.usersDictionary[user_id]
+        user.add_to_history_seller(offer_to_add)
+    #----------------------------------------------------------------------------------------------------------
         # -------------------------- private functions -- to implement!!!
 
     def exist_user_name1(self, user_name):
@@ -413,7 +452,7 @@ class UserController:
         return False
 
     def update_curr_step(self, offer):
-        offer.update_curr_step()
+        offer.update_step()
         offerDTO = OfferDTO(offer)
         self.offers_dao.update(offerDTO)
 

@@ -30,15 +30,15 @@ class SubCategory:
         return ans.extend(self.offers_dictionary.values())
 
     def get_offers_by_product_name(self, product_name):
-        ans = None
+        ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
             if curr_offer.product.name == product_name:
-                ans.add(curr_offer)
+                ans.append(curr_offer)
         return ans
 
     def get_offers_by_company_name(self, company_name):
-        ans = None
+        ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
             if curr_offer.product.company_name == company_name:
@@ -46,7 +46,7 @@ class SubCategory:
         return ans
 
     def get_offers_by_status(self, status):
-        ans = None
+        ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
             if curr_offer.product.status == status:
@@ -72,3 +72,10 @@ class SubCategory:
         #have to check if the offer already exist
         self.offers_dictionary[offer_to_add.offer_id] = offer_to_add
 
+    def get_all_expired_offers(self):
+        ans = []
+        for offer_id in self.offers_dictionary.keys():
+            curr_offer = self.offers_dictionary[offer_id]
+            if curr_offer.end_date <= date.today():
+                ans.add(curr_offer)
+        return ans
