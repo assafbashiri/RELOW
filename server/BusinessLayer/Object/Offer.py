@@ -1,3 +1,5 @@
+from BusinessLayer.Object.Purchase import Purchase
+
 
 class Offer:
 
@@ -31,6 +33,8 @@ class Offer:
     def set_user_id(self, ):
         return self.user_id
 
+    def set_total_products(self, total_products):
+        self.total_products = total_products
     # def set_product(self):
     #     return self.product
 
@@ -79,36 +83,37 @@ class Offer:
     def get_current_buyers(self):
         return self.current_buyers
 
+    def update_active_buy_offer(self, user_id, quantity, step):
+        if user_id not in self.current_buyers.keys():
+            raise Exception("User is not a buyer in this offer")
+        purchase = Purchase(quantity, step)
+        self.current_buyers[user_id] = purchase
+
+
+
     def update_step(self):
-        step_1_wanters = 0
-        for user_id in self.current_buyers.keys():
+        num_of_buyers_for_each_step = {}
+        for step in self.steps.keys():
+            num_of_buyers_for_each_step[step] = 0
+        for i in range(1, len(num_of_buyers_for_each_step)+1):
+            for user_id in self.current_buyers.keys():
             # sum of all quantity of buyers from curr step and less
-            curr_purchase = self.current_buyers[user_id]
-            if curr_purchase.get_step() <= 1:
-                step_1_wanters += curr_purchase.get_quantity()
-        step_2_wanters = 0
-        for user_id in self.current_buyers.keys():
-            # sum of all quantity of buyers from curr step and less
-            curr_purchase = self.current_buyers[user_id]
-            if curr_purchase.get_step() <= 2:
-                step_2_wanters += curr_purchase.get_quantity()
-        step_3_wanters = 0
-        for user_id in self.current_buyers.keys():
-            # sum of all quantity of buyers from curr step and less
-            curr_purchase = self.current_buyers[user_id]
-            if curr_purchase.get_step() <= 3:
-                step_3_wanters += curr_purchase.get_quantity()
-        self.total_products = step_1_wanters
-        if step_2_wanters >= self.steps[1].get_products_amount():
-            self.current_step = 2
-            self.total_products = step_2_wanters
-        if step_3_wanters > self.max_amount:
-            raise Exception("max amount - cant buy")
-        if step_3_wanters >= self.steps[2].get_products_amount():
-            self.current_step = 3
-            self.total_products = step_3_wanters
+                curr_purchase = self.current_buyers[user_id]
+                if curr_purchase.get_step() <= i:
+                    num_of_buyers_for_each_step[i] += curr_purchase.get_quantity()
 
 
+        if num_of_buyers_for_each_step[len(num_of_buyers_for_each_step)] > self.max_amount:
+            raise Exception("Cant buy more then Max Amount")
+        updated_step = 1
+        updated_total_products = num_of_buyers_for_each_step[1]
+        for step in range(2, len(num_of_buyers_for_each_step)+1):
+            if num_of_buyers_for_each_step[step] >= self.steps[step-1].get_products_amount():
+                updated_step = step
+                updated_total_products = num_of_buyers_for_each_step[step]
 
+
+        self.current_step = updated_step
+        self.total_products = updated_total_products
 
 

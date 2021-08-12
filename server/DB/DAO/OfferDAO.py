@@ -55,10 +55,12 @@ class OfferDAO:
         self._conn.commit()
 
     def delete_sale_offer(self, user_id, offer_id):
-        self._conn.execute("""UPDATE users_submission set active = ? WHERE user_id = ?""",
-                           [False, user_id])
-        self._conn.commit()
         self._conn.execute("DELETE FROM liked_offers WHERE offer_id = ? AND user_id = ?",
+                           [offer_id, user_id])
+        self._conn.commit()
+
+    def delete_buy_offer(self, user_id, offer_id):
+        self._conn.execute("DELETE FROM buyers_in_offer_per_buyer WHERE offer_id = ? AND user_id = ?",
                            [offer_id, user_id])
         self._conn.commit()
 
@@ -127,3 +129,8 @@ class OfferDAO:
         self._conn.execute(
             """INSERT INTO history_sellers (user_id,offer_id,status,step) VALUES (?,?,?,?)""",
             [user_id, offer_id, status.name, step])
+
+    def update_active_buy_offer(self, user_id, offer_id, quantity, step):
+        self._conn.execute("""UPDATE buyers_in_offer_per_buyer set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",
+                           [quantity, step, offer_id, user_id])
+        self._conn.commit()

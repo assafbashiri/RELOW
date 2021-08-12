@@ -1,6 +1,8 @@
 from BusinessLayer.Object import Offer
 from BusinessLayer.Utils import OfferStatus
-from datetime import date
+from datetime import date, datetime
+
+
 class SubCategory:
     def __init__(self, name, id, father_category_id):
         self.name = name
@@ -76,6 +78,6 @@ class SubCategory:
         ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
-            if curr_offer.end_date <= date.today():
-                ans.add(curr_offer)
+            if curr_offer.end_date <= datetime.today():
+                ans.append(curr_offer)
         return ans
