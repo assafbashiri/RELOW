@@ -11,13 +11,12 @@ from DB.DTO.ProductDTO import ProductDTO
 
 from BusinessLayer.Object import Purchase
 
-<<<<<<< HEAD
 from server.BusinessLayer.Object.UserAddress import UserAddress
 from server.BusinessLayer.Object.UserPayment import UserPayment
 from server.BusinessLayer.Utils import OfferStatus
-=======
+
 from BusinessLayer.Utils.OfferStatus import OfferStatus
->>>>>>> fa656d293c49baaad94666100a74a80a3a4f82c1
+
 
 
 class UserController:

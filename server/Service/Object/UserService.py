@@ -1,14 +1,14 @@
 
 
 class UserService():
-    def __init__(self, next_user_id, first_name, last_name, user_name, email, password, birth_date, gender):
+    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender):
         self.active = True
         self.is_logged = False
         #CheckValidity.checkValidityName(first_name)
         #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
         #CheckValidity.checkValidityEmail(email)
         #CheckValidity.checkValidityPassword(password)
-        self.user_id = next_user_id
+        # self.user_id = next_user_id
         self.first_name = first_name
         self.last_name = last_name
         self.user_name = user_name
@@ -28,7 +28,7 @@ class UserService():
         # payment method
         self.id_number = None
         self.credit_card_number = None
-        self.credit_card_experation_date = None
+        self.credit_card_expiration_date = None
         self.cvv = None
         self.card_type = None
 
@@ -45,7 +45,7 @@ class UserService():
         #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
         #CheckValidity.checkValidityEmail(email)
         #CheckValidity.checkValidityPassword(password)
-        self.user_id = business_user.get_next_user_id()
+        # self.user_id = business_user.get_next_user_id()
         self.first_name = business_user.get_first_name()
         self.last_name = business_user.get_last_name()
         self.user_name = business_user.get_user_name()
@@ -64,8 +64,8 @@ class UserService():
 
         # payment method
         self.id_number = business_user.get_id_number()
-        self.credit_card_number = business_user.get_credit_card_number()
-        self.credit_card_expiration_date = business_user.get_credit_card_expiratin_date()
+        self.credit_card_number = business_user.get_card_number()
+        self.credit_card_expiration_date = business_user.get_credit_card_expiration_date()
         self.cvv = business_user.get_cvv()
         self.card_type = business_user.get_card_type()
 
