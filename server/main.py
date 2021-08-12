@@ -100,6 +100,9 @@ if __name__ == '__main__':
     c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {1: step1, 2: step2, 3: step3}, date)
     c.add_offer(2, "shorts3", "fila1", "blue", "5/6", "nice shorts", "nophoto", 1, 1,  {1: step1, 2: step2, 3: step3}, date)
     u.add_active_sale_offer(of1)
+
+    st = OfferStatus.OfferStatus.EXPIRED_COMPLETED
+    u.update_status(1, 0, st)
     u.add_active_buy_offer(3,of1,51,1)
     u.add_active_buy_offer(2,of1,60,2)
     res_to_check1 = c.get_offers_by_category(0)

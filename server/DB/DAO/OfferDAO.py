@@ -33,7 +33,7 @@ class OfferDAO:
     def update(self, offerDTO):
         self._conn.execute("""UPDATE offers_main set current_step=?,user_id=?,category_id=?,sub_category_id=?,status=?,start_date=?, end_date=?, total_products=?
          WHERE offer_id=?""",
-                           [ offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
+                           [offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
                             offerDTO.status.name, offerDTO.start_date, offerDTO.end_date, offerDTO.total_products , offerDTO.offer_id])
         self._conn.commit()
 
@@ -115,7 +115,7 @@ class OfferDAO:
 
     def update_status(self, offer_id, status):
         self._conn.execute("""UPDATE offers_main set status = ? WHERE offer_id = ?""",
-                           [status, offer_id])
+                           [status.name, offer_id])
         self._conn.commit()
 
     def insert_to_history_buyers(self, user_id, offer_id, status, step):
