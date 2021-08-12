@@ -9,7 +9,7 @@ class UserPayment:
     def set_card_details(self, id, credit_card_number, credit_card_experation_date, cvv, card_type):
         self.id_number = id
         self.credit_card_number = credit_card_number
-        self.credit_card_expration_date = credit_card_experation_date
+        self.credit_card_expiration_date = credit_card_experation_date
         self.cvv = cvv
         self.card_type = card_type
 

@@ -95,24 +95,24 @@ class Protocol:
                                           argument['password'],
                                           argument['birth_date'],
                                           argument['gender'])
-            return Response(UserService(user), "Registered Successfully", True)
+            return Response("ok", "Registered Successfully", True), True
         except Exception as e:
-            return Response(None, str(e), False)
+            return Response(None, str(e), False), True
 
     def log_in(self, argument):
         try:
             user = self.user_controller.log_in(argument['user_name'], argument['password'])
             self.user = user
-            return Response(UserService(user), "Log-In Successfully", True)
+            return Response(UserService(user), "Log-In Successfully", True), False
         except Exception as e:
-            return Response(None, str(e), False)
+            return Response(None, str(e), False), False
 
     def logout(self, argument):
         try:
             self.user_controller.logout(argument['user_id'])
-            return Response(None, "Log-Out Successfully", True)
+            return Response(None, "Log-Out Successfully", True), False
         except Exception as e:
-            return Response(None, str(e), False)
+            return Response(None, str(e), False), False
 
 # -------------------------------------------------ADD------------------------------------------------------------------
 
@@ -141,7 +141,7 @@ class Protocol:
             self.user_controller.add_active_sale_offer(offer)
             return Response(OfferService(offer), "Offer Added Successfully", True)
         except Exception as e:
-            if str(e) is "wow":
+            if str(e) == "wow":
                 self.category_controller.remove_offer(offer)
             return Response(None, str(e), False)
 

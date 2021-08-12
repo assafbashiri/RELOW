@@ -39,21 +39,17 @@ class User():
         self.is_logged = False
         print("log out.. done")
 
-    def add_address_details(self, city, street, apartment_number, zip_code, floor):
+    def set_address_details(self,user_address):
         if self.is_logged is False:
             raise Exception("User Is Not Logged In")
         # tool bar to choose the address
-        self.address.add_address_details(self, city, street, apartment_number, zip_code, floor)
+        self.address = user_address
 
 
-    def set_card_details(self, id, credit_card_number, credit_card_experation_date, cvv, card_type):
+    def set_card_details(self, user_payment):
         if self.is_logged is False:
             raise Exception("User Is Not Logged In")
-        self.id_number = id
-        self.credit_card_number = credit_card_number
-        self.credit_card_experation_date = credit_card_experation_date
-        self.cvv = cvv
-        self.card_type = card_type
+        self.payment = user_payment
 
     def add_to_history_purches(self, offer_to_add):
         if self.is_logged is False:
@@ -276,7 +272,7 @@ class User():
     def get_history_buy_offers(self):
         return self.history_buy_offers
 
-    def get_history_sell_offer(self):
+    def get_history_sell_offers(self):
         return self.history_sale_offers
 
     def get_liked_offers(self):

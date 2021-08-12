@@ -2,9 +2,9 @@
 
 class Response:
     def __init__(self, data, message, res):
-        self.data = None
-        self.message = None
-        self.res = None #boolean
+        self.data = data
+        self.message = message
+        self.res = res
 
     def get_data(self):
         return self.data

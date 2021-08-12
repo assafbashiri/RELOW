@@ -11,7 +11,13 @@ from DB.DTO.ProductDTO import ProductDTO
 
 from BusinessLayer.Object import Purchase
 
+<<<<<<< HEAD
+from server.BusinessLayer.Object.UserAddress import UserAddress
+from server.BusinessLayer.Object.UserPayment import UserPayment
 from server.BusinessLayer.Utils import OfferStatus
+=======
+from BusinessLayer.Utils.OfferStatus import OfferStatus
+>>>>>>> fa656d293c49baaad94666100a74a80a3a4f82c1
 
 
 class UserController:
@@ -28,8 +34,8 @@ class UserController:
             raise Exception("This class is a singleton!")
         else:
             UserController.__instance = self
-            self.user_id = 1
             self.users_dao = UsersDAO(conn)
+            self.user_id = self.users_dao.load_user_id()
             self.offers_dao = OfferDAO(conn)
             self.products_dao = ProductDAO(conn)
             self.usersDictionary = {}
@@ -470,5 +476,30 @@ class UserController:
         offer.update_step()
         offerDTO = OfferDTO(offer)
         self.offers_dao.update(offerDTO)
+
+
+    def ab(self):
+        # change usersDictionary_1 -> self.usersDictionary
+        ans = {}
+        ans = self.users_dao.load_users_sub()
+        usersDictionary_1 = {}
+        for user in ans:
+            user_temp = User(user[0],user[1],user[2],user[3],user[4],user[5],user[6],user[7])
+            user_temp.is_logged = user[8]
+            user_temp.active = user[9]
+            # have to update payment, address, lists
+            usersDictionary_1[user_temp[0]] = user_temp
+
+        ans_2 = self.users_dao.load_users_payment()
+        for pay in ans_2:
+            pay_temp = UserPayment()
+            pay_temp.set_card_details(pay[1],pay[2],pay[3],pay[4],pay[5])
+            usersDictionary_1[pay[0]].set_card_details(pay_temp)
+
+        ans_3 = self.users_dao.load_users_address()
+        for adr in ans_3:
+            adr_temp = UserAddress()
+            adr_temp.add_address_details(adr[1],adr[2],adr[5],adr[3],adr[4])
+            usersDictionary_1[adr[0]].set_address_details(adr_temp)
 
 

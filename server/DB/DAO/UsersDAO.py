@@ -30,6 +30,34 @@ class UsersDAO:
         print( "in insert in UserDAO step 5")
 
 
+    def load_user_id(self):
+        this = self._conn.cursor()
+        this.execute("SELECT MAX(user_id) FROM users_submission")
+        output = this.fetchone()[0]
+        print(output)
+        if output is None:
+            output = 0
+        return output+1
+
+    def load_users_sub(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM users_submission")
+        output = this.fetchall()
+        return output
+
+    def load_users_payment(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM users_payment")
+        output = this.fetchall()
+        return output
+
+    def load_users_address(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM users_address")
+        output = this.fetchall()
+        return output
+
+
     def add_address(self, user_id, city, street, zip_code, floor, apartmentNumber):
         self.updateCity(user_id,city)
         self.updateStreet(user_id,street)

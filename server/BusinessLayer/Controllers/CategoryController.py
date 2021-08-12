@@ -1,4 +1,4 @@
-from BusinessLayer.Object import Category
+from BusinessLayer.Object.Category import Category
 from DB.DTO import CategoryDTO
 from DB.DTO import SubCategotyDTO
 from DB.DTO.OfferDTO import OfferDTO
@@ -22,15 +22,17 @@ class CategoryController:
             raise Exception("This class is a singleton!")
         else:
             CategoryController.__instance = self
-            self.category_id = 0
-            self.sub_category_id = 0
+
+
             self.offer_id = 0
             self.category_dictionary = {}  # <category id, category>
             self.categoriesDAO = CategoriesDAO.CategoriesDAO(conn)
             self.sub_categoriesDAO = SubCategoriesDAO.SubCategoriesDAO(conn)
             self.offerDAO = OfferDAO.OfferDAO(conn)
-            self.hot_deals = {}
 
+            self.category_id = self.categoriesDAO.load_category_id()
+            self.sub_category_id = self.sub_categoriesDAO.load_sub_category_id()
+            self.hot_deals = {}
             self.conn = conn
 
     def getme(self):
@@ -274,5 +276,14 @@ class CategoryController:
                 return True
         return False
 
+    def load(self):
+        # category_dictionary
+        # hot deals
+        categories_dictionary = {}
+        all_categories = self.categoriesDAO.get_all()
+        for c in all_categories:
+            category = Category(c[1], c[0])
+            categories_dictionary[c[0]] = category
+        #load_all_sub_categories for each category
 
-
+        #load_all offers for each sub category
