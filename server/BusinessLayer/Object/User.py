@@ -86,23 +86,15 @@ class User():
         # check if the offer valid
         self.active_buy_offers.add(offer_to_add.offer_id, offer_to_add)
 
-    def remove_from_active_offers(self, offer_to_remove):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        if offer_to_remove not in self.active_buy_offers:
-            raise Exception("offer didnt exist in 'Active Offers'")
-        self.active_buy_offers.remove(offer_to_remove.offer_id)
 
     def move_to_history_buyer(self, offer_to_move):
-        if offer_to_move.offer_id not in self.history_buy_offers:
-            raise Exception("Offer Does Not Exist In History Buyers")
+
         self.active_buy_offers.pop(offer_to_move.offer_id, None)
         self.add_to_history_buyer(offer_to_move)
     def move_to_history_seller(self, offer_to_move):
-        if offer_to_move.offer_id not in self.history_sale_offers:
-            raise Exception("Offer Does Not Exist In History Seller")
+
         self.active_sale_offers.pop(offer_to_move.offer_id, None)
-        self.add_to_history_sale(offer_to_move)
+        self.add_to_history_seller(offer_to_move)
     def add_to_history_buyer(self, offer_to_add):
         if offer_to_add.offer_id in self.history_buy_offers:
             raise Exception("Offer Already Exist In History Buyer")

@@ -11,6 +11,8 @@ from DB.DTO.ProductDTO import ProductDTO
 
 from BusinessLayer.Object import Purchase
 
+from server.BusinessLayer.Utils import OfferStatus
+
 
 class UserController:
     __instance = None
@@ -302,17 +304,21 @@ class UserController:
         user_temp = self.usersDictionary[user_id]
         user_temp.liked_offers.pop(offer.offer_id, None)
         self.offers_dao.remove_like_offer(user_id, offer.offer_id)
-    def remove_active_sale_offer(self, user_id, offer):
+    def remove_active_sale_offer(self,  offer):
+        user_id = offer.get_user_id()
         if not (self.exist_user_id(user_id)):
             raise Exception("User does not exist")
         user = self.usersDictionary[user_id]
         user.move_to_history_seller(offer)
         current_buyers = offer.get_current_buyers()
-        for user_id in current_buyers.keys():
-            self.remove_active_buy_offer(user_id,offer)
-            # this function above update the DB
+        user_ids = []
+        user_ids.extend(current_buyers.keys())
+        for i in range(0, len(user_ids)):
+            self.remove_active_buy_offer(user_ids[i], offer)
 
-        self.offers_dao.delete_sale_offer(user_id, offer.get_offer_id())
+            # this function above update the DB
+        offer.set_status(OfferStatus.OfferStatus.EXPIRED_UNCOMPLETED)
+        self.offers_dao.update(OfferDTO(offer))
         self.offers_dao.insert_to_history_sellers(offer.get_user_id(), offer.get_offer_id(), offer.get_status(), offer.get_current_step())
     def remove_active_buy_offer(self, user_id, offer):
         if not (self.exist_user_id(user_id)):
@@ -320,13 +326,16 @@ class UserController:
         offer.remove_buyer(user_id)
         user = self.usersDictionary[user_id]
         user.move_to_history_buyer(offer)
-        self.offers_dao.delete_buy_offer(offer.get_user_id(), offer.get_offer_id(), offer.get_status(),
-                                         offer.get_current_step())
-        self.offers_dao.insert_to_history_buyers(offer.get_user_id(), offer.get_offer_id(), offer.get_status(),
+        self.offers_dao.delete_buy_offer(user_id, offer.get_offer_id())
+        self.offers_dao.insert_to_history_buyers(offer.get_user_id(), offer.get_offer_id(), OfferStatus.OfferStatus.EXPIRED_UNCOMPLETED,
                                                  offer.get_current_step())
         self.update_curr_step(offer)
 
-    def update_active_buy_offer(self, user_id, offer, quantity):
+    def update_active_buy_offer(self, user_id, offer, quantity, step):
+        if not (self.exist_user_id(user_id)):
+            raise Exception("User does not exist")
+        offer.update_active_buy_offer(user_id, quantity, step)
+        self.offers_dao.update_active_buy_offer(user_id,offer.offer_id, quantity, step)
         self.update_curr_step(offer)
     def get_active_buy_offers(self,user_id):
         if not (self.exist_user_id(user_id)):
@@ -392,14 +401,20 @@ class UserController:
     def move_all_expired_to_history(self, expired_offers):#expired_offers - regular list
         # move all expired offers
         for curr_offer in expired_offers:
-            if not (self.exist_user_id(curr_offer.user_id)):
-                raise Exception("User does not exist")
-            self.usersDictionary[curr_offer.offer_id].move_to_history_seller(curr_offer)
+            self.usersDictionary[curr_offer.user_id].move_to_history_seller(curr_offer)
             current_buyers = curr_offer.get_current_buyers()
+            curr_offer.set_status(OfferStatus.OfferStatus.EXPIRED_COMPLETED)
             for user_id in current_buyers.keys():
                 if not (self.exist_user_id(user_id)):
                     raise Exception("User does not exist")
                 self.usersDictionary[user_id].move_to_history_buyer(curr_offer)
+                self.offers_dao.delete_buy_offer(user_id, curr_offer.get_offer_id())
+                self.offers_dao.insert_to_history_buyers(curr_offer.get_user_id(), curr_offer.get_offer_id(),
+                                                         curr_offer.get_status(),
+                                                         curr_offer.get_current_step())
+            self.offers_dao.update(OfferDTO(curr_offer))
+            self.offers_dao.insert_to_history_sellers(curr_offer.get_user_id(), curr_offer.get_offer_id(), curr_offer.get_status(),
+                                                      curr_offer.get_current_step())
 
 
     # maybe delete those 2 functions
