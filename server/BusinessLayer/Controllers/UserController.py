@@ -11,7 +11,7 @@ from DB.DTO.ProductDTO import ProductDTO
 
 from BusinessLayer.Object import Purchase
 
-from server.BusinessLayer.Utils import OfferStatus
+from BusinessLayer.Utils.OfferStatus import OfferStatus
 
 
 class UserController:

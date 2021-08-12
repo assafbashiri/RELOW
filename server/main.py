@@ -77,8 +77,8 @@ if __name__ == '__main__':
     u = UserController.UserController(conn)
     c = CategoryController.CategoryController(conn)
     # ------- check -------------------------------------------------
-    repository.delete_all_db()
-
+    #repository.delete_all_db()
+    c.load()
     bdate = datetime.datetime(1996, 12, 15)
     c.add_category("sport")#0
     c.add_category("cars")#1

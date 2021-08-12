@@ -1,4 +1,4 @@
-from server.BusinessLayer.Object.Purchase import Purchase
+from BusinessLayer.Object.Purchase import Purchase
 
 
 class Offer:
