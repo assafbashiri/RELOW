@@ -95,7 +95,7 @@ class Protocol:
                                           argument['password'],
                                           argument['birth_date'],
                                           argument['gender'])
-            return Response(user, "Registered Successfully", True)
+            return Response(UserService(user), "Registered Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -120,15 +120,12 @@ class Protocol:
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
             self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
-            self.category_controller.add_buyer_to_offer(offer,
-                                                        self.user.user_id,
-                                                        argument['quantity'],
-                                                        argument['step'])
             return Response(OfferService(offer), "Joined To Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def add_active_sell_offer(self, argument):
+        offer = None
         try:
             offer = self.category_controller.add_offer(argument['user_id'],
                                                        argument['name'],
@@ -142,8 +139,10 @@ class Protocol:
                                                        argument['steps'],
                                                        argument['end_date'],)
             self.user_controller.add_active_sale_offer(offer)
-            return Response(None, "Offer Added Successfully", True)
+            return Response(OfferService(offer), "Offer Added Successfully", True)
         except Exception as e:
+            if str(e) is "wow":
+                self.category_controller.remove_offer(offer)
             return Response(None, str(e), False)
 
     def add_liked_offer(self, argument):
