@@ -1,5 +1,4 @@
 
-
 class CategoriesDAO:
 
     def __init__(self, conn):
@@ -35,5 +34,3 @@ class CategoriesDAO:
         this = self._conn.cursor()
         this.execute("SELECT * FROM  category")
         return this.fetchall()
-
-
