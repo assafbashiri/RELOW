@@ -5,43 +5,45 @@ class OfferDAO:
 
     def insert(self, offerDTO, productDTO):
         s = offerDTO.status
-        self._conn.execute("""INSERT INTO offers_main (offer_id,current_step,user_id,category_id,sub_category_id,status,start_date,end_date,total_products,hot_deals)
+        self._conn.execute("""INSERT INTO active_offers (offer_id,current_step,user_id,category_id,sub_category_id,start_date,end_date,total_products,hot_deals)
          VALUES (?,?,?,?,?,?,?,?,?,?)""",
-                           [offerDTO.offer_id, offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
-                            offerDTO.status.name, offerDTO.start_date, offerDTO.end_date, offerDTO.total_products,0])
+                           [offerDTO.offer_id, offerDTO.current_step, offerDTO.user_id, offerDTO.category_id,
+                            offerDTO.sub_category_id,
+                            offerDTO.start_date, offerDTO.end_date, offerDTO.total_products, 0])
         self._conn.commit()
         self._conn.execute(
             """INSERT INTO products (offer_id,name, company, color, size, description) VALUES (?,?,?,?,?,?)""",
-            [productDTO.offer_id, productDTO.name, productDTO.company, productDTO.color, productDTO.size, productDTO.description
+            [productDTO.offer_id, productDTO.name, productDTO.company, productDTO.color, productDTO.size,
+             productDTO.description
              ])
         self._conn.commit()
         for numOfStep in offerDTO.steps.keys():
             currStep = offerDTO.steps[numOfStep]
             self._conn.execute("""INSERT INTO steps_per_offer (offer_id ,step , quantity, price)
             VALUES (?,?,?,?)""",
-                           [offerDTO.offer_id, numOfStep, currStep.get_products_amount(), currStep.get_price()])
+                               [offerDTO.offer_id, numOfStep, currStep.get_products_amount(), currStep.get_price()])
             self._conn.commit()
 
     def get(self, offer):
-        self._conn.execute("SELECT * FROM offers_main WHERE offer_main.offer_id=?", [offer.offer_id])
+        self._conn.execute("SELECT * FROM active_offers WHERE offer_id=?", [offer.offer_id])
         self._conn.commit()
 
     def remove(self, offer):
-        self._conn.execute("DELETE FROM offers_main WHERE offer_main.offer_id=?", [offer.offer_id])
+        self._conn.execute("DELETE FROM active_offers WHERE offer_id=?", [offer.offer_id])
         self._conn.commit()
 
     def update(self, offerDTO):
-        self._conn.execute("""UPDATE offers_main set current_step=?,user_id=?,category_id=?,sub_category_id=?,status=?,start_date=?, end_date=?, total_products=?
+        self._conn.execute("""UPDATE active_offers set current_step=?,user_id=?,category_id=?,sub_category_id=?,status=?,start_date=?, end_date=?, total_products=?
          WHERE offer_id=?""",
                            [offerDTO.current_step, offerDTO.user_id, offerDTO.category_id, offerDTO.sub_category_id,
-                            offerDTO.status.name, offerDTO.start_date, offerDTO.end_date, offerDTO.total_products , offerDTO.offer_id])
+                            offerDTO.status.name, offerDTO.start_date, offerDTO.end_date, offerDTO.total_products,
+                            offerDTO.offer_id])
         self._conn.commit()
 
     def add_active_buy_offer(self, offerDTO, user_id, quantity, step):
-        self._conn.execute("""INSERT INTO buyers_in_offer_per_buyer (offer_id,user_id,quantity,step)
-         VALUES (?,?,?,?)""", [offerDTO.offer_id,user_id,quantity,step])
+        self._conn.execute("""INSERT INTO active_buyers (offer_id,user_id,quantity,step)
+         VALUES (?,?,?,?)""", [offerDTO.offer_id, user_id, quantity, step])
         self._conn.commit()
-
 
     def add_like_offer(self, user_id, offer_id):
         self._conn.execute("""INSERT INTO liked_offers (offer_id,user_id)
@@ -60,34 +62,28 @@ class OfferDAO:
         self._conn.commit()
 
     def delete_buy_offer(self, user_id, offer_id):
-        self._conn.execute("DELETE FROM buyers_in_offer_per_buyer WHERE offer_id = ? AND user_id = ?",
+        self._conn.execute("DELETE FROM active_buyers WHERE offer_id = ? AND user_id = ?",
                            [offer_id, user_id])
         self._conn.commit()
 
-
-    def update_end_date(self,offer_id, new_end_date):
-        self._conn.execute("""UPDATE offers_main set end_date = ? WHERE offer_id = ?""",
+    def update_end_date(self, offer_id, new_end_date):
+        self._conn.execute("""UPDATE active_offers set end_date = ? WHERE offer_id = ?""",
                            [new_end_date, offer_id])
         self._conn.commit()
 
     def update_start_date(self, offer_id, new_start_date):
-        self._conn.execute("""UPDATE offers_main set start_date = ? WHERE offer_id = ?""",
+        self._conn.execute("""UPDATE active_offers set start_date = ? WHERE offer_id = ?""",
                            [new_start_date, offer_id])
         self._conn.commit()
 
     def update_step(self, offer_id, step):
-        self._conn.execute("""UPDATE offers_main set current_step = ? WHERE offer_id = ?""",
+        self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
                            [step, offer_id])
         self._conn.commit()
 
     def update_step(self, offer_id, step):
-        self._conn.execute("""UPDATE offers_main set current_step = ? WHERE offer_id = ?""",
+        self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
                            [step, offer_id])
-        self._conn.commit()
-
-    def update_status(self, offer_id, status):
-        self._conn.execute("""UPDATE offers_main set status = ? WHERE offer_id = ?""",
-                           [status, offer_id])
         self._conn.commit()
 
     def update_product_name(self, offer_id, name):
@@ -115,29 +111,26 @@ class OfferDAO:
                            [description, offer_id])
         self._conn.commit()
 
-    def update_status(self, offer_id, status):
-        self._conn.execute("""UPDATE offers_main set status = ? WHERE offer_id = ?""",
-                           [status.name, offer_id])
-        self._conn.commit()
-
     def insert_to_history_buyers(self, user_id, offer_id, status, step):
         self._conn.execute(
             """INSERT INTO history_buyers (user_id,offer_id,status,step) VALUES (?,?,?,?)""",
             [user_id, offer_id, status.name, step])
 
-    def insert_to_history_sellers(self, user_id, offer_id, status, step):
+    def insert_to_history_offers(self, user_id, offer_dto):
         self._conn.execute(
-            """INSERT INTO history_sellers (user_id,offer_id,status,step) VALUES (?,?,?,?)""",
-            [user_id, offer_id, status.name, step])
+            """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?)""",
+            [offer_dto.offer_id, user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
+             offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
+             offer_dto.hot_deals])
 
     def update_active_buy_offer(self, user_id, offer_id, quantity, step):
-        self._conn.execute("""UPDATE buyers_in_offer_per_buyer set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",
+        self._conn.execute("""UPDATE active_buyers set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",
                            [quantity, step, offer_id, user_id])
         self._conn.commit()
 
     def load_all_offers(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  offers_main")
+        this.execute("SELECT * FROM  active_buyers")
         return this.fetchall()
 
     def load_liked_offers(self):
@@ -150,15 +143,14 @@ class OfferDAO:
         this.execute("SELECT * FROM  steps_per_offer")
         return this.fetchall()
 
-
     def load_buyers_in_offers(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  buyers_in_offer_per_buyer")
+        this.execute("SELECT * FROM  active_buyers")
         return this.fetchall()
 
     def load_history_sellers(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  history_sellers")
+        this.execute("SELECT * FROM  history_offers")
         return this.fetchall()
 
     def load_history_buyers(self):
@@ -168,7 +160,7 @@ class OfferDAO:
 
     def load_offer_id(self):
         this = self._conn.cursor()
-        this.execute("SELECT MAX(offer_id) FROM offers_main")
+        this.execute("SELECT MAX(offer_id) FROM active_offers")
         output = this.fetchone()[0]
         if output is None:
             output = 0

@@ -51,16 +51,15 @@ class repository():
             CREATE TABLE IF NOT EXISTS liked_offers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
-            CREATE TABLE IF NOT EXISTS offers_main (
+            CREATE TABLE IF NOT EXISTS active_offers (
                 offer_id INTEGER PRIMARY KEY  UNIQUE,
                 user_id INTEGER NOT NULL,
                 start_date DATETIME NOT NULL,
                 end_date DATETIME NOT NULL,
-                status TEXT NOT NULL,
                 current_step INTEGER NOT NULL,
                 total_products INTEGER NOT NULL,
                 category_id INTEGER NOT NULL,
@@ -77,7 +76,7 @@ class repository():
 	            quantity INTEGER NOT NULL,
 	            price INTEGER NOT NULL,
 	            PRIMARY KEY(offer_id,step),
-	            FOREIGN KEY(offer_id) REFERENCES offer_main(offer_id) ON DELETE CASCADE
+	            FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE
 	        );
 
             CREATE TABLE IF NOT EXISTS products (
@@ -97,7 +96,7 @@ class repository():
                 photo8 BOLB,
                 PHOTO9 BOLB,
                 photo10 BOLB,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS category (
@@ -112,12 +111,12 @@ class repository():
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
             );
 
-            CREATE TABLE IF NOT EXISTS buyers_in_offer_per_buyer(
+            CREATE TABLE IF NOT EXISTS active_buyers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
                 quantity INTEGER NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
@@ -127,17 +126,24 @@ class repository():
                 offer_id INTEGER NOT NULL,
                 status TEXT NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE 
+                FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE 
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
-            CREATE TABLE IF NOT EXISTS history_sellers (
+            CREATE TABLE IF NOT EXISTS history_offers (
+                offer_id INTEGER PRIMARY KEY  UNIQUE,
                 user_id INTEGER NOT NULL,
-                offer_id INTEGER NOT NULL,
+                start_date DATETIME NOT NULL,
+                end_date DATETIME NOT NULL,
                 status TEXT NOT NULL,
                 step INTEGER NOT NULL,
-                FOREIGN KEY(offer_id) REFERENCES offers_main(offer_id) ON DELETE CASCADE
+                sold_products INTEGER NOT NULL,
+                category_id INTEGER NOT NULL,
+                sub_category_id INTEGER NOT NULL,
+                hot_deals BOOLEAN NOT NULL,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
+                FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
+                FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id) ON DELETE CASCADE
             );
             
         
@@ -149,14 +155,14 @@ class repository():
         self._conn.execute("""Delete FROM users_address""")
         self._conn.execute("""Delete FROM users_payment""")
         self._conn.execute("""Delete FROM liked_offers""")
-        self._conn.execute("""Delete FROM offers_main""")
+        self._conn.execute("""Delete FROM active_offers""")
         self._conn.execute("""Delete FROM steps_per_offer""")
         self._conn.execute("""Delete FROM products""")
         self._conn.execute("""Delete FROM category""")
         self._conn.execute("""Delete FROM sub_category""")
-        self._conn.execute("""Delete FROM buyers_in_offer_per_buyer""")
+        self._conn.execute("""Delete FROM active_buyers""")
         self._conn.execute("""Delete FROM history_buyers""")
-        self._conn.execute("""Delete FROM history_sellers""")
+        self._conn.execute("""Delete FROM history_offers""")
         self._conn.commit()
 
 
