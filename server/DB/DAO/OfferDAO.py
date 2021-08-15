@@ -134,3 +134,43 @@ class OfferDAO:
         self._conn.execute("""UPDATE buyers_in_offer_per_buyer set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",
                            [quantity, step, offer_id, user_id])
         self._conn.commit()
+
+    def load_all_offers(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  offers_main")
+        return this.fetchall()
+
+    def load_liked_offers(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  liked_offers")
+        return this.fetchall()
+
+    def load_all_steps(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  steps")
+        return this.fetchall()
+
+
+    def load_buyers_in_offers(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  buyers_in_offer_per_buyer")
+        return this.fetchall()
+
+    def load_history_sellers(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  history_sellers")
+        return this.fetchall()
+
+    def load_history_buyers(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  history_buyers")
+        return this.fetchall()
+
+    def load_offer_id(self):
+        this = self._conn.cursor()
+        this.execute("SELECT MAX(offer_id) FROM offers_main")
+        output = this.fetchone()[0]
+        if output is None:
+            output = 0
+
+        return output + 1
