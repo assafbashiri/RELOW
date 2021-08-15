@@ -92,6 +92,11 @@ class ProductDAO:
                            [offer.photo10, offer.offer_id])
         self._conn.commit()
 
+    def load_all_products(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  products")
+        return this.fetchall()
+
     def get(self, product):
         pass
 

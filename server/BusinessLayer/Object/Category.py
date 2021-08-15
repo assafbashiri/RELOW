@@ -7,6 +7,12 @@ class Category:
         self.id = id
         self.sub_categories_dictionary  = {}
 
+    def add_sub_category_for_load(self, sub_category):
+        self.sub_categories_dictionary[sub_category.id] = sub_category
+
+    def add_offer_for_load(self, offer, sub_category_id):
+        self.sub_categories_dictionary[sub_category_id].add_offer_for_load(offer)
+
     def add_sub_category(self, name, sub_category_id):
         sub_category_to_add = SubCategory.SubCategory(name, sub_category_id, self.id)
 

@@ -3,7 +3,7 @@ from BusinessLayer.Object.Purchase import Purchase
 
 class Offer:
 
-    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date):
+    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date, current_buyers, total_product):
         self.offer_id = next_id
         self.current_step = 1
         self.user_id = user_id #seller
@@ -14,8 +14,10 @@ class Offer:
         self.steps = steps #
         self.start_date = start_date
         self.end_date = end_date
-        self.current_buyers = {} # with buyer_id, quantity and step
-        self.total_products = 0
+        self.current_buyers = current_buyers # with buyer_id, quantity and step
+        self.total_products = total_product
+        if (len(self.steps) == 0):
+            raise Exception("steps cant be empty - have to be checked in client")
         self.max_amount = self.steps[len(self.steps)].get_products_amount()
 
     def add_buyer(self, user_id, purchase):

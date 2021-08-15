@@ -31,7 +31,7 @@ class CategoriesDAO:
 
         return output + 1
 
-    def get_all(self):
+    def load_all_categories(self):
         this = self._conn.cursor()
         this.execute("SELECT * FROM  category")
         return this.fetchall()

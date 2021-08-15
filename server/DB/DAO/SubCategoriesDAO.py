@@ -30,3 +30,8 @@ class SubCategoriesDAO:
             output = 0
         return  output+1
 
+    def load_all_sub_categories(self):
+        this = self._conn.cursor()
+        this.execute("SELECT * FROM  sub_category")
+        return this.fetchall()
+
