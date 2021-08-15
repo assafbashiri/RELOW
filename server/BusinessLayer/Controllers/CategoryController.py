@@ -5,7 +5,6 @@ from DB.DTO.OfferDTO import OfferDTO
 from DB.DAO.CategoriesDAO import CategoriesDAO
 from DB.DAO.OfferDAO import OfferDAO
 from DB.DAO.SubCategoriesDAO import SubCategoriesDAO
-from DB.DAO.ProductDAO import ProductDAO
 from BusinessLayer.Object.Product import Product
 from BusinessLayer.Object.Purchase import Purchase
 from BusinessLayer.Object.Step import Step
@@ -29,7 +28,6 @@ class CategoryController:
 
             self.category_dictionary = {}  # <category id, category>
             self.categoriesDAO = CategoriesDAO(conn)
-            self.productDAO = ProductDAO(conn)
             self.sub_categoriesDAO = SubCategoriesDAO(conn)
             self.offerDAO = OfferDAO(conn)
 

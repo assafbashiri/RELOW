@@ -16,6 +16,7 @@ class Offer:
         self.end_date = end_date
         self.current_buyers = current_buyers # with buyer_id, quantity and step
         self.total_products = total_product
+        self.hot_deals = False
         if (len(self.steps) == 0):
             raise Exception("steps cant be empty - have to be checked in client")
         self.max_amount = self.steps[len(self.steps)].get_products_amount()
