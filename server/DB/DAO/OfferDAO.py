@@ -147,7 +147,7 @@ class OfferDAO:
 
     def load_all_steps(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  steps")
+        this.execute("SELECT * FROM  steps_per_offer")
         return this.fetchall()
 
 

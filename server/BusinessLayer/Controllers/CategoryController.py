@@ -283,18 +283,18 @@ class CategoryController:
 
     def load(self):
 
-        all_categories = self.categoriesDAO.get_all()
+        all_categories = self.categoriesDAO.load_all_categories()
         for c in all_categories:
             category = Category(c[1], c[0])
             self.category_dictionary[c[0]] = category
 
         #load_all_sub_categories for each category
-        all_sub_categoties = self.sub_categoriesDAO.get_all()
+        all_sub_categoties = self.sub_categoriesDAO.load_all_sub_categories()
         for sub_c in all_sub_categoties:
             sub_category = SubCategory(sub_c[2], sub_c[0], sub_c[1])
             self.category_dictionary[sub_c[1]].add_sub_category_for_load(sub_category)
 
-        self.load_all_offers()
+        return self.load_all_offers()
 
     #return list of all offers
     def load_all_offers(self):

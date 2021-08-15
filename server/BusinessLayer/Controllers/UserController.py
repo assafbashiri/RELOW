@@ -11,11 +11,11 @@ from DB.DTO.ProductDTO import ProductDTO
 
 from BusinessLayer.Object import Purchase
 
-from server.BusinessLayer.Object.Offer import Offer
-from server.BusinessLayer.Object.Product import Product
-from server.BusinessLayer.Object.UserAddress import UserAddress
-from server.BusinessLayer.Object.UserPayment import UserPayment
-from server.BusinessLayer.Utils import OfferStatus
+from BusinessLayer.Object.Offer import Offer
+from BusinessLayer.Object.Product import Product
+from BusinessLayer.Object.UserAddress import UserAddress
+from BusinessLayer.Object.UserPayment import UserPayment
+from BusinessLayer.Utils import OfferStatus
 
 from BusinessLayer.Utils.OfferStatus import OfferStatus
 
@@ -545,7 +545,7 @@ class UserController:
         users_payment_db = self.users_dao.load_users_payment()
         for pay in users_payment_db:
             pay_temp = UserPayment()
-            pay_temp.set_card_details(pay[1], pay[2], pay[3], pay[4], pay[5])
+            pay_temp.add_card_details(pay[1], pay[2], pay[3], pay[4], pay[5])
             self.usersDictionary[pay[0]].set_card_details(pay_temp)
 
         users_address_db = self.users_dao.load_users_address()
@@ -564,24 +564,25 @@ class UserController:
         history_sellers_db = self.offers_dao.load_history_sellers()
         history_buyers_db = self.offers_dao.load_history_buyers()
 
-        for user in self.usersDictionary:
+        for user_id in self.usersDictionary.keys():
             # active sell offers
+            user = self.usersDictionary[user_id]
             for offer in offers:
-                if offer.user_id == user.user_id:
+                if offer.user_id == user_id:
                     user.add_active_buy_offer(offer)
             # active buy offers - can change with the offers
             for buyerInOffer in buyers_in_offer_per_buyer_db:
-                if user.user_id == buyerInOffer[1]:
+                if user_id == buyerInOffer[1]:
                     user.add_active_buy_offer(offers[buyerInOffer[0]])
             # history seller
             for history_seller in history_sellers_db:
-                if user.user_id == history_seller[0]:
+                if user_id == history_seller[0]:
                     user.add_to_history_seller(offers[history_seller[1]])
             # history buyer
             for history_buyer in history_buyers_db:
-                if user.user_id == history_buyer[0]:
+                if user_id == history_buyer[0]:
                     user.add_to_history_buyer(offers[history_buyer[1]])
             # liked offers
             for like_offer in liked_offers_from_db:
-                if like_offer[1] == user.user_id:
+                if like_offer[1] == user_id:
                     user.add_like_offer(offers[like_offer[0]])
