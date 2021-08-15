@@ -6,7 +6,7 @@ class UserPayment:
         self.cvv = None
         self.card_type = None
 
-    def set_card_details(self, id, credit_card_number, credit_card_experation_date, cvv, card_type):
+    def add_card_details(self, id, credit_card_number, credit_card_experation_date, cvv, card_type):
         self.id_number = id
         self.credit_card_number = credit_card_number
         self.credit_card_expiration_date = credit_card_experation_date

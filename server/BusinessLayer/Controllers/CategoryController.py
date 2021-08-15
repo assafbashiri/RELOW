@@ -1,13 +1,15 @@
 from BusinessLayer.Object.Category import Category
-from DB.DTO import CategoryDTO
-from DB.DTO import SubCategotyDTO
+from DB.DTO.CategoryDTO import CategoryDTO
+from DB.DTO.SubCategotyDTO import SubCategoryDTO
 from DB.DTO.OfferDTO import OfferDTO
-from DB.DAO import CategoriesDAO
-from DB.DAO import OfferDAO
-from DB.DAO import SubCategoriesDAO
-from BusinessLayer.Object import Product
-from BusinessLayer.Object import Purchase
+from DB.DAO.CategoriesDAO import CategoriesDAO
+from DB.DAO.OfferDAO import OfferDAO
+from DB.DAO.SubCategoriesDAO import SubCategoriesDAO
+from BusinessLayer.Object.Product import Product
+from BusinessLayer.Object.Purchase import Purchase
 from BusinessLayer.Object.Step import Step
+from BusinessLayer.Object.SubCategory import SubCategory
+from BusinessLayer.Object.Offer import Offer
 class CategoryController:
     __instance = None
 
@@ -24,14 +26,15 @@ class CategoryController:
             CategoryController.__instance = self
 
 
-            self.offer_id = 0
             self.category_dictionary = {}  # <category id, category>
-            self.categoriesDAO = CategoriesDAO.CategoriesDAO(conn)
-            self.sub_categoriesDAO = SubCategoriesDAO.SubCategoriesDAO(conn)
-            self.offerDAO = OfferDAO.OfferDAO(conn)
+            self.categoriesDAO = CategoriesDAO(conn)
+            self.sub_categoriesDAO = SubCategoriesDAO(conn)
+            self.offerDAO = OfferDAO(conn)
 
             self.category_id = self.categoriesDAO.load_category_id()
             self.sub_category_id = self.sub_categoriesDAO.load_sub_category_id()
+            self.offer_id = self.offerDAO.load_offer_id()
+
             self.hot_deals = {}
             self.conn = conn
 
@@ -43,11 +46,11 @@ class CategoryController:
     def add_category(self, name):
         if self.check_category_exist_by_name(name):
             raise Exception("Category Name Already Exist")
-        category_to_add = Category.Category(name, self.category_id)
+        category_to_add = Category(name, self.category_id)
         self.category_dictionary[self.category_id] = category_to_add
         self.category_id += 1
         # adding to DB
-        self.categoriesDAO.insert(CategoryDTO.CategoryDTO(category_to_add))
+        self.categoriesDAO.insert(CategoryDTO(category_to_add))
 
     # no return, throw exceptions
     def remove_category(self, category_id):
@@ -55,7 +58,7 @@ class CategoryController:
         category_to_remove = self.category_dictionary[category_id]
         self.category_dictionary.pop(category_id, None) # check
         #remove category from DB
-        self.categoriesDAO.delete(CategoryDTO.CategoryDTO(category_to_remove))
+        self.categoriesDAO.delete(CategoryDTO(category_to_remove))
         #self.categoriesDAO.delete(category_id)
 
     # no return, throw exceptions
@@ -65,7 +68,7 @@ class CategoryController:
         if sub_category_to_add is None :
             raise Exception("Sub Category already exist")
         # adding to DB (maybe do it in sub category)
-        self.sub_categoriesDAO.insert(SubCategotyDTO.SubCategoryDTO(sub_category_to_add))
+        self.sub_categoriesDAO.insert(SubCategoryDTO(sub_category_to_add))
 
     def add_sub_category_by_name(self, name, category_name):
         category = self.get_category_by_name(category_name)
@@ -78,13 +81,13 @@ class CategoryController:
         if sub_category_to_remove is None:
             raise Exception("No Such Sub Category")
         #removing sub category from DB
-        self.sub_categoriesDAO.delete(SubCategotyDTO.SubCategoryDTO(sub_category_to_remove))
+        self.sub_categoriesDAO.delete(SubCategoryDTO(sub_category_to_remove))
 
 
     # return offer that added, throw exceptions
     def add_offer(self, user_id, name, company, color, size, description, photos , category_id, sub_category_id, steps, end_date ):
 
-        product = Product.Product(name, company, color, size, description, photos)
+        product = Product(self.offer_id, name, company, color, size, description, photos)
         self.check_category_exist(category_id)
         if not self.category_dictionary[category_id].is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist")
@@ -124,18 +127,15 @@ class CategoryController:
         self.hot_deals.pop(offer_id, None)
         self.offerDAO.update(OfferDTO(offer_to_remove))
 
-
-
-    def add_step(self, products_amount, price):
-        step = Step(products_amount, price)
-
     def get_all_expired_offers(self):
         ans = []
-        category_offers = []
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_all_expired_offers()
             if category_offers is not None:
                 ans.extend(category_offers)
+        for offer in ans:
+            self.remove_offer(offer.offer_id)
+
         return ans
 
     #------------------------------------------------update -----------------------------------------------------
@@ -156,7 +156,7 @@ class CategoryController:
         if updated_sub_category is None:
             raise Exception ("No Such Sub Category")
         # update in DB
-        self.sub_categoriesDAO.update(SubCategotyDTO.SubCategoryDTO(updated_sub_category))
+        self.sub_categoriesDAO.update(SubCategoryDTO(updated_sub_category))
 
    
 
@@ -277,13 +277,82 @@ class CategoryController:
         return False
 
     def load(self):
-        # category_dictionary
-        # hot deals
-        categories_dictionary = {}
-        all_categories = self.categoriesDAO.get_all()
+
+        all_categories = self.categoriesDAO.load_all_categories()
         for c in all_categories:
             category = Category(c[1], c[0])
-            categories_dictionary[c[0]] = category
-        #load_all_sub_categories for each category
+            self.category_dictionary[c[0]] = category
 
-        #load_all offers for each sub category
+        #load_all_sub_categories for each category
+        all_sub_categoties = self.sub_categoriesDAO.load_all_sub_categories()
+        for sub_c in all_sub_categoties:
+            sub_category = SubCategory(sub_c[2], sub_c[0], sub_c[1])
+            self.category_dictionary[sub_c[1]].add_sub_category_for_load(sub_category)
+
+        return self.load_all_offers()
+
+    #return list of all offers
+    def load_all_offers(self):
+        all_offers_to_return = []
+
+        # load_all offers for each sub category
+        all_offers = self.offerDAO.load_all_offers()
+        all_products = self.productDAO.load_all_products()
+        all_steps = self.offerDAO.load_all_steps()
+        all_current_buyers = self.offerDAO.load_buyers_in_offers()
+
+        all_steps_dictionary = {}
+        self.load_all_steps(all_steps, all_steps_dictionary)
+        all_products_dictionary = {}
+        self.load_all_products(all_products, all_products_dictionary)
+        all_current_buyers_dict = {}
+        self.load_all_current_buyers(all_current_buyers, all_current_buyers_dict)
+        total_products_per_offer = {}
+        self.load_all_total_products(total_products_per_offer, all_current_buyers_dict)
+
+
+        for o in all_offers:
+            if (len(all_current_buyers_dict) == 0):
+                current_buyers = {}
+                total_products = 0
+            else:
+                current_buyers = all_current_buyers_dict[o[0]]
+                total_products = total_products_per_offer[o[0]]
+
+            offer = Offer(o[0], o[1], all_products_dictionary[o[0]], o[7], o[8], o[4], all_steps_dictionary[o[0]], o[2],o[3], current_buyers, total_products)
+            all_offers_to_return.append(offer)
+            self.category_dictionary[o[7]].add_offer_for_load(offer, o[8])
+            if (o[9] is True): #add to hot deals
+                self.hot_deals[o[0]] = offer
+
+        return all_offers_to_return
+
+    def load_all_steps(self, all_steps, all_steps_dictionary):
+        for s in all_steps:
+            if s[0] not in all_steps_dictionary.keys():
+                all_steps_dictionary[s[0]] = {}
+            step = Step(s[2], s[3])
+            all_steps_dictionary[s[0]][s[1]] = step
+
+    def load_all_products(self, all_products, all_products_dictionary):
+        for p in all_products:
+            photos = []
+            for i in range(6, 16):
+                photos.append(p[i])
+            product = Product(p[1], p[2], p[3], p[4], p[5], photos, p[0])
+            all_products_dictionary[p[0]] = product
+
+    def load_all_current_buyers(self,all_current_buyers , all_current_buyers_dict):
+        for cb in all_current_buyers:
+            if cb[0] not in all_current_buyers_dict.keys():
+                all_current_buyers_dict[cb[0]] = {}
+            purchase = Purchase(cb[2], cb[3])
+            all_current_buyers_dict[cb[0]][cb[1]] = purchase
+
+    def load_all_total_products(self,total_products_per_offer, all_current_buyers_dict):
+        # initialize with zero
+        for offer_id in all_current_buyers_dict.keys():
+            total_products_per_offer[offer_id] = 0
+
+        for offer_id in all_current_buyers_dict.keys():
+            total_products_per_offer[offer_id] += all_current_buyers_dict[offer_id].get_quantity()

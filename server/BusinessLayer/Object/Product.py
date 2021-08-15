@@ -1,12 +1,12 @@
 class Product:
-    def __init__(self, name, company, color, size, description, photos):
+    def __init__(self, offer_id, name, company, color, size, description, photos):
         self.name = name
         self.company = company
         self.color = color
         self.size = size
         self.description = description
         self.photos = photos
-        self.offer_id = -1
+        self.offer_id = offer_id
 
     def set_name(self, name):
         self.name = name

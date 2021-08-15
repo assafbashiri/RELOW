@@ -7,8 +7,7 @@ class UserAddress:
         self.floor = None
 
     def add_address_details(self, city, street, apartment_number, zip_code, floor):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
+
         # tool bar to choose the address
         self.city = city
         self.street = street

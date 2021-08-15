@@ -1,5 +1,5 @@
-from BusinessLayer.Object import Offer
-from BusinessLayer.Utils import OfferStatus
+from BusinessLayer.Object.Offer import Offer
+from BusinessLayer.Utils.OfferStatus import OfferStatus
 from datetime import date, datetime
 
 
@@ -11,10 +11,13 @@ class SubCategory:
         self.father_category_id = father_category_id
 
     def add_offer(self,offer_id, user_id, product, steps, end_date):
-        status = OfferStatus.OfferStatus.NOT_EXPIRED_UNCOMPLETED #initial state
-        offer_to_add = Offer.Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date)
+        status = OfferStatus.ACTIVE #initial state
+        offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date, {}, 0)
         self.offers_dictionary[offer_id] = offer_to_add
         return offer_to_add
+
+    def add_offer_for_load(self, offer):
+        self.offers_dictionary[offer.offer_id] = offer
 
 
     def remove_offer(self, offer_id):

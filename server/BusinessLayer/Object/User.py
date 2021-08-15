@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from BusinessLayer.Object import Offer
 from BusinessLayer.Object.UserAddress import UserAddress
 from BusinessLayer.Object.UserPayment import UserPayment
@@ -7,12 +7,9 @@ from BusinessLayer.Utils import CheckValidity
 
 class User():
     def __init__(self, next_user_id, first_name, last_name, user_name, email, password, birth_date, gender):
+        # ---------- user submission
         self.active = True
         self.is_logged = False
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
         self.user_id = next_user_id
         self.first_name = first_name
         self.last_name = last_name
@@ -21,47 +18,99 @@ class User():
         self.password = password
         self.birth_date = birth_date
         self.gender = gender
+        self.age = datetime.today() - self.birth_date
 
+        # ---------- user extra details
         self.address = UserAddress()
         self.payment = UserPayment()
-
+        # ---------- user's offers lists
         self.history_buy_offers = {}
         self.history_sale_offers = {}
         self.liked_offers = {}
         self.active_sale_offers = {}
-        self.active_buy_offers = {} # with quantity and step
-
+        self.active_buy_offers = {}
 
     def log_in(self):
         self.is_logged = True
 
     def log_out(self):
         self.is_logged = False
-        print("log out.. done")
 
-    def set_address_details(self,user_address):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        # tool bar to choose the address
+    def set_address_details(self, user_address):
         self.address = user_address
 
-
     def set_card_details(self, user_payment):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
         self.payment = user_payment
 
-    def add_to_history_purches(self, offer_to_add):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        # check if the offer valid
-        self.history_buy_offers.add(offer_to_add.offer_id, offer_to_add)
+    def set_first_name(self, first_name):
+        self.first_name = first_name
 
-    def add_to_liked_offers(self, liked_offer):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        # check if the offer valid
-        self.liked_offers.add(liked_offer.offer_id, liked_offer)
+    def set_last_name(self, last_name):
+        self.last_name = last_name
+        # update DB
+
+    def set_user_name(self, user_name):
+        self.user_name = user_name
+        # update DB
+
+    def set_password(self, password):
+        self.password = password
+
+    def set_date_of_birth(self, date_of_birth):
+        self.birth_date = date_of_birth
+        self.age = datetime.today() - self.birth_date
+
+    def set_gender(self, gender):
+        self.gender = gender
+
+
+    def set_email(self, email):
+        self.email = email
+
+    def set_city(self, city):
+        self.address.set_city(city)
+
+    def set_street(self, street):
+        self.address.set_city(street)
+
+    def set_apartment_number(self, apartment_number):
+        self.address.set_city(apartment_number)
+
+    def set_zip_code(self, zip_code):
+        self.address.set_city(zip_code)
+
+    def set_floor(self, floor):
+        self.address.set_city(floor)
+
+    def set_credit_card_number(self, credit_card_number):
+        self.payment.set_credit_card_number(credit_card_number)
+
+    def set_credit_card_experation_date(self, credit_card_experation_date):
+        self.payment.set_credit_card_experation_date(credit_card_experation_date)
+
+    def set_cvv(self, cvv):
+        self.payment.set_cvv(cvv)
+
+    def set_card_type(self, card_type):
+        self.payment.set_card_type(card_type)
+
+    def set_id(self, id_number):
+        self.payment.set_id_number(id_number)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def add_like_offer(self, liked_offer):
+        self.liked_offers[liked_offer.offer_id] = liked_offer
 
     def remove_from_liked_offers(self, offer_to_remove):
         if self.is_logged is False:
@@ -70,27 +119,26 @@ class User():
             raise Exception("offer didnt exist in 'Liked Offers'")
         self.liked_offers.remove(offer_to_remove.offer_id)
 
-    def add_to_item_sold(self, offer_sold):
+    def add_active_sale_offer(self, offer_sold):
         if self.is_logged is False:
             raise Exception("User Is Not Logged In")
         # check if the offer valid
-        self.active_sale_offers.add(offer_sold.offer_id, offer_sold)
+        self.active_sale_offers[offer_sold.offer_id] = offer_sold
 
-    def add_to_active_offers(self, offer_to_add):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
+    def add_active_buy_offer(self, offer_to_add):
         # check if the offer valid
-        self.active_buy_offers.add(offer_to_add.offer_id, offer_to_add)
-
+        self.active_buy_offers[offer_to_add.offer_id] = offer_to_add
 
     def move_to_history_buyer(self, offer_to_move):
 
         self.active_buy_offers.pop(offer_to_move.offer_id, None)
         self.add_to_history_buyer(offer_to_move)
+
     def move_to_history_seller(self, offer_to_move):
 
         self.active_sale_offers.pop(offer_to_move.offer_id, None)
         self.add_to_history_seller(offer_to_move)
+
     def add_to_history_buyer(self, offer_to_add):
         if offer_to_add.offer_id in self.history_buy_offers:
             raise Exception("Offer Already Exist In History Buyer")
@@ -101,112 +149,22 @@ class User():
             raise Exception("Offer Already Exist In History Buyer")
         self.history_sale_offers[offer_to_add.offer_id] = offer_to_add
 
-    def set_first_name(self, first_name):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        #CheckValidity.checkValidityName(first_name) - to fix !
-        self.first_name = first_name
-
-    def set_last_name(self, last_name):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        CheckValidity.checkValidityName(last_name)
-        self.last_name = last_name
-        # update DB
-
-    def set_user_name(self, user_name):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        CheckValidity.checkValidityName(user_name)
-        self.user_name = user_name
-        # update DB
-
-    def set_password(self, password):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        CheckValidity.checkValidityPassword(password)
-        self.password = password
-
-    def set_date_of_birth(self, date_of_birth):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        # tool bar to choose date of birth
-        self.checkValidityDateOfBirth(date_of_birth)
-        self.date_of_birth = date_of_birth
-        self.age = date.today() - self.date_of_birth
-
-    def set_gender(self, gender):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        # tool bar to choose gender
-        self.gender = gender
-
-    def set_age(self, age):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        CheckValidity.checkValidityAge(age)
-        self.age = age
-
-    def set_email(self, email):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        CheckValidity.checkValidityEmail(email)
-        self.email = email
-
-    def set_city(self, city):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.address.set_city(city)
-
-    def set_street(self, street):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.address.set_city(street)
-
-    def set_apartment_number(self, apartment_number):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.address.set_city(apartment_number)
-
-    def set_zip_code(self, zip_code):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.address.set_city(zip_code)
-
-    def set_floor(self, floor):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.address.set_city(floor)
-
-    def set_credit_card_number(self, credit_card_number):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.payment.set_credit_card_number(credit_card_number)
-
-    def set_credit_card_experation_date(self, credit_card_experation_date):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.payment.set_credit_card_experation_date(credit_card_experation_date)
-
-    def set_cvv(self, cvv):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.payment.set_cvv(cvv)
-
-    def set_card_type(self, card_type):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.payment.set_card_type(card_type)
-
-    def set_id(self, id_number):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        self.payment.set_id_number(id_number)
-
 
 
     # -------------------- get
-        # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
+
+    def is_active_buyer(self):
+        if len(self.active_buy_offers) == 0:
+            return False
+        return True
+
+    def is_active_seller(self):
+        if len(self.active_sale_offers) == 0:
+            return False
+        return True
+
+
+    # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
     def get_is_logged(self):
         return self.is_logged
 
@@ -235,6 +193,7 @@ class User():
         return self.gender
 
         # -------------------------------------------USER ADDRESS-----------------------------------------------------------
+
     def get_city(self):
         return self.address.get_city()
 
