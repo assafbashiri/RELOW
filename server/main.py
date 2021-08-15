@@ -5,7 +5,7 @@ from _thread import *
 import pickle
 import datetime
 from BusinessLayer.Object.Product import Product
-from Service.protocol import Protocol
+from Service.Handler import Handler
 from DB.Repository import repository
 from BusinessLayer.Controllers import CategoryController
 from BusinessLayer.Controllers import UserController
@@ -14,6 +14,9 @@ from BusinessLayer.Utils import OfferStatus
 from BusinessLayer.Object.Offer import Offer
 from BusinessLayer.Object.Product import Product
 from BusinessLayer.Object.Step import Step
+
+from Service.OurFactory import OurFactory
+from twisted.internet import reactor
 
 
 class Struct(object):
@@ -30,7 +33,7 @@ p1 = point(1,2)
 def network():
     ServerSocket = socket.socket()
     host = '127.0.0.1'
-    port = 1233
+    port = 4000
     ThreadCount = 0
     try:
         ServerSocket.bind((host, port))
@@ -42,7 +45,7 @@ def network():
 
 
     def threaded_client(connection):
-        pro = Protocol(conn)
+        pro = Handler(conn)
         opening = 'Welcome to the Server'
         step1 = pickle.dumps(opening)
         print(step1)
@@ -78,5 +81,7 @@ if __name__ == '__main__':
     repository.create_tables()
     u = UserController.UserController(conn)
     c = CategoryController.CategoryController(conn)
-    t1 = threading.Thread(target=network)
-    t1.start()
+    reactor.listenTCP(4000, OurFactory(conn))
+    reactor.run()
+    # t1 = threading.Thread(target=network)
+    # t1.start()
