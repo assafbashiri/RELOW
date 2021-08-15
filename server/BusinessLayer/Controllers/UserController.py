@@ -569,7 +569,7 @@ class UserController:
             user = self.usersDictionary[user_id]
             for offer in offers:
                 if offer.user_id == user_id:
-                    user.add_active_buy_offer(offer)
+                    user.add_active_sale_offer(offer)
             # active buy offers - can change with the offers
             for buyerInOffer in buyers_in_offer_per_buyer_db:
                 if user_id == buyerInOffer[1]:
