@@ -360,10 +360,9 @@ class UserController:
             self.remove_active_buy_offer(user_ids[i], offer)
 
             # this function above update the DB
-        offer.set_status(OfferStatus.OfferStatus.EXPIRED_UNCOMPLETED)
+        offer.set_status(OfferStatus.OfferStatus.CANCELED_BY_SELLER)
         self.offers_dao.update(OfferDTO(offer))
-        self.offers_dao.insert_to_history_sellers(offer.get_user_id(), offer.get_offer_id(), offer.get_status(),
-                                                  offer.get_current_step())
+        self.offers_dao.insert_to_history_offers(offer.get_user_id(), OfferDTO(offer))
 
     def remove_active_buy_offer(self, user_id, offer):
         if not (self.exist_user_id(user_id)):
@@ -373,7 +372,7 @@ class UserController:
         user.move_to_history_buyer(offer)
         self.offers_dao.delete_buy_offer(user_id, offer.get_offer_id())
         self.offers_dao.insert_to_history_buyers(offer.get_user_id(), offer.get_offer_id(),
-                                                 OfferStatus.OfferStatus.EXPIRED_UNCOMPLETED,
+                                                 offer.get_status(),
                                                  offer.get_current_step())
         self.update_curr_step(offer)
 
@@ -470,9 +469,7 @@ class UserController:
                                                          curr_offer.get_status(),
                                                          curr_offer.get_current_step())
             self.offers_dao.update(OfferDTO(curr_offer))
-            self.offers_dao.insert_to_history_sellers(curr_offer.get_user_id(), curr_offer.get_offer_id(),
-                                                      curr_offer.get_status(),
-                                                      curr_offer.get_current_step())
+            self.offers_dao.insert_to_history_offers(curr_offer.get_user_id(), OfferDTO(curr_offer))
 
     # maybe delete those 2 functions
     def add_to_history_buyer(self, user_id, offer_to_add):

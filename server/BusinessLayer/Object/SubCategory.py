@@ -11,7 +11,7 @@ class SubCategory:
         self.father_category_id = father_category_id
 
     def add_offer(self,offer_id, user_id, product, steps, end_date):
-        status = OfferStatus.NOT_EXPIRED_UNCOMPLETED #initial state
+        status = OfferStatus.ACTIVE #initial state
         offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date, {}, 0)
         self.offers_dictionary[offer_id] = offer_to_add
         return offer_to_add

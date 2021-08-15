@@ -129,18 +129,15 @@ class CategoryController:
         self.hot_deals.pop(offer_id, None)
         self.offerDAO.update(OfferDTO(offer_to_remove))
 
-
-
-    def add_step(self, products_amount, price):
-        step = Step(products_amount, price)
-
     def get_all_expired_offers(self):
         ans = []
-        category_offers = []
         for category_id in self.category_dictionary.keys():
             category_offers = self.category_dictionary[category_id].get_all_expired_offers()
             if category_offers is not None:
                 ans.extend(category_offers)
+        for offer in ans:
+            self.remove_offer(offer.offer_id)
+
         return ans
 
     #------------------------------------------------update -----------------------------------------------------
