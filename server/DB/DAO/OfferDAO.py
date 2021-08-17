@@ -45,8 +45,8 @@ class OfferDAO:
         self._conn.execute("SELECT * FROM active_offers WHERE offer_id=?", [offer.offer_id])
         self._conn.commit()
 
-    def remove(self, offer):
-        self._conn.execute("DELETE FROM active_offers WHERE offer_id=?", [offer.offer_id])
+    def delete_active_offer(self, offer_id):
+        self._conn.execute("DELETE FROM active_offers WHERE offer_id=?", [offer_id])
         self._conn.commit()
 
 
@@ -126,10 +126,10 @@ class OfferDAO:
             """INSERT INTO history_buyers (user_id,offer_id,status,step) VALUES (?,?,?,?)""",
             [user_id, offer_id, status.name, step])
 
-    def insert_to_history_offers(self, user_id, offer_dto):
+    def insert_to_history_offers(self, offer_dto):
         self._conn.execute(
             """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?)""",
-            [offer_dto.offer_id, user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
+            [offer_dto.offer_id, offer_dto.user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
              offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
              offer_dto.hot_deals])
 
@@ -140,22 +140,22 @@ class OfferDAO:
 
     def load_all_offers(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  active_buyers")
+        this.execute("SELECT * FROM active_offers")
         return this.fetchall()
 
     def load_liked_offers(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  liked_offers")
+        this.execute("SELECT * FROM liked_offers")
         return this.fetchall()
 
     def load_all_steps(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  steps_per_offer")
+        this.execute("SELECT * FROM steps_per_offer")
         return this.fetchall()
 
     def load_buyers_in_offers(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  active_buyers")
+        this.execute("SELECT * FROM active_buyers")
         return this.fetchall()
 
     def load_history_sellers(self):

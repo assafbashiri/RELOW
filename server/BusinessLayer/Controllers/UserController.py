@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from BusinessLayer.Utils import CheckValidity
 from BusinessLayer.Object.User import User
 
@@ -8,7 +10,7 @@ from DB.DTO.UserDTO import UserDTO
 
 from DB.DTO.ProductDTO import ProductDTO
 
-from BusinessLayer.Object import Purchase
+from BusinessLayer.Object.Purchase import Purchase
 
 from BusinessLayer.Object.Offer import Offer
 from BusinessLayer.Object.Product import Product
@@ -232,183 +234,147 @@ class UserController:
     # ------------------------------- offers
 
     def add_active_sale_offer(self, offer):
-        if not (self.exist_user_id(offer.user_id)):
-            raise Exception("User does not exist")
-        saler = self.usersDictionary.get(offer.user_id)
-        saler.active_sale_offers[offer.offer_id] = offer
+        seller = self.check_user_state(offer.user_id)
+        seller.add_active_sale_offer(offer)
         offerDTO = OfferDTO(offer)
         productDTO = ProductDTO(offer.product)
         self.offers_dao.insert(offerDTO, productDTO)
 
     # add a buyer into an offer
     def add_active_buy_offer(self, user_id, offer, quantity, step):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        buyer = self.usersDictionary.get(user_id)
+        if user_id == offer.get_user_id():
+            raise Exception("seller cant buy is own product")
+        if offer.is_a_buyer(user_id):
+            raise Exception("the buyer is already subscribe to this offer")
+        buyer = self.check_user_state(user_id)
         # add the quantity and the step to the active_buy_offers
-        purchase = Purchase.Purchase(quantity, step)
+        purchase = Purchase(quantity, step)
         offer.add_buyer(user_id, purchase)
-        buyer.active_buy_offers[offer.offer_id] = offer
+        buyer.add_active_buy_offer(offer)
         offer_DTO = OfferDTO(offer)
         self.offers_dao.add_active_buy_offer(offer_DTO, user_id, quantity, step)
         self.update_curr_step(offer)
 
-        # update buyers_in_offer_total :::
-        # offer.updateStep()
-
     def add_like_offer(self, user_id, offer):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
+        user_temp = self.check_user_state(user_id)
         user_temp.add_like_offer(offer)
         self.offers_dao.add_like_offer(user_id, offer.offer_id)
 
     def remove_like_offer(self, user_id, offer):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        user_temp.liked_offers.pop(offer.offer_id, None)
+        user_temp = self.check_user_state(user_id)
+        flag = user_temp.remove_from_liked_offers(offer)
+        if not flag:
+            raise Exception("offer didnt exist in 'Liked Offers'")
         self.offers_dao.remove_like_offer(user_id, offer.offer_id)
 
     def remove_active_sale_offer(self, offer):
-        user_id = offer.get_user_id()
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user = self.usersDictionary[user_id]
-        user.move_to_history_seller(offer)
+        seller_user_id = offer.get_user_id()
+        seller = self.check_user_state(seller_user_id)
+        if not seller.move_to_history_seller(offer):
+            raise Exception("offer is not in the seller's sale offers")
         current_buyers = offer.get_current_buyers()
         user_ids = []
         user_ids.extend(current_buyers.keys())
+        offer.set_status(OfferStatus.CANCELED_BY_SELLER)
         for i in range(0, len(user_ids)):
-            self.remove_active_buy_offer(user_ids[i], offer)
-
+            self.remove_active_buy_offer(user_ids[i], offer, offer.get_status())
             # this function above update the DB
-        offer.set_status(OfferStatus.OfferStatus.CANCELED_BY_SELLER)
-        self.offers_dao.update(OfferDTO(offer))
-        self.offers_dao.insert_to_history_offers(offer.get_user_id(), OfferDTO(offer))
+        self.offers_dao.delete_active_offer(offer.offer_id)
+        self.offers_dao.insert_to_history_offers(OfferDTO(offer))
 
-    def remove_active_buy_offer(self, user_id, offer):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        offer.remove_buyer(user_id)
-        user = self.usersDictionary[user_id]
-        user.move_to_history_buyer(offer)
+    def remove_active_buy_offer(self, user_id, offer, status):
+        user = self.check_user_state(user_id)
+        if not offer.remove_buyer(user_id):
+            raise Exception("buyer not in the offer's buyers'")
+        if not user.move_to_history_buyer(offer):
+            raise Exception("offer didnt exist in user's active buy offers")
         self.offers_dao.delete_buy_offer(user_id, offer.get_offer_id())
-        self.offers_dao.insert_to_history_buyers(offer.get_user_id(), offer.get_offer_id(),
-                                                 offer.get_status(),
-                                                 offer.get_current_step())
+        self.offers_dao.insert_to_history_buyers(user_id, offer.get_offer_id(), status, offer.get_current_step())
         self.update_curr_step(offer)
 
     def update_active_buy_offer(self, user_id, offer, quantity, step):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        offer.update_active_buy_offer(user_id, quantity, step)
+        self.check_user_state(user_id)
+        if not offer.update_active_buy_offer(user_id, quantity, step):
+            raise Exception("User is not a buyer in this offer")
         self.offers_dao.update_active_buy_offer(user_id, offer.offer_id, quantity, step)
         self.update_curr_step(offer)
 
     def get_active_buy_offers(self, user_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        return user_temp.active_buy_offers
+        user_temp = self.check_user_state(user_id)
+        return user_temp.get_active_buy_offers()
 
-    def get_active_sell_offers(self, user_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        return user_temp.active_sale_offers
+    def get_active_sale_offers(self, user_id):
+        user_temp = self.check_user_state(user_id)
+        return user_temp.get_active_sale_offers()
 
     def get_history_buy_offers(self, user_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        return user_temp.history_buy_offers
+        user_temp = self.check_user_state(user_id)
+        return user_temp.get_history_buy_offers()
 
     def get_history_sell_offers(self, user_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        return user_temp.history_sale_offers
+        user_temp = self.check_user_state(user_id)
+        return user_temp.get_history_sell_offers()
 
     def get_liked_offers(self, user_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        return user_temp.liked_offers
+        user_temp = self.check_user_state(user_id)
+        return user_temp.get_liked_offers()
 
     def get_active_buy_offer(self, user_id, offer_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        if offer_id not in user_temp.active_buy_offers.keys():
-            raise Exception("offer does not exist")
-        return user_temp.active_buy_offers[offer_id]
+        user = self.check_user_state(user_id)
+        offer = user.get_active_buy_offer(offer_id)
+        if offer is None:
+            raise Exception("Offer Does Not Exist in user's active buy offers")
+        return offer
 
-    def get_active_sell_offer(self, user_id, offer_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        if offer_id not in user_temp.active_sale_offers.keys():
-            raise Exception("offer does not exist")
-        return user_temp.active_sale_offers[offer_id]
+    def get_active_sale_offer(self, user_id, offer_id):
+        user = self.check_user_state(user_id)
+        offer = user.get_active_sell_offer(offer_id)
+        if offer is None:
+            raise Exception("Offer Does Not Exist in user's active sale offers")
+        return offer
 
     def get_liked_offer(self, user_id, offer_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        if offer_id not in user_temp.liked_offers.keys():
-            raise Exception("offer does not exist")
-        return user_temp.liked_offers[offer_id]
+        user = self.check_user_state(user_id)
+        offer = user.get_liked_offer(offer_id)
+        if offer is None:
+            raise Exception("Offer Does Not Exist in user's liked offers")
+        return offer
 
     def get_history_buy_offer(self, user_id, offer_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        if offer_id not in user_temp.history_buy_offers.keys():
-            raise Exception("offer does not exist")
-        return user_temp.history_buy_offers[offer_id]
+        user = self.check_user_state(user_id)
+        offer = user.get_history_buy_offer(offer_id)
+        if offer is None:
+            raise Exception("Offer Does Not Exist in user's history buy offers")
+        return offer
 
-    def get_history_sell_offer(self, user_id, offer_id):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user_temp = self.usersDictionary[user_id]
-        if offer_id not in user_temp.history_sale_offers.keys():
-            raise Exception("offer does not exist")
-        return user_temp.history_sale_offers[offer_id]
+    def get_history_sale_offer(self, user_id, offer_id):
+        user = self.check_user_state(user_id)
+        offer = user.get_history_sale_offer(offer_id)
+        if offer is None:
+            raise Exception("Offer Does Not Exist in user's history sale offers")
+        return offer
 
     # ----------------------------------------------------------------------------------------------------------
     def move_all_expired_to_history(self, expired_offers):  # expired_offers - regular list
         # move all expired offers
         for curr_offer in expired_offers:
-            self.usersDictionary[curr_offer.user_id].move_to_history_seller(curr_offer)
+            seller = self.check_user_state(curr_offer.user_id)
+            curr_offer.check_exp_status()
+            if not seller.move_to_history_seller(curr_offer):
+                raise Exception("offer is not in the seller's sale offers")
             current_buyers = curr_offer.get_current_buyers()
-            curr_offer.set_status(OfferStatus.OfferStatus.EXPIRED_COMPLETED)
             for user_id in current_buyers.keys():
-                if not (self.exist_user_id(user_id)):
-                    raise Exception("User does not exist")
-                self.usersDictionary[user_id].move_to_history_buyer(curr_offer)
+                curr_buyer = self.check_user_state(user_id)
+                if not curr_buyer.move_to_history_buyer(curr_offer):
+                    raise Exception("offer is not in the buyer's offers")
                 self.offers_dao.delete_buy_offer(user_id, curr_offer.get_offer_id())
-                self.offers_dao.insert_to_history_buyers(curr_offer.get_user_id(), curr_offer.get_offer_id(),
+                self.offers_dao.insert_to_history_buyers(user_id, curr_offer.get_offer_id(),
                                                          curr_offer.get_status(),
                                                          curr_offer.get_current_step())
-            self.offers_dao.update(OfferDTO(curr_offer))
-            self.offers_dao.insert_to_history_offers(curr_offer.get_user_id(), OfferDTO(curr_offer))
+            self.offers_dao.delete_active_offer(curr_offer.offer_id)
+            self.offers_dao.insert_to_history_offers(OfferDTO(curr_offer))
 
-    # maybe delete those 2 functions
-    def add_to_history_buyer(self, user_id, offer_to_add):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user = self.usersDictionary[user_id]
-        user.add_to_history_buyer(offer_to_add)
-
-    def add_to_history_seller(self, user_id, offer_to_add):
-        if not (self.exist_user_id(user_id)):
-            raise Exception("User does not exist")
-        user = self.usersDictionary[user_id]
-        user.add_to_history_seller(offer_to_add)
-
-    # ----------------------------------------------------------------------------------------------------------
-    # -------------------------- private functions -- to implement!!!
+    # -------------------------- private functions -------------------------------------------------------------
 
     def exist_user_name1(self, user_name):
         user_ids = self.usersDictionary.keys()
@@ -421,7 +387,6 @@ class UserController:
         if user_id in self.usersDictionary.keys():
             return True
         return False
-
 
     def get_password_by_user_name(self, user_name):
         user_ids = self.usersDictionary.keys()
@@ -452,10 +417,10 @@ class UserController:
         self.offers_dao.update(offerDTO)
 
     def load_users(self, offers):
-
         users_submission_db = self.users_dao.load_users_sub()
         for user in users_submission_db:
-            user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], user[6], user[7])
+            date = datetime.strptime(user[6], "%Y-%m-%d %H:%M:%S")
+            user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], date, user[7])
             user_temp.is_logged = user[8]
             user_temp.active = user[9]
             self.usersDictionary[user[0]] = user_temp
@@ -473,7 +438,6 @@ class UserController:
             self.usersDictionary[adr[0]].set_address_details(adr_temp)
 
         # add loading from users extra details
-
         # ----------------- users details done --------------------------------
         # loading offers lists for each user
 
@@ -485,7 +449,8 @@ class UserController:
         for user_id in self.usersDictionary.keys():
             # active sell offers
             user = self.usersDictionary[user_id]
-            for offer in offers:
+            for offer_id in offers.keys():
+                offer = offers[offer_id]
                 if offer.user_id == user_id:
                     user.add_active_sale_offer(offer)
             # active buy offers - can change with the offers

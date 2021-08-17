@@ -4,9 +4,9 @@ class CategoriesDAO:
     def __init__(self, conn):
         self._conn = conn
 
-    def insert(self, category):
+    def insert(self, categoryDTO):
         self._conn.execute("""INSERT INTO category (category_id,name) VALUES (?,?)""",
-                           [category.id, category.name])
+                           [categoryDTO.id, categoryDTO.name])
         self._conn.commit()
 
 
@@ -24,10 +24,8 @@ class CategoriesDAO:
         this = self._conn.cursor()
         this.execute("SELECT MAX(category_id) FROM category")
         output = this.fetchone()[0]
-        print(output)
         if output is None:
             output = 0
-
         return output + 1
 
     def load_all_categories(self):

@@ -113,29 +113,27 @@ class User():
         self.liked_offers[liked_offer.offer_id] = liked_offer
 
     def remove_from_liked_offers(self, offer_to_remove):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
         if offer_to_remove not in self.liked_offers:
-            raise Exception("offer didnt exist in 'Liked Offers'")
-        self.liked_offers.remove(offer_to_remove.offer_id)
+            return False
+        self.liked_offers.pop(offer_to_remove.offer_id, None)
+        return True
 
     def add_active_sale_offer(self, offer_sold):
-        if self.is_logged is False:
-            raise Exception("User Is Not Logged In")
-        # check if the offer valid
         self.active_sale_offers[offer_sold.offer_id] = offer_sold
 
     def add_active_buy_offer(self, offer_to_add):
-        # check if the offer valid
         self.active_buy_offers[offer_to_add.offer_id] = offer_to_add
 
     def move_to_history_buyer(self, offer_to_move):
-
+        if offer_to_move.offer_id not in self.active_buy_offers.keys():
+            return False
         self.active_buy_offers.pop(offer_to_move.offer_id, None)
         self.add_to_history_buyer(offer_to_move)
+        return True
 
     def move_to_history_seller(self, offer_to_move):
-
+        if offer_to_move.offer_id not in self.active_sale_offers.keys():
+            return False
         self.active_sale_offers.pop(offer_to_move.offer_id, None)
         self.add_to_history_seller(offer_to_move)
 
@@ -229,16 +227,52 @@ class User():
         # -------------------------------------------USER OFFERS-----------------------------------------------------------
 
     def get_history_buy_offers(self):
-        return self.history_buy_offers
+        ans = []
+        ans.extend(self.history_buy_offers.values())
+        return ans
 
     def get_history_sell_offers(self):
-        return self.history_sale_offers
+        ans = []
+        ans.extend(self.history_sale_offers.values())
+        return ans
 
     def get_liked_offers(self):
-        return self.liked_offers
+        ans = []
+        ans.extend(self.liked_offers.values())
+        return ans
 
     def get_active_sale_offers(self):
-        return self.active_sale_offers
+        ans = []
+        ans.extend(self.active_sale_offers.values())
+        return ans
 
     def get_active_buy_offers(self):
-        return self.active_buy_offers
+        ans = []
+        ans.extend(self.active_buy_offers.values())
+        return ans
+
+    def get_active_buy_offer(self, offer_id):
+        if offer_id not in self.active_buy_offers.keys():
+            return None
+        return self.active_buy_offers[offer_id]
+
+    def get_active_sale_offer(self, offer_id):
+        if offer_id not in self.active_sale_offers.keys():
+            return None
+        return self.active_sale_offers[offer_id]
+
+    def get_liked_offer(self, offer_id):
+        if offer_id not in self.liked_offers.keys():
+            return None
+        return self.liked_offers[offer_id]
+
+    def get_history_buy_offer(self, offer_id):
+        if offer_id not in self.history_buy_offers.keys():
+            return None
+        return self.history_buy_offers[offer_id]
+
+    def get_history_sale_offer(self, offer_id):
+        if offer_id not in self.history_sale_offers.keys():
+            return None
+        return self.history_sale_offers[offer_id]
+

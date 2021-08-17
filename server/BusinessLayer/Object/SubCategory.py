@@ -10,22 +10,22 @@ class SubCategory:
         self.id = id
         self.father_category_id = father_category_id
 
-    def add_offer(self,offer_id, user_id, product, steps, end_date):
-        status = OfferStatus.ACTIVE #initial state
-        offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status,steps, date.today(), end_date, {}, 0)
+    def add_offer(self, offer_id, user_id, product, steps, end_date):
+        status = OfferStatus.ACTIVE
+        offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status, steps, date.today(), end_date, {}, 0)
         self.offers_dictionary[offer_id] = offer_to_add
         return offer_to_add
 
     def add_offer_for_load(self, offer):
         self.offers_dictionary[offer.offer_id] = offer
 
-
     def remove_offer(self, offer_id):
         offer_to_remove = self.offers_dictionary[offer_id]
         self.offers_dictionary.pop(offer_id, None)
         return offer_to_remove
 
-
+    def add_exist_offer(self, offer_to_move):
+        self.offers_dictionary[offer_to_move.offer_id] = offer_to_move
 
     def set_name(self, new_name):
         self.name = new_name
@@ -54,10 +54,9 @@ class SubCategory:
         ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
-            if curr_offer.get_status().name == status:
+            if curr_offer.get_status().name == status.name:
                 ans.append(curr_offer)
         return ans
-
 
     def remove_buyer_from_offer(self, offer_id, user_id):
         if not offer_id in self.offers_dictionary:

@@ -4,9 +4,9 @@ class SubCategoriesDAO:
     def __init__(self, conn):
         self._conn = conn
 
-    def insert(self, sub_category):
+    def insert(self, sub_categoryDTO):
         self._conn.execute("""INSERT INTO sub_category (sub_category_id, category_id,name) VALUES (?,?,?)""",
-                           [sub_category.id,sub_category.father_category_id, sub_category.name])
+                           [sub_categoryDTO.id,sub_categoryDTO.father_category_id, sub_categoryDTO.name])
         self._conn.commit()
 
 
@@ -25,7 +25,6 @@ class SubCategoriesDAO:
         this = self._conn.cursor()
         this.execute("SELECT MAX(sub_category_id) FROM sub_category")
         output = this.fetchone()[0]
-        print(output)
         if output is None:
             output = 0
         return  output+1
