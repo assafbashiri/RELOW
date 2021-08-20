@@ -58,11 +58,6 @@ class SubCategory:
                 ans.append(curr_offer)
         return ans
 
-    def remove_buyer_from_offer(self, offer_id, user_id):
-        if not offer_id in self.offers_dictionary:
-            raise Exception("No Such Offer")
-        self.offers_dictionary[offer_id].remove_buyer(user_id)
-
     def get_offer_by_offer_id(self, offer_id):
         if offer_id in self.offers_dictionary:
             return self.offers_dictionary[offer_id]
@@ -83,3 +78,6 @@ class SubCategory:
             if curr_offer.end_date <= datetime.today():
                 ans.append(curr_offer)
         return ans
+
+    def is_contained_offers(self):
+        return len(self.offers_dictionary) != 0

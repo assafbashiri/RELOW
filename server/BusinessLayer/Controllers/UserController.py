@@ -20,8 +20,8 @@ from BusinessLayer.Utils import OfferStatus
 
 from BusinessLayer.Utils.OfferStatus import OfferStatus
 
-from server.BusinessLayer.Utils.CheckValidity import checkValidity
-from server.BusinessLayer.Utils.Gender import Gender
+from BusinessLayer.Utils.CheckValidity import checkValidity
+from BusinessLayer.Utils.Gender import Gender
 
 
 class UserController:
@@ -95,16 +95,16 @@ class UserController:
         user_to_add.set_card_details(payment_method)
         self.users_dao.update(UserDTO(user_to_add))
 
-    def add_address(self, user_id, city, street, zip_code, floor, apartment_number):
+    def add_address_details(self, user_id, city, street, zip_code, floor, apartment_number):
         user_to_add = self.check_user_state(user_id)
         address = UserAddress()
         address.add_address_details(city, street, apartment_number, zip_code, floor)
         user_to_add.set_address_details(address)
         self.users_dao.update(UserDTO(user_to_add))
 
-    def update_first_name(self, user_id, firstname):
+    def update_first_name(self, user_id, new_first_name):
         user = self.check_user_state(user_id)
-        user.set_first_name(firstname)
+        user.set_first_name(new_first_name)
         self.users_dao.update(UserDTO(user))
 
     def update_last_name(self, user_id, lastname):
@@ -201,9 +201,9 @@ class UserController:
         offer.set_start_date(new_start_date)
         self.offers_dao.update(OfferDTO(offer))
 
-    def update_step(self, user_id, offer_id, step):
+    def update_step_for_user(self, user_id, offer_id, new_step):
         offer = self.check_offer_state(user_id, offer_id)
-        offer.set_step(step)
+        offer.set_current_step(new_step)
         self.offers_dao.update(OfferDTO(offer))
 
     def update_product_name(self, user_id, offer_id, name):
@@ -260,12 +260,12 @@ class UserController:
         user_temp.add_like_offer(offer)
         self.offers_dao.add_like_offer(user_id, offer.offer_id)
 
-    def remove_like_offer(self, user_id, offer):
+    def remove_like_offer(self, user_id, offer_id_to_remove):
         user_temp = self.check_user_state(user_id)
-        flag = user_temp.remove_from_liked_offers(offer)
+        flag = user_temp.remove_from_liked_offers(offer_id_to_remove)
         if not flag:
             raise Exception("offer didnt exist in 'Liked Offers'")
-        self.offers_dao.remove_like_offer(user_id, offer.offer_id)
+        self.offers_dao.remove_like_offer(user_id, offer_id_to_remove)
 
     def remove_active_sale_offer(self, offer):
         seller_user_id = offer.get_user_id()

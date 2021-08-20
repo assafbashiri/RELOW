@@ -24,6 +24,12 @@ class Category:
     def add_exist_offer(self, offer_to_move, new_sub_category_id):
         self.sub_categories_dictionary[new_sub_category_id].add_exist_offer(offer_to_move)
 
+    def is_contained_offers(self,sub_category_id):
+        return self.sub_categories_dictionary[sub_category_id].is_contained_offers()
+
+    def is_contain_sub_categories(self):
+        return len(self.sub_categories_dictionary) != 0
+
     def remove_sub_category(self, sub_category_id):
 
         if sub_category_id not in self.sub_categories_dictionary:

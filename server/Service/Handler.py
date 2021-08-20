@@ -72,7 +72,8 @@ class Handler:
                          56: self.get_offers_by_status,
                          57: self.get_hot_deals,
                          58: self.add_to_hot_deals,
-                         59: self.remove_to_hot_deals}
+                         59: self.remove_to_hot_deals,
+                         60: self.update_step_for_offer}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -95,7 +96,7 @@ class Handler:
                                           argument['password'],
                                           argument['birth_date'],
                                           argument['gender'])
-            return Response("ok", "Registered Successfully", True), True
+            return Response(UserService(user), "Registered Successfully", True), True
         except Exception as e:
             return Response(None, str(e), False), True
 
@@ -149,7 +150,7 @@ class Handler:
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
             self.user_controller.add_like_offer(self.user.user_id, offer)
-            return Response(OfferService(offer), "Offer Added Successfully", True)
+            return Response(OfferService(offer), "Offer Added SuccessfullyTo Liked Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -161,7 +162,7 @@ class Handler:
                                                      argument['zip_code'],
                                                      argument['floor'],
                                                      argument['apt'])
-            return Response(None, "Address Added Successfully", True)
+            return Response(None, "Address Details Added Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -192,25 +193,22 @@ class Handler:
 
     def remove_liked_offer(self, argument):
         try:
-            self.user_controller.remove_like_offer(self.user.user_id)
-            return Response(None, "Offer Removed", True)
+            self.user_controller.remove_like_offer(self.user.user_id, argument['offer_id'])
+            return Response(None, "Offer Removed From Liked Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def remove_active_sell_offer(self, argument):
         try:
-            self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
-            offer_id = self.category_controller.remove_offer(argument['offer_id'],
-                                                             argument['category_id'],
-                                                             argument['sub_category_id'])
-            return Response(offer_id, "Offer Removed Successfully", True)
+            offer = self.category_controller.remove_offer(argument['offer_id'])
+            self.user_controller.remove_active_sale_offer(offer)
+            return Response(OfferService(offer), "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def remove_active_buy_offer(self, argument):
         try:
-            self.user_controller.remove_active_sale_offer(self.user.user_id, argument['offer_id'])
-            self.category_controller.remove_buyer_from_offer(self.user.user_id, argument['offer_id'])
+            self.user_controller.remove_active_buy_offer(self.user.user_id, argument['offer_id'])
             return Response(None, "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -461,7 +459,7 @@ class Handler:
 
     def update_step(self, argument):
         try:
-            self.user_controller.update_step(argument['offer_id'], argument['step'])
+            self.user_controller.update_step_for_user(argument['user_id'] , argument['offer_id'], argument['step'])
             return Response(None, "Update Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -543,6 +541,13 @@ class Handler:
         try:
             self.category_controller.remove_from_hot_deals(argument['offer_id'])
             return Response(None, "Offers Lists Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def update_step_for_offer(self, argument):
+        try:
+            self.category_controller.update_step_for_offer(argument['offer_id'],argument['step_number'],argument['quantity'],argument['price'])
+            return Response(None, "Step Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

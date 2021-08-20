@@ -77,8 +77,8 @@ if __name__ == '__main__':
     repository.delete_all_db()
     u = UserController(conn)
     c = CategoryController(conn)
-    offers = c.load()
-    u.load_users(offers)
+    #offers = c.load()
+    #u.load_users(offers)
     # ------- check -------------------------------------------------
     step1 = Step(50, 20)
     step2 = Step(100, 15)
@@ -90,9 +90,12 @@ if __name__ == '__main__':
     c.add_sub_category("swim", 1)
     u.register("amit","moskovitz", "amitmosk","amit@gmail.com","123",date, 1)
     u.register("tom","nisim", "tomnis","tom@gmail.com","123",date, 1)
-    of1 = c.add_offer(1, "shoko", "tnova", "green", "5/6", "nice prod", "nophoto", 1, 1, {1: step1, 2: step2, 3: step3}, date)
-    u.add_active_sale_offer(of1)
-    u.add_active_buy_offer(2, of1, 20, 1)
+
+
+
+    of3 = c.add_offer(1, "shoko", "tnova", "green", "5/6", "nice prod", "nophoto", 1, 1, {1: step1, 2: step2, 3: step3}, date)
+    u.add_active_sale_offer(of3)
+    u.add_active_buy_offer(2, of3, 20, 1)
 
 
 
@@ -106,6 +109,13 @@ if __name__ == '__main__':
 
     u.add_active_sale_offer(of1)
     u.add_active_sale_offer(of2)
+
+    tt= u.get_user_by_id(1)
+    a=9
+
+
+
+
     #c.remove_sub_category(1, 1)
     #c.remove_category(1)
     # ------- check -------------------------------------------------

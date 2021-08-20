@@ -1,6 +1,8 @@
 from BusinessLayer.Object.Purchase import Purchase
 
-from server.BusinessLayer.Utils.OfferStatus import OfferStatus
+from BusinessLayer.Utils.OfferStatus import OfferStatus
+from BusinessLayer.Object.Step import Step
+
 
 
 class Offer:
@@ -55,8 +57,9 @@ class Offer:
     def set_status(self, status):
         self.status = status
 
-    def set_steps(self, steps):
-        self.steps = self
+    def set_steps(self, step_number, quantity, price):
+        new_step = Step(quantity , price)
+        self.steps[step_number] = new_step
 
     def set_start_date(self, start_days):
         self.start_date = self

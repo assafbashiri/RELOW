@@ -11,7 +11,7 @@ from BusinessLayer.Object.Step import Step
 from BusinessLayer.Object.SubCategory import SubCategory
 from BusinessLayer.Object.Offer import Offer
 
-from server.BusinessLayer.Utils.OfferStatus import OfferStatus
+from BusinessLayer.Utils.OfferStatus import OfferStatus
 
 
 class CategoryController:
@@ -55,6 +55,8 @@ class CategoryController:
     # no return, throw exceptions
     def remove_category(self, category_id):
         category_to_remove = self.get_category_by_id(category_id)
+        if category_to_remove.is_contain_sub_categories():
+            raise Exception("Can not remove category while it contains sub categories")
         self.category_dictionary.pop(category_id, None)  # check
         # remove category from DB
         self.categoriesDAO.delete(CategoryDTO(category_to_remove))
@@ -76,7 +78,9 @@ class CategoryController:
 
     # no return, throw exceptions
     def remove_sub_category(self, sub_category_id, category_id):
-        self.check_category_exist(category_id)
+        category = self.get_category_by_id(category_id)
+        if category.is_contained_offers(sub_category_id):
+            raise Exception("Can not remove sub category while it contains offers")
         sub_category_to_remove = self.category_dictionary[category_id].remove_sub_category(sub_category_id)
         if sub_category_to_remove is None:
             raise Exception("No Such Sub Category")
@@ -144,6 +148,10 @@ class CategoryController:
             raise Exception("No Such Sub Category")
         # update in DB
         self.sub_categoriesDAO.update(SubCategoryDTO(updated_sub_category))
+
+    def update_step_for_offer(self, offer_id,step_number, quantity, price):
+        offer_to_update = self.get_offer_by_offer_id(offer_id)
+        offer_to_update.set_steps(step_number, quantity, price)
 
     # --------------------------------------------getters-------------------------------------------------
 

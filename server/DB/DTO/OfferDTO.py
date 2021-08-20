@@ -1,4 +1,4 @@
-from server.DB.DTO.ProductDTO import ProductDTO
+from DB.DTO.ProductDTO import ProductDTO
 
 
 class OfferDTO:

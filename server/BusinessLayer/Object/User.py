@@ -18,7 +18,14 @@ class User():
         self.password = password
         self.birth_date = birth_date
         self.gender = gender
-        self.age = datetime.today() - self.birth_date
+        #self.age = datetime.today() - self.birth_date
+        today = date.today()
+        born =self.birth_date
+        self.age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+
+
+
 
         # ---------- user extra details
         self.address = UserAddress()
@@ -98,24 +105,13 @@ class User():
         self.payment.set_id_number(id_number)
 
 
-
-
-
-
-
-
-
-
-
-
-
     def add_like_offer(self, liked_offer):
         self.liked_offers[liked_offer.offer_id] = liked_offer
 
-    def remove_from_liked_offers(self, offer_to_remove):
-        if offer_to_remove not in self.liked_offers:
+    def remove_from_liked_offers(self, offer_id_to_remove):
+        if offer_id_to_remove not in self.liked_offers.keys():
             return False
-        self.liked_offers.pop(offer_to_remove.offer_id, None)
+        self.liked_offers.pop(offer_id_to_remove, None)
         return True
 
     def add_active_sale_offer(self, offer_sold):
