@@ -2,7 +2,7 @@ import re
 import datetime
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-class checkValidity():
+class checkValidity:
 
     def checkValidityName(self,name):
         if name.replace(" ", "").isalpha():
@@ -45,3 +45,27 @@ class checkValidity():
             raise Exception("Input date is not valid..")
         elif difference_in_years > 100.0:
             raise Exception("Input date is not valid..")
+
+
+    def check_register(self, email, user_name, usersDictionary):
+        for user_id in usersDictionary.keys():
+            user = usersDictionary[user_id]
+            if user.get_user_name() == user_name:
+                raise Exception("user_name is already exist")
+        for user_id in usersDictionary.keys():
+            user = usersDictionary[user_id]
+            if user.get_email() == email:
+                raise Exception("email is already exist")
+
+    def check_unregister(self, user):
+        if user is None:
+            raise Exception("User does not exist")
+        if user.active is not True:
+            raise Exception("user is not active")
+        if user.is_logged is not True:
+            raise Exception("user is not logged in")
+        if user.is_active_buyer():
+            raise Exception("the user is subscribe to an offer as a buyer")
+        if user.is_active_seller():
+            raise Exception("the user is subscribe to an offer as a buyer")
+

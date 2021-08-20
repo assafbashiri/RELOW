@@ -12,7 +12,7 @@ from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
 
 
-class Protocol:
+class Handler:
 
     def __init__(self, conn):
         self.conn = conn
@@ -547,8 +547,6 @@ class Protocol:
             return Response(None, str(e), False)
 
     def handling(self, argument):
-        print("in protocol handling step 1")
         req = argument['op']
         func = self.switcher.get(int(req), "nada")
-        print("in protocol handling step 2")
         return func(argument)

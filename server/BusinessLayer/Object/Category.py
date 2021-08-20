@@ -1,6 +1,6 @@
 
 
-from BusinessLayer.Object import SubCategory
+from BusinessLayer.Object.SubCategory import SubCategory
 class Category:
     def __init__(self, name, id):
         self.name = name
@@ -14,12 +14,15 @@ class Category:
         self.sub_categories_dictionary[sub_category_id].add_offer_for_load(offer)
 
     def add_sub_category(self, name, sub_category_id):
-        sub_category_to_add = SubCategory.SubCategory(name, sub_category_id, self.id)
-
-        if sub_category_id in self.sub_categories_dictionary.keys():
-            return None
+        for sc_id in self.sub_categories_dictionary.keys():
+            if self.sub_categories_dictionary[sc_id].name == name:
+                return None
+        sub_category_to_add = SubCategory(name, sub_category_id, self.id)
         self.sub_categories_dictionary[sub_category_id] = sub_category_to_add
         return sub_category_to_add
+
+    def add_exist_offer(self, offer_to_move, new_sub_category_id):
+        self.sub_categories_dictionary[new_sub_category_id].add_exist_offer(offer_to_move)
 
     def remove_sub_category(self, sub_category_id):
 
@@ -29,15 +32,12 @@ class Category:
         self.sub_categories_dictionary.pop(sub_category_id, None)
         return sub_category_to_remove
 
-
     def add_offer(self,offer_id, user_id, product, sub_category_id, steps, end_date ):
-        # already checked if sub category exist
         return self.sub_categories_dictionary[sub_category_id].add_offer(offer_id, user_id, product, steps, end_date )
 
     def remove_offer(self, offer_id, sub_category_id):
         #already checked if sub category exist
         return self.sub_categories_dictionary[sub_category_id].remove_offer(offer_id)
-
 
     def set_name(self, new_name):
         self.name = new_name
@@ -62,20 +62,18 @@ class Category:
 
 
 #----------------------------------------------------getters----------------------------------------------------
-
     def get_offers(self):
         all_category_offers = []
         for sub_category_id in self.sub_categories_dictionary.keys():
             curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers()
             if curr_sub_category_offers is not None:
                 all_category_offers.extend(curr_sub_category_offers)
-
         return all_category_offers
 
     def get_offers_by_sub_category(self, sub_category_id):
         #already checked if sub category exist
-        s= self.sub_categories_dictionary[sub_category_id].get_offers()
-        return s
+        return self.sub_categories_dictionary[sub_category_id].get_offers()
+
     def get_offers_by_product_name(self, product_name):
         ans = []
         for sub_category_id in self.sub_categories_dictionary.keys():
@@ -102,7 +100,7 @@ class Category:
 
     def get_offer_by_offer_id(self, offer_id):
         for sub_category_id in self.sub_categories_dictionary.keys():
-            offer_to_return = self.sub_categories_dictionary[sub_categoty_id].get_offer_by_offer_id(offer_id)
+            offer_to_return = self.sub_categories_dictionary[sub_category_id].get_offer_by_offer_id(offer_id)
             if offer_to_return is not None:
                 return offer_to_return
         return None
