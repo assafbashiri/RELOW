@@ -1,0 +1,53 @@
+<MmainScreen>
+    orientation: "horizontal"
+    MainScreen:
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: 0.2,1
+        pos_hint: {'top':1}
+        MDIconButton:
+            height: 30
+            icon: 'apple'
+        MDIconButton:
+            icon: "android"
+        MDIconButton:
+            icon: 'atm'
+        MDIconButton:
+            text: "EXIT"
+
+<MessageBox>:
+    title: 'Popup Message Box'
+    size_hint: None, None
+    size: 400, 400
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.message
+        Button:
+            size_hint: 1, 0.2
+            text: 'OK'
+            on_press: root.dismiss()
+
+<RecycleViewRow>:
+    orientation: 'vertical'
+    Image:
+        source: 'c2.jpeg'
+        width: 100
+        allow_stretch: True
+    Label:
+        text: root.text
+    Button:
+        text: 'Show'
+        on_press: app.root.message_box(root.text)
+
+
+<MainScreen>:
+    size_hint: 1,1
+    viewclass: 'RecycleViewRow'
+    RecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'  
