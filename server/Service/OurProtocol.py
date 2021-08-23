@@ -18,9 +18,14 @@ class OurProtocol(Protocol):
         print("fuck you ba baby")
 
     def dataReceived(self, data):
+        print("hello")
         data1 = pickle.loads(data)
         print(type(data1))
         res = self.handler.handling(data1)
-        self.transport.write(pickle.dumps(res))
-        if data1['op'] == '2':
-            self.transport.connectionLost(Failure(BaseException(None)))
+        print(type(res))
+        print(res)
+        res1 = res[0]
+        print(type(res1))
+        print(res1)
+        a = vars(res1)
+        self.transport.write(pickle.dumps(a))

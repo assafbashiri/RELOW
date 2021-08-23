@@ -1,0 +1,69 @@
+<Menu_box>
+    orientation: "horizontal"
+    Offers_Screen:
+    BoxLayout:
+        size_hint: .2, .2
+        pos_hint: {'top':1}
+        spacing: 10
+        orientation: "vertical"
+        Button:
+            text: "ACCOUNT"
+            on_press:
+                root.parent.manager.current = 'account_screen'
+        Button:
+            text: "SEARCH"
+        Button:
+            text: "CAT"
+        Button:
+            text: "CONNECT"
+            on_press:
+                root.parent.manager.current = 'connect_screen'
+
+
+<MessageBox>
+    title: 'Popup Message Box'
+    size_hint: None, None
+    size: 400, 400
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.message
+        Button:
+            size_hint: 1, 0.2
+            text: 'OK'
+            on_press: root.dismiss()
+
+<RecycleViewRow>
+    orientation: 'vertical'
+    Carousel:
+        direction: 'left'
+        size: 1,1
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'a.png'
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'd.png'
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'b.png'
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'c.png'
+    Button:
+        text: "more details"
+        size_hint_y: .05
+
+
+
+<Offers_Screen>
+    viewclass: 'RecycleViewRow'
+    RecycleBoxLayout:
+        default_size: None, dp(500)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        spacing:10
+
