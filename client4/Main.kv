@@ -1,21 +1,26 @@
-<MmainScreen>
+<Menu_box>
     orientation: "horizontal"
-    MainScreen:
+    Offers_Screen:
     BoxLayout:
-        orientation: "vertical"
-        size_hint: 0.2,1
+        size_hint: .2, .2
         pos_hint: {'top':1}
-        MDIconButton:
-            height: 30
-            icon: 'apple'
-        MDIconButton:
-            icon: "android"
-        MDIconButton:
-            icon: 'atm'
-        MDIconButton:
-            text: "EXIT"
+        spacing: 10
+        orientation: "vertical"
+        Button:
+            text: "ACCOUNT"
+            on_press:
+                root.parent.manager.current = 'account_screen'
+        Button:
+            text: "SEARCH"
+        Button:
+            text: "CAT"
+        Button:
+            text: "CONNECT"
+            on_press:
+                root.parent.manager.current = 'connect_screen'
 
-<MessageBox>:
+
+<MessageBox>
     title: 'Popup Message Box'
     size_hint: None, None
     size: 400, 400
@@ -29,25 +34,36 @@
             text: 'OK'
             on_press: root.dismiss()
 
-<RecycleViewRow>:
+<RecycleViewRow>
     orientation: 'vertical'
-    Image:
-        source: 'c2.jpeg'
-        width: 100
-        allow_stretch: True
-    Label:
-        text: root.text
+    Carousel:
+        direction: 'left'
+        size: 1,1
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'a.png'
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'd.png'
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'b.png'
+        AsyncImage:
+            size:self.image_ratio*root.height,root.height
+            source: 'c.png'
     Button:
-        text: 'Show'
-        on_press: app.root.message_box(root.text)
+        text: "more details"
+        size_hint_y: .05
 
 
-<MainScreen>:
-    size_hint: 1,1
+
+<Offers_Screen>
     viewclass: 'RecycleViewRow'
     RecycleBoxLayout:
-        default_size: None, dp(56)
+        default_size: None, dp(500)
         default_size_hint: 1, None
         size_hint_y: None
         height: self.minimum_height
-        orientation: 'vertical'  
+        orientation: 'vertical'
+        spacing:10
+

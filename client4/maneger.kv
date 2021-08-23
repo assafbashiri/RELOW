@@ -1,0 +1,37 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+<Manager>:
+    transition: FadeTransition()
+    MENUScreen:
+    CONNECTScreen:
+        id: bolo
+    ACCOUNTScreen:
+
+
+<MENUScreen>
+
+    name: 'menu_screen'
+    Menu_box:
+
+
+<CONNECTScreen>
+    name:'connect_screen'
+    Connect_box:
+
+
+
+<ACCOUNTScreen>
+    name: 'account_screen'
+    BoxLayout:
+        orientation: "horizontal"
+        Button:
+            text: "CONNECT"
+            on_press:
+                #root.manager.transition.direction = 'left'
+                root.manager.current = 'connect_screen'
+        Button:
+            text: "MENU"
+            on_press:
+                #root.manager.transition.direction = 'left'
+                root.manager.current = 'menu_screen'
+
+
