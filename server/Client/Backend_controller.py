@@ -63,7 +63,7 @@ class Backend_controller:
         return ans
 
     def update_password(self, user_id, old_password, new_password):
-        update_password_req = {'op': 55, 'user_id': user_id, 'old_password': old_password, 'new_password': new_password}
+        update_password_req = {'op': 37, 'user_id': user_id, 'old_password': old_password, 'new_password': new_password}
         self.req_answers.add_request(update_password_req)
         ans = self.req_answers.get_answer()
         return ans
@@ -243,11 +243,7 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_category_for_offer(self, offer_id, category_id, sub_category_id):
-        up_cat_for_offer_req = {'op': 37, 'category_id': category_id, 'offer_id': offer_id, 'sub_category_id': sub_category_id}
-        self.req_answers.add_request(up_cat_for_offer_req)
-        ans = self.req_answers.get_answer()
-        return ans
+
 
     def update_sub_category_for_offer(self, offer_id, sub_category_id):
         up_sub_cat_for_offer_req = {'op': 38, 'offer_id': offer_id, 'sub_category_id': sub_category_id}
