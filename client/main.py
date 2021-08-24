@@ -30,7 +30,7 @@ def network():
     ClientSocket = socket.socket()
     host = '127.0.0.1'
     port = 4000
-    print('Waiting for connection')
+    print('Waiting for connection..')
     try:
         ClientSocket.connect((host, port))
     except socket.error as e:
