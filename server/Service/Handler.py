@@ -98,7 +98,7 @@ class Handler:
                                           argument['gender'])
             a = vars(user)
             b = vars(UserService(user))
-            return Response(UserService(user), "Registered Successfully", True), True
+            return Response(b, "Registered Successfully", True), True
         except Exception as e:
             return Response(None, str(e), False), True
 

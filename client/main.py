@@ -6,7 +6,7 @@ import threading
 from Req_Answers import Req_Answers
 from kivy.storage.jsonstore import JsonStore
 from Backend_controller import Backend_controller
-from client.windows.mainWindow import TestApp
+from windows.mainWindow import TestApp
 
 
 class Struct(object):
@@ -35,7 +35,7 @@ def network():
         ClientSocket.connect((host, port))
     except socket.error as e:
         print(str(e))
-    store = JsonStore("myuser.json")
+    store = JsonStore("hello.json")
     if store.exists('user'):
         print("welcome back")
     # response = ClientSocket.recv(1024)
@@ -76,6 +76,3 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=network)
     t1.start()
     TestApp( controller, store).run()
-
-
-

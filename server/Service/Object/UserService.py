@@ -1,3 +1,4 @@
+import json
 
 
 class UserService():
@@ -51,8 +52,8 @@ class UserService():
         self.user_name = business_user.get_user_name()
         self.email = business_user.get_email()
         self.password = business_user.get_password()
-        self.birth_date = business_user.get_birth_date()
-        self.gender = business_user.get_gender()
+        self.birth_date = json.dumps(business_user.get_birth_date(), indent=4, sort_keys=True, default=str)
+        self.gender = str(business_user.get_gender())
 
 
         # user address

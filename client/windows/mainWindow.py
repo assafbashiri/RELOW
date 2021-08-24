@@ -8,7 +8,6 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
-from kivymd.uix.picker import MDDatePicker
 
 Builder.load_file('windows/mainWindow.kv')
 Builder.load_file('windows/managerWindow.kv')
