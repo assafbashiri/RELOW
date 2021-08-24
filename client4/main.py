@@ -8,10 +8,7 @@ import threading
 from Req_Answers import Req_Answers
 from kivy.storage.jsonstore import JsonStore
 from Backend_controller import Backend_controller
-<<<<<<< HEAD:client4/main.py
 from mainApp import TestApp
-=======
->>>>>>> f234e919ea03dfd333c657f9b74b83beeb56921e:server/Client/main.py
 
 
 class Struct(object):
@@ -54,11 +51,7 @@ def network():
 
     # main Window as a Thread
     # mainWindow = MainWindow()
-<<<<<<< HEAD:client4/main.py
 
-=======
-    print("amit")
->>>>>>> f234e919ea03dfd333c657f9b74b83beeb56921e:server/Client/main.py
     while True:
         to_send = req_answers.get_request()
         print(to_send, 'step 11111\n')

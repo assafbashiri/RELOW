@@ -211,7 +211,7 @@ class CategoryController:
         return ans
 
     # return the updated offer, throw exceptions
-    def update_sub_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
+    def update_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
         offer_to_move = self.get_offer_by_offer_id(offer_id)
         old_sub_category_id = offer_to_move.set_category_id
         old_category = self.get_category_by_id(offer_to_move.category_id)

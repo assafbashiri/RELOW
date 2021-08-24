@@ -1,17 +1,15 @@
 
 
-# from Object.UserService import UserService
-# from Object.CategoryService import CategoryService
-# from Object.StepService import StepService
-# from Object.SubCategoryService import SubCategoryService
-# from Object.OfferService import OfferService
-# from Object.ProductService import ProductService
+from Object.UserService import UserService
+from Object.CategoryService import CategoryService
+from Object.StepService import StepService
+from Object.SubCategoryService import SubCategoryService
+from Object.OfferService import OfferService
+from Object.ProductService import ProductService
 from server.BusinessLayer.Controllers.CategoryController import CategoryController
 
 from server.BusinessLayer.Controllers.UserController import UserController
 from server.Response import Response
-from server.Service.Object.OfferService import OfferService
-from server.Service.Object.UserService import UserService
 
 
 class Handler:
@@ -58,7 +56,7 @@ class Handler:
                          34: self.remove_photo,
                          35: self.update_category_name,
                          36: self.update_sub_category_name,
-                         37: self.update_password,
+                         37: self.update_category_for_offer,
                          38: self.update_sub_category_for_offer,
                          39: self.update_end_date,
                          40: self.update_start_date,
@@ -75,7 +73,8 @@ class Handler:
                          51: self.get_hot_deals,
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
-                         54: self.update_step_for_offer}
+                         54: self.update_step_for_offer,
+                         55: self.update_password}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -429,12 +428,20 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def update_sub_category_for_offer(self, argument):
+    def update_category_for_offer(self, argument):
         try:
-            offer = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
+            offer = self.category_controller.update_category_for_offer(argument['offer_id'],
                                                                            argument['category_id'],
                                                                            argument['sub_category_id'])
             return Response(OfferService(offer), "Update Category Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def update_sub_category_for_offer(self, argument):
+        try:
+            offer = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
+                                                                           argument['sub_category_id'])
+            return Response(OfferService(offer), "Update Sub-Category For Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
