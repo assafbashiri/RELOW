@@ -1,0 +1,25 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+<Manager>:
+    id: man
+    transition: FadeTransition()
+    MENUScreen:
+    CONNECTScreen:
+    ACCOUNTScreen:
+
+
+<MENUScreen>
+    id: menu
+    name: 'menu_screen'
+    Menu_box:
+
+<CONNECTScreen>
+    id: connect
+    name:'connect_screen'
+    Connect_box:
+
+<ACCOUNTScreen>
+    id: account
+    name: 'account_screen'
+    Account_box:
+
+

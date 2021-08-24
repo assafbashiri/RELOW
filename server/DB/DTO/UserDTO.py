@@ -48,7 +48,7 @@ class UserDTO:
         # payment method
         self.id_number = user.payment.id_number
         self.credit_card_number = user.payment.credit_card_number
-        self.credit_card_expiration_date = user.payment.credit_card_expiration_date
+        self.credit_card_expiration_date = user.payment.credit_card_exp_date
         self.cvv = user.payment.cvv
         self.card_type = user.payment.card_type
 

@@ -96,7 +96,7 @@ class Handler:
                                           argument['password'],
                                           argument['birth_date'],
                                           argument['gender'])
-            return Response(UserService(user), "Registered Successfully", True), True
+            return Response(user.user_id, "Registered Successfully", True), True
         except Exception as e:
             return Response(None, str(e), False), True
 
@@ -104,7 +104,7 @@ class Handler:
         try:
             user = self.user_controller.log_in(argument['user_name'], argument['password'])
             self.user = user
-            return Response(UserService(user), "Log-In Successfully", True), False
+            return Response(user.user_id, "Log-In Successfully", True), False
         except Exception as e:
             return Response(None, str(e), False), False
 

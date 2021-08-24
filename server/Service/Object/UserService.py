@@ -72,7 +72,7 @@ class UserService():
         self.history_buy_offers = business_user.get_history_buy_offers
         self.history_sell_offers = business_user.get_history_sell_offers
         self.liked_offers = business_user.get_liked_offers()
-        self.active_sell_offers = business_user.get_active_sell_offers()
+        self.active_sell_offers = business_user.get_active_sale_offers()
         self.active_buy_offers = business_user.get_active_buy_offers()
 
 

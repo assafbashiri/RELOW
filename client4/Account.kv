@@ -1,0 +1,70 @@
+<Account_box>
+    GridLayout:
+        cols: 1
+
+        Label:
+            id: register_label
+            text: "Register"
+
+        Label:
+            id:first_name
+            hint_text: "first name"
+            icon_right: "account"
+
+
+        TextInput:
+            id:last_name
+            hint_text: "last name"
+            icon_right: "account"
+
+        TextInput:
+            id:user_name
+            hint_text: "username"
+            icon_right: "account"
+
+
+        TextInput:
+            id:email
+            hint_text: "email"
+            icon_right: "account"
+
+
+        TextInput:
+            id:password
+            hint_text: "password"
+            icon_right: "eye-off"
+            password : True
+
+
+        TextInput:
+            id:birth_date
+            hint_text: "birth date"
+            icon_right: "account"
+            on_focus:App.app.get_running_app().show_date_picker()
+
+
+        TextInput:
+            id:gender
+            hint_text: "gender"
+            icon_right: "account"
+    BoxLayout:
+        size_hint: .2, .2
+        pos_hint: {'top':1}
+        spacing: 10
+        orientation: "vertical"
+        Button:
+            text: "MENU"
+            on_press:
+                root.parent.manager.current = 'menu_screen'
+        Button:
+            text: "ACCOUNT"
+            on_press:
+                root.parent.manager.current = 'account_screen'
+        Button:
+            text: "SEARCH"
+        Button:
+            text: "CAT"
+        Button:
+            text: "CONNECT"
+            on_press:
+                root.parent.manager.current = 'connect_screen'

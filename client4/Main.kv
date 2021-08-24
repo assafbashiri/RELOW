@@ -7,6 +7,10 @@
         spacing: 10
         orientation: "vertical"
         Button:
+            text: "MENU"
+            on_press:
+                root.parent.manager.current = 'menu_screen'
+        Button:
             text: "ACCOUNT"
             on_press:
                 root.parent.manager.current = 'account_screen'
