@@ -20,8 +20,8 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def unregister(self, user_id):
-        unregister_req = {'op': 2, 'user_id': user_id}
+    def unregister(self):
+        unregister_req = {'op': 2}
         self.req_answers.add_request(unregister_req)
         ans = self.req_answers.get_answer()
         return ans
@@ -32,66 +32,209 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def logout(self, user_id):
-        logout_req = {'op': 4, 'user_id': user_id}
+    def logout(self):
+        logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_first_name(self, user_id, first_name):
-        update_first_name_req = {'op': 5, 'user_id': user_id, 'first_name': first_name}
+    # ------------------- Account Window ---------------------------------------------------------------------
+
+    def update_first_name(self, first_name):
+        update_first_name_req = {'op': 5, 'first_name': first_name}
         self.req_answers.add_request(update_first_name_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_last_name(self, user_id, last_name):
-        update_last_name_req = {'op': 6, 'user_id': user_id, 'last_name': last_name}
+    def update_last_name(self, last_name):
+        update_last_name_req = {'op': 6, 'last_name': last_name}
         self.req_answers.add_request(update_last_name_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_user_name(self, user_id, user_name):
-        update_user_name_req = {'op': 7, 'user_id': user_id, 'user_name': user_name}
+    def update_user_name(self, user_name):
+        update_user_name_req = {'op': 7, 'user_name': user_name}
         self.req_answers.add_request(update_user_name_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_email(self, user_id, email):
-        update_email_req = {'op': 8, 'user_id': user_id, 'email': email}
+    def update_email(self, email):
+        update_email_req = {'op': 8, 'email': email}
         self.req_answers.add_request(update_email_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_password(self, user_id, old_password, new_password):
-        update_password_req = {'op': 37, 'user_id': user_id, 'old_password': old_password, 'new_password': new_password}
+    def update_password(self, old_password, new_password):
+        update_password_req = {'op': 37, 'old_password': old_password, 'new_password': new_password}
         self.req_answers.add_request(update_password_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_birth_date(self, user_id, birth_date):
-        update_birth_req = {'op': 9, 'user_id': user_id, 'birth_date': birth_date}
+    def update_birth_date(self, birth_date):
+        update_birth_req = {'op': 9, 'birth_date': birth_date}
         self.req_answers.add_request(update_birth_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_gender(self, user_id, gender):
-        update_birth_req = {'op': 10, 'user_id': user_id, 'gender': gender}
+    def update_gender(self, gender):
+        update_birth_req = {'op': 10, 'gender': gender}
         self.req_answers.add_request(update_birth_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_address_details(self, user_id, city, street, zip_code, floor, apt):
-        add_address_req = {'op': 11, 'user_id': user_id, 'city': city, 'street': street, 'zip_code': zip_code,
+    def add_address_details(self, city, street, zip_code, floor, apt):
+        add_address_req = {'op': 11, 'city': city, 'street': street, 'zip_code': zip_code,
                            'floor': floor, 'apt': apt}
         self.req_answers.add_request(add_address_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_payment_method(self, user_id, credit_card_number, credit_card_exp_date, cvv, card_type, id):
-        add_pay_req = {'op': 12, 'user_id': user_id, 'credit_card_number': credit_card_number,
+    def add_payment_method(self, credit_card_number, credit_card_exp_date, cvv, card_type, id):
+        add_pay_req = {'op': 12, 'credit_card_number': credit_card_number,
                        'expire_date': credit_card_exp_date,
                        'cvv': cvv, 'card_type': card_type, 'id_number': id}
         self.req_answers.add_request(add_pay_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    # ----------------- offer Window ----------------------------------------
+    # ----- buyer methods ----------------------------------
+    def add_liked_offer(self, offer_id):
+        add_liked_offer_req = {'op': 25, 'offer_id': offer_id}
+        self.req_answers.add_request(add_liked_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def remove_liked_offer(self, offer_id):
+        remove_liked_offer_req = {'op': 26, 'offer_id': offer_id}
+        self.req_answers.add_request(remove_liked_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def add_active_buy_offer(self, offer_id, quantity, step):
+        add_active_buy_offer_req = {'op': 23, 'offer_id': offer_id, 'quantity': quantity, 'step': step}
+        self.req_answers.add_request(add_active_buy_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def remove_active_buy_offer(self, offer_id):
+        remove_act_buy_offer_req = {'op': 28, 'offer_id': offer_id}
+        self.req_answers.add_request(remove_act_buy_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    # ----- seller methods ---------------------------------
+    def add_active_sell_offer(self, name, company, color, size, description, photos, category_id,
+                              sub_category_id, steps, end_date):
+        add_active_sell_offer_req = {'op': 24, 'name': name, 'company': company, 'color': color,
+                                     'size': size, 'description': description, 'photos': photos,
+                                     'category_id': category_id, 'sub_category_id': sub_category_id,
+                                     'steps': steps, 'end_date': end_date}
+        self.req_answers.add_request(add_active_sell_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def remove_active_sell_offer(self, offer_id):
+        remove_act_sell_offer_req = {'op': 27, 'offer_id': offer_id}
+        self.req_answers.add_request(remove_act_sell_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def add_photo(self, offer_id, photo):
+        add_photo_req = {'op': 31}
+        self.req_answers.add_request(add_photo_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def remove_photo(self, offer_id, photo):
+        remove_photo_req = {'op': 34}
+        self.req_answers.add_request(remove_photo_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_end_date(self, offer_id, end_date):
+        up_end_date_req = {'op': 39, 'offer_id': offer_id, 'end_date': end_date}
+        self.req_answers.add_request(up_end_date_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_step(self, offer_id, step):
+        req = {'op': 41, 'offer_id': offer_id, 'step': step}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_product_name(self, offer_id, name):
+        req = {'op': 42, 'offer_id': offer_id, 'name': name}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_product_company(self, offer_id, company):
+        req = {'op': 43, 'offer_id': offer_id, 'company': company}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_product_color(self, offer_id, color):
+        req = {'op': 44, 'offer_id': offer_id, 'color': color}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_product_size(self, offer_id, size):
+        req = {'op': 45, 'offer_id': offer_id, 'size': size}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_product_description(self, offer_id, description):
+        req = {'op': 46, 'offer_id': offer_id, 'description': description}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_sub_category_for_offer(self, offer_id, sub_category_id):
+        up_sub_cat_for_offer_req = {'op': 38, 'offer_id': offer_id, 'sub_category_id': sub_category_id}
+        self.req_answers.add_request(up_sub_cat_for_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_step_for_offer(self, offer_id, step_number, quantity, price):
+        req = {'op': 54, 'offer_id': offer_id, 'step_number': step_number, 'quantity': quantity, 'price': price}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    # ------------------------ search & getters methods ----------------------------
+
+    def get_offers_by_category(self, category_id):
+        req = {'op': 47, 'category_id': category_id}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def get_offers_by_sub_category(self, category_id, sub_category_id):
+        req = {'op': 48, 'category_id': category_id, 'sub_category_id': sub_category_id}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def get_offers_by_product_name(self, name):
+        req = {'op': 49, 'name': name}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def get_offers_by_status(self, status):
+        req = {'op': 50, 'status': status}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def get_hot_deals(self):
+        req = {'op': 51}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 
@@ -155,79 +298,23 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_active_buy_offer(self, offer_id, quantity, step):
-        add_active_buy_offer_req = {'op': 23, 'offer_id': offer_id, 'quantity': quantity, 'step': step}
-        self.req_answers.add_request(add_active_buy_offer_req)
+    # ------------------- Admin Functions ---------------------------------------------------------------------
+
+    def add_to_hot_deals(self, offer_id):
+        req = {'op': 52, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_active_sell_offer(self, user_id, name, company, color, size, description, photos, category_id,
-                              sub_category_id, steps, end_date):
-        add_active_sell_offer_req = {'op': 24, 'user_id': user_id, 'name': name, 'company': company, 'color': color,
-                                     'size': size, 'description': description, 'photos': photos,
-                                     'category_id': category_id, 'sub_category_id': sub_category_id,
-                                     'steps': steps, 'end_date': end_date}
-        self.req_answers.add_request(add_active_sell_offer_req)
+    def remove_from_hot_deals(self, offer_id):
+        req = {'op': 53, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_liked_offer(self, offer_id):
-        add_liked_offer_req = {'op': 25, 'offer_id': offer_id}
-        self.req_answers.add_request(add_liked_offer_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_liked_offer(self, offer_id):
-        remove_liked_offer_req = {'op': 26, 'offer_id': offer_id}
-        self.req_answers.add_request(remove_liked_offer_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_active_sell_offer(self, offer_id):
-        remove_act_sell_offer_req = {'op': 27, 'offer_id': offer_id}
-        self.req_answers.add_request(remove_act_sell_offer_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_active_buy_offer(self, offer_id):
-        remove_act_buy_offer_req = {'op': 28, 'offer_id': offer_id}
-        self.req_answers.add_request(remove_act_buy_offer_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def add_category(self, name):
-        add_cat_req = {'op': 29, 'name': name}
-        self.req_answers.add_request(add_cat_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def add_sub_category(self, name, category_id):
-        add_sub_cat_req = {'op': 30, 'name': name, 'category_id': category_id}
-        self.req_answers.add_request(add_sub_cat_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def add_photo(self, photo):
-        add_photo_req = {'op': 31}
-        self.req_answers.add_request(add_photo_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_category(self, category_id):
-        remove_cat_req = {'op': 32, 'category_id': category_id}
-        self.req_answers.add_request(remove_cat_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_sub_category(self, category_id, sub_category_id):
-        remove_sub_cat_req = {'op': 33, 'category_id': category_id, 'sub_category_id': sub_category_id}
-        self.req_answers.add_request(remove_sub_cat_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_photo(self, photo):
-        remove_photo_req = {'op': 34}
-        self.req_answers.add_request(remove_photo_req)
+    def update_start_date(self, offer_id, start_date):
+        req = {'op': 40, 'offer_id': offer_id, 'start_date': start_date}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 
@@ -243,106 +330,26 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-
-
-    def update_sub_category_for_offer(self, offer_id, sub_category_id):
-        up_sub_cat_for_offer_req = {'op': 38, 'offer_id': offer_id, 'sub_category_id': sub_category_id}
-        self.req_answers.add_request(up_sub_cat_for_offer_req)
+    def remove_category(self, category_id):
+        remove_cat_req = {'op': 32, 'category_id': category_id}
+        self.req_answers.add_request(remove_cat_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_end_date(self, offer_id, end_date):
-        up_end_date_req = {'op': 39, 'offer_id': offer_id, 'end_date': end_date}
-        self.req_answers.add_request(up_end_date_req)
+    def remove_sub_category(self, category_id, sub_category_id):
+        remove_sub_cat_req = {'op': 33, 'category_id': category_id, 'sub_category_id': sub_category_id}
+        self.req_answers.add_request(remove_sub_cat_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_start_date(self, offer_id, start_date):
-        req = {'op': 40, 'offer_id': offer_id, 'start_date': start_date}
-        self.req_answers.add_request(req)
+    def add_category(self, name):
+        add_cat_req = {'op': 29, 'name': name}
+        self.req_answers.add_request(add_cat_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_step(self, offer_id, step):
-        req = {'op': 41, 'offer_id': offer_id, 'step': step}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_product_name(self, offer_id, name):
-        req = {'op': 42, 'offer_id': offer_id, 'name': name}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_product_company(self, offer_id, company):
-        req = {'op': 43, 'offer_id': offer_id, 'company': company}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_product_color(self, offer_id, color):
-        req = {'op': 44, 'offer_id': offer_id, 'color': color}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_product_size(self, offer_id, size):
-        req = {'op': 45, 'offer_id': offer_id, 'size': size}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_product_description(self, offer_id, description):
-        req = {'op': 46, 'offer_id': offer_id, 'description': description}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def get_offers_by_category(self, category_id):
-        req = {'op': 47, 'category_id': category_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def get_offers_by_sub_category(self, category_id, sub_category_id):
-        req = {'op': 48, 'category_id': category_id, 'sub_category_id': sub_category_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def get_offers_by_product_name(self, name):
-        req = {'op': 49, 'name': name}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def get_offers_by_status(self, status):
-        req = {'op': 50, 'status': status}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def get_hot_deals(self):
-        req = {'op': 51}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def add_to_hot_deals(self, offer_id):
-        req = {'op': 52, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def remove_from_hot_deals(self, offer_id):
-        req = {'op': 53, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_step_for_offer(self, offer_id, step_number, quantity, price):
-        req = {'op': 54, 'offer_id': offer_id, 'step_number': step_number, 'quantity': quantity, 'price': price}
-        self.req_answers.add_request(req)
+    def add_sub_category(self, name, category_id):
+        add_sub_cat_req = {'op': 30, 'name': name, 'category_id': category_id}
+        self.req_answers.add_request(add_sub_cat_req)
         ans = self.req_answers.get_answer()
         return ans
