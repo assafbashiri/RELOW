@@ -96,7 +96,9 @@ class Handler:
                                           argument['password'],
                                           argument['birth_date'],
                                           argument['gender'])
-            return Response(user.user_id, "Registered Successfully", True), True
+            a = vars(user)
+            b = vars(UserService(user))
+            return Response(UserService(user), "Registered Successfully", True), True
         except Exception as e:
             return Response(None, str(e), False), True
 

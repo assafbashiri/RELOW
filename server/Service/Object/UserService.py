@@ -69,8 +69,8 @@ class UserService():
         self.cvv = business_user.get_cvv()
         self.card_type = business_user.get_card_type()
 
-        self.history_buy_offers = business_user.get_history_buy_offers
-        self.history_sell_offers = business_user.get_history_sell_offers
+        self.history_buy_offers = None
+        self.history_sell_offers = None
         self.liked_offers = business_user.get_liked_offers()
         self.active_sell_offers = business_user.get_active_sale_offers()
         self.active_buy_offers = business_user.get_active_buy_offers()

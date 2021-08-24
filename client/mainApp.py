@@ -99,9 +99,8 @@ class Offers_Screen(RecycleView):
 
 class TestApp(MDApp):
     title = "RecycleView Direct Test"
-    def __init__(self, req_answers, controller, store):
+    def __init__(self,  controller, store):
         super(TestApp, self).__init__()
-        self.req_answers = req_answers
         self.controller = controller
         self.store = store
 
@@ -152,5 +151,3 @@ class TestApp(MDApp):
     def on_cancel(self,instance, value):
         print("")
 
-if __name__ == "__main__":
-    TestApp().run()

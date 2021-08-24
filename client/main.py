@@ -75,7 +75,7 @@ def ex():
 if __name__ == '__main__':
     t1 = threading.Thread(target=network)
     t1.start()
-    TestApp(req_answers, controller, store).run()
+    TestApp( controller, store).run()
 
 
 
