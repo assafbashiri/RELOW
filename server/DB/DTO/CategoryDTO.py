@@ -5,5 +5,5 @@ class CategoryDTO:
         self.name = name
 
     def __init__(self, category):
-        self.id = category.id
-        self.name = category.name
+        self.id = category.get_id()
+        self.name = category.get_name()

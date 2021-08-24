@@ -31,3 +31,21 @@ class Product:
 
     def get_company(self):
         return self.company
+
+    def get_name(self):
+        return self.name
+
+    def get_color(self):
+        return self.color
+
+    def get_size(self):
+        return self.size
+
+    def get_description(self):
+        return self.description
+
+    def get_photos(self):
+        return self.photos
+
+    def get_offer_id(self):
+        return self.offer_id

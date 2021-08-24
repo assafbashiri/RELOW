@@ -70,10 +70,10 @@ class Offer:
     def set_current_buyers(self, current_buyers):
         self.current_buyers = current_buyers
 
-    def set_category_id(self,new_category_id):
+    def set_category_id(self, new_category_id):
         self.category_id = new_category_id
 
-    def set_sub_category_id(self,new_sub_category_id):
+    def set_sub_category_id(self, new_sub_category_id):
         self.sub_category_id = new_sub_category_id
 
     def set_hot_deals(self, hot):
@@ -81,6 +81,12 @@ class Offer:
 
     def get_offer_id(self):
         return self.offer_id
+
+    def get_category_id(self):
+        return self.category_id
+
+    def get_sub_category_id(self):
+        return self.sub_category_id
 
     def get_current_step(self):
         return self.current_step
@@ -96,6 +102,21 @@ class Offer:
 
     def get_current_buyers(self):
         return self.current_buyers
+
+    def get_start_date(self):
+        return self.start_date
+
+    def get_end_date(self):
+        return self.end_date
+
+    def get_steps(self):
+        return self.steps
+
+    def get_total_products(self):
+        return self.total_products
+
+    def get_hot_deals(self):
+        return self.hot_deals
 
     def update_active_buy_offer(self, user_id, quantity, step):
         if user_id not in self.current_buyers.keys():

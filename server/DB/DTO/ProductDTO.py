@@ -9,10 +9,10 @@ class ProductDTO:
         self.photos
 
     def __init__(self, product):
-        self.offer_id = product.offer_id
-        self.name = product.name
-        self.company = product.company
-        self.color = product.color
-        self.size = product.size
-        self.description = product.description
-        self.photos = product.photos
+        self.offer_id = product.get_offer_id()
+        self.name = product.get_name()
+        self.company = product.get_company()
+        self.color = product.get_color()
+        self.size = product.get_size()
+        self.description = product.get_description()
+        self.photos = product.get_photos()
