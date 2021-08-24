@@ -13,6 +13,7 @@ Builder.load_file('Main.kv')
 Builder.load_file('maneger.kv')
 Builder.load_file('connect.kv')
 Builder.load_file('Account.kv')
+
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -50,18 +51,18 @@ class Connect_box(BoxLayout):
         res = Struct(**ans)
         print(res.message)
     def register(self):
-        username = self.ids.user_name.text
-        first_name = self.ids.first_name.text
-        last_name = self.ids.last_name.text
         user_name = self.ids.user_name.text
+        first_name = "top" #self.ids.first_name.text
+        last_name = "top" #self.ids.last_name.text
         email = self.ids.email.text
-        password = self.ids.password.text
+        password = "top" #self.ids.password.text
         birth_date =datetime.today() #self.ids.birth_date.text
         gender = 1 #int(self.ids.gender.text)
         ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date, gender)
-        res = Struct(**ans)
-        print(res.message)
-        App.get_running_app().store.put('user', user_id= res.data)
+
+
+        print(ans.message)
+        App.get_running_app().store.put("user",  user_info=ans.data)
 
 
     def login(self):
@@ -73,7 +74,7 @@ class Connect_box(BoxLayout):
         print(res.message)
 
     def logout(self):
-        user_id = App.get_running_app().store.get('user'['user_id'])
+        user_id = App.get_running_app().store.get('user')
         ans = App.get_running_app().controller.logout(user_id['user_id'])
         res = Struct(**ans)
         print(res.message)

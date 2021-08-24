@@ -346,4 +346,3 @@ class Backend_controller:
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
-

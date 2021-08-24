@@ -26,7 +26,7 @@ class UsersDAO:
 
         self._conn.execute(
             """INSERT INTO users_payment (user_id,card_number,expire_date,cvv,card_type, id_number) VALUES (?,?,?,?,?,?)""",
-            [userDTO.user_id, userDTO.credit_card_number, userDTO.credit_card_expiration_date, userDTO.cvv,
+            [userDTO.user_id, userDTO.credit_card_number, userDTO.credit_card_exp_date, userDTO.cvv,
              userDTO.card_type, userDTO.id_number])
         self._conn.commit()
         print("in insert in UserDAO step 5")
@@ -139,6 +139,6 @@ class UsersDAO:
 
         self._conn.execute(
             """UPDATE users_payment SET card_number=?,expire_date=?,cvv=?,card_type=?, id_number=? WHERE user_id=?""",
-            [userDTO.credit_card_number, userDTO.credit_card_expiration_date, userDTO.cvv,
+            [userDTO.credit_card_number, userDTO.credit_card_exp_date, userDTO.cvv,
              userDTO.card_type, userDTO.id_number, userDTO.user_id])
         self._conn.commit()

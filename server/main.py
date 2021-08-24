@@ -21,11 +21,11 @@ from Service.OurFactory import OurFactory
 
 class Struct(object):
 
-    def _init_(self, **entries):
+    def __init__(self, **entries):
         self._dict_.update(entries)
 
 class point:
-    def _init_(self, x, y):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
 

@@ -1,5 +1,3 @@
-
-
 from BusinessLayer.Object.SubCategory import SubCategory
 class Category:
     def __init__(self, name, id):

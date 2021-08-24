@@ -1,4 +1,4 @@
-from server.BusinessLayer.Object.User import User
+from BusinessLayer.Object.User import User
 
 
 class UserDTO:
@@ -29,7 +29,6 @@ class UserDTO:
         self.card_type = None
 
     def __init__(self, user):
-        user = User()
         self.user_id = user.get_user_id()
         self.first_name = user.get_first_name()
         self.last_name = user.get_last_name()
@@ -49,18 +48,8 @@ class UserDTO:
         self.floor = user.get_floor()
 
         # payment method
-<<<<<<< HEAD
-        self.id_number = user.payment.id_number
-        self.credit_card_number = user.payment.credit_card_number
-        self.credit_card_expiration_date = user.payment.credit_card_exp_date
-        self.cvv = user.payment.cvv
-        self.card_type = user.payment.card_type
-=======
         self.id_number = user.get_id_number()
         self.credit_card_number = user.get_card_number()
         self.credit_card_exp_date = user.get_credit_card_exp_date()
         self.cvv = user.get_cvv()
         self.card_type = user.get_card_type()
->>>>>>> f234e919ea03dfd333c657f9b74b83beeb56921e
-
-

@@ -1,8 +1,6 @@
 import socket
 import pickle
-import kivy
 from kivy.app import App
-from kivy.storage.jsonstore import JsonStore
 import threading
 
 from Req_Answers import Req_Answers
@@ -66,7 +64,7 @@ def network():
         ans = ClientSocket.recv(1024)
         print(ans, "step 3")
         print(type(ans))
-        decoded_ans = pickle.loads(ans)
+        decoded_ans = Struct(**(pickle.loads(ans)))
         req_answers.add_answer(decoded_ans)
         print("good job")
 

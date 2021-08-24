@@ -155,5 +155,3 @@ class Offer:
                 updated_total_products = num_of_buyers_for_each_step[step]
         self.current_step = updated_step
         self.total_products = updated_total_products
-
-
