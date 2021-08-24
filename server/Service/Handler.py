@@ -24,6 +24,7 @@ class Handler:
                          2: self.unregister,
                          3: self.log_in,
                          4: self.logout,
+
                          5: self.update_first_name,
                          6: self.update_last_name,
                          7: self.update_user_name,
@@ -32,6 +33,7 @@ class Handler:
                          10: self.update_gender,
                          11: self.add_address_details,
                          12: self.add_payment_method,
+
                          13: self.get_all_history_buy_offers,
                          14: self.get_all_history_sell_offers,
                          15: self.get_history_buy_offer,
@@ -79,7 +81,7 @@ class Handler:
 
     # -------------------------------------------------BASIC------------------------------------------------------------
 
-    def unregister(self, argument):
+    def unregister(self):
         try:
             self.user_controller.unregister(self.user.user_id)
             return Response(None, 'Unregistered Successfully', True)
@@ -110,7 +112,7 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False), False
 
-    def logout(self, argument):
+    def logout(self):
         try:
             self.user_controller.logout(self.user.user_id)
             return Response(None, "Log-Out Successfully", True), False
