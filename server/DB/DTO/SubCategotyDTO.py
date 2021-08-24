@@ -1,4 +1,3 @@
-from BusinessLayer.Object import SubCategory
 class SubCategoryDTO:
     def __init__(self, id, name, father_category_id):
         self.id = id
@@ -6,6 +5,6 @@ class SubCategoryDTO:
         self.name = name
 
     def __init__(self, sub_category):
-        self.id = sub_category.id
-        self.father_category_id = sub_category.father_category_id
-        self.name = sub_category.name
+        self.id = sub_category.get_id()
+        self.father_category_id = sub_category.get_father_category_id()
+        self.name = sub_category.get_name()

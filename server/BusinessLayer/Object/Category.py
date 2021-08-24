@@ -121,8 +121,11 @@ class Category:
         self.sub_categories_dictionary[offer_to_move.sub_category_id].remove_offer_for_update_sub_category(offer_to_move.offer_id)
         self.sub_categories_dictionary[new_sub_category_id].add_offer_for_update_sub_category(offer_to_move)
 
+    def get_id(self):
+        return self.id
 
-
+    def get_name(self):
+        return self.name
 
 
 #----------------------------------------------------private methods --------------------------------------------

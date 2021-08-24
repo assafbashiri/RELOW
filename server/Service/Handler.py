@@ -1,15 +1,15 @@
 
-from BusinessLayer.Controllers.UserController import UserController
-from BusinessLayer.Controllers.CategoryController import CategoryController
-import Response
 
-from Response import Response
-from Service.Object.UserService import UserService
-from Service.Object.CategoryService import CategoryService
-from Service.Object.StepService import StepService
-from Service.Object.SubCategoryService import SubCategoryService
-from Service.Object.OfferService import OfferService
-from Service.Object.ProductService import ProductService
+from Object.UserService import UserService
+from Object.CategoryService import CategoryService
+from Object.StepService import StepService
+from Object.SubCategoryService import SubCategoryService
+from Object.OfferService import OfferService
+from Object.ProductService import ProductService
+from server.BusinessLayer.Controllers.CategoryController import CategoryController
+
+from server.BusinessLayer.Controllers.UserController import UserController
+from server.Response import Response
 
 
 class Handler:
@@ -50,30 +50,31 @@ class Handler:
                          28: self.remove_active_buy_offer,
                          29: self.add_category,
                          30: self.add_sub_category,
-                         32: self.add_photo,
-                         33: self.remove_category,
-                         34: self.remove_sub_category,
-                         35: self.remove_photo,
-                         37: self.update_category_name,
-                         38: self.update_sub_category_name,
-                         40: self.update_category_for_offer,
-                         41: self.update_sub_category_for_offer,
-                         43: self.update_end_date,
-                         44: self.update_start_date,
-                         45: self.update_step,
-                         48: self.update_product_name,
-                         49: self.update_product_company,
-                         50: self.update_product_color,
-                         51: self.update_product_size,
-                         52: self.update_product_description,
-                         53: self.get_offers_by_category,
-                         54: self.get_offers_by_subcategory,
-                         55: self.get_offers_by_product_name,
-                         56: self.get_offers_by_status,
-                         57: self.get_hot_deals,
-                         58: self.add_to_hot_deals,
-                         59: self.remove_to_hot_deals,
-                         60: self.update_step_for_offer}
+                         31: self.add_photo,
+                         32: self.remove_category,
+                         33: self.remove_sub_category,
+                         34: self.remove_photo,
+                         35: self.update_category_name,
+                         36: self.update_sub_category_name,
+                         37: self.update_category_for_offer,
+                         38: self.update_sub_category_for_offer,
+                         39: self.update_end_date,
+                         40: self.update_start_date,
+                         41: self.update_step,
+                         42: self.update_product_name,
+                         43: self.update_product_company,
+                         44: self.update_product_color,
+                         45: self.update_product_size,
+                         46: self.update_product_description,
+                         47: self.get_offers_by_category,
+                         48: self.get_offers_by_sub_category,
+                         49: self.get_offers_by_product_name,
+                         50: self.get_offers_by_status,
+                         51: self.get_hot_deals,
+                         52: self.add_to_hot_deals,
+                         53: self.remove_from_hot_deals,
+                         54: self.update_step_for_offer,
+                         55: self.update_password}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -81,7 +82,7 @@ class Handler:
 
     def unregister(self, argument):
         try:
-            self.user_controller.unregister(argument['user_id'])
+            self.user_controller.unregister(self.user.user_id)
             return Response(None, 'Unregistered Successfully', True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -110,7 +111,7 @@ class Handler:
 
     def logout(self, argument):
         try:
-            self.user_controller.logout(argument['user_id'])
+            self.user_controller.logout(self.user.user_id)
             return Response(None, "Log-Out Successfully", True), False
         except Exception as e:
             return Response(None, str(e), False), False
@@ -128,7 +129,7 @@ class Handler:
     def add_active_sell_offer(self, argument):
         offer = None
         try:
-            offer = self.category_controller.add_offer(argument['user_id'],
+            offer = self.category_controller.add_offer(self.user.user_id,
                                                        argument['name'],
                                                        argument['company'],
                                                        argument['color'],
@@ -156,7 +157,7 @@ class Handler:
 
     def add_address_details(self, argument):
         try:
-            self.user_controller.add_address_details(argument['user_id'],
+            self.user_controller.add_address_details(self.user.user_id,
                                                      argument['city'],
                                                      argument['street'],
                                                      argument['zip_code'],
@@ -174,7 +175,7 @@ class Handler:
 
     def add_payment_method(self, argument):
         try:
-            self.user_controller.add_payment_method(argument['user_id'],
+            self.user_controller.add_payment_method(self.user.user_id,
                                                     argument['credit_card_number'],
                                                     argument['expire_date'],
                                                     argument['cvv'],
@@ -217,28 +218,28 @@ class Handler:
 
     def update_first_name(self, argument):
         try:
-            self.user_controller.update_first_name(argument['user_id'], argument['first_name'])
+            self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
             return Response(None, "First Name Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def update_last_name(self, argument):
         try:
-            self.user_controller.update_last_name(argument['user_id'], argument['last_name'])
+            self.user_controller.update_last_name(self.user.user_id, argument['last_name'])
             return Response(None, "Last Name Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def update_user_name(self, argument):
         try:
-            self.user_controller.update_username(argument['user_id'], argument['user_name'])
+            self.user_controller.update_username(self.user.user_id, argument['user_name'])
             return Response(None, "Username Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def update_email(self, argument):
         try:
-            self.user_controller.update_email(argument['user_id'],
+            self.user_controller.update_email(self.user.user_id,
                                               argument['email'])
             return Response(None, "Email Updated Successfully", True)
         except Exception as e:
@@ -246,7 +247,7 @@ class Handler:
 
     def update_password(self, argument):
         try:
-            self.user_controller.update_password(argument['user_id'],
+            self.user_controller.update_password(self.user.user_id,
                                                  argument['old_password'],
                                                  argument['new_password'])
             return Response(None, "Password Updated Successfully", True)
@@ -255,7 +256,7 @@ class Handler:
 
     def update_birth_date(self, argument):
         try:
-            self.user_controller.update_birth_date(argument['user_id'],
+            self.user_controller.update_birth_date(self.user.user_id,
                                                    argument['birth_date'])
             return Response(None, "Birth Date Updated Successfully", True)
         except Exception as e:
@@ -263,7 +264,7 @@ class Handler:
 
     def update_gender(self, argument):
         try:
-            self.user_controller.gender(argument['user_id'],
+            self.user_controller.gender(self.user.user_id,
                                         argument['gender'])
             return Response(None, "gender Updated Successfully", True)
         except Exception as e:
@@ -408,6 +409,7 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
+
     # -------------------------------------------------------UPDATE----------------------------------------------------------------------
     def update_category_name(self, argument):
         try:
@@ -428,7 +430,7 @@ class Handler:
 
     def update_category_for_offer(self, argument):
         try:
-            offer = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
+            offer = self.category_controller.update_category_for_offer(argument['offer_id'],
                                                                            argument['category_id'],
                                                                            argument['sub_category_id'])
             return Response(OfferService(offer), "Update Category Successfully", True)
@@ -459,7 +461,7 @@ class Handler:
 
     def update_step(self, argument):
         try:
-            self.user_controller.update_step_for_user(argument['user_id'] , argument['offer_id'], argument['step'])
+            self.user_controller.update_step_for_user(self.user.user_id, argument['offer_id'], argument['step'])
             return Response(None, "Update Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -508,7 +510,7 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def get_offers_by_subcategory(self, argument):
+    def get_offers_by_sub_category(self, argument):
         try:
             offers_list = self.category_controller.get_offers_by_sub_category(argument['category_id'],
                                                                               argument['sub_category_id'])
@@ -534,13 +536,6 @@ class Handler:
         try:
             offers_list = self.category_controller.get_hot_deals()
             return Response(offers_list, "Offers Lists Received Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def remove_to_hot_deals(self, argument):
-        try:
-            self.category_controller.remove_from_hot_deals(argument['offer_id'])
-            return Response(None, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

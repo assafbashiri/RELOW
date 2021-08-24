@@ -93,7 +93,7 @@ class User():
         self.payment.set_credit_card_number(credit_card_number)
 
     def set_credit_card_experation_date(self, credit_card_experation_date):
-        self.payment.set_credit_card_experation_date(credit_card_experation_date)
+        self.payment.set_credit_card_exp_date(credit_card_experation_date)
 
     def set_cvv(self, cvv):
         self.payment.set_cvv(cvv)
@@ -162,6 +162,9 @@ class User():
     def get_is_logged(self):
         return self.is_logged
 
+    def get_user_id(self):
+        return self.user_id
+
     def get_active(self):
         return self.active
 
@@ -208,8 +211,8 @@ class User():
     def get_card_number(self):
         return self.payment.get_card_number()
 
-    def get_credit_card_expiration_date(self):
-        return self.payment.get_credit_card_expiration_date()
+    def get_credit_card_exp_date(self):
+        return self.payment.get_credit_card_exp_date()
 
     def get_cvv(self):
         return self.payment.get_cvv()

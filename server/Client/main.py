@@ -9,7 +9,6 @@ from TestUp import TestApp
 from Req_Answers import Req_Answers
 
 from Backend_controller import Backend_controller
-from Decoder import Decoder
 
 
 class Struct(object):
@@ -50,8 +49,6 @@ def network():
 
     # main Window as a Thread
     # mainWindow = MainWindow()
-
-    decoder = Decoder()
     print("amit")
     while True:
         to_send = req_answers.get_answer()

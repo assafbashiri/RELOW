@@ -81,3 +81,12 @@ class SubCategory:
 
     def is_contained_offers(self):
         return len(self.offers_dictionary) != 0
+
+    def get_name(self):
+        return self.name
+
+    def get_id(self):
+        return self.id
+
+    def get_father_category_id(self):
+        return self.father_category_id
