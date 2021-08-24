@@ -2,7 +2,9 @@
     orientation: "vertical"
     padding:20
     spacing:20
-    MDGridLayout:
+
+
+    GridLayout:
         cols: 1
         spacing:5
         adaptive_height: True
@@ -46,7 +48,7 @@
             id:birth_date
             hint_text: "birth date"
             icon_right: "account"
-            on_focus:App.app.get_running_app().show_date_picker()
+            on_focus:root.app.show_date_picker()
 
 
         MDTextFieldRound:
@@ -73,6 +75,8 @@
             id:log_in_password
             hint_text: "last name"
             icon_right: "account"
+
+
     GridLayout:
         cols:2
 

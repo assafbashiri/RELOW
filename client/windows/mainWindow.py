@@ -72,6 +72,26 @@ class Connect_box(BoxLayout):
         print(ans.message)
         App.get_running_app().store.put("user", user_info=ans.data)
 
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+        date_dialog.open()
+
+    # click OK
+    def on_save(self, instance, value, date_range):
+        print(self.root)
+        print(self.root.ids)
+        print(self.root.ids.bolo)
+        print(self.root.ids.bolo.ids)
+        print(self.root.ids.bolo.ids.bolo2)
+        print(self.root.ids.bolo.ids.bolo2.ids.birth_date)
+        self.root.ids.bolo.ids.bolo2.ids.birth_date.text = str(value)
+        # birth_date = value
+
+    # click Cancel
+    def on_cancel(self, instance, value):
+        print("")
+
     def login(self):
         username = self.ids.user_name.text
         password = self.root.ids.password.text
@@ -137,22 +157,4 @@ class TestApp(MDApp):
         self.root.ids.birth_date.text = ""
         self.root.ids.gender.text = ""
 
-    def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
-        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-        date_dialog.open()
 
-    # click OK
-    def on_save(self, instance, value, date_range):
-        print(self.root)
-        print(self.root.ids)
-        print(self.root.ids.bolo)
-        print(self.root.ids.bolo.ids)
-        print(self.root.ids.bolo.ids.bolo2)
-        print(self.root.ids.bolo.ids.bolo2.ids.birth_date)
-        self.root.ids.bolo.ids.bolo2.ids.birth_date.text = str(value)
-        # birth_date = value
-
-    # click Cancel
-    def on_cancel(self, instance, value):
-        print("")
