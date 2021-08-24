@@ -6,7 +6,7 @@ import threading
 from Req_Answers import Req_Answers
 from kivy.storage.jsonstore import JsonStore
 from Backend_controller import Backend_controller
-from mainApp import TestApp
+from client.windows.mainWindow import TestApp
 
 
 class Struct(object):
