@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from kivy.app import App
+from kivy.core.image import Image
 from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.popup import Popup
@@ -25,6 +26,9 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
+    def www(self):
+        m = MessageBox().open("rrff")
+
 
 class CONNECTScreen(Screen):
     def __init__(self, **kwargs):
@@ -43,7 +47,10 @@ class Manager(ScreenManager):
 
 
 class MessageBox(Popup):
-    message = StringProperty()
+    message1 = ObjectProperty()
+    message2 = ObjectProperty()
+    message2 = "windows/images/a.png"
+    message1 = "ddd"
 
 
 class RecycleViewRow(BoxLayout):
@@ -122,6 +129,7 @@ class Offers_Screen(RecycleView):
     def __init__(self, **kwargs):
         super(Offers_Screen, self).__init__(**kwargs)
         self.data = [{'text': "Button " + str(x), 'id': str(x)} for x in range(20)]
+
 
 
 class TestApp(MDApp):

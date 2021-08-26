@@ -31,15 +31,32 @@
 <MessageBox>
     title: 'Popup Message Box'
     size_hint: None, None
-    size: 400, 400
+    size: 1000,1000
 
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: root.message
-        Button:
             size_hint: 1, 0.2
-            text: 'OK'
+            text: root.message1
+        Image:
+            source: root.message2
+        MDTextFieldRound:
+            id:quantity
+            hint_text: "quantity"
+
+        MDTextFieldRound:
+            id:step
+            hint_text: "step"
+
+        MDRoundFlatButton:
+            text:"join offer"
+            font_size: 12
+            size_hint: 1, 0.2
+
+        MDRoundFlatButton:
+            text:"BACK"
+            font_size: 12
+            size_hint: 1, 0.2
             on_press: root.dismiss()
 
 <RecycleViewRow>
@@ -62,6 +79,7 @@
     Button:
         text: "more details"
         size_hint_y: .05
+        on_press: root.parent.parent.parent.parent.www()
 
 
 
