@@ -12,6 +12,7 @@ class OurProtocol(Protocol):
         self.factory = factory
 
     def connectionMade(self):
+        #should send hot deals
         print("hey baby!!!")
 
     def connectionLost(self, res):

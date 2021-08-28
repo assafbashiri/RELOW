@@ -3,6 +3,8 @@ import pickle
 from kivy.app import App
 import threading
 
+from kivy.lang import Builder
+
 from Req_Answers import Req_Answers
 from kivy.storage.jsonstore import JsonStore
 from Backend_controller import Backend_controller
@@ -73,6 +75,13 @@ def ex():
     App.get_running_app().stop()
 
 if __name__ == '__main__':
+    Builder.load_file('windows/mainWindow.kv')
+    Builder.load_file('windows/managerWindow.kv')
+    Builder.load_file('windows/connectWindow.kv')
+    Builder.load_file('windows/accountWindow.kv')
+    Builder.load_file('windows/searchWindow.kv')
+    Builder.load_file('windows/addofferWindow.kv')
+
     t1 = threading.Thread(target=network)
     t1.start()
     TestApp( controller, store).run()

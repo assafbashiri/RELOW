@@ -1,12 +1,29 @@
+<ACCOUNTScreen>
+    id: account
+    name: 'account_screen'
+    Account_box:
+
 <Account_box>
+    BoxiLayout:
+        BoxLayout:
+            MDLabel:
+                id: my
+                text: "JOINED OFFERS"
+        BoxLayout:
+            MDLabel:
+                id: there
+                text: "MY OFFERS"
+    Side_box:
+        id: side_box
+
+
+<BoxiLayout>
+    orientation: "vertical"
     GridLayout:
+        size_hint: 1,1.5
         cols: 1
 
-        Label:
-            id: register_label
-            text: "Register"
-
-        Label:
+        TextInput:
             id:first_name
             hint_text: "first name"
             icon_right: "account"
@@ -47,24 +64,18 @@
             id:gender
             hint_text: "gender"
             icon_right: "account"
-    BoxLayout:
-        size_hint: .2, .2
-        pos_hint: {'top':1}
-        spacing: 10
-        orientation: "vertical"
+
         Button:
-            text: "MENU"
-            on_press:
-                root.parent.manager.current = 'menu_screen'
+            text: "update"
+            on_press: self.parent.parent.generall()
         Button:
-            text: "ACCOUNT"
-            on_press:
-                root.parent.manager.current = 'account_screen'
+            text: "update address"
+            on_press: self.parent.parent.address()
         Button:
-            text: "SEARCH"
+            text: "update payment method"
+            on_press: self.parent.parent.payment()
         Button:
-            text: "CAT"
-        Button:
-            text: "CONNECT"
-            on_press:
-                root.parent.manager.current = 'connect_screen'
+            text: "SUBMIT"
+
+
+

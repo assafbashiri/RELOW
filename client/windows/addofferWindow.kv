@@ -1,0 +1,51 @@
+<ADDOFFERScreen>
+    id: add_offer
+    name: 'add_offer_screen'
+    Add_offer_box:
+
+
+<Add_offer_box>
+    orientation: "horizontal"
+    MDBoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            orientation: "vertical"
+            MDTextFieldRound:
+                id:category
+                hint_text: "category"
+
+            MDTextFieldRound:
+                id:sub_category
+                hint_text: "sub_category"
+
+            MDTextFieldRound:
+                id:product_name
+                hint_text: "product name"
+
+            MDTextFieldRound:
+                id:company
+                hint_text: "company name"
+
+            MDTextFieldRound:
+                id:description
+                hint_text: "description"
+
+            MDTextFieldRound:
+                id:color
+                hint_text: "color"
+
+            MDTextFieldRound:
+                id:size
+                hint_text: "size"
+
+            MDRoundFlatButton:
+                text:"ADD PHOTO"
+                font_size: 12
+        MDBoxLayout:
+            orientation: "vertical"
+            MDRoundFlatButton:
+                text:"ADD OFFER"
+                font_size: 12
+
+    Side_box:
+        id:side_box

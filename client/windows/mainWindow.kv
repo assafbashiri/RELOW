@@ -2,31 +2,67 @@
     id: menu
     name: 'menu_screen'
     Menu_box:
+        id: menu_box
 <Menu_box>
+    id: Menu_box
     orientation: "horizontal"
-    Offers_Screen:
-    BoxLayout:
-        size_hint: .2, .2
-        pos_hint: {'top':1}
-        spacing: 10
-        orientation: "vertical"
-        Button:
-            text: "MENU"
-            on_press:
-                root.parent.manager.current = 'menu_screen'
-        Button:
-            text: "ACCOUNT"
-            on_press:
-                root.parent.manager.current = 'account_screen'
-        Button:
-            text: "SEARCH"
-        Button:
-            text: "CAT"
-        Button:
-            text: "CONNECT"
-            on_press:
-                root.parent.manager.current = 'connect_screen'
+    Offers_Screen_main:
+        id: recycle
+    Side_box:
+        id: side_box
+<Side_box>
+    id: side_box
+    size_hint: .2, .2
+    pos_hint: {'top':1}
+    spacing: 10
+    orientation: "vertical"
+    Button:
+        text: "MENU"
+        on_press:
+            root.parent.parent.manager.current = 'menu_screen'
+    Button:
+        text: "ACCOUNT"
+        on_press:
+            root.parent.parent.manager.current = 'account_screen'
+    Button:
+        text: "SEARCH"
+        on_press:
+            root.parent.parent.manager.current = 'search_screen'
+    Button:
+        text: "CAT"
+        on_press:
+            root.parent.change()
+    Button:
+        text: "CONNECT"
+        on_press:
+            root.parent.parent.manager.current = 'connect_screen'
 
+    Button:
+        text: "ADD OFFER"
+        on_press:
+            root.parent.parent.manager.current = 'add_offer_screen'
+
+<Category_box>
+    id: category_box
+    size_hint: .2, .2
+    pos_hint: {'top':1}
+    spacing: 10
+    orientation: "vertical"
+    Button:
+        text: "bolo1"
+        on_press:
+    Button:
+        text: "bolo2"
+    Button:
+        text: "bolo3"
+    Button:
+        text: "bolo4"
+    Button:
+        text: "bolo5"
+    Button:
+        text: "BACK"
+        on_press:
+            root.parent.back()
 
 <MessageBox>
     title: 'Popup Message Box'
@@ -61,29 +97,11 @@
 
 <RecycleViewRow>
     orientation: 'vertical'
-    Carousel:
-        direction: 'left'
-        size: 1,1
-        AsyncImage:
-            size:self.image_ratio*root.height,root.height
-            source: 'windows/images/a.png'
-        AsyncImage:
-            size:self.image_ratio*root.height,root.height
-            source: 'windows/images/d.png'
-        AsyncImage:
-            size:self.image_ratio*root.height,root.height
-            source: 'windows/images/b.png'
-        AsyncImage:
-            size:self.image_ratio*root.height,root.height
-            source: 'windows/images/c.png'
-    Button:
-        text: "more details"
-        size_hint_y: .05
-        on_press: root.parent.parent.parent.parent.www()
 
 
 
-<Offers_Screen>
+
+<Offers_Screen_main>
     viewclass: 'RecycleViewRow'
     RecycleBoxLayout:
         default_size: None, dp(500)

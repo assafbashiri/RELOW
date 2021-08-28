@@ -1,3 +1,5 @@
+from windows.searchWindow import Offers_Screen_search
+from windows.mainWindow import Offers_Screen_main
 class Backend_controller:
     def __init__(self, req_answers):
         self.req_answers = req_answers
@@ -5,6 +7,11 @@ class Backend_controller:
         self.user_service = None
         self.hot_deals = None
         self.categories = None
+        self.insert_offers()
+
+    def insert_offers(self):
+        Offers_Screen_search.insert_offers(self= Offers_Screen_search)
+        Offers_Screen_main.insert_offers(self=Offers_Screen_main)
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         print("register")
@@ -163,6 +170,7 @@ class Backend_controller:
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
+
 
     def update_product_name(self, offer_id, name):
         req = {'op': 42, 'offer_id': offer_id, 'name': name}

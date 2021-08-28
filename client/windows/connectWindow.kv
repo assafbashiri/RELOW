@@ -1,3 +1,8 @@
+<CONNECTScreen>
+    id: connect
+    name:'connect_screen'
+    Connect_box:
+
 <Connect_box>
     orientation: "horizontal"
     BoxLayout:
@@ -84,7 +89,7 @@
 
 
 
-        GridLayout:
+        MDGridLayout:
             cols: 1
             MDLabel:
                 id: login_label
@@ -100,13 +105,13 @@
                 id:log_in_password
                 hint_text: "last name"
                 icon_right: "account"
-        GridLayout:
+        MDGridLayout:
             cols:2
 
             MDRoundFlatButton:
                 text:"Login"
                 font_size: 12
-                on_press:app.login()
+                on_press:root.login()
 
             MDRoundFlatButton:
                 text:"Logout"
@@ -115,26 +120,7 @@
 
 
 
+    Side_box:
+        id:side_box
 
-    BoxLayout:
-        size_hint: .2, .2
-        pos_hint: {'top':1}
-        spacing: 10
-        orientation: "vertical"
-        Button:
-            text: "MENU"
-            on_press:
-                root.parent.manager.current = 'menu_screen'
-        Button:
-            text: "ACCOUNT"
-            on_press:
-                root.parent.manager.current = 'account_screen'
-        Button:
-            text: "SEARCH"
-        Button:
-            text: "CAT"
-        Button:
-            text: "CONNECT"
-            on_press:
-                root.parent.manager.current = 'connect_screen'
 

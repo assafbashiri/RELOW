@@ -5,20 +5,26 @@ from kivy.core.image import Image
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.carousel import Carousel
+from kivy.uix.image import AsyncImage
+from kivy.uix.label import Label
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
+from kivy.uix.button import Button
+from kivymd.uix.label import MDLabel
 
-Builder.load_file('windows/mainWindow.kv')
-Builder.load_file('windows/managerWindow.kv')
-Builder.load_file('windows/connectWindow.kv')
-Builder.load_file('windows/accountWindow.kv')
-
+from windows.accountWindow import ACCOUNTScreen
+from windows.connectWindow import CONNECTScreen
+from windows.searchWindow import SEARCHScreen
+from windows.addofferWindow import ADDOFFERScreen
 
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
+
+
 
 
 class MENUScreen(Screen):
@@ -27,23 +33,16 @@ class MENUScreen(Screen):
         super(MENUScreen, self).__init__(**kwargs)
 
     def www(self):
-        m = MessageBox().open("rrff")
-
-
-class CONNECTScreen(Screen):
-    def __init__(self, **kwargs):
-        self.name = 'home'
-        super(CONNECTScreen, self).__init__(**kwargs)
-
-
-class ACCOUNTScreen(Screen):
-    def __init__(self, **kwargs):
-        self.name = 'home'
-        super(ACCOUNTScreen, self).__init__(**kwargs)
+        m = MessageBox().open()
 
 
 class Manager(ScreenManager):
-    pass
+    screen_main = ObjectProperty(None)
+    screen_account = ObjectProperty(None)
+    screen_connect = ObjectProperty(None)
+    screen_search = ObjectProperty(None)
+    def back_to_main(self):
+        self.current = "menu_screen"
 
 
 class MessageBox(Popup):
@@ -53,71 +52,43 @@ class MessageBox(Popup):
     message1 = "ddd"
 
 
-class RecycleViewRow(BoxLayout):
-    text = StringProperty()
 
 
-class Connect_box(BoxLayout):
-    def unregister(self):
-        user_id = App.get_running_app().store.get('user')
-        ans = App.get_running_app().controller.unregister(user_id['user_id'])
-        res = Struct(**ans)
-        print(res.message)
-
-    def register(self):
-        user_name = self.ids.user_name.text
-        first_name = "top"  # self.ids.first_name.text
-        last_name = "top"  # self.ids.last_name.text
-        email = self.ids.email.text
-        password = "top"  # self.ids.password.text
-        birth_date = datetime.today()  # self.ids.birth_date.text
-        gender = 1  # int(self.ids.gender.text)
-        ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,
-                                                        gender)
-
-        print(ans.message)
-        App.get_running_app().store.put("user", user_info=ans.data)
-
-    def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
-        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-        date_dialog.open()
-
-    # click OK
-    def on_save(self, instance, value, date_range):
-        print(self.root)
-        print(self.root.ids)
-        print(self.root.ids.bolo)
-        print(self.root.ids.bolo.ids)
-        print(self.root.ids.bolo.ids.bolo2)
-        print(self.root.ids.bolo.ids.bolo2.ids.birth_date)
-        self.root.ids.bolo.ids.bolo2.ids.birth_date.text = str(value)
-        # birth_date = value
-
-    # click Cancel
-    def on_cancel(self, instance, value):
-        print("")
-
-    def login(self):
-        username = self.ids.user_name.text
-        password = self.root.ids.password.text
-        ans = App.get_running_app().controller.login(username, password)
-        res = Struct(**ans)
-        res = Struct(**ans)
-        print(res.message)
-
-    def logout(self):
-        user_id = App.get_running_app().store.get('user')
-        ans = App.get_running_app().controller.logout(user_id['user_id'])
-        res = Struct(**ans)
-        print(res.message)
-
-
-class Account_box(BoxLayout):
+class Side_box(BoxLayout):
     pass
+class Category_box(BoxLayout):
+    pass
+class Offers_Screen_main(RecycleView):
+    def __init__(self, **kwargs):
+        super(Offers_Screen_main, self).__init__(**kwargs)
+        self.insert_offers()
+
+    def insert_offers(self, **kwargs):
+        # get the offer liat from the user
+        # loop all the offer and add them to the recycle
+
+        self.data = [{} for x in range(2)]
 
 
 class Menu_box(BoxLayout):
+    def __init__(self,**kwargs):
+        super(Menu_box, self).__init__(**kwargs)
+        self.cat = Category_box()
+
+    def change(self):
+        print(self.parent)
+        self.side = self.ids.side_box
+        self.remove_widget(self.side)
+        print(self.parent)
+        self.add_widget(self.cat)
+        # self.parent.parent.ids.menu_box.remove_widget(self.parent.ids.side_box)
+        # print(self.parent)
+        # self.parent.parent.ids.menu_box.add_widget(self.parent.ids.side1_box)
+    def back(self):
+        # self.remove_widget(self.ids.category_box)
+        self.add_widget(self.side)
+        self.remove_widget(self.cat)
+
     def message_box(self, message):
         p = MessageBox()
         p.message = message
@@ -125,10 +96,44 @@ class Menu_box(BoxLayout):
         print('test press: ', message)
 
 
-class Offers_Screen(RecycleView):
-    def __init__(self, **kwargs):
-        super(Offers_Screen, self).__init__(**kwargs)
-        self.data = [{'text': "Button " + str(x), 'id': str(x)} for x in range(20)]
+class RecycleViewRow(BoxLayout):
+    text1 = StringProperty(name = "dd")
+    def __init__(self,**kwargs):
+        super(RecycleViewRow, self).__init__(**kwargs)
+        self.car = Carousel(direction='left', size_hint_y= 2)
+        for photo in kwargs:
+            self.car.add_widget(photo)
+        self.add_widget(self.car)
+        # self.add_widget(Label(text=kwargs['name']))
+        self.add_widget(MDLabel(text="name",size_hint_y= .5))
+        # self.add_widget(Label(text=kwargs['company']))
+        self.add_widget(MDLabel(text="company",size_hint_y= .5))
+        # self.add_widget(Label(text=kwargs['description']))
+        self.add_widget(MDLabel(text="description",size_hint_y= .5))
+        # self.add_widget(Label(text=kwargs['size']))
+        self.add_widget(MDLabel(text="size",size_hint_y= .5))
+        # self.add_widget(Label(text=kwargs['photo']))
+        self.more_details = Button(text="more details",size_hint_y=.5 ,on_press= lambda a:self.www())
+        self.more = Button(text="more", size_hint_y=.5 ,on_press= lambda a:self.insert())
+        self.add_widget(self.more_details)
+        self.add_widget(self.more)
+    def insert(self, **kwargs):
+        im = AsyncImage(source="windows/images/e.png")
+        im1 = AsyncImage(source="windows/images/c.png")
+        self.car.add_widget(im)
+
+    def www(self):
+        m = MessageBox().open()
+
+
+class Carousel1(Carousel):
+    sourc = StringProperty()
+    def __init__(self,**kwargs):
+        super(Carousel1, self).__init__(**kwargs)
+    def insert(self, **kwargs):
+        im = AsyncImage(source="windows/images/e.png")
+        im1 = AsyncImage(source="windows/images/c.png")
+        self.add_widget(im)
 
 
 

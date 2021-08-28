@@ -1,0 +1,77 @@
+<SEARCHScreen>
+    id: search
+    name:'search_screen'
+    Search_box:
+        id: search_box
+        MDGridLayout:
+            id:zibi
+            cols:2
+
+            MDTextFieldRound:
+                id:name
+                hint_text: "search by name"
+
+            MDRoundFlatButton:
+                id: search_by_name
+                text:"Search"
+                font_size: 12
+
+            MDTextFieldRound:
+                id:category
+                hint_text: "search by category"
+
+            MDRoundFlatButton:
+                id: search_by_category
+                text:"Search"
+                font_size: 12
+
+            MDTextFieldRound:
+                id:sub_category
+                hint_text: "search sub_category"
+
+            MDRoundFlatButton:
+                id: search_by_sub_category
+                text:"Search"
+                font_size: 12
+
+            MDTextFieldRound:
+                id:dates
+                hint_text: "dates"
+
+            MDRoundFlatButton:
+                id: search_by_dates
+                text:"Search"
+                font_size: 12
+
+            Offers_Screen_search:
+
+        Side_box:
+            id: side_box
+
+
+<Offers_Screen_search>
+    viewclass: 'RecycleViewRow_search'
+    RecycleBoxLayout:
+        default_size: None, dp(500)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        spacing:10
+
+<RecycleViewRow_search>
+    orientation: 'vertical'
+    Carousel1:
+        id: caro
+    Button:
+        text: "more details"
+        size_hint_y: .05
+        on_press: root.ids.caro.insert()
+
+<Search_box>
+    orientation: "horizontal"
+
+
+<Carousel1>:
+    AsyncImage:
+        source: root.sourc
