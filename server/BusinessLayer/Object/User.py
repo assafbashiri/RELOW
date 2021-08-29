@@ -40,7 +40,7 @@ class User():
     def log_in(self):
         self.is_logged = True
 
-    def log_out(self):
+    def logout(self):
         self.is_logged = False
 
     def set_address_details(self, user_address):

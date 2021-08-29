@@ -19,7 +19,6 @@ from windows.accountWindow import ACCOUNTScreen
 from windows.connectWindow import CONNECTScreen
 from windows.searchWindow import SEARCHScreen
 from windows.addofferWindow import ADDOFFERScreen
-
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -162,33 +161,23 @@ class Carousel1(Carousel):
 class TestApp(MDApp):
     title = "RecycleView Direct Test"
 
-    def __init__(self, controller, store):
+    def __init__(self, controller):
         super(TestApp, self).__init__()
         self.controller = controller
-        self.store = store
 
     def build(self):
+        self.check_connection()
         return Manager()
 
-    def login(self):
-        # self.root.ids.login_label.text = f'hi {self.root.ids.user.text}'
-        username = self.root.ids.user.text
-        password = self.root.ids.password.text
-        # call to log in with username and password
+    def check_connection(self):
+        store = self.controller.store
+        if store.exists('user'):
+            user = store['user']['user_info']
+            username = user['user_name']
+            password = user['password']
+            self.controller.login(username, password)
+            print("welcome back")
 
-    def clear_login(self):
-        # self.root.ids.login_label.text="Log In"
-        self.root.ids.user.text = ""
-        self.root.ids.password.text = ""
 
-    def clear_register(self):
-        # self.root.ids.login_label.text="Log In"
-        self.root.ids.first_name.text = ""
-        self.root.ids.last_name.text = ""
-        self.root.ids.user_name.text = ""
-        self.root.ids.email.text = ""
-        self.root.ids.password.text = ""
-        self.root.ids.birth_date.text = ""
-        self.root.ids.gender.text = ""
 
 

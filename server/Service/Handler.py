@@ -98,9 +98,8 @@ class Handler:
                                           argument['password'],
                                           argument['birth_date'],
                                           argument['gender'])
-            a = vars(user)
-            b = vars(UserService(user))
-            return Response(b, "Registered Successfully", True), True
+            self.user = user
+            return Response(vars(UserService(user)), "Registered Successfully", True), True
         except Exception as e:
             return Response(None, str(e), False), True
 
@@ -110,11 +109,14 @@ class Handler:
             self.user = user
             return Response(user.user_id, "Log-In Successfully", True), False
         except Exception as e:
+            if str(e) == 'user is already logged in':
+                self.user = user
             return Response(None, str(e), False), False
 
-    def logout(self):
+    def logout(self, argument):
         try:
-            self.user_controller.logout(self.user.user_id)
+            user_id = self.user.user_id
+            self.user_controller.logout(user_id)
             return Response(None, "Log-Out Successfully", True), False
         except Exception as e:
             return Response(None, str(e), False), False

@@ -1,19 +1,27 @@
 from windows.searchWindow import Offers_Screen_search
 from windows.mainWindow import Offers_Screen_main
+from kivymd.toast import toast
+from Response import Response
 class Backend_controller:
-    def __init__(self, req_answers):
+    def __init__(self, req_answers, store):
         self.req_answers = req_answers
         # user / categories DATA
         self.user_service = None
         self.hot_deals = None
         self.categories = None
         self.insert_offers()
+        self.store= store
 
     def insert_offers(self):
         Offers_Screen_search.insert_offers(self= Offers_Screen_search)
         Offers_Screen_main.insert_offers(self=Offers_Screen_main)
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
+        if self.store.exists('user'):
+            active = self.store['user']['user_info']['active']
+            if active is True:
+                toast("already register")
+                return Response(None, None, False)
         print("register")
         # encode the request for Server-Language
         register_req = {
@@ -25,24 +33,60 @@ class Backend_controller:
         # waiting for an answer from the server to the Main-Thread, and for the Main_thread adding the answer to the
         # req_answers
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.store.put("user", user_info=ans.data)
+            self.register_unregister_json(True)
         return ans
 
     def unregister(self):
+        active = self.store['user']['user_info']['active']
+        if active is True:
+            toast("already unregister")
+            return Response(None, None, False)
         unregister_req = {'op': 2}
         self.req_answers.add_request(unregister_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.register_unregister_json(False)
         return ans
 
+    def register_unregister_json(self, flag):
+        user = self.store['user']
+        user_info = user['user_info']
+        user_info['active'] = flag
+        self.store['user'] = user
+
     def login(self, user_name, password):
+        is_logged = self.store['user']['user_info']['is_logged']
+        if is_logged is True:
+            toast("already log in")
+            return Response(None, None, False)
         login_req = {'op': 3, 'user_name': user_name, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.login_logout_json(True)
+        print(ans.message)
         return ans
 
-    def logout(self):
-        logout_req = {'op': 4}
+    def login_logout_json(self, flag):
+        user = self.store['user']
+        user_info = user['user_info']
+        user_info['is_logged'] = flag
+        self.store['user'] = user
+
+
+
+    def logout(self,user_id):
+        is_logged = self.store['user']['user_info']['is_logged']
+        if is_logged is False:
+            toast("already log out")
+            return Response(None, None, False)
+        logout_req = {'op': 4, 'user_id' : user_id}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.login_logout_json(False)
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------

@@ -91,7 +91,7 @@ class UsersDAO:
                            [True, user_id])
         self._conn.commit()
 
-    def log_out(self, user_id):
+    def logout(self, user_id):
         self._conn.execute("""UPDATE users_submission set is_logged = ? WHERE user_id = ?""",
                            [False, user_id])
         self._conn.commit()

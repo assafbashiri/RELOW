@@ -64,7 +64,7 @@ class UserController:
     def unregister(self, user_id):
         user = self.usersDictionary.get(user_id)
         self.check.check_unregister(user)
-        self.log_out(user_id)
+        self.logout(user_id)
         self.usersDictionary[user_id].active = False
         self.users_dao.unregister(user_id)
 
@@ -83,9 +83,9 @@ class UserController:
         self.users_dao.update(UserDTO(user_to_log_in))
         return user_to_log_in
 
-    def log_out(self, user_id):
+    def logout(self, user_id):
         user = self.check_user_state(user_id)
-        user.log_out()
+        user.logout()
         self.users_dao.update(UserDTO(user))
 
     def add_payment_method(self, user_id, credit_card_number, credit_card_exp_date, cvv, card_type, id):
@@ -391,8 +391,8 @@ class UserController:
     def get_password_by_user_name(self, user_name):
         user_ids = self.usersDictionary.keys()
         for curr_user_id in user_ids:
-            if user_name == self.usersDictionary.get(curr_user_id).user_name:
-                return self.usersDictionary.get(curr_user_id).password
+            if user_name == self.usersDictionary[curr_user_id].user_name:
+                return self.usersDictionary[curr_user_id].password
         return None
 
     def get_user_by_user_name(self, user_name):

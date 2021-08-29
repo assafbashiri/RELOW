@@ -52,7 +52,7 @@ class Search_box(BoxLayout):
         self.sub_cat = Sub_Category_box()
 
     def change_to_cat(self):
-        self.side = self.ids.side_box
+        self.side = self.children[0]
         self.remove_widget(self.side)
         self.add_widget(self.cat)
 

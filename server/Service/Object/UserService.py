@@ -2,44 +2,9 @@ import json
 
 
 class UserService():
-    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        self.active = True
-        self.is_logged = False
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
-        # self.user_id = next_user_id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.user_name = user_name
-        self.email = email
-        self.password = password
-        self.birth_date = birth_date
-        self.gender = gender
-
-
-        # user address
-        self.city = None
-        self.street = None
-        self.apartment_number = None
-        self.zip_code = None
-        self.floor = None
-
-        # payment method
-        self.id_number = None
-        self.credit_card_number = None
-        self.credit_card_exp_date = None
-        self.cvv = None
-        self.card_type = None
-
-        self.history_buy_offers = None
-        self.history_sale_offers = None
-        self.liked_offers = None
-        self.active_sale_offers = None
-        self.active_buy_offers = None
 
     def __init__(self, business_user):
+        self.user_id = business_user.user_id
         self.active = business_user.get_active()
         self.is_logged = business_user.get_is_logged()
         #CheckValidity.checkValidityName(first_name)

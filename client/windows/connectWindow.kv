@@ -96,14 +96,16 @@
                 text: "LOGIN"
 
             MDTextFieldRound:
+                text:'tomnisi'
                 id:log_in_username
-                hint_text: "first name"
+                hint_text: "user name"
                 icon_right: "account"
 
 
             MDTextFieldRound:
+                text:'12345'
                 id:log_in_password
-                hint_text: "last name"
+                hint_text: "password"
                 icon_right: "account"
         MDGridLayout:
             cols:2
@@ -116,7 +118,7 @@
             MDRoundFlatButton:
                 text:"Logout"
                 font_size: 12
-                on_press:app.logout()
+                on_press:root.logout()
 
 
 

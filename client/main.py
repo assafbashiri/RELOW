@@ -16,9 +16,6 @@ class Struct(object):
         self.__dict__.update(entries)
 
 
-store = JsonStore('hello.json')
-req_answers = Req_Answers()
-controller = Backend_controller(req_answers)
 
 
 def start_gui():
@@ -37,9 +34,7 @@ def network():
         ClientSocket.connect((host, port))
     except socket.error as e:
         print(str(e))
-    store = JsonStore("hello.json")
-    if store.exists('user'):
-        print("welcome back")
+
     # response = ClientSocket.recv(1024)
     # response1 = pickle.loads(response)
     # print(response1)
@@ -81,7 +76,9 @@ if __name__ == '__main__':
     Builder.load_file('windows/accountWindow.kv')
     Builder.load_file('windows/searchWindow.kv')
     Builder.load_file('windows/addofferWindow.kv')
-
+    store = JsonStore('hello.json')
+    req_answers = Req_Answers()
+    controller = Backend_controller(req_answers, store)
     t1 = threading.Thread(target=network)
     t1.start()
-    TestApp( controller, store).run()
+    TestApp( controller).run()
