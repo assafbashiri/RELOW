@@ -31,7 +31,7 @@
     Button:
         text: "CAT"
         on_press:
-            root.parent.change()
+            root.parent.change_to_cat()
     Button:
         text: "CONNECT"
         on_press:
@@ -50,7 +50,7 @@
     orientation: "vertical"
     Button:
         text: "bolo1"
-        on_press:
+        on_press: root.parent.change_to_sub_cat()
     Button:
         text: "bolo2"
     Button:
@@ -62,7 +62,27 @@
     Button:
         text: "BACK"
         on_press:
-            root.parent.back()
+            root.parent.back_to_menu()
+
+<Sub_Category_box>
+    id: sub_category_box
+    size_hint: .2, .2
+    pos_hint: {'top':1}
+    spacing: 10
+    orientation: "vertical"
+    Button:
+        text: "bolo11"
+    Button:
+        text: "bolo21"
+    Button:
+        text: "bolo31"
+    Button:
+        text: "bolo41"
+    Button:
+        text: "bolo51"
+    Button:
+        text: "BACK"
+        on_press: root.parent.back_to_cat()
 
 <MessageBox>
     title: 'Popup Message Box'
@@ -73,9 +93,7 @@
         orientation: 'vertical'
         Label:
             size_hint: 1, 0.2
-            text: root.message1
-        Image:
-            source: root.message2
+            text: "self.parent.name"
         MDTextFieldRound:
             id:quantity
             hint_text: "quantity"

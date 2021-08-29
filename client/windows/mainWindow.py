@@ -46,10 +46,20 @@ class Manager(ScreenManager):
 
 
 class MessageBox(Popup):
-    message1 = ObjectProperty()
-    message2 = ObjectProperty()
-    message2 = "windows/images/a.png"
-    message1 = "ddd"
+    def __init__(self, **kwargs):
+        super(MessageBox, self).__init__(**kwargs)
+        self.box = BoxLayout(orientation= 'vertical')
+        self.carousel = Carousel()
+        for photo in kwargs:
+            image = Image(str(photo))
+            self.carousel.add_widget(image)
+        self.box.add_widget(self.carousel)
+        self.name = Label(text= "name")
+        self.box.add_widget(self.name)
+        self.company = "company"
+        self.description = "description"
+        self.product_size = "size"
+        self.color = "color"
 
 
 
@@ -57,6 +67,8 @@ class MessageBox(Popup):
 class Side_box(BoxLayout):
     pass
 class Category_box(BoxLayout):
+    pass
+class Sub_Category_box(BoxLayout):
     pass
 class Offers_Screen_main(RecycleView):
     def __init__(self, **kwargs):
@@ -74,8 +86,9 @@ class Menu_box(BoxLayout):
     def __init__(self,**kwargs):
         super(Menu_box, self).__init__(**kwargs)
         self.cat = Category_box()
+        self.sub_cat = Sub_Category_box()
 
-    def change(self):
+    def change_to_cat(self):
         print(self.parent)
         self.side = self.ids.side_box
         self.remove_widget(self.side)
@@ -84,10 +97,17 @@ class Menu_box(BoxLayout):
         # self.parent.parent.ids.menu_box.remove_widget(self.parent.ids.side_box)
         # print(self.parent)
         # self.parent.parent.ids.menu_box.add_widget(self.parent.ids.side1_box)
-    def back(self):
+    def back_to_menu(self):
         # self.remove_widget(self.ids.category_box)
         self.add_widget(self.side)
         self.remove_widget(self.cat)
+
+    def change_to_sub_cat(self):
+        self.remove_widget(self.cat)
+        self.add_widget(self.sub_cat)
+    def back_to_cat(self):
+        self.add_widget(self.cat)
+        self.remove_widget(self.sub_cat)
 
     def message_box(self, message):
         p = MessageBox()
@@ -101,6 +121,7 @@ class RecycleViewRow(BoxLayout):
     def __init__(self,**kwargs):
         super(RecycleViewRow, self).__init__(**kwargs)
         self.car = Carousel(direction='left', size_hint_y= 2)
+        # for photo in kwargs['photos']:
         for photo in kwargs:
             self.car.add_widget(photo)
         self.add_widget(self.car)
@@ -124,6 +145,7 @@ class RecycleViewRow(BoxLayout):
 
     def www(self):
         m = MessageBox().open()
+
 
 
 class Carousel1(Carousel):

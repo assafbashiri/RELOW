@@ -6,9 +6,12 @@
 
 <Add_offer_box>
     orientation: "horizontal"
+    id: add_offer_box
     MDBoxLayout:
+        id: package
         orientation: "vertical"
         MDBoxLayout:
+            id:content
             orientation: "vertical"
             MDTextFieldRound:
                 id:category
@@ -41,11 +44,16 @@
             MDRoundFlatButton:
                 text:"ADD PHOTO"
                 font_size: 12
+                on_press: root.ids.choose.file_manager_open()
+        choose_photo_layout:
+            id: choose
+            orientation: "vertical"
         MDBoxLayout:
             orientation: "vertical"
             MDRoundFlatButton:
                 text:"ADD OFFER"
                 font_size: 12
+                on_press: root.add_offer()
 
     Side_box:
         id:side_box

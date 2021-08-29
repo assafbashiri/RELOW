@@ -13,26 +13,31 @@ class ACCOUNTScreen(Screen):
         super(ACCOUNTScreen, self).__init__(**kwargs)
 
 
+
 class Account_box(BoxLayout):
     def __init__(self,**kwargs):
         super(Account_box, self).__init__(**kwargs)
         self.cat = Category_box()
-    def change(self):
-        print(self.parent)
+        self.sub_cat = Sub_Category_box()
+    def change_to_cat(self):
         self.side = self.ids.side_box
         self.remove_widget(self.side)
-        print(self.parent)
         self.add_widget(self.cat)
-        # self.parent.parent.ids.menu_box.remove_widget(self.parent.ids.side_box)
-        # print(self.parent)
-        # self.parent.parent.ids.menu_box.add_widget(self.parent.ids.side1_box)
 
-    def back(self):
-        # self.remove_widget(self.ids.category_box)
+    def back_to_menu(self):
         self.add_widget(self.side)
         self.remove_widget(self.cat)
 
+    def change_to_sub_cat(self):
+        self.remove_widget(self.cat)
+        self.add_widget(self.sub_cat)
 
+    def back_to_cat(self):
+        self.add_widget(self.cat)
+        self.remove_widget(self.sub_cat)
+
+class Sub_Category_box(BoxLayout):
+    pass
 class BoxiLayout(BoxLayout):
     def address(self):
         if self.ids.first_name.hint_text == "city":
