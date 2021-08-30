@@ -89,38 +89,17 @@
         text: "BACK"
         on_press: root.parent.back_to_cat()
 
-<MessageBox>
-    title: 'Popup Message Box'
-    size_hint: None, None
-    size: 1000,1000
 
-    BoxLayout:
-        orientation: 'vertical'
-        Label:
-            size_hint: 1, 0.2
-            text: "self.parent.name"
-        MDTextFieldRound:
-            id:quantity
-            hint_text: "quantity"
-
-        MDTextFieldRound:
-            id:step
-            hint_text: "step"
-
-        MDRoundFlatButton:
-            text:"join offer"
-            font_size: 12
-            size_hint: 1, 0.2
-
-        MDRoundFlatButton:
-            text:"BACK"
-            font_size: 12
-            size_hint: 1, 0.2
-            on_press: root.dismiss()
 
 
 <RecycleViewRow>
     orientation: 'vertical'
+    Button:
+        text: root.text1
+    Carousel2:
+
+
+
 
 
 
