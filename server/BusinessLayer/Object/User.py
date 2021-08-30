@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from BusinessLayer.Utils.Gender import Gender
 from BusinessLayer.Object import Offer
 from BusinessLayer.Object.UserAddress import UserAddress
 from BusinessLayer.Object.UserPayment import UserPayment
@@ -68,7 +69,7 @@ class User():
         self.age = datetime.today() - self.birth_date
 
     def set_gender(self, gender):
-        self.gender = gender
+        self.gender = Gender(int(gender))
 
 
     def set_email(self, email):

@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from kivymd.uix.picker import MDDatePicker
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
@@ -78,19 +78,12 @@ class Connect_box(BoxLayout):
 
     # click OK
     def on_save(self, instance, value, date_range):
-        print(self.root)
-        print(self.root.ids)
-        print(self.root.ids.bolo)
-        print(self.root.ids.bolo.ids)
-        print(self.root.ids.bolo.ids.bolo2)
-        print(self.root.ids.bolo.ids.bolo2.ids.birth_date)
-        self.root.ids.bolo.ids.bolo2.ids.birth_date.text = str(value)
+        self.ids.birth_date.text = str(value)
         # birth_date = value
 
     # click Cancel
     def on_cancel(self, instance, value):
-        print("")
-
+        pass
     def login(self):
         username = self.ids.user_name.text
         password = self.ids.password.text

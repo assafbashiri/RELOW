@@ -55,7 +55,7 @@ def network():
         print(ans, "step 3")
         print(type(ans))
         decoded_ans = Struct(**(pickle.loads(ans)))
-        if ans.message is 'EXIT':
+        if decoded_ans.message is 'EXIT':
             ex()
             return
         req_answers.add_answer(decoded_ans)

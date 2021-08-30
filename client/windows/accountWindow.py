@@ -1,8 +1,9 @@
-
+from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 
 from Service.Object.UserService import UserService
+from kivymd.uix.picker import MDDatePicker
 
 class Category_box(BoxLayout):
     pass
@@ -15,10 +16,15 @@ class ACCOUNTScreen(Screen):
 
 
 class Account_box(BoxLayout):
+
     def __init__(self,**kwargs):
         super(Account_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
+
+    def exit(self):
+        App.get_running_app().controller.exit()
+
     def change_to_cat(self):
         self.side = self.ids.side_box
         self.remove_widget(self.side)
@@ -82,71 +88,56 @@ class BoxiLayout(BoxLayout):
         self.children[2].remove_widget(self.ids.birth_date)
         self.ids.gender.hint_text = "card type"
 
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+        date_dialog.open()
+
+    def on_save(self, instance, value, date_range):
+        self.ids.birth_date.text = str(value)
+        # birth_date = value
+
+    # click Cancel
+    def on_cancel(self, instance, value):
+        pass
+
 
     def update(self):
         if self.flag == 1:
-            ans = App.get_running_app().controller.update(username, password)
+            first_name = self.ids.first_name.text
+            last_name = self.ids.last_name.text
+            user_name = self.ids.user_name.text
+            email = self.ids.email.text
+            password = self.ids.password.text
+            birth_date = self.ids.birth_date.text
+            gender = self.ids.gender.text
+            ans = App.get_running_app().controller.update(first_name, last_name, user_name, email, password, birth_date, gender)
+
+        if self.flag == 2:
+            city = self.ids.first_name.text
+            street = self.ids.last_name.text
+            zip_code = self.ids.email.text
+            floor = self.ids.gender.text
+            apt = self.ids.user_name.text
+            ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
+
+        if self.flag == 3:
+            credit_card_number = self.ids.last_name.text
+            credit_card_exp_date = self.ids.user_name.text
+            cvv = self.ids.email.text
+            card_type = self.ids.gender.text
+            id = self.ids.first_name.text
+            ans = App.get_running_app().controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv, card_type, id)
+
+        print("999999999999999999999999")
+        print(ans.message)
+        # for error in ans.message:
+        #     toast(error)
+        if ans.res is True:
+            self.parent.parent.manager.back_to_main()
+
 
         return ans
 
-
-class accountWindow:
-    def __init__(self, controller):
-        self.controller = controller
-        self.user = UserService()
-
-    def update_first_name(self):
-        first_name = ""
-        ans = self.controller.update_first_name(first_name)
-        res = Struct(**ans)
-
-    def update_last_name(self):
-        last_name = ""
-        ans = self.controller.update_last_name(last_name)
-        res = Struct(**ans)
-
-    def update_user_name(self):
-        user_name = ""
-        ans = self.controller.update_user_name(user_name)
-        res = Struct(**ans)
-
-    def update_birth_date(self):
-        birth_date = ""
-        ans = self.controller.update_birth_date(birth_date)
-        res = Struct(**ans)
-
-    def update_email(self):
-        email = ""
-        ans = self.controller.update_email(email)
-        res = Struct(**ans)
-
-    def update_password(self):
-        old_password = ""
-        new_password = ""
-        ans = self.controller.update_password(old_password, new_password)
-        res = Struct(**ans)
-
-    def update_gender(self):
-        gender = ""
-        ans = self.controller.update_gender(gender)
-        res = Struct(**ans)
-
-    def add_payment_method(self):
-        credit_card_number = ""
-        credit_card_exp_date = ""
-        cvv = ""
-        card_type= ""
-        id = ""
-        ans = self.controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv, card_type, id)
-        res = Struct(**ans)
-
-    def add_address_details(self):
-        city = ""
-        street = ""
-        zip_code = ""
-        floor = ""
-        apt = ""
-        ans = self.controller.add_address_details(city, street, zip_code, floor, apt)
-        res = Struct(**ans)
 
 
