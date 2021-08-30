@@ -1,5 +1,6 @@
 from windows.searchWindow import Offers_Screen_search
 from windows.mainWindow import Offers_Screen_main
+from Service.Object.UserService import UserService
 from kivymd.toast import toast
 from Response import Response
 class Backend_controller:
@@ -17,11 +18,11 @@ class Backend_controller:
         Offers_Screen_main.insert_offers(self=Offers_Screen_main)
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        if self.store.exists('user'):
-            active = self.store['user']['user_info']['active']
-            if active is True:
-                toast("already register")
-                return Response(None, None, False)
+        # if self.store.exists('user'):
+        #     active = self.store['user']['user_info']['active']
+        #     if active is True:
+        #         toast("already register")
+        #         return Response(None, None, False)
         print("register")
         # encode the request for Server-Language
         register_req = {
@@ -35,19 +36,21 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         if ans.res is True:
             self.store.put("user", user_info=ans.data)
+            #self.user_service = UserService(ans.date['first_name'],ans.date['last_name'] ,ans.date['user_name'], ans.date['email'],ans.date['password'], ans.date['birth_date'], ans.date['gender'])
             self.register_unregister_json(True)
         return ans
 
     def unregister(self):
-        active = self.store['user']['user_info']['active']
-        if active is True:
-            toast("already unregister")
-            return Response(None, None, False)
+        # active = self.store['user']['user_info']['active']
+        # if active is False:
+        #     toast("already unregister")
+        #     return Response(None, None, False)
         unregister_req = {'op': 2}
         self.req_answers.add_request(unregister_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
             self.register_unregister_json(False)
+            self.user_service = None
         return ans
 
     def register_unregister_json(self, flag):
@@ -57,10 +60,10 @@ class Backend_controller:
         self.store['user'] = user
 
     def login(self, user_name, password):
-        is_logged = self.store['user']['user_info']['is_logged']
-        if is_logged is True:
-            toast("already log in")
-            return Response(None, None, False)
+        # is_logged = self.store['user']['user_info']['is_logged']
+        # if is_logged is True:
+        #     toast("already log in")
+        #     return Response(None, None, False)
         login_req = {'op': 3, 'user_name': user_name, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
@@ -78,10 +81,10 @@ class Backend_controller:
 
 
     def logout(self,user_id):
-        is_logged = self.store['user']['user_info']['is_logged']
-        if is_logged is False:
-            toast("already log out")
-            return Response(None, None, False)
+        # is_logged = self.store['user']['user_info']['is_logged']
+        # if is_logged is False:
+        #     toast("already log out")
+        #     return Response(None, None, False)
         logout_req = {'op': 4, 'user_id' : user_id}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
@@ -90,6 +93,12 @@ class Backend_controller:
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
+
+    def update(self, first_name, last_name, user_name, email, password, birth_date, gender):
+        update_req = {'op': 5, 'first_name': first_name, 'last_name':last_name, 'user_name':user_name, 'email':email, 'password':password, 'birth_date':birth_date, 'gender':gender}
+        self.req_answers.add_request(update_req)
+        ans = self.req_answers.get_answer()
+        return ans
 
     def update_first_name(self, first_name):
         update_first_name_req = {'op': 5, 'first_name': first_name}
@@ -403,5 +412,12 @@ class Backend_controller:
     def add_sub_category(self, name, category_id):
         add_sub_cat_req = {'op': 30, 'name': name, 'category_id': category_id}
         self.req_answers.add_request(add_sub_cat_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+
+    def exit(self):
+        exit_req = {'op':55}
+        self.req_answers.add_request(exit_req)
         ans = self.req_answers.get_answer()
         return ans

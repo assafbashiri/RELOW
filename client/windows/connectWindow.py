@@ -46,12 +46,13 @@ class Connect_box(BoxLayout):
 
 
     def unregister(self):
-        user = App.get_running_app().controller.store['user']['user_info']
-        ans = App.get_running_app().controller.unregister(user['user_id'])
+        print('unregister')
+        ans = App.get_running_app().controller.unregister()
+
         if ans.res is True:
             self.parent.parent.back_to_main()
 
-        print(res.message)
+        print(ans.message)
 
     def register(self):
         user_name = self.ids.user_name.text
