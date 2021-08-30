@@ -16,13 +16,6 @@ class Struct(object):
         self.__dict__.update(entries)
 
 
-
-
-def start_gui():
-    print("start thread work")
-
-
-
 def network():
     # --------------- connect to Server ---------------------------------
     print("start thread work")
@@ -62,8 +55,10 @@ def network():
         print(ans, "step 3")
         print(type(ans))
         decoded_ans = Struct(**(pickle.loads(ans)))
+        if ans.message is 'EXIT':
+            ex()
+            return
         req_answers.add_answer(decoded_ans)
-        print("good job")
 
 
 def ex():
@@ -82,3 +77,6 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=network)
     t1.start()
     TestApp( controller).run()
+
+
+

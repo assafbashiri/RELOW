@@ -17,6 +17,10 @@
     spacing: 10
     orientation: "vertical"
     Button:
+        text: "EXIT"
+        on_press:
+            root.parent.exit()
+    Button:
         text: "MENU"
         on_press:
             root.parent.parent.manager.current = 'menu_screen'
@@ -41,6 +45,7 @@
         text: "ADD OFFER"
         on_press:
             root.parent.parent.manager.current = 'add_offer_screen'
+
 
 <Category_box>
     id: category_box
@@ -112,6 +117,7 @@
             font_size: 12
             size_hint: 1, 0.2
             on_press: root.dismiss()
+
 
 <RecycleViewRow>
     orientation: 'vertical'

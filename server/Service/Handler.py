@@ -75,7 +75,8 @@ class Handler:
                          51: self.get_hot_deals,
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
-                         54: self.update_step_for_offer}
+                         54: self.update_step_for_offer,
+                         55: self.exit}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -542,6 +543,10 @@ class Handler:
             return Response(None, "Step Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
+    def exit(self):
+        print("exit")
+        return Response(None, "EXIT", None)
+
 
     def handling(self, argument):
         req = argument['op']

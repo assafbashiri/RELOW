@@ -14,7 +14,8 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
 from kivy.uix.button import Button
 from kivymd.uix.label import MDLabel
-
+# from kivy.config import Config
+# Config.set('kivy', 'exit_on_escape', '0')
 from windows.accountWindow import ACCOUNTScreen
 from windows.connectWindow import CONNECTScreen
 from windows.searchWindow import SEARCHScreen
@@ -86,7 +87,10 @@ class Menu_box(BoxLayout):
         super(Menu_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
-
+    def exit(self):
+        App.get_running_app().controller.exit()
+    #     write to json
+        App.get_running_app().on_request_close()
     def change_to_cat(self):
         print(self.parent)
         self.side = self.ids.side_box
@@ -160,7 +164,6 @@ class Carousel1(Carousel):
 
 class TestApp(MDApp):
     title = "RecycleView Direct Test"
-
     def __init__(self, controller):
         super(TestApp, self).__init__()
         self.controller = controller
@@ -177,7 +180,5 @@ class TestApp(MDApp):
             password = user['password']
             self.controller.login(username, password)
             print("welcome back")
-
-
 
 
