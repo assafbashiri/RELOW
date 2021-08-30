@@ -1,6 +1,5 @@
 from windows.searchWindow import Offers_Screen_search
 from windows.mainWindow import Offers_Screen_main
-from Service.Object.UserService import UserService
 from kivymd.toast import toast
 from Response import Response
 class Backend_controller:
@@ -11,7 +10,7 @@ class Backend_controller:
         self.hot_deals = None
         self.categories = None
         self.insert_offers()
-        self.store= store
+        self.store = store
 
     def insert_offers(self):
         Offers_Screen_search.insert_offers(self= Offers_Screen_search)
@@ -36,13 +35,12 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         if ans.res is True:
             self.store.put("user", user_info=ans.data)
-            #self.user_service = UserService(ans.date['first_name'],ans.date['last_name'] ,ans.date['user_name'], ans.date['email'],ans.date['password'], ans.date['birth_date'], ans.date['gender'])
             self.register_unregister_json(True)
         return ans
 
     def unregister(self):
         # active = self.store['user']['user_info']['active']
-        # if active is False:
+        # if active is True:
         #     toast("already unregister")
         #     return Response(None, None, False)
         unregister_req = {'op': 2}
@@ -95,52 +93,60 @@ class Backend_controller:
     # ------------------- Account Window ---------------------------------------------------------------------
 
     def update(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        update_req = {'op': 5, 'first_name': first_name, 'last_name':last_name, 'user_name':user_name, 'email':email, 'password':password, 'birth_date':birth_date, 'gender':gender}
+        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name, 'email': email,
+                      'password': password, 'birth_date': birth_date, 'gender': gender}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
+        changed_user = ans.data
+        if ans.res is True:
+            user = self.store['user']
+            user['user_info'] = ans.data
+            self.store['user'] = user
+
         return ans
 
-    def update_first_name(self, first_name):
-        update_first_name_req = {'op': 5, 'first_name': first_name}
-        self.req_answers.add_request(update_first_name_req)
-        ans = self.req_answers.get_answer()
-        return ans
 
-    def update_last_name(self, last_name):
-        update_last_name_req = {'op': 6, 'last_name': last_name}
-        self.req_answers.add_request(update_last_name_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_user_name(self, user_name):
-        update_user_name_req = {'op': 7, 'user_name': user_name}
-        self.req_answers.add_request(update_user_name_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_email(self, email):
-        update_email_req = {'op': 8, 'email': email}
-        self.req_answers.add_request(update_email_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_password(self, old_password, new_password):
-        update_password_req = {'op': 37, 'old_password': old_password, 'new_password': new_password}
-        self.req_answers.add_request(update_password_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_birth_date(self, birth_date):
-        update_birth_req = {'op': 9, 'birth_date': birth_date}
-        self.req_answers.add_request(update_birth_req)
-        ans = self.req_answers.get_answer()
-        return ans
-
-    def update_gender(self, gender):
-        update_birth_req = {'op': 10, 'gender': gender}
-        self.req_answers.add_request(update_birth_req)
-        ans = self.req_answers.get_answer()
-        return ans
+    # def update_first_name(self, first_name):
+    #     update_first_name_req = {'op': 5, 'first_name': first_name}
+    #     self.req_answers.add_request(update_first_name_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
+    #
+    # def update_last_name(self, last_name):
+    #     update_last_name_req = {'op': 6, 'last_name': last_name}
+    #     self.req_answers.add_request(update_last_name_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
+    #
+    # def update_user_name(self, user_name):
+    #     update_user_name_req = {'op': 7, 'user_name': user_name}
+    #     self.req_answers.add_request(update_user_name_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
+    #
+    # def update_email(self, email):
+    #     update_email_req = {'op': 8, 'email': email}
+    #     self.req_answers.add_request(update_email_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
+    #
+    # def update_password(self, old_password, new_password):
+    #     update_password_req = {'op': 37, 'old_password': old_password, 'new_password': new_password}
+    #     self.req_answers.add_request(update_password_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
+    #
+    # def update_birth_date(self, birth_date):
+    #     update_birth_req = {'op': 9, 'birth_date': birth_date}
+    #     self.req_answers.add_request(update_birth_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
+    #
+    # def update_gender(self, gender):
+    #     update_birth_req = {'op': 10, 'gender': gender}
+    #     self.req_answers.add_request(update_birth_req)
+    #     ans = self.req_answers.get_answer()
+    #     return ans
 
     def add_address_details(self, city, street, zip_code, floor, apt):
         add_address_req = {'op': 11, 'city': city, 'street': street, 'zip_code': zip_code,
@@ -183,16 +189,16 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    # ----- seller methods ---------------------------------
-    def add_active_sell_offer(self, name, company, color, size, description, photos, category_id,
-                              sub_category_id, steps, end_date):
+    def add_active_sell_offer(self, name, company, color, size, description, photos, category_name,
+                              sub_category_name, steps, end_date):
         add_active_sell_offer_req = {'op': 24, 'name': name, 'company': company, 'color': color,
                                      'size': size, 'description': description, 'photos': photos,
-                                     'category_id': category_id, 'sub_category_id': sub_category_id,
+                                     'category_name': category_name, 'sub_category_name': sub_category_name,
                                      'steps': steps, 'end_date': end_date}
         self.req_answers.add_request(add_active_sell_offer_req)
         ans = self.req_answers.get_answer()
         return ans
+    # ----- seller methods ---------------------------------
 
     def remove_active_sell_offer(self, offer_id):
         remove_act_sell_offer_req = {'op': 27, 'offer_id': offer_id}
@@ -255,8 +261,8 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_sub_category_for_offer(self, offer_id, sub_category_id):
-        up_sub_cat_for_offer_req = {'op': 38, 'offer_id': offer_id, 'sub_category_id': sub_category_id}
+    def update_sub_category_for_offer(self, offer_id, sub_category_name):
+        up_sub_cat_for_offer_req = {'op': 38, 'offer_id': offer_id, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(up_sub_cat_for_offer_req)
         ans = self.req_answers.get_answer()
         return ans
@@ -269,14 +275,14 @@ class Backend_controller:
 
     # ------------------------ search & getters methods ----------------------------
 
-    def get_offers_by_category(self, category_id):
-        req = {'op': 47, 'category_id': category_id}
+    def get_offers_by_category(self, category_name):
+        req = {'op': 47, 'category_name': category_name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def get_offers_by_sub_category(self, category_id, sub_category_id):
-        req = {'op': 48, 'category_id': category_id, 'sub_category_id': sub_category_id}
+    def get_offers_by_sub_category(self, category_name, sub_category_name):
+        req = {'op': 48, 'category_name': category_name, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
@@ -379,26 +385,26 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_category_name(self, category_id, name):
-        up_cat_name_req = {'op': 35, 'category_id': category_id, 'name': name}
+    def update_category_name(self, category_name, name):
+        up_cat_name_req = {'op': 35, 'category_name': category_name, 'name': name}
         self.req_answers.add_request(up_cat_name_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_sub_category_name(self, category_id, sub_category_id, name):
-        up_sub_cat_name_req = {'op': 36, 'category_id': category_id, 'sub_category_id': sub_category_id, 'name': name}
+    def update_sub_category_name(self, category_name, sub_category_name, name):
+        up_sub_cat_name_req = {'op': 36, 'category_name': category_name, 'sub_category_name': sub_category_name, 'name': name}
         self.req_answers.add_request(up_sub_cat_name_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def remove_category(self, category_id):
-        remove_cat_req = {'op': 32, 'category_id': category_id}
+    def remove_category(self, category_name):
+        remove_cat_req = {'op': 32, 'category_name': category_name}
         self.req_answers.add_request(remove_cat_req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def remove_sub_category(self, category_id, sub_category_id):
-        remove_sub_cat_req = {'op': 33, 'category_id': category_id, 'sub_category_id': sub_category_id}
+    def remove_sub_category(self, category_name, sub_category_name):
+        remove_sub_cat_req = {'op': 33, 'category_name': category_name, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(remove_sub_cat_req)
         ans = self.req_answers.get_answer()
         return ans
@@ -409,15 +415,14 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_sub_category(self, name, category_id):
-        add_sub_cat_req = {'op': 30, 'name': name, 'category_id': category_id}
+    def add_sub_category(self, name, category_name):
+        add_sub_cat_req = {'op': 30, 'name': name, 'category_name': category_name}
         self.req_answers.add_request(add_sub_cat_req)
         ans = self.req_answers.get_answer()
         return ans
 
-
     def exit(self):
-        exit_req = {'op':55}
+        exit_req = {'op': 55}
         self.req_answers.add_request(exit_req)
         ans = self.req_answers.get_answer()
         return ans

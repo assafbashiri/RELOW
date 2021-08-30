@@ -101,13 +101,13 @@ class repository():
 
             CREATE TABLE IF NOT EXISTS category (
                 category_id INTEGER PRIMARY KEY  UNIQUE,
-                name TEXT NOT NULL
+                name TEXT NOT NULL UNIQUE 
             );
 
             CREATE TABLE IF NOT EXISTS sub_category (
                 sub_category_id INTEGER PRIMARY KEY  UNIQUE,
                 category_id INTEGER NOT NULL,
-                name TEXT NOT NULL,
+                name TEXT NOT NULL UNIQUE,
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
             );
 

@@ -53,18 +53,18 @@ class CategoryController:
         self.categoriesDAO.insert(CategoryDTO(category_to_add))
 
     # no return, throw exceptions
-    def remove_category(self, category_id):
-        category_to_remove = self.get_category_by_id(category_id)
+    def remove_category(self, category_name):
+        category_to_remove = self.get_category_by_name(category_name)
         if category_to_remove.is_contain_sub_categories():
             raise Exception("Can not remove category while it contains sub categories")
-        self.category_dictionary.pop(category_id, None)  # check
+        self.category_dictionary.pop(category_to_remove.get_id(), None)  # check
         # remove category from DB
         self.categoriesDAO.delete(CategoryDTO(category_to_remove))
-        # self.categoriesDAO.delete(category_id)
+        # self.categoriesDAO.delete(category_to_remove.get_id())
 
     # no return, throw exceptions
-    def add_sub_category(self, name, category_id):
-        category = self.get_category_by_id(category_id)
+    def add_sub_category(self, name, category_name):
+        category = self.get_category_by_name(category_name)
         sub_category_to_add = category.add_sub_category(name, self.sub_category_id)
         if sub_category_to_add is None:
             raise Exception("Sub Category name is already exist")
@@ -77,8 +77,10 @@ class CategoryController:
         self.add_sub_category(name, category.id)
 
     # no return, throw exceptions
-    def remove_sub_category(self, sub_category_id, category_id):
-        category = self.get_category_by_id(category_id)
+    def remove_sub_category(self, sub_category_name, category_name):
+        sub_category_id = self.get_sub_category_by_name(sub_category_name)
+        category = self.get_category_by_name(category_name)
+        category_id = category.get_id()
         if category.is_contained_offers(sub_category_id):
             raise Exception("Can not remove sub category while it contains offers")
         sub_category_to_remove = self.category_dictionary[category_id].remove_sub_category(sub_category_id)
@@ -88,8 +90,10 @@ class CategoryController:
         self.sub_categoriesDAO.delete(SubCategoryDTO(sub_category_to_remove))
 
     # return offer that added, throw exceptions
-    def add_offer(self, user_id, name, company, color, size, description, photos, category_id, sub_category_id, steps, end_date):
-        category = self.get_category_by_id(category_id)
+    def add_offer(self, user_id, name, company, color, size, description, photos, category_name, sub_category_name, steps, end_date):
+        category = self.get_category_by_name(category_name)
+        sub_category = self.get_sub_category_by_name(sub_category_name)
+        sub_category_id = sub_category.get_id()
         if not category.is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist in this category")
         product = Product(self.offer_id, name, company, color, size, description, photos)
@@ -134,15 +138,18 @@ class CategoryController:
 
     # check input validity in client layer
     # no return, throw exceptions
-    def update_category_name(self, category_id, new_category_name):
-        category = self.get_category_by_id(category_id)
+    def update_category_name(self, category_name, new_category_name):
+        category = self.get_category_by_name(category_name)
         category.set_name(new_category_name)
+        category_id = category.get_id()
         # update in DB
         self.categoriesDAO.update(CategoryDTO.CategoryDTO(self.category_dictionary[category_id]))
 
     # no return, throw exceptions
-    def update_sub_category_name(self, category_id, sub_category_id, new_sub_category_name):
-        category = self.get_category_by_id(category_id)
+    def update_sub_category_name(self, category_name, sub_category_name, new_sub_category_name):
+        category = self.get_category_by_name(category_name)
+        sub_category = self.get_sub_category_by_name(sub_category_name)
+        sub_category_id = sub_category.get_id()
         updated_sub_category = category.update_sub_category_name(sub_category_id, new_sub_category_name)
         if updated_sub_category is None:
             raise Exception("No Such Sub Category")
@@ -156,13 +163,16 @@ class CategoryController:
     # --------------------------------------------getters-------------------------------------------------
 
     # return regular list, throw exceptions
-    def get_offers_by_category(self, category_id):
-        category = self.get_category_by_id(category_id)
+    def get_offers_by_category(self, category_name):
+        category = self.get_category_by_name(category_name)
         return category.get_offers()
 
     # return regular list, throw exceptions
-    def get_offers_by_sub_category(self, category_id, sub_category_id):
-        category = self.get_category_by_id(category_id)
+    def get_offers_by_sub_category(self, catgory_name, sub_catgory_name):
+        category = self.get_category_by_name(catgory_name)
+        sub_category = self.get_sub_category_by_name(sub_catgory_name)
+        category_id = category.get_id()
+        sub_category_id = sub_category.get_id()
         if not category.is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist in this category")
         return category.get_offers_by_sub_category(sub_category_id)
@@ -211,7 +221,7 @@ class CategoryController:
         return ans
 
     # return the updated offer, throw exceptions
-    def update_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
+    def update_sub_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
         offer_to_move = self.get_offer_by_offer_id(offer_id)
         old_sub_category_id = offer_to_move.set_category_id
         old_category = self.get_category_by_id(offer_to_move.category_id)
@@ -323,3 +333,14 @@ class CategoryController:
             if self.category_dictionary[id].name == name:
                 return True
         return False
+
+
+    # check !!!!
+    def get_sub_category_by_name(self, sub_category_name):
+        for catID in self.category_dictionary.keys():
+            cat = self.get_category_by_id(catID)
+            for sub_catID in cat.sub_categories_dictionary.keys():
+                sub_cat = cat.sub_categories_dictionary[sub_catID]
+                if sub_cat.get_name() == sub_category_name:
+                    return sub_cat
+        raise Exception("not exist sub category with this name")

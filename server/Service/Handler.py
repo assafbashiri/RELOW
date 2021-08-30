@@ -24,16 +24,14 @@ class Handler:
                          2: self.unregister,
                          3: self.log_in,
                          4: self.logout,
-
-                         5: self.update_first_name,
-                         6: self.update_last_name,
-                         7: self.update_user_name,
-                         8: self.update_email,
-                         9: self.update_birth_date,
-                         10: self.update_gender,
+                         5: self.update,
+                         # 6: self.update_last_name,
+                         # 7: self.update_user_name,
+                         # 8: self.update_email,
+                         # 9: self.update_birth_date,
+                         # 10: self.update_gender,
                          11: self.add_address_details,
                          12: self.add_payment_method,
-
                          13: self.get_all_history_buy_offers,
                          14: self.get_all_history_sell_offers,
                          15: self.get_history_buy_offer,
@@ -59,6 +57,7 @@ class Handler:
                          35: self.update_category_name,
                          36: self.update_sub_category_name,
                          37: self.update_password,
+                         #  checkkkkkkkkkkkkkk 38
                          38: self.update_sub_category_for_offer,
                          39: self.update_end_date,
                          40: self.update_start_date,
@@ -75,14 +74,14 @@ class Handler:
                          51: self.get_hot_deals,
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
-                         54: self.update_step_for_offer,
+                         54: self.update_step_for_offer
                          55: self.exit}
 
     # ------------------------------------------------userController----------------------------------------------------
 
     # -------------------------------------------------BASIC------------------------------------------------------------
 
-    def unregister(self,argument ):
+    def unregister(self, argument):
         try:
             self.user_controller.unregister(self.user.user_id)
             return Response(None, 'Unregistered Successfully', True)
@@ -140,8 +139,8 @@ class Handler:
                                                        argument['size'],
                                                        argument['description'],
                                                        argument['photos'],
-                                                       argument['category_id'],
-                                                       argument['sub_category_id'],
+                                                       argument['category_name'],
+                                                       argument['sub_category_name'],
                                                        argument['steps'],
                                                        argument['end_date'],)
             self.user_controller.add_active_sale_offer(offer)
@@ -220,59 +219,104 @@ class Handler:
 
 # -------------------------------------------------UPDATE----------------------------------------------------------------
 
-    def update_first_name(self, argument):
+    def update(self, argument):
+        exceptions = []
+        if self.user is None:
+            print("od paam ze null-----------------------")
+
         try:
             self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
-            return Response(None, "First Name Updated Successfully", True)
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
 
-    def update_last_name(self, argument):
         try:
             self.user_controller.update_last_name(self.user.user_id, argument['last_name'])
-            return Response(None, "Last Name Updated Successfully", True)
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
 
-    def update_user_name(self, argument):
         try:
-            self.user_controller.update_username(self.user.user_id, argument['user_name'])
-            return Response(None, "Username Updated Successfully", True)
+            self.user_controller.update_user_name(self.user.user_id, argument['user_name'])
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
 
-    def update_email(self, argument):
         try:
-            self.user_controller.update_email(self.user.user_id,
-                                              argument['email'])
-            return Response(None, "Email Updated Successfully", True)
+            self.user_controller.update_email(self.user.user_id, argument['email'])
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
 
-    def update_password(self, argument):
         try:
-            self.user_controller.update_password(self.user.user_id,
-                                                 argument['old_password'],
-                                                 argument['new_password'])
-            return Response(None, "Password Updated Successfully", True)
+            self.user_controller.update_password(self.user.user_id, self.user.password, argument['password'])
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
 
-    def update_birth_date(self, argument):
         try:
-            self.user_controller.update_birth_date(self.user.user_id,
-                                                   argument['birth_date'])
-            return Response(None, "Birth Date Updated Successfully", True)
+            self.user_controller.update_birth_date(self.user.user_id, argument['birth_date'])
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
 
-    def update_gender(self, argument):
         try:
-            self.user_controller.gender(self.user.user_id,
-                                        argument['gender'])
-            return Response(None, "gender Updated Successfully", True)
+            self.user_controller.update_gender(self.user.user_id, argument['gender'])
         except Exception as e:
-            return Response(None, str(e), False)
+            exceptions.append(str(e))
+
+        finally:
+            user = self.user_controller.get_user_by_id(self.user.user_id)
+            return Response(vars(UserService(user)), exceptions, True)
+    #
+    #
+    # def update_first_name(self, argument):
+    #     try:
+    #         self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
+    #         return Response(None, "First Name Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def update_last_name(self, argument):
+    #     try:
+    #         self.user_controller.update_last_name(self.user.user_id, argument['last_name'])
+    #         return Response(None, "Last Name Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def update_user_name(self, argument):
+    #     try:
+    #         self.user_controller.update_username(self.user.user_id, argument['user_name'])
+    #         return Response(None, "Username Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def update_email(self, argument):
+    #     try:
+    #         self.user_controller.update_email(self.user.user_id,
+    #                                           argument['email'])
+    #         return Response(None, "Email Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def update_password(self, argument):
+    #     try:
+    #         self.user_controller.update_password(self.user.user_id,
+    #                                              argument['old_password'],
+    #                                              argument['new_password'])
+    #         return Response(None, "Password Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def update_birth_date(self, argument):
+    #     try:
+    #         self.user_controller.update_birth_date(self.user.user_id,
+    #                                                argument['birth_date'])
+    #         return Response(None, "Birth Date Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def update_gender(self, argument):
+    #     try:
+    #         self.user_controller.gender(self.user.user_id,
+    #                                     argument['gender'])
+    #         return Response(None, "gender Updated Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
 
 # -------------------------------------------------GET------------------------------------------------------------------
 
@@ -374,7 +418,7 @@ class Handler:
 
     def add_sub_category(self, argument):
         try:
-            self.category_controller.add_sub_category(argument['name'], argument['category_id'])
+            self.category_controller.add_sub_category(argument['name'], argument['category_name'])
             return Response(None, "Sub-Category Added Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -390,15 +434,15 @@ class Handler:
 
     def remove_category(self, argument):
         try:
-            self.category_controller.remove_category(argument['category_id'])
+            self.category_controller.remove_category(argument['category_name'])
             return Response(None, "Category Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def remove_sub_category(self, argument):
         try:
-            self.category_controller.remove_category(argument['sub_category_id'],
-                                                     argument['category_id'])
+            self.category_controller.remove_category(argument['sub_category_name'],
+                                                     argument['category_name'])
             return Response(None, "Sub-Category Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -417,7 +461,7 @@ class Handler:
     # -------------------------------------------------------UPDATE----------------------------------------------------------------------
     def update_category_name(self, argument):
         try:
-            self.category_controller.update_category_name(argument['category_id'],
+            self.category_controller.update_category_name(argument['category_name'],
                                                           argument['name'])
             return Response(None, "Category Name Update Successfully", True)
         except Exception as e:
@@ -425,8 +469,8 @@ class Handler:
 
     def update_sub_category_name(self, argument):
         try:
-            self.category_controller.update_sub_category_name(argument['category_id'],
-                                                              argument['sub_category_id'],
+            self.category_controller.update_sub_category_name(argument['category_name'],
+                                                              argument['sub_category_name'],
                                                               argument['name'])
             return Response(None, "Update Sub-Category Name Successfully", True)
         except Exception as e:
@@ -435,8 +479,8 @@ class Handler:
     def update_sub_category_for_offer(self, argument):
         try:
             offer = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
-                                                                           argument['category_id'],
-                                                                           argument['sub_category_id'])
+                                                                           argument['category_name'],
+                                                                           argument['sub_category_name'])
             return Response(OfferService(offer), "Update Category Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -501,23 +545,27 @@ class Handler:
 
     def get_offers_by_category(self, argument):
         try:
-            offers_list = self.category_controller.get_offers_by_category(argument['category_id'])
+            offers_list = self.category_controller.get_offers_by_category(argument['category_name'])
             return Response(offers_list, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_offers_by_sub_category(self, argument):
         try:
-            offers_list = self.category_controller.get_offers_by_sub_category(argument['category_id'],
-                                                                              argument['sub_category_id'])
+            offers_list = self.category_controller.get_offers_by_sub_category(argument['category_name'],
+                                                                              argument['sub_category_name'])
             return Response(offers_list, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_offers_by_product_name(self, argument):
+        to_return = []
         try:
             offers_list = self.category_controller.get_offers_by_product_name(argument['name'])
-            return Response(offers_list, "Offers Lists Received Successfully", True)
+            for offer in offers_list:
+                temp = OfferService(offer)
+                to_return.append(temp)
+            return Response(to_return, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -541,12 +589,12 @@ class Handler:
             return Response(None, "Step Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
-    def exit(self):
-        print("exit")
-        return Response(None, "EXIT", None)
-
 
     def handling(self, argument):
         req = argument['op']
         func = self.switcher.get(int(req), "nada")
         return func(argument)
+
+    def exit(self):
+        print("exit")
+        return Response(None, "EXIT", None)
