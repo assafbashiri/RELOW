@@ -39,7 +39,27 @@ class Account_box(BoxLayout):
 class Sub_Category_box(BoxLayout):
     pass
 class BoxiLayout(BoxLayout):
+    def __init__(self, **kwargs):
+        super(BoxiLayout, self).__init__(**kwargs)
+        self.flag = 1
+
+
+
+
+    def generall(self):
+        self.flag = 1
+        if self.ids.first_name.hint_text == "first name":
+            return
+        self.ids.first_name.hint_text = "first name"
+        self.ids.last_name.hint_text = "last_name"
+        self.ids.user_name.hint_text = "user_name"
+        self.ids.email.hint_text = "email"
+        self.children[2].add_widget(self.ids.birth_date, 5)
+        self.children[2].add_widget(self.ids.password,6)
+        self.ids.gender.hint_text = "gender"
+
     def address(self):
+        self.flag = 2
         if self.ids.first_name.hint_text == "city":
             return
         self.ids.first_name.hint_text = "city"
@@ -51,6 +71,7 @@ class BoxiLayout(BoxLayout):
         self.ids.gender.hint_text = "floor"
 
     def payment(self):
+        self.flag = 3
         if self.ids.first_name.hint_text == "id_number":
             return
         self.ids.first_name.hint_text = "id_number"
@@ -61,16 +82,12 @@ class BoxiLayout(BoxLayout):
         self.children[2].remove_widget(self.ids.birth_date)
         self.ids.gender.hint_text = "card type"
 
-    def generall(self):
-        if self.ids.first_name.hint_text == "first name":
-            return
-        self.ids.first_name.hint_text = "first name"
-        self.ids.last_name.hint_text = "last_name"
-        self.ids.user_name.hint_text = "user_name"
-        self.ids.email.hint_text = "email"
-        self.children[2].add_widget(self.ids.birth_date, 5)
-        self.children[2].add_widget(self.ids.password,6)
-        self.ids.gender.hint_text = "gender"
+
+    def update(self):
+        if self.flag == 1:
+            ans = App.get_running_app().controller.update(username, password)
+
+        return ans
 
 
 class accountWindow:

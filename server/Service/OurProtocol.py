@@ -25,8 +25,4 @@ class OurProtocol(Protocol):
         res = self.handler.handling(data1)
         print(type(res))
         print(res)
-        res1 = res[0]
-        print(type(res1))
-        print(res1)
-        a = vars(res1)
-        self.transport.write(pickle.dumps(a))
+        self.transport.write(pickle.dumps(vars(res)))

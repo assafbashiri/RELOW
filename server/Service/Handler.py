@@ -81,7 +81,7 @@ class Handler:
 
     # -------------------------------------------------BASIC------------------------------------------------------------
 
-    def unregister(self):
+    def unregister(self,argument ):
         try:
             self.user_controller.unregister(self.user.user_id)
             return Response(None, 'Unregistered Successfully', True)
@@ -99,27 +99,25 @@ class Handler:
                                           argument['birth_date'],
                                           argument['gender'])
             self.user = user
-            return Response(vars(UserService(user)), "Registered Successfully", True), True
+            return Response(vars(UserService(user)), "Registered Successfully", True)
         except Exception as e:
-            return Response(None, str(e), False), True
+            return Response(None, str(e), False)
 
     def log_in(self, argument):
         try:
             user = self.user_controller.log_in(argument['user_name'], argument['password'])
             self.user = user
-            return Response(user.user_id, "Log-In Successfully", True), False
+            return Response(user.user_id, "Log-In Successfully", True)
         except Exception as e:
-            if str(e) == 'user is already logged in':
-                self.user = user
-            return Response(None, str(e), False), False
+            return Response(None, str(e), False)
 
     def logout(self, argument):
         try:
             user_id = self.user.user_id
             self.user_controller.logout(user_id)
-            return Response(None, "Log-Out Successfully", True), False
+            return Response(None, "Log-Out Successfully", True)
         except Exception as e:
-            return Response(None, str(e), False), False
+            return Response(None, str(e), False)
 
 # -------------------------------------------------ADD------------------------------------------------------------------
 

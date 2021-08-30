@@ -166,7 +166,7 @@ class TestApp(MDApp):
         self.controller = controller
 
     def build(self):
-        self.check_connection()
+        #self.check_connection()
         return Manager()
 
     def check_connection(self):
