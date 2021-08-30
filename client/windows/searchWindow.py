@@ -13,6 +13,8 @@ class SEARCHScreen(Screen):
         self.name = 'search_screen'
         super(SEARCHScreen, self).__init__(**kwargs)
 
+
+
 class Offers_Screen_search(RecycleView):
     def __init__(self, **kwargs):
         super(Offers_Screen_search, self).__init__(**kwargs)
@@ -67,6 +69,11 @@ class Search_box(BoxLayout):
     def back_to_cat(self):
         self.add_widget(self.cat)
         self.remove_widget(self.sub_cat)
+
+    def search_by_name(self):
+        prod_name = self.ids.name.text
+        ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
+        print('hello')
 
 class Sub_Category_box(BoxLayout):
     pass

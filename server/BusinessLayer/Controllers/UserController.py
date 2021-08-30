@@ -102,6 +102,7 @@ class UserController:
         user_to_add.set_address_details(address)
         self.users_dao.update(UserDTO(user_to_add))
 
+
     def update_first_name(self, user_id, new_first_name):
         user = self.check_user_state(user_id)
         user.set_first_name(new_first_name)
@@ -130,8 +131,10 @@ class UserController:
         self.users_dao.update(UserDTO(user))
 
     def update_birth_date(self, user_id, new_birthdate):
+
         user = self.check_user_state(user_id)
-        user.set_date_of_birth(new_birthdate)
+        date = datetime.strptime(new_birthdate, "%Y-%m-%d")
+        user.set_date_of_birth(date)
         self.users_dao.update(UserDTO(user))
 
     def update_gender(self, user_id, new_gender):
