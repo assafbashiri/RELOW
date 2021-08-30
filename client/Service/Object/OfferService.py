@@ -19,9 +19,9 @@ class OfferService:
 
     def __init__(self, business_offer):
         self.offer_id = business_offer.get_offer()
-        self.current_step = business_offer.get_current_step
+        self.current_step = business_offer.get_current_step()
         self.user_id = business_offer.gey_offer_id()  # seller
-        self.product = business_offer.get_product
+        self.product = business_offer.get_product()
         self.category_id = business_offer.get_category_id()
         self.subCategory_id = business_offer.get_sub_category_id()
         self.status = business_offer.get_status()

@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
 from kivy.uix.image import Image
@@ -7,6 +8,9 @@ from kivymd.toast import toast
 from kivymd.uix.filemanager import MDFileManager
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
+from kivymd.uix.picker import MDDatePicker
+
+
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'home'
@@ -24,17 +28,40 @@ class Add_offer_box(BoxLayout):
     def add_offer(self):
         list = self.ids.choose.photo_list
         name = self.ids.product_name.text
-        category = self.ids.category.text
-        sub_category = self.ids.sub_category.text
+        category_name = "sport"
+        # category_name = self.ids.category.text
+        sub_category_name = "swim"
+        # sub_category_name = self.ids.sub_category.text
         company = self.ids.company.text
         description = self.ids.description.text
         size = self.ids.size.text
         color = self.ids.color.text
+        end_date = "19/04/2022"
+        # end_date = self.ids.end_date
+        steps = {}
+        ans = App.get_running_app().controller.add_active_sell_offer(name, company, color, size, description, list, category_name,
+                              sub_category_name, steps, end_date)
+        ans1 = ans
+        ans2 = ans
 
     def change_to_cat(self):
         self.side = self.ids.side_box
         self.remove_widget(self.side)
         self.add_widget(self.cat)
+
+
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+        date_dialog.open()
+
+    def on_save(self, instance, value, date_range):
+        self.root.ids.end_date.text = str(value)
+        # birth_date = value
+
+    # click Cancel
+    def on_cancel(self, instance, value):
+        pass
 
     def back_to_menu(self):
         self.add_widget(self.side)
@@ -47,6 +74,9 @@ class Add_offer_box(BoxLayout):
     def back_to_cat(self):
         self.add_widget(self.cat)
         self.remove_widget(self.sub_cat)
+
+    def exit(self):
+        App.get_running_app().controller.exit()
 
 class Sub_Category_box(BoxLayout):
     pass
