@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
@@ -71,7 +72,7 @@ class Search_box(BoxLayout):
         self.remove_widget(self.sub_cat)
 
     def search_by_name(self):
-        prod_name = self.ids.name.text
+        prod_name = 'shoko'
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
         print('hello')
 

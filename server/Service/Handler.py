@@ -56,7 +56,7 @@ class Handler:
                          34: self.remove_photo,
                          35: self.update_category_name,
                          36: self.update_sub_category_name,
-                         37: self.update_password,
+#                         37: self.update_password,
                          #  checkkkkkkkkkkkkkk 38
                          38: self.update_sub_category_for_offer,
                          39: self.update_end_date,
@@ -74,7 +74,7 @@ class Handler:
                          51: self.get_hot_deals,
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
-                         54: self.update_step_for_offer
+                         54: self.update_step_for_offer,
                          55: self.exit}
 
     # ------------------------------------------------userController----------------------------------------------------
