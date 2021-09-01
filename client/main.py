@@ -48,7 +48,12 @@ def network():
 
         ClientSocket.send(message)
         # if to_send['op'] == 2:
-        #     ClientSocket.close()
+        #     ClientSocket.close()2169-+
+
+
+
+
+
         #     App.get_running_app().stop()
         #     break
         ans = ClientSocket.recv(1024)
@@ -75,9 +80,9 @@ if __name__ == '__main__':
     Builder.load_file('windows/addofferWindow.kv')
     store = JsonStore('hello.json')
     req_answers = Req_Answers()
-    controller = Backend_controller(req_answers, store)
     t1 = threading.Thread(target=network)
     t1.start()
+    controller = Backend_controller(req_answers, store)
     TestApp( controller).run()
 
 

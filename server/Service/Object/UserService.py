@@ -1,16 +1,18 @@
 import json
 
+from server.Service.Object.OfferService import OfferService
+
 
 class UserService():
-
+    # SERVER
     def __init__(self, business_user):
         self.user_id = business_user.user_id
         self.active = business_user.get_active()
         self.is_logged = business_user.get_is_logged()
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
+        # CheckValidity.checkValidityName(first_name)
+        # CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
+        # CheckValidity.checkValidityEmail(email)
+        # CheckValidity.checkValidityPassword(password)
         # self.user_id = business_user.get_next_user_id()
         self.first_name = business_user.get_first_name()
         self.last_name = business_user.get_last_name()
@@ -19,7 +21,6 @@ class UserService():
         self.password = business_user.get_password()
         self.birth_date = json.dumps(business_user.get_birth_date(), indent=4, sort_keys=True, default=str)
         self.gender = str(business_user.get_gender())
-
 
         # user address
         self.city = business_user.get_city()
@@ -35,14 +36,28 @@ class UserService():
         self.cvv = business_user.get_cvv()
         self.card_type = business_user.get_card_type()
 
-        self.history_buy_offers = None
-        self.history_sell_offers = None
-        self.liked_offers = business_user.get_liked_offers()
-        self.active_sell_offers = business_user.get_active_sale_offers()
-        self.active_buy_offers = business_user.get_active_buy_offers()
+        self.history_buy_offers = []
+        for offer in business_user.get_history_buy_offers():
+            self.history_buy_offers.append(vars(OfferService(offer)))
 
+        self.history_sell_offers = []
+        for offer in business_user.get_history_sell_offers():
+            self.history_sell_offers.append(vars(OfferService(offer)))
 
-# -------------------------------------------USER SUBMISSION-----------------------------------------------------------
+        self.liked_offers = []
+        for offer in business_user.get_liked_offers():
+            self.liked_offers.append(vars(OfferService(offer)))
+
+        self.active_sell_offers = []
+        for offer in business_user.get_active_sale_offers():
+            self.active_sell_offers.append(vars(OfferService(offer)))
+
+        self.active_buy_offers = []
+        for offer in business_user.get_active_buy_offers():
+            self.active_buy_offers.append(vars(OfferService(offer)))
+
+    # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
+
     def get_is_logged(self):
         return self.is_logged
 
@@ -70,7 +85,7 @@ class UserService():
     def get_gender(self):
         return self.gender
 
-# -------------------------------------------USER ADDRESS-----------------------------------------------------------
+    # -------------------------------------------USER ADDRESS-----------------------------------------------------------
     def get_city(self):
         return self.city
 
@@ -86,7 +101,7 @@ class UserService():
     def get_floor(self):
         return self.floor
 
-# -------------------------------------------USER PAYMENT-----------------------------------------------------------
+    # -------------------------------------------USER PAYMENT-----------------------------------------------------------
 
     def get_card_number(self):
         return self.credit_card_number
@@ -103,19 +118,19 @@ class UserService():
     def get_card_type(self):
         return self.card_type
 
-# -------------------------------------------USER OFFERS-----------------------------------------------------------
+    # -------------------------------------------USER OFFERS-----------------------------------------------------------
 
     def get_history_buy_offers(self):
         return self.history_buy_offers
 
     def get_history_sell_offer(self):
-        return self.history_sale_offers
+        return self.history_sell_offers
 
     def get_liked_offers(self):
         return self.liked_offers
 
     def get_active_sale_offers(self):
-        return self.active_sale_offers
+        return self.active_sell_offers
 
     def get_active_buy_offers(self):
         return self.active_buy_offers

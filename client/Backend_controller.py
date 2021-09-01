@@ -1,20 +1,32 @@
+from client.Service.Object.OfferService import OfferService
+from client.Service.Object.UserService import UserService
 from windows.searchWindow import Offers_Screen_search
 from windows.mainWindow import Offers_Screen_main
 from kivymd.toast import toast
 from Response import Response
+
+
 class Backend_controller:
-    def __init__(self, req_answers, store):
+    def __init__(self, req_answers, store, client):
         self.req_answers = req_answers
         # user / categories DATA
         self.user_service = None
-        self.hot_deals = None
+        self.client = client
+        self.hot_deals = self.get_hot_deals()
         self.categories = None
+        self.init_categories()
         self.insert_offers()
         self.store = store
 
     def insert_offers(self):
-        Offers_Screen_search.insert_offers(self= Offers_Screen_search)
-        Offers_Screen_main.insert_offers(self=Offers_Screen_main)
+        # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
+        Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
+
+    def init_categories(self):
+        self.categories = {}
+        categories_req = {
+
+        }
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         # if self.store.exists('user'):
@@ -22,7 +34,7 @@ class Backend_controller:
         #     if active is True:
         #         toast("already register")
         #         return Response(None, None, False)
-        print("register")
+
         # encode the request for Server-Language
         register_req = {
             'op': 1, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
@@ -36,6 +48,7 @@ class Backend_controller:
         if ans.res is True:
             self.store.put("user", user_info=ans.data)
             self.register_unregister_json(True)
+            self.user_service = self.build_user(ans.data)
         return ans
 
     def unregister(self):
@@ -66,7 +79,10 @@ class Backend_controller:
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
+            # JSON
             self.login_logout_json(True)
+            # FIELD
+            self.user_service = self.build_user(ans.data)
         print(ans.message)
         return ans
 
@@ -76,18 +92,17 @@ class Backend_controller:
         user_info['is_logged'] = flag
         self.store['user'] = user
 
-
-
-    def logout(self,user_id):
+    def logout(self):
         # is_logged = self.store['user']['user_info']['is_logged']
         # if is_logged is False:
         #     toast("already log out")
         #     return Response(None, None, False)
-        logout_req = {'op': 4, 'user_id' : user_id}
+        logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
             self.login_logout_json(False)
+            self.user_service = None
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
@@ -97,6 +112,8 @@ class Backend_controller:
                       'password': password, 'birth_date': birth_date, 'gender': gender}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
+        for ex in ans.message:
+            toast(ex)
         changed_user = ans.data
         if ans.res is True:
             user = self.store['user']
@@ -104,7 +121,6 @@ class Backend_controller:
             self.store['user'] = user
 
         return ans
-
 
     # def update_first_name(self, first_name):
     #     update_first_name_req = {'op': 5, 'first_name': first_name}
@@ -198,6 +214,7 @@ class Backend_controller:
         self.req_answers.add_request(add_active_sell_offer_req)
         ans = self.req_answers.get_answer()
         return ans
+
     # ----- seller methods ---------------------------------
 
     def remove_active_sell_offer(self, offer_id):
@@ -229,7 +246,6 @@ class Backend_controller:
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
-
 
     def update_product_name(self, offer_id, name):
         req = {'op': 42, 'offer_id': offer_id, 'name': name}
@@ -276,94 +292,164 @@ class Backend_controller:
     # ------------------------ search & getters methods ----------------------------
 
     def get_offers_by_category(self, category_name):
+        offers = []
         req = {'op': 47, 'category_name': category_name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_offers_by_sub_category(self, category_name, sub_category_name):
+        offers = []
         req = {'op': 48, 'category_name': category_name, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_offers_by_product_name(self, name):
+        offers = []
         req = {'op': 49, 'name': name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_offers_by_status(self, status):
+        offers = []
         req = {'op': 50, 'status': status}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_hot_deals(self):
+        offers = []
         req = {'op': 51}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_all_history_buy_offers(self):
-        get_his_buy_offers_req = {'op': 13}
-        self.req_answers.add_request(get_his_buy_offers_req)
+        offers = []
+        req = {'op': 13}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_all_history_sell_offers(self):
-        get_his_sell_offers_req = {'op': 14}
-        self.req_answers.add_request(get_his_sell_offers_req)
+        offers = []
+        req = {'op': 14}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_history_buy_offer(self, offer_id):
-        get_his_buy_offer_req = {'op': 15, 'offer_id': offer_id}
-        self.req_answers.add_request(get_his_buy_offer_req)
+        req = {'op': 15, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offer = self.build_offer(ans.data)
+        else:
+            print("bad search")
+        return offer
 
     def get_history_sell_offer(self, offer_id):
-        get_his_sell_offer_req = {'op': 16, 'offer_id': offer_id}
-        self.req_answers.add_request(get_his_sell_offer_req)
+        req = {'op': 16, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offer = self.build_offer(ans.data)
+        else:
+            print("bad search")
+        return offer
 
     def get_all_active_buy_offers(self):
-        get_act_buy_offers_req = {'op': 17}
-        self.req_answers.add_request(get_act_buy_offers_req)
+        offers = []
+        req = {'op': 17}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_all_active_sell_offers(self):
-        get_act_sell_offers_req = {'op': 18}
-        self.req_answers.add_request(get_act_sell_offers_req)
+        offers = []
+        req = {'op': 18}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     def get_active_buy_offer(self, offer_id):
-        get_act_buy_offer_req = {'op': 19, 'offer_id': offer_id}
-        self.req_answers.add_request(get_act_buy_offer_req)
+        req = {'op': 19, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offer = self.build_offer(ans.data)
+        else:
+            print("bad search")
+        return offer
 
     def get_active_sell_offer(self, offer_id):
-        get_act_sell_offer_req = {'op': 20, 'offer_id': offer_id}
-        self.req_answers.add_request(get_act_sell_offer_req)
+        req = {'op': 20, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offer = self.build_offer(ans.data)
+        else:
+            print("bad search")
+        return offer
 
     def get_liked_offer(self, offer_id):
-        get_liked_offer_req = {'op': 21, 'offer_id': offer_id}
-        self.req_answers.add_request(get_liked_offer_req)
+        req = {'op': 21, 'offer_id': offer_id}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offer = self.build_offer(ans.data)
+        else:
+            print("bad search")
+        return offer
 
     def get_all_liked_offers(self):
-        get_liked_offers_req = {'op': 22}
-        self.req_answers.add_request(get_liked_offers_req)
+        offers = []
+        req = {'op': 22}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search")
+        return offers
 
     # ------------------- Admin Functions ---------------------------------------------------------------------
 
@@ -392,7 +478,8 @@ class Backend_controller:
         return ans
 
     def update_sub_category_name(self, category_name, sub_category_name, name):
-        up_sub_cat_name_req = {'op': 36, 'category_name': category_name, 'sub_category_name': sub_category_name, 'name': name}
+        up_sub_cat_name_req = {'op': 36, 'category_name': category_name, 'sub_category_name': sub_category_name,
+                               'name': name}
         self.req_answers.add_request(up_sub_cat_name_req)
         ans = self.req_answers.get_answer()
         return ans
@@ -422,7 +509,38 @@ class Backend_controller:
         return ans
 
     def exit(self):
+        self.logout()
         exit_req = {'op': 55}
         self.req_answers.add_request(exit_req)
         ans = self.req_answers.get_answer()
         return ans
+
+    # ------------------------------- private methods
+
+    def build_offers_list(self, data):
+        offers = []
+        for x in data:
+            offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
+                                      x['status'],
+                                      x['steps'], x['start_date'], x['end_date'], x['current_step'],
+                                      x['current_buyers'])
+
+            offers.append(offer_temp)
+        return offers
+
+    def build_offer(self, x):
+        offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
+                                  x['status'],
+                                  x['steps'], x['start_date'], x['end_date'], x['current_step'],
+                                  x['current_buyers'])
+        return offer_temp
+
+    def build_user(self, data):
+        user_temp = UserService(data['first_name'], data['last_name'], data['user_name'], data['email'],
+                                data['password'], data['birth_date'], data['gender'], data['city'],
+                                data['street'], data['apartment_number'], data['zip_code'], data['floor'],
+                                data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
+                                data['card_type'],
+                                data['history_buy_offers'], data['history_sell_offers'], data['liked_offers'], data['active_sell_offers'],
+                                data['active_buy_offers'],)
+        return user_temp

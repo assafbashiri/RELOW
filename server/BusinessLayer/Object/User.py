@@ -21,12 +21,8 @@ class User():
         self.gender = gender
         #self.age = datetime.today() - self.birth_date
         today = date.today()
-        born =self.birth_date
+        born = self.birth_date
         self.age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-
-
-
-
 
         # ---------- user extra details
         self.address = UserAddress()
@@ -70,7 +66,6 @@ class User():
 
     def set_gender(self, gender):
         self.gender = Gender(int(gender))
-
 
     def set_email(self, email):
         self.email = email

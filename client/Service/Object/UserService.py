@@ -1,79 +1,59 @@
+from client.Service.Object.OfferService import OfferService
 
 
 class UserService():
-    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        self.active = True
-        self.is_logged = False
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
-        # self.user_id = next_user_id
+    # CLIENT
+    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
+                 id_number, credit_card_number, credit_exp, cvv, card_type,
+                 history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
+
         self.first_name = first_name
         self.last_name = last_name
         self.user_name = user_name
         self.email = email
         self.password = password
         self.birth_date = birth_date
+        # gender - 0 / 1
         self.gender = gender
 
-
         # user address
-        self.city = None
-        self.street = None
-        self.apartment_number = None
-        self.zip_code = None
-        self.floor = None
+        self.city = city
+        self.street = street
+        self.apartment_number = apt
+        self.zip_code = zip
+        self.floor = floor
 
         # payment method
-        self.id_number = None
-        self.credit_card_number = None
-        self.credit_card_exp_date = None
-        self.cvv = None
-        self.card_type = None
+        self.id_number = id_number
+        self.credit_card_number = credit_card_number
+        self.credit_card_exp_date = credit_exp
+        self.cvv = cvv
+        self.card_type = card_type
 
-        self.history_buy_offers = None
-        self.history_sale_offers = None
-        self.liked_offers = None
-        self.active_sale_offers = None
-        self.active_buy_offers = None
+        self.history_buy_offers = []
+        for offer in history_buy_offers:
+            offer_service = self.build_offer(offer)
+            self.history_buy_offers.append(offer_service)
 
-    def __init__(self, business_user):
-        self.active = business_user.get_active()
-        self.is_logged = business_user.get_is_logged()
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
-        # self.user_id = business_user.get_next_user_id()
-        self.first_name = business_user.get_first_name()
-        self.last_name = business_user.get_last_name()
-        self.user_name = business_user.get_user_name()
-        self.email = business_user.get_email()
-        self.password = business_user.get_password()
-        self.birth_date = business_user.get_birth_date()
-        self.gender = business_user.get_gender()
+        self.history_sale_offers = []
+        for offer in history_sale_offers:
+            offer_service = self.build_offer(offer)
+            self.history_sale_offers.append(offer_service)
 
+        self.liked_offers = []
+        for offer in liked_offers:
+            offer_service = self.build_offer(offer)
+            self.liked_offers.append(offer_service)
 
-        # user address
-        self.city = business_user.get_city()
-        self.street = business_user.get_street()
-        self.apartment_number = business_user.get_apartment_number()
-        self.zip_code = business_user.get_zip_code()
-        self.floor = business_user.get_floor()
+        self.active_sale_offers = []
+        for offer in active_sale_offers:
+            offer_service = self.build_offer(offer)
+            self.active_sale_offers.append(offer_service)
 
-        # payment method
-        self.id_number = business_user.get_id_number()
-        self.credit_card_number = business_user.get_card_number()
-        self.credit_card_exp_date = business_user.get_credit_card_exp_date()
-        self.cvv = business_user.get_cvv()
-        self.card_type = business_user.get_card_type()
-
-        self.history_buy_offers = business_user.get_history_buy_offers
-        self.history_sell_offers = business_user.get_history_sell_offers
-        self.liked_offers = business_user.get_liked_offers()
-        self.active_sell_offers = business_user.get_active_sale_offers()
-        self.active_buy_offers = business_user.get_active_buy_offers()
+        self.active_buy_offers = []
+        for offer in active_buy_offers:
+            offer_service = self.build_offer(offer)
+            self.active_buy_offers.append(offer_service)
 
 
 # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
@@ -153,3 +133,10 @@ class UserService():
 
     def get_active_buy_offers(self):
         return self.active_buy_offers
+
+    def build_offer(self, x):
+        offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
+                                  x['status'],
+                                  x['steps'], x['start_date'], x['end_date'], x['current_step'],
+                                  x['current_buyers'])
+        return offer_temp
