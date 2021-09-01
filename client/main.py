@@ -80,9 +80,9 @@ if __name__ == '__main__':
     Builder.load_file('windows/addofferWindow.kv')
     store = JsonStore('hello.json')
     req_answers = Req_Answers()
-    controller = Backend_controller(req_answers, store)
     t1 = threading.Thread(target=network)
     t1.start()
+    controller = Backend_controller(req_answers, store)
     TestApp( controller).run()
 
 

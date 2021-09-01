@@ -132,13 +132,12 @@ class Sub_Category_box(BoxLayout):
 class Offers_Screen_main(RecycleView):
     def __init__(self, **kwargs):
         super(Offers_Screen_main, self).__init__(**kwargs)
-        self.insert_offers()
 
-    def insert_offers(self,hot_deals, **kwargs):
+    def insert_offers(self, **kwargs):
         # get the offer liat from the user
         # loop all the offer and add them to the recycl
         offers_list = []
-        for offer in hot_deals:
+        for offer in kwargs['list']:
             name = offer['name']
             company = offer['company']
             description = offer['description']
