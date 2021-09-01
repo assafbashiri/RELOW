@@ -49,14 +49,13 @@ class Add_offer_box(BoxLayout):
         self.remove_widget(self.side)
         self.add_widget(self.cat)
 
-
     def show_date_picker(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 
     def on_save(self, instance, value, date_range):
-        self.root.ids.end_date.text = str(value)
+        self.ids.end_date.text = str(value)
         # birth_date = value
 
     # click Cancel
