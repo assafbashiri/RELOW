@@ -1,13 +1,10 @@
 
 
 class UserService():
-    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        self.active = True
-        self.is_logged = False
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
+    # CLIENT
+    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
+                 id_number, credit_card_number, credit_exp, cvv, card_type,
+                 history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
         # self.user_id = next_user_id
         self.first_name = first_name
         self.last_name = last_name
@@ -15,6 +12,7 @@ class UserService():
         self.email = email
         self.password = password
         self.birth_date = birth_date
+        # gender - 0 / 1
         self.gender = gender
 
         # user address
