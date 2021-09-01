@@ -19,7 +19,7 @@ class Handler:
         self.conn = conn
         self.user = None
 
-        self. category_controller = CategoryController.getInstance()
+        self.category_controller = CategoryController.getInstance()
         self.user_controller = UserController.getInstance()
         self.switcher = {1: self.register,
                          2: self.unregister,
@@ -77,7 +77,7 @@ class Handler:
                          53: self.remove_from_hot_deals,
                          54: self.update_step_for_offer,
                          55: self.exit,
-                         56:self.get_all_categories}
+                         56: self.get_all_categories}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -93,13 +93,13 @@ class Handler:
     def register(self, argument):
         try:
             user = self.user_controller.register(
-                                          argument['first_name'],
-                                          argument['last_name'],
-                                          argument['user_name'],
-                                          argument['email'],
-                                          argument['password'],
-                                          argument['birth_date'],
-                                          argument['gender'])
+                argument['first_name'],
+                argument['last_name'],
+                argument['user_name'],
+                argument['email'],
+                argument['password'],
+                argument['birth_date'],
+                argument['gender'])
             self.user = user
             return Response(vars(UserService(user)), "Registered Successfully", True)
         except Exception as e:
@@ -121,7 +121,7 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-# -------------------------------------------------ADD------------------------------------------------------------------
+    # -------------------------------------------------ADD------------------------------------------------------------------
 
     def add_active_buy_offer(self, argument):
         try:
@@ -146,7 +146,7 @@ class Handler:
                                                        argument['category_name'],
                                                        argument['sub_category_name'],
                                                        argument['steps'],
-                                                       argument['end_date'],)
+                                                       argument['end_date'], )
             self.user_controller.add_active_sale_offer(offer)
             return Response(OfferService(offer), "Offer Added Successfully", True)
         except Exception as e:
@@ -221,7 +221,7 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-# -------------------------------------------------UPDATE----------------------------------------------------------------
+    # -------------------------------------------------UPDATE----------------------------------------------------------------
 
     def update(self, argument):
         exceptions = []
@@ -266,6 +266,7 @@ class Handler:
         finally:
             user = self.user_controller.get_user_by_id(self.user.user_id)
             return Response(vars(UserService(user)), exceptions, True)
+
     #
     #
     # def update_first_name(self, argument):
@@ -322,7 +323,7 @@ class Handler:
     #     except Exception as e:
     #         return Response(None, str(e), False)
 
-# -------------------------------------------------GET------------------------------------------------------------------
+    # -------------------------------------------------GET------------------------------------------------------------------
 
     def get_all_history_buy_offers(self, argument):
         lis = []
@@ -414,9 +415,9 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-# --------------------------------------------------categoryController-------------------------------------------------------
+    # --------------------------------------------------categoryController-------------------------------------------------------
 
-# -----------------------------------------------------ADD-------------------------------------------------------------------
+    # -----------------------------------------------------ADD-------------------------------------------------------------------
 
     def add_category(self, argument):
         try:
@@ -439,7 +440,7 @@ class Handler:
         response = self.category_controller.add_to_hot_deals(argument['offer_id'])
         return response
 
-# ------------------------------------------------REMOVE------------------------------------------------------------
+    # ------------------------------------------------REMOVE------------------------------------------------------------
 
     def remove_category(self, argument):
         try:
@@ -465,7 +466,6 @@ class Handler:
             return Response(None, "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
-
 
     # -------------------------------------------------------UPDATE----------------------------------------------------------------------
     def update_category_name(self, argument):
@@ -608,13 +608,12 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-
     # -----------------------------------------------------------------------------------------------------------------
 
     def update_step_for_offer(self, argument):
         try:
-            self.category_controller.update_step_for_offer(argument['offer_id'],argument['step_number'],
-                                                           argument['quantity'],argument['price'])
+            self.category_controller.update_step_for_offer(argument['offer_id'], argument['step_number'],
+                                                           argument['quantity'], argument['price'])
             return Response(None, "Step Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -629,7 +628,6 @@ class Handler:
             return Response(ans, "all categories names", True)
         except Exception as e:
             return Response(None, str(e), False)
-
 
     def handling(self, argument):
         req = argument['op']
