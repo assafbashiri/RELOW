@@ -78,6 +78,7 @@ class UserController:
         if user_to_log_in.active == 0:
             raise Exception("user is not active")
         if user_to_log_in.is_logged == 1:
+            # raise Exception("user is already logged in")
             raise Exception("user is already logged in")
         user_to_log_in.log_in()  # check this line
         self.users_dao.update(UserDTO(user_to_log_in))

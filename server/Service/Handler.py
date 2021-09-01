@@ -76,7 +76,8 @@ class Handler:
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
                          54: self.update_step_for_offer,
-                         55: self.exit}
+                         55: self.exit,
+                         56:self.get_all_categories}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -131,6 +132,8 @@ class Handler:
             return Response(None, str(e), False)
 
     def add_active_sell_offer(self, argument):
+        if self.user is None:
+            return Response(None, "not logged in motek", False)
         offer = None
         try:
             offer = self.category_controller.add_offer(self.user.user_id,
@@ -615,6 +618,9 @@ class Handler:
             return Response(None, "Step Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
+
+    def get_all_categories(self):
+        categories = self.category_controller.get_all_categories()
 
     def handling(self, argument):
         req = argument['op']
