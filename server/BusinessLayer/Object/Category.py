@@ -125,6 +125,13 @@ class Category:
     def get_name(self):
         return self.name
 
+    def get_sub_categories_names(self):
+        ans=[]
+        for sub in self.sub_categories_dictionary.values():
+            ans.append(sub.get_name())
+
+        return ans
+
 
 #----------------------------------------------------private methods --------------------------------------------
     def is_exist_sub_category(self, sub_category_id):

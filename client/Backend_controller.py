@@ -1,5 +1,6 @@
-from client.Service.Object.OfferService import OfferService
-from client.Service.Object.UserService import UserService
+from Service.Object.OfferService import OfferService
+from Service.Object.UserService import UserService
+from Service.Object.CategoryService import CategoryService
 from windows.searchWindow import Offers_Screen_search
 from windows.mainWindow import Offers_Screen_main
 from kivymd.toast import toast
@@ -14,7 +15,7 @@ class Backend_controller:
         self.client = client
         self.hot_deals = self.get_hot_deals()
         self.categories = None
-        self.init_categories()
+
         self.insert_offers()
         self.store = store
 
@@ -23,10 +24,15 @@ class Backend_controller:
         Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
 
     def init_categories(self):
-        self.categories = {}
-        categories_req = {
+        self.categories = []
+        categories_req = {"op":56}
+        self.req_answers.add_request(categories_req)
+        ans = self.req_answers.get_answer()
+        if ans.res is True:
+            for cat in ans.data:
+                y = CategoryService(cat)
+                self.categories.append(y)
 
-        }
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         # if self.store.exists('user'):
@@ -49,6 +55,7 @@ class Backend_controller:
             self.store.put("user", user_info=ans.data)
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
+            self.init_categories()
         return ans
 
     def unregister(self):
@@ -83,6 +90,7 @@ class Backend_controller:
             self.login_logout_json(True)
             # FIELD
             self.user_service = self.build_user(ans.data)
+            self.init_categories()
         print(ans.message)
         return ans
 

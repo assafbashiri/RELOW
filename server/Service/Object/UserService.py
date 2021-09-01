@@ -1,6 +1,6 @@
 import json
 
-from server.Service.Object.OfferService import OfferService
+from Service.Object.OfferService import OfferService
 
 
 class UserService():

@@ -348,4 +348,14 @@ class CategoryController:
         raise Exception("not exist sub category with this name")
 
     def get_all_categories(self):
-        pass
+        # categories_dict = {} # key:name of category, value: dict-key:name_of_sub_category, value:
+        # for category in self.category_dictionary.values():
+        #     categories_dict[category.get_name] = category.get_sub_categories_names()
+        ans = []
+        categories = self.category_dictionary.values()
+        for cat in categories:
+            ans.append(cat)
+
+        return ans
+
+

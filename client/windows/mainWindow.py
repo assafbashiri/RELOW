@@ -218,6 +218,9 @@ class Menu_box(BoxLayout):
         p.open()
         print('test press: ', message)
 
+    def get_all_categories(self):
+        App.get_running_app().controller.init_categories()
+
 
 
 class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):

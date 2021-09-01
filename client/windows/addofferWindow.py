@@ -54,6 +54,26 @@ class Add_offer_box(BoxLayout):
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 
+    def show_dropdown_category(self):
+        menu_items = [
+            {
+                "text": "male",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=1: self.menu_callback(x, "male"),
+            },
+            {
+                "text": "female",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=2: self.menu_callback(x, "female"),
+            }
+        ]
+        self.drop_down_category = MDDropdownMenu(
+            caller=self.ids.drop_category,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_category.open()
+
     def on_save(self, instance, value, date_range):
         self.ids.end_date.text = str(value)
         # birth_date = value
