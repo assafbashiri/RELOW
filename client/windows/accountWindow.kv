@@ -65,12 +65,22 @@
             icon_right: "account"
             on_focus:self.parent.parent.show_date_picker()
 
+        MDDropDownItem:
+            id: drop
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: 'gender'
+            on_release: self.parent.parent.show_dropdown()
 
-        TextInput:
-            text: "1"
-            id:gender
-            hint_text: "gender"
-            icon_right: "account"
+        #TextInput:
+
+         #   text: "1"
+          #  id:gender
+           # hint_text: "gender"
+            #icon_right: "account"
+            #on_focus:self.parent.parent.show_dropdown()
+            #on_focus:self.parent.parent.show_dropdown()
+            #on_release:print("kkkk")
+
 
         Button:
             text: "update"
@@ -84,6 +94,11 @@
         Button:
             text: "SUBMIT"
             on_press: self.parent.parent.update()
+
+        #MDRaisedButton:
+         #   id:drop
+          #  text: "choose"
+           # on_release: self.parent.parent.show_dropdown()
 
 
 
