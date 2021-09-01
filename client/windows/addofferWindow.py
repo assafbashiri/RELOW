@@ -2,6 +2,8 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
 from kivy.uix.image import Image
+from kivymd.uix.menu import MDDropdownMenu
+
 from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
@@ -55,24 +57,41 @@ class Add_offer_box(BoxLayout):
         date_dialog.open()
 
     def show_dropdown_category(self):
-        menu_items = [
-            {
-                "text": "male",
+        categories = App.get_running_app().controller.get_categories()
+        menu_items=[]
+        for cat in categories:
+            menu_items.append(
+                {"text": cat.name,
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x=1: self.menu_callback(x, "male"),
-            },
-            {
-                "text": "female",
-                "viewclass": "OneLineListItem",
-                "on_release": lambda x=2: self.menu_callback(x, "female"),
-            }
-        ]
+                "on_release": lambda x=cat.get_sub_categories_names(): self.show_dropdown_sub_category(x),
+                }
+            )
+
         self.drop_down_category = MDDropdownMenu(
             caller=self.ids.drop_category,
             items=menu_items,
             width_mult=4,
         )
         self.drop_down_category.open()
+
+    def show_dropdown_sub_category(self, sub_categories_names):
+        menu_items = []
+        for sub_cat in sub_categories_names:
+            menu_items.append(
+                {"text": sub_cat,
+                 "viewclass": "OneLineListItem",
+                 # here we have to open page or the offers of this sub categories ya sharmutut
+                 "on_release": lambda x=1: self.show_dropdown_sub_category(x), }
+            )
+        self.drop_down_sub_category = MDDropdownMenu(
+            caller=self.ids.drop_category,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_sub_category.open()
+        self.drop_down_category.dismiss()
+
+
 
     def on_save(self, instance, value, date_range):
         self.ids.end_date.text = str(value)

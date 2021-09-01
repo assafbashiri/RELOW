@@ -1,7 +1,7 @@
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 from Service.Object.CategoryService import CategoryService
-from windows.searchWindow import Offers_Screen_search
+from windows.searchWindow import Offers_Screen_Search
 from windows.mainWindow import Offers_Screen_main
 from kivymd.toast import toast
 from Response import Response
@@ -18,11 +18,13 @@ class Backend_controller:
 
         self.insert_offers()
         self.store = store
+        self.init_categories()
 
     def insert_offers(self):
         # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
         Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
-
+    def get_categories(self):
+        return self.categories
     def init_categories(self):
         self.categories = []
         categories_req = {"op":56}
@@ -55,7 +57,6 @@ class Backend_controller:
             self.store.put("user", user_info=ans.data)
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
-            self.init_categories()
         return ans
 
     def unregister(self):
@@ -90,7 +91,6 @@ class Backend_controller:
             self.login_logout_json(True)
             # FIELD
             self.user_service = self.build_user(ans.data)
-            self.init_categories()
         print(ans.message)
         return ans
 
