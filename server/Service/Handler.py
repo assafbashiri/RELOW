@@ -108,7 +108,7 @@ class Handler:
         try:
             user = self.user_controller.log_in(argument['user_name'], argument['password'])
             self.user = user
-            return Response(user.user_id, "Log-In Successfully", True)
+            return Response(vars(UserService(user)), "Log-In Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

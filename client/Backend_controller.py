@@ -1,4 +1,5 @@
 from client.Service.Object.OfferService import OfferService
+from client.Service.Object.UserService import UserService
 from windows.searchWindow import Offers_Screen_search
 from windows.mainWindow import Offers_Screen_main
 from kivymd.toast import toast
@@ -16,8 +17,8 @@ class Backend_controller:
         self.store = store
 
     def insert_offers(self):
-        Offers_Screen_search.insert_offers(self=Offers_Screen_search)
-        Offers_Screen_main.insert_offers(self.hot_deals, self=Offers_Screen_main)
+        # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
+        Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         # if self.store.exists('user'):
@@ -69,7 +70,10 @@ class Backend_controller:
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
+            # JSON
             self.login_logout_json(True)
+            # FIELD
+            self.user_service = self.build_user(ans.data)
         print(ans.message)
         return ans
 
@@ -519,3 +523,12 @@ class Backend_controller:
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
                                   x['current_buyers'])
         return offer_temp
+
+    def build_user(self, data):
+        user_temp = UserService(data['first_name'], data['last_name'], data['user_name'], data['email'],
+                                data['password'], data['birth_date'], data['gender'], data['city'],
+                                data['street'], data['apartment_number'], data['zip_code'], data['floor'],
+                                data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
+                                data['card_type'])
+        #                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
+        return user_temp
