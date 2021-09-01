@@ -7,12 +7,14 @@ from Response import Response
 
 
 class Backend_controller:
-    def __init__(self, req_answers, store):
+    def __init__(self, req_answers, store, client):
         self.req_answers = req_answers
         # user / categories DATA
         self.user_service = None
+        self.client = client
         self.hot_deals = self.get_hot_deals()
         self.categories = None
+        self.init_categories()
         self.insert_offers()
         self.store = store
 
@@ -20,13 +22,19 @@ class Backend_controller:
         # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
         Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
 
+    def init_categories(self):
+        self.categories = {}
+        categories_req = {
+
+        }
+
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         # if self.store.exists('user'):
         #     active = self.store['user']['user_info']['active']
         #     if active is True:
         #         toast("already register")
         #         return Response(None, None, False)
-        print("register")
+
         # encode the request for Server-Language
         register_req = {
             'op': 1, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
@@ -40,6 +48,7 @@ class Backend_controller:
         if ans.res is True:
             self.store.put("user", user_info=ans.data)
             self.register_unregister_json(True)
+            self.user_service = self.build_user(ans.data)
         return ans
 
     def unregister(self):
@@ -83,16 +92,17 @@ class Backend_controller:
         user_info['is_logged'] = flag
         self.store['user'] = user
 
-    def logout(self, user_id):
+    def logout(self):
         # is_logged = self.store['user']['user_info']['is_logged']
         # if is_logged is False:
         #     toast("already log out")
         #     return Response(None, None, False)
-        logout_req = {'op': 4, 'user_id': user_id}
+        logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
             self.login_logout_json(False)
+            self.user_service = None
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
@@ -499,6 +509,7 @@ class Backend_controller:
         return ans
 
     def exit(self):
+        self.logout()
         exit_req = {'op': 55}
         self.req_answers.add_request(exit_req)
         ans = self.req_answers.get_answer()
@@ -529,6 +540,7 @@ class Backend_controller:
                                 data['password'], data['birth_date'], data['gender'], data['city'],
                                 data['street'], data['apartment_number'], data['zip_code'], data['floor'],
                                 data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
-                                data['card_type'])
-        #                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
+                                data['card_type'],
+                                data['history_buy_offers'], data['history_sell_offers'], data['liked_offers'], data['active_sell_offers'],
+                                data['active_buy_offers'],)
         return user_temp

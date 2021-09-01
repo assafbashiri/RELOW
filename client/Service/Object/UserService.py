@@ -1,3 +1,4 @@
+from client.Service.Object.OfferService import OfferService
 
 
 class UserService():
@@ -5,7 +6,7 @@ class UserService():
     def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
                  id_number, credit_card_number, credit_exp, cvv, card_type,
                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
-        # self.user_id = next_user_id
+
         self.first_name = first_name
         self.last_name = last_name
         self.user_name = user_name
@@ -16,24 +17,43 @@ class UserService():
         self.gender = gender
 
         # user address
-        self.city = None
-        self.street = None
-        self.apartment_number = None
-        self.zip_code = None
-        self.floor = None
+        self.city = city
+        self.street = street
+        self.apartment_number = apt
+        self.zip_code = zip
+        self.floor = floor
 
         # payment method
-        self.id_number = None
-        self.credit_card_number = None
-        self.credit_card_exp_date = None
-        self.cvv = None
-        self.card_type = None
+        self.id_number = id_number
+        self.credit_card_number = credit_card_number
+        self.credit_card_exp_date = credit_exp
+        self.cvv = cvv
+        self.card_type = card_type
 
-        self.history_buy_offers = None
-        self.history_sale_offers = None
-        self.liked_offers = None
-        self.active_sale_offers = None
-        self.active_buy_offers = None
+        self.history_buy_offers = []
+        for offer in history_buy_offers:
+            offer_service = self.build_offer(offer)
+            self.history_buy_offers.append(offer_service)
+
+        self.history_sale_offers = []
+        for offer in history_sale_offers:
+            offer_service = self.build_offer(offer)
+            self.history_sale_offers.append(offer_service)
+
+        self.liked_offers = []
+        for offer in liked_offers:
+            offer_service = self.build_offer(offer)
+            self.liked_offers.append(offer_service)
+
+        self.active_sale_offers = []
+        for offer in active_sale_offers:
+            offer_service = self.build_offer(offer)
+            self.active_sale_offers.append(offer_service)
+
+        self.active_buy_offers = []
+        for offer in active_buy_offers:
+            offer_service = self.build_offer(offer)
+            self.active_buy_offers.append(offer_service)
 
 
 # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
@@ -113,3 +133,10 @@ class UserService():
 
     def get_active_buy_offers(self):
         return self.active_buy_offers
+
+    def build_offer(self, x):
+        offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
+                                  x['status'],
+                                  x['steps'], x['start_date'], x['end_date'], x['current_step'],
+                                  x['current_buyers'])
+        return offer_temp

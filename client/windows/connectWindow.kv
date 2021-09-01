@@ -33,7 +33,7 @@
                 icon_right: "account"
 
             MDTextFieldRound:
-                text : "tomnisi"
+                text : "tomnis"
                 id:user_name
                 hint_text: "username"
                 icon_right: "account"
@@ -47,7 +47,7 @@
 
 
             MDTextFieldRound:
-                text : "12345"
+                text : "123"
                 id:password
                 hint_text: "password"
                 icon_right: "eye-off"
@@ -63,14 +63,14 @@
 
 
 
-            MDTextFieldRound:
-                text : '1'
-                id:gender
-                hint_text: "gender"
-                icon_right: "account"
+            MDDropDownItem:
+                id: drop
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: 'gender'
+                on_release: root.show_dropdown()
 
         MDGridLayout:
-            cols:2
+            cols:3
 
             MDRoundFlatButton:
                 text:"Register"
@@ -83,9 +83,9 @@
                 on_press:root.unregister()
 
             MDRoundFlatButton:
-                text:"clear"
+                text:"clear_register"
                 font_size: 12
-                on_press:app.clear_register()
+                on_press:root.clear_register()
 
 
 
@@ -96,19 +96,19 @@
                 text: "LOGIN"
 
             MDTextFieldRound:
-                text:'tomnisi'
+                text:'tomnis'
                 id:log_in_username
                 hint_text: "user name"
                 icon_right: "account"
 
 
             MDTextFieldRound:
-                text:'12345'
+                text:'123'
                 id:log_in_password
                 hint_text: "password"
                 icon_right: "account"
         MDGridLayout:
-            cols:2
+            cols:3
 
             MDRoundFlatButton:
                 text:"Login"
@@ -119,6 +119,11 @@
                 text:"Logout"
                 font_size: 12
                 on_press:root.logout()
+
+            MDRoundFlatButton:
+                text:"clear_login"
+                font_size: 12
+                on_press:root.clear_login()
 
 
 
