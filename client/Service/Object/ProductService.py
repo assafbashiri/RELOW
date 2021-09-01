@@ -7,16 +7,7 @@ class ProductService:
         self.size = size
         self.description = description
         self.photos = photos
-        self.offer_id=offer_id
-
-    def __init__(self, business_product):
-        self.name = business_product.get_name()
-        self.company = business_product.get_company()
-        self.color = business_product.get_color()
-        self.size = business_product.get_size()
-        self.description = business_product.get_description()
-        self.photos = business_product.get_photos()
-        self.offer_id = business_product.get_offer_id()
+        self.offer_id = offer_id
 
     # ---------------------------------------------GETTERS-----------------------------------------------------------------
 
@@ -41,12 +32,10 @@ class ProductService:
     def get_offer_id(self):
         return self.offer_id
 
-
-# ---------------------------------------------SETTERS-----------------------------------------------------------------
-
+    # ---------------------------------------------SETTERS-----------------------------------------------------------------
 
     def set_name(self, name):
-         self.name = name
+        self.name = name
 
     def set_company(self, company):
         self.company = company

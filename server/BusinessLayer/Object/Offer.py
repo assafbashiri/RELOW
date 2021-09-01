@@ -52,7 +52,7 @@ class Offer:
         self.category_id = category_id
 
     def set_sub_category_id(self, sub_category_id):
-        self.subCategory_id = sub_category_id
+        self.sub_category_id = sub_category_id
 
     def set_status(self, status):
         self.status = status
@@ -69,12 +69,6 @@ class Offer:
 
     def set_current_buyers(self, current_buyers):
         self.current_buyers = current_buyers
-
-    def set_category_id(self, new_category_id):
-        self.category_id = new_category_id
-
-    def set_sub_category_id(self, new_sub_category_id):
-        self.sub_category_id = new_sub_category_id
 
     def set_hot_deals(self, hot):
         self.hot_deals = hot

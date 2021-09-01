@@ -8,8 +8,9 @@ from BusinessLayer.Controllers.CategoryController import CategoryController
 
 from BusinessLayer.Controllers.UserController import UserController
 from Response import Response
-from Service.Object.OfferService import OfferService
-from Service.Object.UserService import UserService
+
+from server.Service.Object.OfferService import OfferService
+from server.Service.Object.UserService import UserService
 
 
 class Handler:
@@ -56,8 +57,8 @@ class Handler:
                          34: self.remove_photo,
                          35: self.update_category_name,
                          36: self.update_sub_category_name,
-#                         37: self.update_password,
-                         #  checkkkkkkkkkkkkkk 38
+                         # 37: self.update_password,
+                         #  check 38
                          38: self.update_sub_category_for_offer,
                          39: self.update_end_date,
                          40: self.update_start_date,
@@ -321,55 +322,59 @@ class Handler:
 # -------------------------------------------------GET------------------------------------------------------------------
 
     def get_all_history_buy_offers(self, argument):
+        lis = []
         try:
-            lis = []
             offer_list = self.user_controller.get_all_history_buy_offer(self.user.user_id)
             for offer in offer_list:
-                lis.append(offer)
-            return Response(lis, 'All History Sell Offers', True)
+                temp = vars(OfferService(offer))
+                lis.append(temp)
+            return Response(lis, 'All History buy Offers', True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_all_history_sell_offers(self, argument):
+        lis = []
         try:
             offers_list = self.user_controller.get_all_history_sell_offer(self.user.user_id)
-            lis = []
             for offer in offers_list:
-                lis.append(OfferService(offer))
-            return Response(lis, "All History Sell Offers", True)
+                temp = vars(OfferService(offer))
+                lis.append(temp)
+            return Response(lis, 'All History sell Offers', True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_history_buy_offer(self, argument):
         try:
             offer = self.user_controller.get_history_buy_offer(argument['offer_id'])
-            return Response(OfferService(offer), "Got offer Successfully", True)
+            return Response(vars(OfferService(offer)), "Got offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_history_sell_offer(self, argument):
         try:
             offer = self.user_controller(argument['offer_id'])
-            return Response(OfferService(offer), "Got Offer Successfully", True)
+            return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_all_active_buy_offers(self, argument):
+        lis = []
         try:
             offer_buy_list = self.user_controller.get_all_buy_offer(self.user.user_id)
-            lis = []
             for offer in offer_buy_list:
-                lis.append(OfferService(offer))
-            return Response(lis, "All Active Buy Offers", True)
+                temp = vars(OfferService(offer))
+                lis.append(temp)
+                return Response(lis, "All Active Buy Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_all_active_sell_offers(self, argument):
+        lis = []
         try:
             offer_sell_list = self.user_controller.get_all_sell_offer(self.user.user_id)
-            lis = []
             for offer in offer_sell_list:
-                lis.append(OfferService(offer))
+                temp = vars(OfferService(offer))
+                lis.append(temp)
             return Response(lis, "All Active Sell Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -377,31 +382,32 @@ class Handler:
     def get_active_buy_offer(self, argument):
         try:
             offer = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
-            return Response(OfferService(offer), "Got Offer Successfully", True)
+            return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_active_sell_offer(self, argument):
         try:
             offer = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
-            return Response(OfferService(offer), "Got Offer Successfully", True)
+            return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_liked_offer(self, argument):
         try:
             offer = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
-            return Response(OfferService(offer), "Update Sub-Category Successfully", True)
+            return Response(vars(OfferService(offer)), "Update Sub-Category Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_all_liked_offers(self, argument):
+        lis = []
         try:
             liked_offers_list = self.user_controller.get_all_liked_offer(self.user.user_id)
-            lis = []
             for offer in liked_offers_list:
-                lis.append(OfferService(offer))
-            return Response(lis, "All Liked Sell Offers", True)
+                temp = vars(OfferService(offer))
+                lis.append(temp)
+            return Response(lis, "All Liked Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -544,17 +550,25 @@ class Handler:
     # -------------------------------------------------------GET---------------------------------------------------------------
 
     def get_offers_by_category(self, argument):
+        to_return = []
         try:
             offers_list = self.category_controller.get_offers_by_category(argument['category_name'])
-            return Response(offers_list, "Offers Lists Received Successfully", True)
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                to_return.append(temp)
+            return Response(to_return, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_offers_by_sub_category(self, argument):
+        to_return = []
         try:
             offers_list = self.category_controller.get_offers_by_sub_category(argument['category_name'],
                                                                               argument['sub_category_name'])
-            return Response(offers_list, "Offers Lists Received Successfully", True)
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                to_return.append(temp)
+            return Response(to_return, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -563,29 +577,41 @@ class Handler:
         try:
             offers_list = self.category_controller.get_offers_by_product_name(argument['name'])
             for offer in offers_list:
-                temp = OfferService(offer)
+                temp = vars(OfferService(offer))
                 to_return.append(temp)
             return Response(to_return, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_offers_by_status(self, argument):
+        to_return = []
         try:
             offers_list = self.category_controller.get_offers_by_status(argument['status'])
-            return Response(offers_list, "Offers Lists Received Successfully", True)
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                to_return.append(temp)
+            return Response(to_return, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
     def get_hot_deals(self, argument):
+        to_return = []
         try:
             offers_list = self.category_controller.get_hot_deals()
-            return Response(offers_list, "Offers Lists Received Successfully", True)
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                to_return.append(temp)
+            return Response(to_return, "Offers Lists Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
+
+    # -----------------------------------------------------------------------------------------------------------------
+
     def update_step_for_offer(self, argument):
         try:
-            self.category_controller.update_step_for_offer(argument['offer_id'],argument['step_number'],argument['quantity'],argument['price'])
+            self.category_controller.update_step_for_offer(argument['offer_id'],argument['step_number'],
+                                                           argument['quantity'],argument['price'])
             return Response(None, "Step Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)

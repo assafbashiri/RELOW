@@ -1,31 +1,31 @@
 from server.Service.Object.ProductService import ProductService
 
-
+# SERVER
 class OfferService:
-    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, price_per_step, amount_per_step, start_date, end_date,  current_buyers):
+    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date, current_buyers):
         self.offer_id = next_id
         self.current_step = -1
-        self.user_id = user_id #seller
-        self.product = product
+        self.user_id = user_id # seller
+        self.product = vars(ProductService(product))
         self.category_id = category_id
-        self.subCategory_id = sub_category_id
-        self.status = status
+        self.sub_category_id = sub_category_id
+        self.start_date = start_date
+        self.end_date = end_date
 
         #self.price_per_step = price_per_step
         #self.amount_per_step = amount_per_step
+        self.status = status.name
         self.steps = None # dictionary <int(numOfStep), Step)
-
-        self.start_date = start_date
-        self.end_date = end_date
         self.current_buyers = current_buyers
+
 
     def __init__(self, business_offer):
         self.offer_id = business_offer.get_offer_id()
         self.current_step = business_offer.get_current_step()
         self.user_id = business_offer.get_user_id()  # seller
-        self.product = ProductService(business_offer.get_product())
+        self.product = vars(ProductService(business_offer.get_product()))
         self.category_id = business_offer.get_category_id()
-        self.subCategory_id = business_offer.get_sub_category_id()
+        self.sub_category_id = business_offer.get_sub_category_id()
         self.status = None
 
         # self.price_per_step = price_per_step
@@ -53,8 +53,8 @@ class OfferService:
     def get_category_id(self):
         return self.category_id
 
-    def get_subCategory_id(self):
-        return self.subCategory_id
+    def get_sub_category_id(self):
+        return self.sub_category_id
 
     def get_status(self):
         return self.status
@@ -90,7 +90,7 @@ class OfferService:
         self.category_id = category_id
 
     def set_sub_category_id(self, sub_category_id):
-        self.subCategory_id = sub_category_id
+        self.sub_category_id = sub_category_id
 
     def set_status(self, status):
         self.status = status
