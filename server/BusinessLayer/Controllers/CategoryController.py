@@ -99,6 +99,7 @@ class CategoryController:
         product = Product(self.offer_id, name, company, color, size, description, photos)
         offer_to_add = category.add_offer(self.offer_id, user_id, product, sub_category_id, steps, end_date)
         self.offer_id += 1
+        self.add_to_hot_deals(offer_to_add.offer_id)
         return offer_to_add
 
     # return offer to remove, throw exceptions
@@ -109,6 +110,7 @@ class CategoryController:
 
     # no return, throw exceptions
     def add_to_hot_deals(self, offer_id):
+        print('added to hot deals')
         offer_to_add = self.get_offer_by_offer_id(offer_id)
         self.hot_deals[offer_id] = offer_to_add
         offer_to_add.set_hot_deals(True)
@@ -344,3 +346,6 @@ class CategoryController:
                 if sub_cat.get_name() == sub_category_name:
                     return sub_cat
         raise Exception("not exist sub category with this name")
+
+    def get_all_categories(self):
+        pass

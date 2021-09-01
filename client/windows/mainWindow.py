@@ -58,9 +58,8 @@ class MessageBox(Popup):
         self.title = name
         self.box = BoxLayout(orientation= 'vertical')
         self.carousel = Carousel(size_hint_y= 6)
-        for photo in photo_lis:
-            # image = Image(str(photo))
-            self.carousel.add_widget(photo)
+        # for photo in photo_lis:
+        #     self.carousel.add_widget(photo)
         image = AsyncImage(source="windows/images/a.png")
         self.carousel.add_widget(image)
         self.box.add_widget(self.carousel)
@@ -138,19 +137,25 @@ class Offers_Screen_main(RecycleView):
         # loop all the offer and add them to the recycl
         offers_list = []
         for offer in kwargs['list']:
-            name = offer['name']
-            company = offer['company']
-            description = offer['description']
-            product_size = offer['product_size']
-            color = offer['color']
+            name = offer.product.name
+            company = offer.product.company
+            description = offer.product.description
+            product_size = offer.product.size
+            color = offer.product.color
             photo_lis = []
-            lis = offer['photos']
-            steps = offer['steps']
-            offer_id = offer['offer_id']
-            current_buyers = offer['current_buyers']
-            for photo in lis:
-                image = AsyncImage(source = str(photo))
-            photo_lis.append(image)
+            for photo in offer.product.photos:
+                photo_lis.append(photo)
+            lis = offer.product.photos
+            steps = [[10,1000], [20,500]]   #offer.steps
+            offer_id = offer.offer_id
+            if offer.current_buyers is None:
+                current_buyers = 10
+            else:
+                current_buyers = offer.current_buyers
+            # for photo in lis:
+            #     image = AsyncImage(source = str(photo))
+            #     photo_lis.append(image)
+            photo_lis.append(AsyncImage(source = 'windows/images/a.png'))
             offers_list.append({'name':name,
                                 'company': company,
                                 'description': description,

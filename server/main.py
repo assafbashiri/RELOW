@@ -5,6 +5,7 @@ from _thread import *
 import pickle
 import datetime
 
+from kivy.uix.image import AsyncImage
 from twisted.internet import reactor
 
 from BusinessLayer.Object.Product import Product
@@ -59,7 +60,7 @@ if __name__ == '__main__':
 
 
 
-    of3 = c.add_offer(1, "shoko", "tnova", "green", "5/6", "nice prod", "nophoto", "sport", "swim", {1: step1, 2: step2, 3: step3}, date)
+    of3 = c.add_offer(1, "shoko", "tnova", "green", "5/6", "nice prod", "AsyncImage(source ='images/a.png')", "sport", "swim", {1: step1, 2: step2, 3: step3}, date)
     u.add_active_sale_offer(of3)
     u.add_active_buy_offer(2, of3, 20, 1)
 
@@ -68,17 +69,17 @@ if __name__ == '__main__':
     date = datetime.datetime(2022, 5, 17)
     date1 = datetime.datetime(2018, 5, 17)
 
-    of1 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", "sport", "swim",{1: step1, 2: step2, 3: step3}, date)
+    of1 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "AsyncImage(source ='images/a.png')", "sport", "swim",{1: step1, 2: step2, 3: step3}, date)
     # of2 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {1: step1, 2: step2, 3: step3}, date1)
-    of2 = c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts", "nophoto", "sport", "swim", {1: step1, 2: step2, 3: step3},date)
+    of2 = c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts"," AsyncImage(source ='images/a.png')", "sport", "swim", {1: step1, 2: step2, 3: step3},date)
     res_to_check1 = c.get_offers_by_category("sport")
 
     u.add_active_sale_offer(of1)
     u.add_active_sale_offer(of2)
 
     tt= u.get_user_by_id(1)
-    a=9
-
+    u.logout(1)
+    u.logout(2)
     reactor.listenTCP(4000, OurFactory(conn))
     reactor.run()
 
