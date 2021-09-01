@@ -17,7 +17,6 @@ class UserService():
         self.birth_date = birth_date
         self.gender = gender
 
-
         # user address
         self.city = None
         self.street = None

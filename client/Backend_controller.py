@@ -17,7 +17,7 @@ class Backend_controller:
 
     def insert_offers(self):
         Offers_Screen_search.insert_offers(self=Offers_Screen_search)
-        Offers_Screen_main.insert_offers(self=Offers_Screen_main)
+        Offers_Screen_main.insert_offers(self.hot_deals, self=Offers_Screen_main)
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         # if self.store.exists('user'):
