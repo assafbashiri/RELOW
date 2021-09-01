@@ -5,12 +5,12 @@
 # from Object.OfferService import OfferService
 # from Object.ProductService import ProductService
 from BusinessLayer.Controllers.CategoryController import CategoryController
-
+from Service.Object.CategoryService import CategoryService
 from BusinessLayer.Controllers.UserController import UserController
 from Response import Response
 
-from server.Service.Object.OfferService import OfferService
-from server.Service.Object.UserService import UserService
+from Service.Object.OfferService import OfferService
+from Service.Object.UserService import UserService
 
 
 class Handler:
@@ -619,8 +619,17 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def get_all_categories(self):
-        categories = self.category_controller.get_all_categories()
+    def get_all_categories(self, argument):
+        # not sure we need the try
+        try:
+            ans = []
+            categories = self.category_controller.get_all_categories()
+            for cat in categories:
+                ans.append(vars(CategoryService(cat)))
+            return Response(ans, "all categories names", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
 
     def handling(self, argument):
         req = argument['op']

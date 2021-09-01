@@ -1,6 +1,7 @@
-from client.Service.Object.OfferService import OfferService
-from client.Service.Object.UserService import UserService
-from windows.searchWindow import Offers_Screen_search
+from Service.Object.OfferService import OfferService
+from Service.Object.UserService import UserService
+from Service.Object.CategoryService import CategoryService
+from windows.searchWindow import Offers_Screen_Search
 from windows.mainWindow import Offers_Screen_main
 from kivymd.toast import toast
 from Response import Response
@@ -14,19 +15,26 @@ class Backend_controller:
         self.client = client
         self.hot_deals = self.get_hot_deals()
         self.categories = None
-        self.init_categories()
+
         self.insert_offers()
         self.store = store
+        self.init_categories()
 
     def insert_offers(self):
         # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
         Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
-
+    def get_categories(self):
+        return self.categories
     def init_categories(self):
-        self.categories = {}
-        categories_req = {
+        self.categories = []
+        categories_req = {"op":56}
+        self.req_answers.add_request(categories_req)
+        ans = self.req_answers.get_answer()
+        if ans.res is True:
+            for cat in ans.data:
+                y = CategoryService(cat)
+                self.categories.append(y)
 
-        }
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         # if self.store.exists('user'):

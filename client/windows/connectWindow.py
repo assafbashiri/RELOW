@@ -142,7 +142,7 @@ class Connect_box(BoxLayout):
         user_info = user['user_info']
         user_id = user_info['user_id']
         print(user_id)
-        ans = App.get_running_app().controller.logout(user_id)
+        ans = App.get_running_app().controller.logout()
 
         # after logout back to the main menu
         if ans.res is True:

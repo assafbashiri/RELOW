@@ -58,41 +58,76 @@ class BoxiLayout(BoxLayout):
 
 
 
-    def generall(self):
-        self.flag = 1
-        if self.ids.first_name.hint_text == "first name":
-            return
-        self.ids.first_name.hint_text = "first name"
-        self.ids.last_name.hint_text = "last_name"
-        self.ids.user_name.hint_text = "user_name"
-        self.ids.email.hint_text = "email"
-        self.children[2].add_widget(self.ids.birth_date, 5)
-        self.children[2].add_widget(self.ids.password,6)
-        self.ids.gender.hint_text = "gender"
+    def personal(self):
+        first_name = self.ids.first_name.text
+        last_name = self.ids.last_name.text
+        user_name = self.ids.user_name.text
+        email = self.ids.email.text
+        password = self.ids.password.text
+        birth_date = self.ids.birth_date.text
+        gender = self.gender
+        ans = App.get_running_app().controller.update(first_name, last_name, user_name, email, password, birth_date,
+                                                      gender)
+        print(ans.message)
+        if ans.res is True:
+            # update the json------------------------------------------------
+            self.parent.parent.manager.back_to_main()
+        return ans
+
+
+    def clear_personal(self):
+        self.ids.first_name.text=""
+        self.ids.last_name.text=""
+        self.ids.user_name.text=""
+        self.ids.email.text=""
+        self.ids.password.text=""
+        self.ids.birth_date.text=""
+
 
     def address(self):
-        self.flag = 2
-        if self.ids.first_name.hint_text == "city":
-            return
-        self.ids.first_name.hint_text = "city"
-        self.ids.last_name.hint_text = "street"
-        self.ids.user_name.hint_text = "apt. number"
-        self.ids.email.hint_text = "zip code"
-        self.children[2].remove_widget(self.ids.password)
-        self.children[2].remove_widget(self.ids.birth_date)
-        self.ids.gender.hint_text = "floor"
+        city = self.ids.city.text
+        street = self.ids.street.text
+        zip_code = self.ids.zip_code.text
+        floor = self.ids.floor.text
+        apt = self.ids.apt_number.text
+        ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
+        print(ans.message)
+        if ans.res is True:
+            # update the json------------------------------------------------
+            self.parent.parent.manager.back_to_main()
+        return ans
+
+
+    def clear_address(self):
+        self.ids.city.text=""
+        self.ids.street.text=""
+        self.ids.zip_code.text=""
+        self.ids.floor.text=""
+        self.ids.apt_number.text=""
+
 
     def payment(self):
-        self.flag = 3
-        if self.ids.first_name.hint_text == "id_number":
-            return
-        self.ids.first_name.hint_text = "id_number"
-        self.ids.last_name.hint_text = "card number"
-        self.ids.user_name.hint_text = "exp date"
-        self.ids.email.hint_text = "cvv"
-        self.children[2].remove_widget(self.ids.password)
-        self.children[2].remove_widget(self.ids.birth_date)
-        self.ids.gender.hint_text = "card type"
+        credit_card_number = self.ids.credit_card_number.text
+        credit_card_exp_date = self.ids.exp_date.text
+        cvv = self.ids.cvv.text
+        card_type = self.ids.card_type.text
+        id = self.ids.id_number.text
+        ans = App.get_running_app().controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv,
+                                                                  card_type, id)
+        print(ans.message)
+        if ans.res is True:
+            # update the json------------------------------------------------
+            self.parent.parent.manager.back_to_main()
+
+        return ans
+
+    def clear_payment(self):
+        self.ids.credit_card_number.text=""
+        self.ids.exp_date.text=""
+        self.ids.cvv.text=""
+        self.ids.card_type.text=""
+        self.ids.id_number.text=""
+
 
     def show_date_picker(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
@@ -102,11 +137,22 @@ class BoxiLayout(BoxLayout):
     # click OK
     def on_save(self, instance, value, date_range):
         self.ids.birth_date.text = str(value)
-        # birth_date = value
+
 
     # click Cancel
     def on_cancel(self, instance, value):
         pass
+
+
+    def show_date_picker_exp_date(self):
+        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog.bind(on_save=self.on_save_exp_date, on_cancel=self.on_cancel)
+        date_dialog.open()
+
+    # click OK
+    def on_save_exp_date(self, instance, value, date_range):
+        self.ids.exp_date.text = str(value)
+
 
 
     def show_dropdown(self):
@@ -135,42 +181,9 @@ class BoxiLayout(BoxLayout):
         self.ids.drop.text = gender_string
         self.drop_down.dismiss()
 
-    def update(self):
-        if self.flag == 1:
-            first_name = self.ids.first_name.text
-            last_name = self.ids.last_name.text
-            user_name = self.ids.user_name.text
-            email = self.ids.email.text
-            password = self.ids.password.text
-            birth_date = self.ids.birth_date.text
-            gender = self.gender
-            ans = App.get_running_app().controller.update(first_name, last_name, user_name, email, password, birth_date, gender)
-
-        if self.flag == 2:
-            city = self.ids.first_name.text
-            street = self.ids.last_name.text
-            zip_code = self.ids.email.text
-            floor = self.ids.gender.text
-            apt = self.ids.user_name.text
-            ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
-
-        if self.flag == 3:
-            credit_card_number = self.ids.last_name.text
-            credit_card_exp_date = self.ids.user_name.text
-            cvv = self.ids.email.text
-            card_type = self.ids.gender.text
-            id = self.ids.first_name.text
-            ans = App.get_running_app().controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv, card_type, id)
-
-        print("999999999999999999999999")
-        print(ans.message)
-        # for error in ans.message:
-        #     toast(error)
-        if ans.res is True:
-            self.parent.parent.manager.back_to_main()
 
 
-        return ans
+
 
 
 

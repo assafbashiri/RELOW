@@ -15,9 +15,16 @@
         MDBoxLayout:
             id:content
             orientation: "vertical"
-            MDTextFieldRound:
-                id:category
-                hint_text: "category"
+
+           # MDTextFieldRound:
+            #    id:category
+             #   hint_text: "category"
+
+            MDDropDownItem:
+                id: drop_category
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: 'category'
+                on_release: root.show_dropdown_category()
 
             MDTextFieldRound:
                 id:sub_category
