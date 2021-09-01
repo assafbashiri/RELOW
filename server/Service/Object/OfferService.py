@@ -2,23 +2,6 @@ from server.Service.Object.ProductService import ProductService
 
 # SERVER
 class OfferService:
-    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date, current_buyers):
-        self.offer_id = next_id
-        self.current_step = -1
-        self.user_id = user_id # seller
-        self.product = vars(ProductService(product))
-        self.category_id = category_id
-        self.sub_category_id = sub_category_id
-        self.start_date = start_date
-        self.end_date = end_date
-
-        #self.price_per_step = price_per_step
-        #self.amount_per_step = amount_per_step
-        self.status = status.name
-        self.steps = None # dictionary <int(numOfStep), Step)
-        self.current_buyers = current_buyers
-
-
     def __init__(self, business_offer):
         self.offer_id = business_offer.get_offer_id()
         self.current_step = business_offer.get_current_step()
@@ -26,14 +9,14 @@ class OfferService:
         self.product = vars(ProductService(business_offer.get_product()))
         self.category_id = business_offer.get_category_id()
         self.sub_category_id = business_offer.get_sub_category_id()
-        self.status = None
-
+        self.start_date = business_offer.get_start_date()
+        self.end_date = business_offer.get_end_date()
         # self.price_per_step = price_per_step
         # self.amount_per_step = amount_per_step
         self.steps = business_offer.get_steps()  # dictionary <int(numOfStep), Step)
         self.steps = None
-        self.start_date = business_offer.get_start_date()
-        self.end_date = business_offer.get_end_date()
+        self.status = None
+
         self.current_buyers = None
 
 
