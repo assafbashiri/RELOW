@@ -1,7 +1,8 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
-
+from kivymd.uix.menu import MDDropdownMenu
+from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
 from kivymd.uix.picker import MDDatePicker
 
@@ -45,9 +46,14 @@ class Account_box(BoxLayout):
 class Sub_Category_box(BoxLayout):
     pass
 class BoxiLayout(BoxLayout):
+    drop_down = ObjectProperty()
+
     def __init__(self, **kwargs):
         super(BoxiLayout, self).__init__(**kwargs)
-        self.flag = 1
+        self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
+        self.gender = 0
+
+
 
 
 
@@ -101,6 +107,41 @@ class BoxiLayout(BoxLayout):
     def on_cancel(self, instance, value):
         pass
 
+
+    def show_dropdown(self):
+        print("its should open")
+        # menu_items = [
+        #     {
+        #         "text": f"Item {i}",
+        #         "viewclass": "OneLineListItem",
+        #         "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+        #     } for i in range(5)
+        # ]
+
+        menu_items = [
+            {
+                "text": "male",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="1": self.menu_callback(x),
+            } ,
+            {
+                "text": "female",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="2": self.menu_callback(x),
+            }
+        ]
+        self.drop_down = MDDropdownMenu(
+            caller=self.ids.drop,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down.open()
+
+    def menu_callback(self, text_item):
+        print(text_item)
+        self.gender = text_item
+        self.ids.drop.text = text_item
+        #self.drop_down.close()
 
     def update(self):
         if self.flag == 1:

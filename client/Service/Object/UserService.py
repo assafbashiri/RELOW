@@ -17,7 +17,6 @@ class UserService():
         self.birth_date = birth_date
         self.gender = gender
 
-
         # user address
         self.city = None
         self.street = None
@@ -37,43 +36,6 @@ class UserService():
         self.liked_offers = None
         self.active_sale_offers = None
         self.active_buy_offers = None
-
-    def __init__(self, business_user):
-        self.active = business_user.get_active()
-        self.is_logged = business_user.get_is_logged()
-        #CheckValidity.checkValidityName(first_name)
-        #CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
-        #CheckValidity.checkValidityEmail(email)
-        #CheckValidity.checkValidityPassword(password)
-        # self.user_id = business_user.get_next_user_id()
-        self.first_name = business_user.get_first_name()
-        self.last_name = business_user.get_last_name()
-        self.user_name = business_user.get_user_name()
-        self.email = business_user.get_email()
-        self.password = business_user.get_password()
-        self.birth_date = business_user.get_birth_date()
-        self.gender = business_user.get_gender()
-
-
-        # user address
-        self.city = business_user.get_city()
-        self.street = business_user.get_street()
-        self.apartment_number = business_user.get_apartment_number()
-        self.zip_code = business_user.get_zip_code()
-        self.floor = business_user.get_floor()
-
-        # payment method
-        self.id_number = business_user.get_id_number()
-        self.credit_card_number = business_user.get_card_number()
-        self.credit_card_exp_date = business_user.get_credit_card_exp_date()
-        self.cvv = business_user.get_cvv()
-        self.card_type = business_user.get_card_type()
-
-        self.history_buy_offers = business_user.get_history_buy_offers
-        self.history_sell_offers = business_user.get_history_sell_offers
-        self.liked_offers = business_user.get_liked_offers()
-        self.active_sell_offers = business_user.get_active_sale_offers()
-        self.active_buy_offers = business_user.get_active_buy_offers()
 
 
 # -------------------------------------------USER SUBMISSION-----------------------------------------------------------

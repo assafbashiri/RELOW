@@ -72,9 +72,24 @@ class Search_box(BoxLayout):
         self.remove_widget(self.sub_cat)
 
     def search_by_name(self):
-        prod_name = 'shoko'
+        prod_name = self.ids.zibi.ids.name
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
-        print('hello')
+        print('have to show ans')
+
+    def search_by_category(self):
+        cat_name = "sport"
+        # cat_name = self.ids.zibi.ids.name
+        ans = App.get_running_app().controller.get_offers_by_category(cat_name)
+        print('have to show ans')
+
+    def search_by_sub_category(self):
+        cat_name = "sport"
+        sub_cat_name = "swim"
+        # cat_name = self.ids.zibi.ids.name
+        # sub_cat_name = self.ids.zibi.ids.name
+        ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
+        print('have to show ans')
+
 
 class Sub_Category_box(BoxLayout):
     pass
