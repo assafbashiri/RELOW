@@ -192,11 +192,15 @@ class Menu_box(BoxLayout):
     def exit(self):
         App.get_running_app().controller.exit()
     def change_to_cat(self):
-        print(self.parent)
+        a = App.get_running_app().controller
+        cat_lis = App.get_running_app().controller.categories
+        self.categories = BoxLayout(orientation='vertical', size_hint=(.2 , .2), pos_hint={'top':1})
+        for category in cat_lis:
+            self.category_name = Button(text=category['name'])
+            self.categories.add_widget(self.category_name)
         self.side = self.ids.side_box
         self.remove_widget(self.side)
-        print(self.parent)
-        self.add_widget(self.cat)
+        self.add_widget(self.categories)
         # self.parent.parent.ids.menu_box.remove_widget(self.parent.ids.side_box)
         # print(self.parent)
         # self.parent.parent.ids.menu_box.add_widget(self.parent.ids.side1_box)
