@@ -99,6 +99,7 @@ class BoxiLayout(BoxLayout):
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 
+    # click OK
     def on_save(self, instance, value, date_range):
         self.ids.birth_date.text = str(value)
         # birth_date = value
@@ -109,25 +110,17 @@ class BoxiLayout(BoxLayout):
 
 
     def show_dropdown(self):
-        print("its should open")
-        # menu_items = [
-        #     {
-        #         "text": f"Item {i}",
-        #         "viewclass": "OneLineListItem",
-        #         "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-        #     } for i in range(5)
-        # ]
 
         menu_items = [
             {
                 "text": "male",
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x="1": self.menu_callback(x),
+                "on_release": lambda x=1: self.menu_callback(x,"male"),
             } ,
             {
                 "text": "female",
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x="2": self.menu_callback(x),
+                "on_release": lambda x=2: self.menu_callback(x, "female"),
             }
         ]
         self.drop_down = MDDropdownMenu(
@@ -137,11 +130,10 @@ class BoxiLayout(BoxLayout):
         )
         self.drop_down.open()
 
-    def menu_callback(self, text_item):
-        print(text_item)
-        self.gender = text_item
-        self.ids.drop.text = text_item
-        #self.drop_down.close()
+    def menu_callback(self, gender_int, gender_string):
+        self.gender = gender_int
+        self.ids.drop.text = gender_string
+        self.drop_down.dismiss()
 
     def update(self):
         if self.flag == 1:
@@ -151,7 +143,7 @@ class BoxiLayout(BoxLayout):
             email = self.ids.email.text
             password = self.ids.password.text
             birth_date = self.ids.birth_date.text
-            gender = self.ids.gender.text
+            gender = self.gender
             ans = App.get_running_app().controller.update(first_name, last_name, user_name, email, password, birth_date, gender)
 
         if self.flag == 2:
