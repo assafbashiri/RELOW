@@ -1,10 +1,5 @@
 
 class SubCategoryService:
-    def __init__(self, name, id, father_category_id):
-        self.name = name
-        self.offers_dictionary = {}
-        self.id = id
-        self.father_category_id = father_category_id
 
     def __init__(self, business_sub_category):
         self.name = business_sub_category.get_name()

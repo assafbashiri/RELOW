@@ -10,3 +10,6 @@ class CategoryService:
     def get_sub_categories_names(self):
         return self.sub_categories_list_names
 
+    def set_name(self, name):
+        self.name = name
+

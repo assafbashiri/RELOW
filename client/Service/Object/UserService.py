@@ -1,4 +1,4 @@
-from Service.Object.OfferService import OfferService
+from client.Service.Object.OfferService import OfferService
 
 
 class UserService():

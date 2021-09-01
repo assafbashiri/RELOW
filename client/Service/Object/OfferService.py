@@ -1,6 +1,5 @@
 from client.Service.Object.ProductService import ProductService
 
-
 class OfferService:
     # CLIENT
     def __init__(self, offer_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date,
