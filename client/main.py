@@ -48,7 +48,12 @@ def network():
 
         ClientSocket.send(message)
         # if to_send['op'] == 2:
-        #     ClientSocket.close()
+        #     ClientSocket.close()2169-+
+
+
+
+
+
         #     App.get_running_app().stop()
         #     break
         ans = ClientSocket.recv(1024)
