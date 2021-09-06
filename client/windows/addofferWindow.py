@@ -81,7 +81,7 @@ class Add_offer_box(BoxLayout):
                 {"text": sub_cat,
                  "viewclass": "OneLineListItem",
                  # here we have to open page or the offers of this sub categories ya sharmutut
-                 "on_release": lambda x=1: self.show_dropdown_sub_category(x), }
+                 "on_release": lambda x=sub_cat: self.on_save_sub_category(x), }
             )
         self.drop_down_sub_category = MDDropdownMenu(
             caller=self.ids.drop_category,
@@ -91,6 +91,9 @@ class Add_offer_box(BoxLayout):
         self.drop_down_sub_category.open()
         self.drop_down_category.dismiss()
 
+    def on_save_sub_category(self, sub_cat):
+        self.ids.drop_category.text = sub_cat
+        self.drop_down_sub_category.dismiss()
 
 
     def on_save(self, instance, value, date_range):
