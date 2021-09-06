@@ -47,32 +47,12 @@
                     id: search_by_dates
                     text:"Search"
                     font_size: 12
-            Offers_Screen_Search:
-                id: recycle
+            Offers_Screen:
+                id: recycle2
 
         Side_box:
             id: side_box
 
-
-
-
-<RecycleViewRowSearch>
-    orientation: 'vertical'
-    Carousel1:
-        id: caro
-
-    Button:
-        text: "load images"
-        size_hint: .2 , .2
-        on_press: self.parent.ids.car.insert(self.parent.photo_lis)
-
-    MDLabel:
-        text: self.parent.name
-
-    Button:
-        text: "more"
-        size_hint: .2 , .2
-        on_press: root.www(self.parent.name, self.parent.company, self.parent.description, self.parent.product_size, self.parent.color, self.parent.photo_lis, self.parent.steps, self.parent.current_buyers, self.parent.offer_id)
 
 
 <Search_box>
@@ -83,13 +63,3 @@
     AsyncImage:
         source: root.sourc
 
-
-<Offers_Screen_Search>
-    viewclass: 'RecycleViewRowSearch'
-    RecycleBoxLayout:
-        default_size: None, dp(500)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
-        spacing:10

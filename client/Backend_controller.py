@@ -1,8 +1,8 @@
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 from Service.Object.CategoryService import CategoryService
-from windows.searchWindow import Offers_Screen_Search
-from windows.mainWindow import Offers_Screen_main
+from windows.mainWindow import Menu_box
+from windows.offers_list import Offers_Screen
 from kivymd.toast import toast
 from Response import Response
 
@@ -21,8 +21,9 @@ class Backend_controller:
         self.init_categories()
 
     def insert_offers(self):
+        pass
         # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
-        Offers_Screen_main.insert_offers(self=Offers_Screen_main, list=self.get_hot_deals())
+        # Menu_box.insert_offers(self= Menu_box)
     def get_categories(self):
         return self.categories
     def init_categories(self):

@@ -7,9 +7,10 @@ from kivymd.toast import toast
 from kivy.lang import Builder
 from twisted.internet import reactor, protocol
 
+from Backend_controller import Backend_controller
 from Req_Answers import Req_Answers
 from kivy.storage.jsonstore import JsonStore
-from Backend_controller import Backend_controller
+# from Backend_controller import Backend_controller
 from windows.mainWindow import TestApp
 
 
@@ -125,6 +126,7 @@ if __name__ == '__main__':
     Builder.load_file('windows/accountWindow.kv')
     Builder.load_file('windows/searchWindow.kv')
     Builder.load_file('windows/addofferWindow.kv')
+    Builder.load_file('windows/offers_list.kv')
     store = JsonStore('hello.json')
     a = OurClient()
     req_answers = Req_Answers()

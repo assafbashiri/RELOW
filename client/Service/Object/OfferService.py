@@ -1,4 +1,4 @@
-from client.Service.Object.ProductService import ProductService
+from Service.Object.ProductService import ProductService
 
 class OfferService:
     # CLIENT

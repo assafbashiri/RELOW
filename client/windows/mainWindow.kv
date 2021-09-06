@@ -6,8 +6,8 @@
 <Menu_box>
     id: Menu_box
     orientation: "horizontal"
-    Offers_Screen_main:
-        id: recycle
+    Offers_Screen:
+        id: recycle1
     Side_box:
         id: side_box
 <Side_box>
@@ -93,33 +93,11 @@
 
 
 
-<RecycleViewRow>
-    orientation: 'vertical'
-    Button:
-        text: "load images"
-        size_hint: .2 , .2
-        on_press: self.parent.ids.car.insert(self.parent.photo_lis)
-
-    Carousel2:
-        id: car
-
-    Button:
-        text: "more"
-        size_hint: .2 , .2
-        on_press: root.www(self.parent.name, self.parent.company, self.parent.description, self.parent.product_size, self.parent.color, self.parent.photo_lis, self.parent.steps, self.parent.current_buyers, self.parent.offer_id)
 
 
 
 
 
 
-<Offers_Screen_main>
-    viewclass: 'RecycleViewRow'
-    RecycleBoxLayout:
-        default_size: None, dp(500)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
-        spacing:10
+
 

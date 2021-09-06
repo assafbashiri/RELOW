@@ -1,8 +1,94 @@
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.carousel import Carousel
+from kivy.uix.image import AsyncImage
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from kivymd.uix.label import MDLabel
+from kivymd.uix.progressbar import MDProgressBar
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.slider import MDSlider
+from kivymd.uix.textfield import MDTextField
 
-from client.Backend_controller import Backend_controller
-from client.Service.Object.OfferService import OfferService
-from client.main import Struct
+# from Backend_controller import Backend_controller
+from Service.Object.OfferService import OfferService
+
+
+
+
+
+class MessageBox(Popup):
+    def __init__(self, name, company, description, product_size, color, steps,  photo_lis, current_buyers, offer_id, **kwargs):
+        super(MessageBox, self).__init__(**kwargs)
+        self.offer_id = offer_id
+        self.title = name
+        self.box = BoxLayout(orientation= 'vertical')
+        self.carousel = Carousel(size_hint_y= 6)
+        # for photo in photo_lis:
+        #     self.carousel.add_widget(photo)
+        image = AsyncImage(source="windows/images/a.png")
+        self.carousel.add_widget(image)
+        self.box.add_widget(self.carousel)
+        self.slider = MDSlider()
+        self.slider.min = 0
+        self.slider.max = 150
+        self.slider.value = 15
+        for step in steps:
+            pass
+        self.slider.min = 0
+        self.slider.max = steps[-1][1]
+        self.slider.value = current_buyers
+        self.progress = MDProgressBar()
+        self.progress.value = self.slider.value
+        self.people_per_step = BoxLayout(orientation = 'horizontal', size_hint_y=.2)
+        for step in steps:
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step[0])))
+        self.box.add_widget(self.people_per_step)
+        self.box.add_widget(self.progress)
+        self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        for step in steps:
+            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step[1])))
+        self.box.add_widget(self.price_per_step)
+        self.name = Label(text = name)
+        self.box.add_widget(self.name)
+        self.company = Label(text = company)
+        self.box.add_widget(self.company)
+        self.description = Label(text = description)
+        self.box.add_widget(self.description)
+        self.product_size = Label(text = product_size)
+        self.box.add_widget(self.product_size)
+        self.color = Label(text = color)
+        self.box.add_widget(self.color)
+        self.join_offer = BoxLayout(orientation='horizontal')
+        self.quantity = MDTextField(hint_text='QUANTITY')
+        self.join = Button(text= "JOIN")
+        self.join.bind(on_press= lambda x:print(self.join_()))
+        self.join_offer.add_widget(self.quantity)
+        self.join_offer.add_widget(self.join)
+        self.box.add_widget(self.join_offer)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press = lambda x:self.out())
+        self.box.add_widget(self.back)
+        self.add_widget(self.box)
+
+    def out(self):
+        self.dismiss()
+
+    def join_(self):
+        print('bolo')
+        step = 0
+        for checkbox in self.price_per_step.children:
+            if type(checkbox) is MDCheckbox:
+                if checkbox.active:
+                    App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
+                step +=1
+
+
+
+
 
 
 class offerWindow(Screen):
