@@ -28,13 +28,14 @@ class OfferWindow(Popup):
         self.user = self.controller.user_service
         if self.offer.is_a_seller(self.user.user_id):
             self.show_as_seller(photo_lis)
-        elif self.user.is_a_buyer(self.user.user_id):
+        elif self.user.is_a_buyer(self.offer.offer_id):
             self.show_as_buyer(photo_lis)
         else:
             self.show_as_viewer(photo_lis)
 
 
     def show_as_seller(self, photo_lis):
+        print("bolo1")
         self.offer_id = offer_id
         self.title = name
         self.box = BoxLayout(orientation= 'vertical')
@@ -87,10 +88,11 @@ class OfferWindow(Popup):
         self.box.add_widget(self.back)
         self.add_widget(self.box)
     def show_as_buyer(self, photo_lis):
-        self.offer_id = offer_id
-        self.title = name
-        self.box = BoxLayout(orientation= 'vertical')
-        self.carousel = Carousel(size_hint_y= 6)
+        print("bolo2")
+        self.offer_id = self.offer.offer_id
+        self.title = self.offer.product.name
+        self.box = BoxLayout(orientation='vertical')
+        self.carousel = Carousel(size_hint_y=6)
         # for photo in photo_lis:
         #     self.carousel.add_widget(photo)
         image = AsyncImage(source="windows/images/a.png")
@@ -100,45 +102,53 @@ class OfferWindow(Popup):
         self.slider.min = 0
         self.slider.max = 150
         self.slider.value = 15
-        for step in steps:
-            pass
+        steps = self.offer.steps
+        # for step in steps:
+        #     pass
         self.slider.min = 0
-        self.slider.max = steps[-1][1]
-        self.slider.value = current_buyers
+        self.slider.max = 100  # steps[-1][1]
+        self.slider.value = 10  # self.offer.current_buyers
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
-        self.people_per_step = BoxLayout(orientation = 'horizontal', size_hint_y=.2)
-        for step in steps:
-            self.people_per_step.add_widget(MDLabel(text='people:' + str(step[0])))
+        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        # for step in steps:
+        #     self.people_per_step.add_widget(MDLabel(text='people:' + str(step[0])))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        for step in steps:
-            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
-            self.price_per_step.add_widget(MDLabel(text="price: " + str(step[1])))
+        # for step in steps:
+        #     self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
+        #     self.price_per_step.add_widget(MDLabel(text="price: " + str(step[1])))
         self.box.add_widget(self.price_per_step)
-        self.name = Label(text = name)
+        self.name = Label(text=self.offer.product.name)
         self.box.add_widget(self.name)
-        self.company = Label(text = company)
+        self.company = Label(text=self.offer.product.company)
         self.box.add_widget(self.company)
-        self.description = Label(text = description)
+        self.description = Label(text=self.offer.product.description)
         self.box.add_widget(self.description)
-        self.product_size = Label(text = product_size)
+        self.product_size = MDTextField(hint_text=self.offer.product.size)
         self.box.add_widget(self.product_size)
-        self.color = Label(text = color)
+        self.color = MDTextField(hint_text=self.offer.product.color)
         self.box.add_widget(self.color)
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
-        self.join = Button(text= "JOIN")
-        self.join.bind(on_press= lambda x:print(self.join_()))
+        self.unjoin = Button(text="UPDATE")
+        self.unjoin.bind(on_press=lambda x: print(self.update_()))
         self.join_offer.add_widget(self.quantity)
-        self.join_offer.add_widget(self.join)
+        self.join_offer.add_widget(self.unjoin)
         self.box.add_widget(self.join_offer)
         self.back = Button(text="BACK")
-        self.back.bind(on_press = lambda x:self.out())
+        self.back.bind(on_press=lambda x: self.out())
         self.box.add_widget(self.back)
+        if self.user.is_a_liker(self.offer_id):
+            self.like = Button(text="UNLIKE")
+        else:
+            self.like = Button(text="LIKE")
+        self.like.bind(on_press=lambda x: self.like())
+        self.box.add_widget(self.like)
         self.add_widget(self.box)
     def show_as_viewer(self, photo_lis):
+        print("bolo3")
         self.offer_id = self.offer.offer_id
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation= 'vertical')
@@ -197,7 +207,18 @@ class OfferWindow(Popup):
         self.like.bind(on_press=lambda x: self.like())
         self.box.add_widget(self.like)
         self.add_widget(self.box)
-
+    # def open(self, offer, photo_lis):
+    #     print('bolo4')
+    #     if offer == 'just':f
+    #         Popup.open(self)
+    #     else:
+    #         if self.offer.is_a_seller(self.user.user_id):
+    #             self.show_as_seller(photo_lis)
+    #         elif self.user.is_a_buyer(self.user.user_id):
+    #             self.show_as_buyer(photo_lis)
+    #         else:
+    #             self.show_as_viewer(photo_lis)
+    #         Popup.open(self)
     def out(self):
         self.dismiss()
 
@@ -211,7 +232,15 @@ class OfferWindow(Popup):
             if type(checkbox) is MDCheckbox:
                 if checkbox.active:
                     App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
+                    self.user.get_active_buy_offers().append(self.offer)
+                    # self.offer.get_current_buyers()['user_id'] = self.user.user_id
                 step +=1
+        App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
+        self.user.get_active_buy_offers().append(self.offer)
+        # self.offer.get_current_buyers()['user_id'] = self.user.user_id
+
+    def update_(self):
+        print('bolo- need to unjoin')
 
 
 

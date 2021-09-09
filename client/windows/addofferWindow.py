@@ -10,7 +10,7 @@ from kivymd.toast import toast
 from kivymd.uix.filemanager import MDFileManager
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
-from kivymd.uix.picker import MDDatePicker
+from kivymd.uix.pickers import MDDatePicker
 
 
 class ADDOFFERScreen(Screen):

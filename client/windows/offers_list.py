@@ -6,7 +6,7 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
 
-from client.windows.offerWindow import OfferWindow
+from windows.offerWindow import OfferWindow
 
 
 class Offers_Screen(RecycleView):
@@ -75,10 +75,9 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
         im1 = AsyncImage(source="windows/images/c.png")
         self.car.add_widget(im)
 
-    def www(self,
-            offer, photo_list):
-
+    def www(self,offer, photo_list):
         if hasattr(self, 'm'):
+            self.m = OfferWindow(offer, photo_list)
             self.m.open()
         else:
             self.m = OfferWindow(offer, photo_list)
