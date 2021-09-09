@@ -545,7 +545,7 @@ class Backend_controller:
         return offer_temp
 
     def build_user(self, data):
-        user_temp = UserService(data['first_name'], data['last_name'], data['user_name'], data['email'],
+        user_temp = UserService(data['user_id'], data['first_name'], data['last_name'], data['user_name'], data['email'],
                                 data['password'], data['birth_date'], data['gender'], data['city'],
                                 data['street'], data['apartment_number'], data['zip_code'], data['floor'],
                                 data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
@@ -553,3 +553,6 @@ class Backend_controller:
                                 data['history_buy_offers'], data['history_sell_offers'], data['liked_offers'], data['active_sell_offers'],
                                 data['active_buy_offers'],)
         return user_temp
+
+    def get_user_service(self):
+        return self.user_service

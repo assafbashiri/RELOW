@@ -5,7 +5,8 @@ from kivy.uix.image import AsyncImage
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
-from windows.offerWindow import MessageBox
+
+from client.windows.offerWindow import OfferWindow
 
 
 class Offers_Screen(RecycleView):
@@ -37,15 +38,8 @@ class Offers_Screen(RecycleView):
             #     image = AsyncImage(source = str(photo))
             #     photo_lis.append(image)
             photo_lis.append(AsyncImage(source='windows/images/a.png'))
-            offers_list.append({'name': name,
-                                'company': company,
-                                'description': description,
-                                'product_size': product_size,
-                                'color': color,
-                                'photo_lis': photo_lis,
-                                'steps': steps,
-                                'current_buyers': current_buyers,
-                                'offer_id': offer_id})
+            offers_list.append({'offer': [offer],
+                                'photo_lis': photo_lis})
         # for on offers lis
         # create oofer
         # add offer to lis
@@ -64,6 +58,7 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
     steps = ListProperty()
     current_buyers = NumericProperty()
     offer_id = NumericProperty()
+    offer = ListProperty()
     # def __init__(self,**kwargs):
     #     super(RecycleViewRow, self).__init__(**kwargs)
     #     self.car = Carousel(direction='left', size_hint_y= 2)
@@ -81,24 +76,12 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
         self.car.add_widget(im)
 
     def www(self,
-            name,
-            company,
-            description,
-            product_size,
-            color, steps, photo_lis, current_buyers, offer_id):
+            offer, photo_list):
 
         if hasattr(self, 'm'):
             self.m.open()
         else:
-            self.m = MessageBox(name,
-                           company,
-                           description,
-                           product_size,
-                           color,
-                           photo_lis,
-                           steps,
-                           current_buyers,
-                           offer_id)
+            self.m = OfferWindow(offer, photo_list)
             self.m.open()
 
 

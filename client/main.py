@@ -133,7 +133,7 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=lambda:network(arg1=a))
     t1.start()
     controller = Backend_controller(req_answers, store, a)
-    TestApp( controller).run()
+    TestApp(controller).run()
 
 
 

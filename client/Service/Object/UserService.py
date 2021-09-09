@@ -3,10 +3,10 @@ from Service.Object.OfferService import OfferService
 
 class UserService():
     # CLIENT
-    def __init__(self, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
+    def __init__(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
                  id_number, credit_card_number, credit_exp, cvv, card_type,
                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
-
+        self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
         self.user_name = user_name
@@ -140,3 +140,18 @@ class UserService():
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
                                   x['current_buyers'])
         return offer_temp
+
+
+    # -------------------------------------------------------
+
+    def is_a_buyer(self, offer_id):
+        for offer in self.active_buy_offers:
+            if offer_id == offer.offer_id:
+                return True
+        return False
+
+    def is_a_liker(self, offer_id):
+        for offer in self.liked_offers:
+            if offer_id == offer.offer_id:
+                return True
+        return False

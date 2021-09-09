@@ -89,3 +89,9 @@ class OfferService:
 
     def set_current_buyers(self, current_buyers):
         self.current_buyers = current_buyers
+
+    # ----------------------------------------------------------------
+
+    def is_a_seller(self, user_id):
+        return self.user_id == user_id
+
