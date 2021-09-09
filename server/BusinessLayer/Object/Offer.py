@@ -15,10 +15,10 @@ class Offer:
         self.category_id = category_id
         self.sub_category_id = sub_category_id
         self.status = status
-        self.steps = steps #
+        self.steps = steps
         self.start_date = start_date
         self.end_date = end_date
-        self.current_buyers = current_buyers # with buyer_id, purchase(quantity and step)
+        self.current_buyers = current_buyers # with buyer_id, purchase(quantity and step, buyer_id)
         self.total_products = total_product
         self.hot_deals = False
         if len(self.steps) == 0:
@@ -115,7 +115,7 @@ class Offer:
     def update_active_buy_offer(self, user_id, quantity, step):
         if user_id not in self.current_buyers.keys():
             return False
-        purchase = Purchase(quantity, step)
+        purchase = Purchase(quantity, step, user_id)
         self.current_buyers[user_id] = purchase
         return True
 

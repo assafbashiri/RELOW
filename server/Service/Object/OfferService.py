@@ -1,6 +1,9 @@
 from Service.Object.ProductService import ProductService
 
 # SERVER
+from server.Service.Object.StepService import StepService
+
+
 class OfferService:
     def __init__(self, business_offer):
         self.offer_id = business_offer.get_offer_id()
@@ -13,11 +16,19 @@ class OfferService:
         self.end_date = business_offer.get_end_date()
         # self.price_per_step = price_per_step
         # self.amount_per_step = amount_per_step
-        self.steps = business_offer.get_steps()  # dictionary <int(numOfStep), Step)
-        self.steps = None
-        self.status = None
 
-        self.current_buyers = None
+        self.status = str(business_offer.get_status())
+        # dictionary <int(numOfStep), Step)
+        self.steps = []
+        for step_id in business_offer.get_steps().keys():
+            temp = StepService(business_offer.get_steps()[step_id], step_id)
+            self.steps.append(vars(temp))
+
+        self.current_buyers = []
+        for buyer_id in business_offer.get_current_buyers().keys():
+            temp = {'quantity': business_offer.get_current_buyers()[buyer_id].get_quantity(), 'step_id': business_offer.get_current_buyers()[buyer_id].get_step(),
+                    'buyer_id': business_offer.get_current_buyers()[buyer_id].get_buyer_id()}
+            self.current_buyers.append(temp)
 
 
 # --------------------------------------------GETTERS--------------------------------------------------------------

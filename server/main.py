@@ -60,6 +60,11 @@ if __name__ == '__main__':
     step2 = Step(100, 15)
     step3 = Step(150, 10)
     steps = {1: step1, 2: step2, 3: step3}
+    for step in steps.keys():
+        print(step)
+        print(steps[step].get_products_amount())
+
+    print("doneeeeeeeeeeeeeeeeeeeeeeeeeee")
     date = datetime.datetime(1996, 12, 15)
 
 

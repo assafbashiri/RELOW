@@ -1,5 +1,9 @@
 from Service.Object.ProductService import ProductService
 
+from client.Service.Object.PurchaseService import PurchaseService
+from client.Service.Object.StepService import StepService
+
+
 class OfferService:
     # CLIENT
     def __init__(self, offer_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date,
@@ -16,10 +20,20 @@ class OfferService:
         # build service objects
         self.product = ProductService(product['name'], product['company'], product['color'], product['size'],
                                       product['description'],
-                                      product['photos'], product['offer_id'], )
-        self.steps = steps  # dictionary <int(numOfStep), Step)
+                                      product['photos'], product['offer_id'])
+        # dictionary <int(numOfStep), Step)
+        self.steps = {}
+        for step in steps:
+            self.steps[step['step_number']] = StepService(step['buyers_amount'], step['price'], step['step_number'])
+
         self.status = status
-        self.current_buyers = current_buyers
+
+        self.current_buyers = {}
+        for buyer in current_buyers:
+            self.current_buyers[buyer['buyer_id']] = PurchaseService(buyer['buyer_id'], buyer['step_id'], buyer['quantity'])
+
+
+
 
     # --------------------------------------------GETTERS--------------------------------------------------------------
     def get_offer_id(self):

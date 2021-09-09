@@ -1,8 +1,9 @@
 
 class StepService:
-    def __init__(self, business_step):
-        self.buyers_amount = business_step.get_buyers_amount()
+    def __init__(self, business_step, step_number):
+        self.buyers_amount = business_step.get_products_amount()
         self.price = business_step.get_price()
+        self.step_number = step_number
 
     def get_buyers_amount(self):
         return self.buyers_amount
