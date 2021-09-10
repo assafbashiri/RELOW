@@ -2,11 +2,15 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.carousel import Carousel
+from kivy.uix.dropdown import DropDown
 from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.label import MDLabel
+from kivymd.uix.list import OneLineListItem
+from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.progressbar import MDProgressBar
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
@@ -25,6 +29,7 @@ class OfferWindow(Popup):
         self.controller = App.get_running_app().controller
         self.offer = offer[0] # Offer Service
         self.offer_id = self.offer.offer_id
+        self.color = 0
         # buyer/seller/viewer/user
         self.user = self.controller.user_service
         if self.offer.is_a_seller(self.user.user_id):
@@ -191,10 +196,32 @@ class OfferWindow(Popup):
         self.box.add_widget(self.company)
         self.description = Label(text = self.offer.product.description)
         self.box.add_widget(self.description)
-        self.product_size = Label(text = self.offer.product.size)
-        self.box.add_widget(self.product_size)
-        self.color = Label(text = self.offer.product.color)
-        self.box.add_widget(self.color)
+        self.color_dropdown = DropDown()
+        colors = self.offer.product.colors
+        for color in colors:
+            btn = Button(text=' % s' % color, size_hint=(None,None), height=40)
+            btn.bind(on_release=lambda btn: self.color_dropdown.select(btn.text))
+            self.color_dropdown.add_widget(btn)
+        self.color_mainbutton = Button(text='colors', size_hint=(None, None), pos=(350, 300))
+        self.color_mainbutton.bind(on_release=self.color_dropdown.open)
+        self.box.add_widget(self.color_mainbutton)
+        self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
+
+        self.size_dropdown = DropDown()
+        sizes = self.offer.product.sizes
+        for size in sizes:
+            btn = Button(text=' % s' % size, size_hint=(None, None), height=40)
+            btn.bind(on_release=lambda btn: self.size_dropdown.select(btn.text))
+            self.size_dropdown.add_widget(btn)
+        self.size_mainbutton = Button(text='sizes', size_hint=(None, None), pos=(400, 300))
+        self.size_mainbutton.bind(on_release=self.size_dropdown.open)
+        self.box.add_widget(self.size_mainbutton)
+        self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton, 'text', x))
+
+        # self.color_drop = MDDropDownItem(text="drop")
+        # self.ids['drop'] = self.color_drop
+        # self.color_drop.bind(on_release= lambda x:print("bolo5"))
+        # self.box.add_widget(self.color_drop)
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
         self.join = Button(text= "JOIN")
@@ -238,7 +265,9 @@ class OfferWindow(Popup):
         for checkbox in self.price_per_step.children:
             if type(checkbox) is MDCheckbox:
                 if checkbox.active:
-                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
+                    a = self.color_mainbutton.text
+                    b = int(self.size_mainbutton.text)
+                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step, self.color_mainbutton.text, self.size_mainbutton.text)
                     if ans.res is True:
                         self.user.get_active_buy_offers().append(self.offer)
                         self.offer.get_current_buyers()['user_id'] = self.user.user_id
@@ -253,7 +282,31 @@ class OfferWindow(Popup):
 
 
 
+    def show_dropdown(self):
 
+        menu_items = [
+            {
+                "text": "male",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=1: self.menu_callback(x,"male"),
+            } ,
+            {
+                "text": "female",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=2: self.menu_callback(x, "female"),
+            }
+        ]
+        self.drop_down = MDDropdownMenu(
+            caller=self.ids.drop,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down.open()
+
+    def menu_callback(self, gender_int, gender_string):
+        self.color = gender_int
+        self.ids.drop.text = gender_string
+        self.drop_down.dismiss()
 
 
 # class offerWindow(Screen):
