@@ -24,7 +24,7 @@ class OfferService:
         # dictionary <int(numOfStep), Step)
         self.steps = {}
         for step in steps:
-            self.steps[step['step_number']] = StepService(step['buyers_amount'], step['price'], step['step_number'])
+            self.steps[step['step_number']] = StepService(step['buyers_amount'], step['price'], step['step_number'], step['limit'])
 
         self.status = status
 
