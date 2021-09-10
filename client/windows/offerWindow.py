@@ -24,6 +24,7 @@ class OfferWindow(Popup):
         super(OfferWindow, self).__init__(**kwargs)
         self.controller = App.get_running_app().controller
         self.offer = offer[0] # Offer Service
+        self.offer_id = self.offer.offer_id
         # buyer/seller/viewer/user
         self.user = self.controller.user_service
         if self.offer.is_a_seller(self.user.user_id):
@@ -36,60 +37,6 @@ class OfferWindow(Popup):
 
     def show_as_seller(self, photo_lis):
         print("bolo1")
-        self.offer_id = offer_id
-        self.title = name
-        self.box = BoxLayout(orientation= 'vertical')
-        self.carousel = Carousel(size_hint_y= 6)
-        # for photo in photo_lis:
-        #     self.carousel.add_widget(photo)
-        image = AsyncImage(source="windows/images/a.png")
-        self.carousel.add_widget(image)
-        self.box.add_widget(self.carousel)
-        self.slider = MDSlider()
-        self.slider.min = 0
-        self.slider.max = 150
-        self.slider.value = 15
-        for step in steps:
-            pass
-        self.slider.min = 0
-        self.slider.max = steps[-1][1]
-        self.slider.value = current_buyers
-        self.progress = MDProgressBar()
-        self.progress.value = self.slider.value
-        self.people_per_step = BoxLayout(orientation = 'horizontal', size_hint_y=.2)
-        for step in steps:
-            self.people_per_step.add_widget(MDLabel(text='people:' + str(step[0])))
-        self.box.add_widget(self.people_per_step)
-        self.box.add_widget(self.progress)
-        self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        for step in steps:
-            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
-            self.price_per_step.add_widget(MDLabel(text="price: " + str(step[1])))
-        self.box.add_widget(self.price_per_step)
-        self.name = Label(text = name)
-        self.box.add_widget(self.name)
-        self.company = Label(text = company)
-        self.box.add_widget(self.company)
-        self.description = Label(text = description)
-        self.box.add_widget(self.description)
-        self.product_size = Label(text = product_size)
-        self.box.add_widget(self.product_size)
-        self.color = Label(text = color)
-        self.box.add_widget(self.color)
-        self.join_offer = BoxLayout(orientation='horizontal')
-        self.quantity = MDTextField(hint_text='QUANTITY')
-        self.join = Button(text= "JOIN")
-        self.join.bind(on_press= lambda x:print(self.join_()))
-        self.join_offer.add_widget(self.quantity)
-        self.join_offer.add_widget(self.join)
-        self.box.add_widget(self.join_offer)
-        self.back = Button(text="BACK")
-        self.back.bind(on_press = lambda x:self.out())
-        self.box.add_widget(self.back)
-        self.add_widget(self.box)
-    def show_as_buyer(self, photo_lis):
-        print("bolo2")
-        self.offer_id = self.offer.offer_id
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
         self.carousel = Carousel(size_hint_y=6)
@@ -111,14 +58,71 @@ class OfferWindow(Popup):
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        # for step in steps:
-        #     self.people_per_step.add_widget(MDLabel(text='people:' + str(step[0])))
+        for step_id in steps:
+            step = steps[step_id]
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        for step in steps:
+            step = steps[step_id]
+            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+        self.box.add_widget(self.price_per_step)
+        self.name = Label(text=self.offer.product.name)
+        self.box.add_widget(self.name)
+        self.company = Label(text=self.offer.product.company)
+        self.box.add_widget(self.company)
+        self.description = Label(text=self.offer.product.description)
+        self.box.add_widget(self.description)
+        self.product_size = MDTextField(hint_text=self.offer.product.size)
+        self.box.add_widget(self.product_size)
+        self.color = MDTextField(hint_text=self.offer.product.color)
+        self.box.add_widget(self.color)
+        self.join_offer = BoxLayout(orientation='horizontal')
+        # self.quantity = MDTextField(hint_text='QUANTITY')
+        self.update = Button(text="UPDATE")
+        self.update.bind(on_press=lambda x: print(self.update_()))
+        # self.join_offer.add_widget(self.quantity)
+        self.join_offer.add_widget(self.update)
+        self.box.add_widget(self.join_offer)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x: self.out())
+        self.box.add_widget(self.back)
+        self.add_widget(self.box)
+    def show_as_buyer(self, photo_lis):
+        print("bolo2")
+        self.title = self.offer.product.name
+        self.box = BoxLayout(orientation='vertical')
+        self.carousel = Carousel(size_hint_y=6)
+        # for photo in photo_lis:
+        #     self.carousel.add_widget(photo)
+        image = AsyncImage(source="windows/images/a.png")
+        self.carousel.add_widget(image)
+        self.box.add_widget(self.carousel)
+        self.slider = MDSlider()
+        self.slider.min = 0
+        self.slider.max = 150
+        self.slider.value = 15
+        steps = self.offer.steps
         # for step in steps:
-        #     self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
-        #     self.price_per_step.add_widget(MDLabel(text="price: " + str(step[1])))
+        #     pass
+        self.slider.min = 0
+        self.slider.max = 100  # steps[-1][1]
+        self.slider.value = 10  # self.offer.current_buyers
+        self.progress = MDProgressBar()
+        self.progress.value = self.slider.value
+        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        for step_id in steps:
+            step = steps[step_id]
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
+        self.box.add_widget(self.people_per_step)
+        self.box.add_widget(self.progress)
+        self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        for step in steps:
+            step = steps[step_id]
+            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
         self.box.add_widget(self.price_per_step)
         self.name = Label(text=self.offer.product.name)
         self.box.add_widget(self.name)
@@ -149,7 +153,6 @@ class OfferWindow(Popup):
         self.add_widget(self.box)
     def show_as_viewer(self, photo_lis):
         print("bolo3")
-        self.offer_id = self.offer.offer_id
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation= 'vertical')
         self.carousel = Carousel(size_hint_y= 6)
@@ -171,14 +174,16 @@ class OfferWindow(Popup):
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
         self.people_per_step = BoxLayout(orientation = 'horizontal', size_hint_y=.2)
-        # for step in steps:
-        #     self.people_per_step.add_widget(MDLabel(text='people:' + str(step[0])))
+        for step_id in steps:
+            step = steps[step_id]
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        # for step in steps:
-        #     self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
-        #     self.price_per_step.add_widget(MDLabel(text="price: " + str(step[1])))
+        for step in steps:
+            step = steps[step_id]
+            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x = .1))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
         self.box.add_widget(self.price_per_step)
         self.name = Label(text = self.offer.product.name)
         self.box.add_widget(self.name)
@@ -223,24 +228,28 @@ class OfferWindow(Popup):
         self.dismiss()
 
     def like(self):
-        print('bolo')
+        if self.user.is_a_liker(self.offer_id):
+            self.controller.remove_liked_offer(self.offer_id)
+        else:
+            self.controller.add_liked_offer(self.offer_id)
 
     def join_(self):
-        print('bolo')
         step = 0
         for checkbox in self.price_per_step.children:
             if type(checkbox) is MDCheckbox:
                 if checkbox.active:
-                    App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
-                    self.user.get_active_buy_offers().append(self.offer)
-                    # self.offer.get_current_buyers()['user_id'] = self.user.user_id
+                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
+                    if ans.res is True:
+                        self.user.get_active_buy_offers().append(self.offer)
+                        self.offer.get_current_buyers()['user_id'] = self.user.user_id
                 step +=1
-        App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step)
-        self.user.get_active_buy_offers().append(self.offer)
-        # self.offer.get_current_buyers()['user_id'] = self.user.user_id
 
-    def update_(self):
-        print('bolo- need to unjoin')
+
+    def update_purchase(self):
+        self.controller.update_purchase(self.offer_id, self.quantity.text, self.step.text, self.color.text, self.size.text)
+
+    def update_offer(self):
+        print('bolo- need to update offer for seller')
 
 
 
