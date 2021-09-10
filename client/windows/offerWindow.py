@@ -60,7 +60,7 @@ class OfferWindow(Popup):
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
+            self.people_per_step.add_widget(MDLabel(text='people:' +"number of current buyers per step"+'/'+str(step.get_buyers_amount())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
@@ -75,10 +75,27 @@ class OfferWindow(Popup):
         self.box.add_widget(self.company)
         self.description = Label(text=self.offer.product.description)
         self.box.add_widget(self.description)
-        self.product_size = MDTextField(hint_text=self.offer.product.size)
-        self.box.add_widget(self.product_size)
-        self.color = MDTextField(hint_text=self.offer.product.color)
-        self.box.add_widget(self.color)
+        self.color_dropdown = DropDown()
+        colors = self.offer.product.colors
+        for color in colors:
+            btn = Button(text=' % s' % color, size_hint=(None, None), height=40)
+            btn.bind(on_release=lambda btn: self.color_dropdown.select(btn.text))
+            self.color_dropdown.add_widget(btn)
+        self.color_mainbutton = Button(text='colors', size_hint=(None, None), pos=(350, 300))
+        self.color_mainbutton.bind(on_release=self.color_dropdown.open)
+        self.box.add_widget(self.color_mainbutton)
+        self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
+
+        self.size_dropdown = DropDown()
+        sizes = self.offer.product.sizes
+        for size in sizes:
+            btn = Button(text=' % s' % size, size_hint=(None, None), height=40)
+            btn.bind(on_release=lambda btn: self.size_dropdown.select(btn.text))
+            self.size_dropdown.add_widget(btn)
+        self.size_mainbutton = Button(text='sizes', size_hint=(None, None), pos=(400, 300))
+        self.size_mainbutton.bind(on_release=self.size_dropdown.open)
+        self.box.add_widget(self.size_mainbutton)
+        self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton, 'text', x))
         self.join_offer = BoxLayout(orientation='horizontal')
         # self.quantity = MDTextField(hint_text='QUANTITY')
         self.update = Button(text="UPDATE")
@@ -92,6 +109,13 @@ class OfferWindow(Popup):
         self.add_widget(self.box)
 
     def show_as_buyer(self, photo_lis):
+        a  = 5
+        purchases = self.offer.get_current_buyers()
+        purchase =  None
+        for purch in purchases:
+            p = purchases[purch]
+            if p.buyer_id == self.user.user_id:
+                purchase = p
         print("bolo2")
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
@@ -131,9 +155,9 @@ class OfferWindow(Popup):
         self.box.add_widget(self.company)
         self.description = Label(text=self.offer.product.description)
         self.box.add_widget(self.description)
-        self.product_size = MDTextField(hint_text=self.offer.product.size)
+        self.product_size = MDTextField(hint_text=purchase.size)
         self.box.add_widget(self.product_size)
-        self.color = MDTextField(hint_text=self.offer.product.color)
+        self.color = MDTextField(hint_text=purchase.color)
         self.box.add_widget(self.color)
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
@@ -220,8 +244,6 @@ class OfferWindow(Popup):
         # self.ids['drop'] = self.color_drop
         # self.color_drop.bind(on_release= lambda x:print("bolo5"))
         # self.box.add_widget(self.color_drop)
-        self.product_size = Label(text=self.offer.product.size)
-        self.box.add_widget(self.product_size)
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
         self.join = Button(text="JOIN")
@@ -255,6 +277,10 @@ class OfferWindow(Popup):
     def out(self):
         self.dismiss()
 
+    def dismiss(self):
+        print('bolo10')
+        Popup.dismiss(self)
+
     def like(self):
         if self.user.is_a_liker(self.offer_id):
             self.controller.remove_liked_offer(self.offer_id)
@@ -266,12 +292,18 @@ class OfferWindow(Popup):
         for checkbox in self.price_per_step.children:
             if type(checkbox) is MDCheckbox:
                 if checkbox.active:
-                    a = self.color_mainbutton.text
-                    b = int(self.size_mainbutton.text)
-                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, self.quantity.text, step, self.color_mainbutton.text, self.size_mainbutton.text)
+                    a = self.offer_id
+                    b = self.quantity.text
+                    c = step
+                    d = self.color_mainbutton.text
+                    e = self.size_mainbutton.text
+                    f = 5
+                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, int(self.quantity.text), int(step), self.color_mainbutton.text, self.size_mainbutton.text)
                     if ans.res is True:
                         self.user.get_active_buy_offers().append(self.offer)
-                        self.offer.get_current_buyers()['user_id'] = self.user.user_id
+                        self.offer = ans.data
+                        x = 5
+                        return
                 step += 1
 
     def update_purchase(self):
@@ -281,7 +313,7 @@ class OfferWindow(Popup):
     def update_offer(self):
         print('bolo- need to update offer for seller')
 
-    
+
 # class offerWindow(Screen):
 #     def __init__(self, controller):
 #         self.controller = Backend_controller()

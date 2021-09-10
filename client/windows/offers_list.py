@@ -22,8 +22,6 @@ class Offers_Screen(RecycleView):
             name = offer.product.name
             company = offer.product.company
             description = offer.product.description
-            product_size = offer.product.size
-            color = offer.product.color
             photo_lis = []
             for photo in offer.product.photos:
                 photo_lis.append(photo)
@@ -82,6 +80,7 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
         else:
             self.m = OfferWindow(offer, photo_list)
             self.m.open()
+        print('bololololoolol')
 
 
 class Carousel2(Carousel):
