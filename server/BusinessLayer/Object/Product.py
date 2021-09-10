@@ -55,6 +55,7 @@ class Product:
         return self.offer_id
 
     def build_list_from_string(self, str):
+        x=6
         answer = str.split(", ")
         return answer
 

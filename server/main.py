@@ -36,6 +36,7 @@ class point:
 
 if __name__ == '__main__':
     conn = sqlite3.connect('database.db', check_same_thread=False)
+    # conn.text_factory = bytes
     repository = repository(conn)
     repository.create_tables()
     repository.delete_all_db()
@@ -53,9 +54,11 @@ if __name__ == '__main__':
     # c.add_sub_category('ee', 'e')
     print("%")
 
-    #  #offers = c.load()
-    # #u.load_users(offers)
-    # # ------- check -------------------------------------------------
+    # offers = c.load()
+    # u.load_users(offers)
+    # x=5
+    # # ------- check --------------
+    # -----------------------------------
     step1 = Step(50, 20)
     step2 = Step(100, 15)
     step3 = Step(150, 10)
@@ -84,7 +87,10 @@ if __name__ == '__main__':
     date = datetime.datetime(2022, 5, 17)
     date1 = datetime.datetime(2018, 5, 17)
 
-    of1 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "AsyncImage(source ='images/a.png')", "sport", "swim",{1: step1, 2: step2, 3: step3}, date)
+
+    with open('ab.jpg', 'rb') as f:
+        data = f.read()
+    of1 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "data", "sport", "swim",{1: step1, 2: step2, 3: step3}, date)
     # of2 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {1: step1, 2: step2, 3: step3}, date1)
     of2 = c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts"," AsyncImage(source ='images/a.png')", "sport", "swim", {1: step1, 2: step2, 3: step3},date)
     res_to_check1 = c.get_offers_by_category("sport")

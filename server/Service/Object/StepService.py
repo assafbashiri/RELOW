@@ -4,6 +4,7 @@ class StepService:
         self.buyers_amount = business_step.get_products_amount()
         self.price = business_step.get_price()
         self.step_number = step_number
+        self.limit = business_step.get_limit()
 
     def get_buyers_amount(self):
         return self.buyers_amount

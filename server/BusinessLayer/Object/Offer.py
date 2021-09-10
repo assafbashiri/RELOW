@@ -147,5 +147,7 @@ class Offer:
             if num_of_buyers_for_each_step[step] >= self.steps[step-1].get_products_amount():
                 updated_step = step
                 updated_total_products = num_of_buyers_for_each_step[step]
+        for step in self.steps.keys():
+            self.steps[step].buyers_amount = num_of_buyers_for_each_step[step]
         self.current_step = updated_step
         self.total_products = updated_total_products

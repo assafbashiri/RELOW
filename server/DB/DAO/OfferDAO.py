@@ -8,15 +8,15 @@ class OfferDAO:
         self._conn.execute("""INSERT INTO active_offers (offer_id,user_id,start_date,end_date,current_step,total_products,category_id,sub_category_id,hot_deals)
          VALUES (?,?,?,?,?,?,?,?,?)""",
                            [offerDTO.offer_id,offerDTO.user_id, offerDTO.start_date, offerDTO.end_date,offerDTO.current_step,offerDTO.total_products, offerDTO.category_id,
-                            offerDTO.sub_category_id, False])
+                            offerDTO.sub_category_id, offerDTO.hot_deals])
         self._conn.commit()
         colors = self.build_string_from_list(productDTO.colors)
         sizes = self.build_string_from_list(productDTO.sizes)
 
         self._conn.execute(
-            """INSERT INTO products (offer_id,name, company, colors, sizes, description) VALUES (?,?,?,?,?,?)""",
+            """INSERT INTO products (offer_id,name, company, colors, sizes, description, photo1) VALUES (?,?,?,?,?,?,?)""",
             [productDTO.offer_id, productDTO.name, productDTO.company, colors, sizes,
-             productDTO.description
+             productDTO.description,productDTO.photos
              ])
         self._conn.commit()
         for numOfStep in offerDTO.steps.keys():
@@ -186,7 +186,11 @@ class OfferDAO:
 
     def load_all_products(self):
         this = self._conn.cursor()
-        this.execute("SELECT * FROM  products")
+        m= this.execute("SELECT * FROM  products")
+        # for x in m:
+        #     rec = x[6]
+        # with open("a.jpg","wb") as f:
+        #     f.write(rec)
         return this.fetchall()
 
     def build_string_from_list(self, list):
