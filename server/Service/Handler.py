@@ -57,7 +57,7 @@ class Handler:
                          34: self.remove_photo,
                          35: self.update_category_name,
                          36: self.update_sub_category_name,
-                         # 37: self.update_password,
+                         37: self.update_purchase,
                          #  check 38
                          38: self.update_sub_category_for_offer,
                          39: self.update_end_date,
@@ -126,7 +126,8 @@ class Handler:
     def add_active_buy_offer(self, argument):
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
-            self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'])
+            self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'],
+                                                      argument['color'], argument['size'])
             return Response(OfferService(offer), "Joined To Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -626,6 +627,14 @@ class Handler:
             for cat in categories:
                 ans.append(vars(CategoryService(cat)))
             return Response(ans, "all categories names", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def update_purchase(self, argument):
+        try:
+            self.remove_active_buy_offer(argument)
+            self.add_active_buy_offer(argument)
+            return Response(None, "purchase Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

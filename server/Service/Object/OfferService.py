@@ -27,7 +27,9 @@ class OfferService:
         self.current_buyers = []
         for buyer_id in business_offer.get_current_buyers().keys():
             temp = {'quantity': business_offer.get_current_buyers()[buyer_id].get_quantity(), 'step_id': business_offer.get_current_buyers()[buyer_id].get_step(),
-                    'buyer_id': business_offer.get_current_buyers()[buyer_id].get_buyer_id()}
+                    'buyer_id': business_offer.get_current_buyers()[buyer_id].get_buyer_id(),
+                    'color':business_offer.get_current_buyers()[buyer_id].get_color(),
+                    'size':business_offer.get_current_buyers()[buyer_id].get_size()}
             self.current_buyers.append(temp)
 
 

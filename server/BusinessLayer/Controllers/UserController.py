@@ -245,19 +245,20 @@ class UserController:
         self.offers_dao.insert(offerDTO, productDTO)
 
     # add a buyer into an offer
-    def add_active_buy_offer(self, user_id, offer, quantity, step_id):
+    def add_active_buy_offer(self, user_id, offer, quantity, step_id, color, size):
         if user_id == offer.get_user_id():
             raise Exception("seller cant buy is own product")
         if offer.is_a_buyer(user_id):
             raise Exception("the buyer is already subscribe to this offer")
         buyer = self.check_user_state(user_id)
         # add the quantity and the step to the active_buy_offers
-        purchase = Purchase(quantity, step_id, user_id)
+        purchase = Purchase(quantity, step_id, user_id, color, size)
         offer.add_buyer(user_id, purchase)
         buyer.add_active_buy_offer(offer)
         offer_DTO = OfferDTO(offer)
-        self.offers_dao.add_active_buy_offer(offer_DTO, user_id, quantity, step_id)
+        self.offers_dao.add_active_buy_offer(offer_DTO, user_id, quantity, step_id, color, size)
         self.update_curr_step(offer)
+
 
     def add_like_offer(self, user_id, offer):
         user_temp = self.check_user_state(user_id)

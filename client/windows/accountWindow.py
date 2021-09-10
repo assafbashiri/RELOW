@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 
 class Category_box(BoxLayout):
     pass

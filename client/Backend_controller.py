@@ -202,8 +202,8 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_active_buy_offer(self, offer_id, quantity, step):
-        add_active_buy_offer_req = {'op': 23, 'offer_id': offer_id, 'quantity': quantity, 'step': step}
+    def add_active_buy_offer(self, offer_id, quantity, step, color, size):
+        add_active_buy_offer_req = {'op': 23, 'offer_id': offer_id, 'quantity': quantity, 'step': step, 'color': color, 'size': size}
         self.req_answers.add_request(add_active_buy_offer_req)
         ans = self.req_answers.get_answer()
         return ans
@@ -221,6 +221,12 @@ class Backend_controller:
                                      'category_name': category_name, 'sub_category_name': sub_category_name,
                                      'steps': steps, 'end_date': end_date}
         self.req_answers.add_request(add_active_sell_offer_req)
+        ans = self.req_answers.get_answer()
+        return ans
+
+    def update_purchase(self, offer_id, quantity, step, color, size):
+        req = {'op': 37, 'offer_id': offer_id, 'quantity': quantity, 'step': step, 'color': color, 'size': size}
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 

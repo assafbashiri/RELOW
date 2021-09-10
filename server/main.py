@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     of3 = c.add_offer(1, "shoko", "tnova", "green", "5/6", "nice prod", "AsyncImage(source ='images/a.png')", "sport", "swim", {1: step1, 2: step2, 3: step3}, date)
     u.add_active_sale_offer(of3)
-    u.add_active_buy_offer(2, of3, 20, 1)
+    u.add_active_buy_offer(2, of3, 20, 1,"green","55")
 
 
 
@@ -95,6 +95,7 @@ if __name__ == '__main__':
     tt= u.get_user_by_id(1)
     u.logout(1)
     u.logout(2)
+
     reactor.listenTCP(4000, OurFactory(conn))
     reactor.run()
 

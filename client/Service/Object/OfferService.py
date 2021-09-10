@@ -30,7 +30,7 @@ class OfferService:
 
         self.current_buyers = {}
         for buyer in current_buyers:
-            self.current_buyers[buyer['buyer_id']] = PurchaseService(buyer['buyer_id'], buyer['step_id'], buyer['quantity'])
+            self.current_buyers[buyer['buyer_id']] = PurchaseService(buyer['buyer_id'], buyer['step_id'], buyer['quantity'], buyer['color'], buyer['size'])
 
 
 
