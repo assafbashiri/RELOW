@@ -214,10 +214,10 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def add_active_sell_offer(self, name, company, color, size, description, photos, category_name,
+    def add_active_sell_offer(self, name, company, colors, sizes, description, photos, category_name,
                               sub_category_name, steps, end_date):
-        add_active_sell_offer_req = {'op': 24, 'name': name, 'company': company, 'color': color,
-                                     'size': size, 'description': description, 'photos': photos,
+        add_active_sell_offer_req = {'op': 24, 'name': name, 'company': company, 'colors': colors,
+                                     'sizes': sizes, 'description': description, 'photos': photos,
                                      'category_name': category_name, 'sub_category_name': sub_category_name,
                                      'steps': steps, 'end_date': end_date}
         self.req_answers.add_request(add_active_sell_offer_req)
@@ -274,14 +274,14 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_product_color(self, offer_id, color):
-        req = {'op': 44, 'offer_id': offer_id, 'color': color}
+    def update_product_colors(self, offer_id, colors):
+        req = {'op': 44, 'offer_id': offer_id, 'colors': colors}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_product_size(self, offer_id, size):
-        req = {'op': 45, 'offer_id': offer_id, 'size': size}
+    def update_product_sizes(self, offer_id, sizes):
+        req = {'op': 45, 'offer_id': offer_id, 'sizes': sizes}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         return ans

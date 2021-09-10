@@ -1,10 +1,10 @@
 class ProductService:
-
-    def __init__(self, name, company, color, size, description, photos, offer_id):
+# CLIENT
+    def __init__(self, name, company, colors, sizes, description, photos, offer_id):
         self.name = name
         self.company = company
-        self.color = color
-        self.size = size
+        self.colors = colors
+        self.sizes = sizes
         self.description = description
         self.photos = photos
         self.offer_id = offer_id
@@ -17,11 +17,11 @@ class ProductService:
     def get_company(self):
         return self.company
 
-    def get_color(self):
-        return self.color
+    def get_colors(self):
+        return self.colors
 
-    def get_size(self):
-        return self.size
+    def get_sizes(self):
+        return self.sizes
 
     def get_description(self):
         return self.description
@@ -40,11 +40,11 @@ class ProductService:
     def set_company(self, company):
         self.company = company
 
-    def set_color(self, color):
-        self.color = color
+    def set_colors(self, colors):
+        self.colors = colors
 
-    def set_size(self, size):
-        self.size = size
+    def set_sizes(self, sizes):
+        self.sizes = sizes
 
     def set_description(self, description):
         self.description = description

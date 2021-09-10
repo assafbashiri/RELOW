@@ -6,3 +6,5 @@ class PurchaseService:
         self.quantity = quantity
         self.color = color
         self.size = size
+
+

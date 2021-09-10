@@ -18,7 +18,7 @@ class OfferService:
         self.end_date = end_date
 
         # build service objects
-        self.product = ProductService(product['name'], product['company'], product['color'], product['size'],
+        self.product = ProductService(product['name'], product['company'], product['colors'], product['sizes'],
                                       product['description'],
                                       product['photos'], product['offer_id'])
         # dictionary <int(numOfStep), Step)
