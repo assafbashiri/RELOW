@@ -14,16 +14,16 @@ class OfferDAO:
         sizes = self.build_string_from_list(productDTO.sizes)
 
         self._conn.execute(
-            """INSERT INTO products (offer_id,name, company, colors, sizes, description, photo1) VALUES (?,?,?,?,?,?,?)""",
+            """INSERT INTO products (offer_id,name, company, colors, sizes, description) VALUES (?,?,?,?,?,?)""",
             [productDTO.offer_id, productDTO.name, productDTO.company, colors, sizes,
-             productDTO.description,productDTO.photos
+             productDTO.description
              ])
         self._conn.commit()
         for numOfStep in offerDTO.steps.keys():
             currStep = offerDTO.steps[numOfStep]
-            self._conn.execute("""INSERT INTO steps_per_offer (offer_id ,step , quantity, price)
-            VALUES (?,?,?,?)""",
-                               [offerDTO.offer_id, numOfStep, currStep.get_products_amount(), currStep.get_price()])
+            self._conn.execute("""INSERT INTO steps_per_offer (offer_id ,step , step_limit, current_buyers, price)
+            VALUES (?,?,?,?,?)""",
+                               [offerDTO.offer_id, numOfStep, currStep.get_limit(),currStep.get_buyers_amount(), currStep.get_price()])
             self._conn.commit()
 
     def update(self, offerDTO):
@@ -42,8 +42,8 @@ class OfferDAO:
         self._conn.commit()
         for numOfStep in offerDTO.steps.keys():
             currStep = offerDTO.steps[numOfStep]
-            self._conn.execute("""UPDATE steps_per_offer set quantity=?, price=? where offer_id=? AND step=? """,
-                               [currStep.get_products_amount(), currStep.get_price(), offerDTO.offer_id, numOfStep])
+            self._conn.execute("""UPDATE steps_per_offer set step_limit=?,current_buyers=?, price=? where offer_id=? AND step=? """,
+                               [currStep.get_limit(), currStep.get_buyers_amount(), currStep.get_price(), offerDTO.offer_id, numOfStep])
             self._conn.commit()
 
     def get(self, offer):

@@ -5,8 +5,8 @@ class Step:
         self.price = price
         self.limit = limit
 
-    def get_products_amount(self):
-        return self.products_amount
+    def get_buyers_amount(self):
+        return self.buyers_amount
 
     def get_price(self):
         return self.price

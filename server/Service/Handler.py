@@ -12,6 +12,8 @@ from Response import Response
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 
+from server.BusinessLayer.Object.Step import Step
+
 
 class Handler:
 
@@ -133,6 +135,11 @@ class Handler:
             return Response(None, str(e), False)
 
     def add_active_sell_offer(self, argument):
+        step1 = Step(50, 20)
+        step2 = Step(100, 15)
+        step3 = Step(150, 10)
+        steps = {1: step1, 2: step2, 3: step3}
+
         if self.user is None:
             return Response(None, "not logged in motek", False)
         offer = None
@@ -145,8 +152,8 @@ class Handler:
                                                        argument['description'],
                                                        argument['photos'],
                                                        argument['category_name'],
-                                                       argument['sub_category_name'],
-                                                       argument['steps'],
+                                                       argument['sub_category_name'],steps,
+                                                       # argument['steps'],
                                                        argument['end_date'], )
             self.user_controller.add_active_sale_offer(offer)
             return Response(OfferService(offer), "Offer Added Successfully", True)

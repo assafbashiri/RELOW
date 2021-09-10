@@ -23,7 +23,7 @@ class Offer:
         self.hot_deals = False
         if len(self.steps) == 0:
             raise Exception("steps cant be empty - have to be checked in client")
-        self.max_amount = self.steps[len(self.steps)].get_products_amount()
+        self.max_amount = self.steps[len(self.steps)].get_limit()
 
     def add_buyer(self, user_id, purchase):
         self.current_buyers[user_id] = purchase
@@ -144,7 +144,7 @@ class Offer:
         updated_step = 1
         updated_total_products = num_of_buyers_for_each_step[1]
         for step in range(2, len(num_of_buyers_for_each_step)+1):
-            if num_of_buyers_for_each_step[step] >= self.steps[step-1].get_products_amount():
+            if num_of_buyers_for_each_step[step] >= self.steps[step-1].get_limit():
                 updated_step = step
                 updated_total_products = num_of_buyers_for_each_step[step]
         for step in self.steps.keys():

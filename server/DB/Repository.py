@@ -73,7 +73,8 @@ class repository():
             CREATE TABLE IF NOT EXISTS steps_per_offer (
 	            offer_id INTEGER NOT NULL,
 	            step INTEGER NOT NULL,
-	            quantity INTEGER NOT NULL,
+	            current_buyers INTEGER NOT NULL, 
+                step_limit INTEGER NOT NULL,
 	            price INTEGER NOT NULL,
 	            PRIMARY KEY(offer_id,step),
 	            FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE

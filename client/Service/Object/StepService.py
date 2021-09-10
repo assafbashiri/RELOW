@@ -14,3 +14,6 @@ class StepService:
 
     def get_price(self):
         return self.price
+
+    def get_limit(self):
+        return self.limit
