@@ -10,9 +10,12 @@ class OfferDAO:
                            [offerDTO.offer_id,offerDTO.user_id, offerDTO.start_date, offerDTO.end_date,offerDTO.current_step,offerDTO.total_products, offerDTO.category_id,
                             offerDTO.sub_category_id, False])
         self._conn.commit()
+        colors = self.build_string_from_list(productDTO.colors)
+        sizes = self.build_string_from_list(productDTO.sizes)
+
         self._conn.execute(
-            """INSERT INTO products (offer_id,name, company, color, size, description) VALUES (?,?,?,?,?,?)""",
-            [productDTO.offer_id, productDTO.name, productDTO.company, productDTO.color, productDTO.size,
+            """INSERT INTO products (offer_id,name, company, colors, sizes, description) VALUES (?,?,?,?,?,?)""",
+            [productDTO.offer_id, productDTO.name, productDTO.company, colors, sizes,
              productDTO.description
              ])
         self._conn.commit()
@@ -30,9 +33,11 @@ class OfferDAO:
                             offerDTO.sub_category_id, offerDTO.hot_deals, offerDTO.offer_id])
         self._conn.commit()
         productDTO = offerDTO.productDTO
+        colors = self.build_string_from_list(productDTO.colors)
+        sizes = self.build_string_from_list(productDTO.sizes)
         self._conn.execute(
-            """UPDATE products SET name=?, company=?, color=?, size=?, description=? WHERE offer_id=?""",
-            [productDTO.name, productDTO.company, productDTO.color, productDTO.size,
+            """UPDATE products SET name=?, company=?, colors=?, sizes=?, description=? WHERE offer_id=?""",
+            [productDTO.name, productDTO.company,colors, sizes,
              productDTO.description, productDTO.offer_id])
         self._conn.commit()
         for numOfStep in offerDTO.steps.keys():
@@ -106,14 +111,16 @@ class OfferDAO:
                            [company, offer_id])
         self._conn.commit()
 
-    def update_product_color(self, offer_id, color):
-        self._conn.execute("""UPDATE products set color = ? WHERE offer_id = ?""",
-                           [color, offer_id])
+    def update_product_colors(self, offer_id, colors1):
+        colors = self.build_string_from_list(colors1)
+        self._conn.execute("""UPDATE products set colors = ? WHERE offer_id = ?""",
+                           [colors, offer_id])
         self._conn.commit()
 
-    def update_product_size(self, offer_id, size):
-        self._conn.execute("""UPDATE products set size = ? WHERE offer_id = ?""",
-                           [size, offer_id])
+    def update_product_sizes(self, offer_id, sizes1):
+        sizes = self.build_string_from_list(sizes1)
+        self._conn.execute("""UPDATE products set sizes = ? WHERE offer_id = ?""",
+                           [sizes, offer_id])
         self._conn.commit()
 
     def update_product_description(self, offer_id, description):
@@ -181,3 +188,12 @@ class OfferDAO:
         this = self._conn.cursor()
         this.execute("SELECT * FROM  products")
         return this.fetchall()
+
+    def build_string_from_list(self, list):
+        answer = list[0]
+        i = 0
+        for item in list:
+            if i != 0:
+                answer = answer + ", " + item
+            i = i + 1
+        return answer

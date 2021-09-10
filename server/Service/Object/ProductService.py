@@ -3,8 +3,8 @@ class ProductService:
     def __init__(self, business_product):
         self.name = business_product.get_name()
         self.company = business_product.get_company()
-        self.color = business_product.get_color()
-        self.size = business_product.get_size()
+        self.colors = business_product.get_colors()
+        self.sizes = business_product.get_sizes()
         self.description = business_product.get_description()
         self.photos = business_product.get_photos()
         self.offer_id = business_product.get_offer_id()
@@ -17,11 +17,11 @@ class ProductService:
     def get_company(self):
         return self.company
 
-    def get_color(self):
-        return self.color
+    def get_colors(self):
+        return self.colors
 
-    def get_size(self):
-        return self.size
+    def get_sizes(self):
+        return self.sizes
 
     def get_description(self):
         return self.description
@@ -40,11 +40,11 @@ class ProductService:
     def set_company(self, company):
         self.company = company
 
-    def set_color(self, color):
-        self.color = color
+    def set_colors(self, colors):
+        self.colors = colors
 
-    def set_size(self, size):
-        self.size = size
+    def set_sizes(self, sizes):
+        self.sizes = sizes
 
     def set_description(self, description):
         self.description = description

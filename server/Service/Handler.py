@@ -65,8 +65,8 @@ class Handler:
                          41: self.update_step,
                          42: self.update_product_name,
                          43: self.update_product_company,
-                         44: self.update_product_color,
-                         45: self.update_product_size,
+                         44: self.update_product_colors,
+                         45: self.update_product_sizes,
                          46: self.update_product_description,
                          47: self.get_offers_by_category,
                          48: self.get_offers_by_sub_category,
@@ -140,8 +140,8 @@ class Handler:
             offer = self.category_controller.add_offer(self.user.user_id,
                                                        argument['name'],
                                                        argument['company'],
-                                                       argument['color'],
-                                                       argument['size'],
+                                                       argument['colors'],
+                                                       argument['sizes'],
                                                        argument['description'],
                                                        argument['photos'],
                                                        argument['category_name'],
@@ -530,16 +530,16 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def update_product_color(self, argument):
+    def update_product_colors(self, argument):
         try:
-            self.user_controller.update_product_color(argument['offer_id'], argument['color'])
+            self.user_controller.update_product_colors(argument['offer_id'], argument['colors'])
             return Response(None, "Update Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
-    def update_product_size(self, argument):
+    def update_product_sizes(self, argument):
         try:
-            self.user_controller.update_size(argument['offer_id'], argument['size'])
+            self.user_controller.update_sizes(argument['offer_id'], argument['sizes'])
             return Response(None, "Update Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)

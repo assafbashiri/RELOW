@@ -36,12 +36,12 @@ class Add_offer_box(BoxLayout):
         # sub_category_name = self.ids.sub_category.text
         company = self.ids.company.text
         description = self.ids.description.text
-        size = self.ids.size.text
-        color = self.ids.color.text
+        sizes = self.ids.sizes.text(",")
+        colors = self.ids.colors.text.split(",")
         end_date = "19/04/2022"
         # end_date = self.ids.end_date
         steps = {}
-        ans = App.get_running_app().controller.add_active_sell_offer(name, company, color, size, description, list, category_name,
+        ans = App.get_running_app().controller.add_active_sell_offer(name, company, colors, sizes, description, list, category_name,
                               sub_category_name, steps, end_date)
         ans1 = ans
         ans2 = ans
