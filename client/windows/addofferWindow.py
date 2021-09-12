@@ -33,10 +33,10 @@ from windows.SideBar import SideBar
 
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
-from kivymd.uix.picker import MDDatePicker
+from kivymd.uix.pickers import MDDatePicker
 
 
-from client.Service.Object.StepService import StepService
+from Service.Object.StepService import StepService
 
 
 class ADDOFFERScreen(Screen):

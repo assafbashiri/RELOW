@@ -1,7 +1,7 @@
 from Service.Object.ProductService import ProductService
 
 # SERVER
-from server.Service.Object.StepService import StepService
+from Service.Object.StepService import StepService
 
 
 class OfferService:

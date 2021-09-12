@@ -22,7 +22,4 @@ class OurProtocol(Protocol):
         print("dataReceived")
         data1 = pickle.loads(data)
         res = self.handler.handling(data1)
-
-        print(type(res))
-        print(res)
         self.transport.write(pickle.dumps(vars(res)))
