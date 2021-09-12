@@ -154,6 +154,6 @@ class UserService():
 
     def is_a_liker(self, offer_id):
         for offer in self.liked_offers:
-            if offer_id == offer.offer_id:
+            if offer_id == offer:
                 return True
         return False

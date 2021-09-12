@@ -1,4 +1,4 @@
-from kivy.properties import StringProperty, ListProperty, NumericProperty
+from kivy.properties import StringProperty, ListProperty, NumericProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
@@ -23,8 +23,8 @@ class Offers_Screen(RecycleView):
             company = offer.product.company
             description = offer.product.description
             photo_lis = []
-            for photo in offer.product.photos:
-                photo_lis.append(photo)
+            # for photo in offer.product.photos:
+            #     photo_lis.append(photo)
             lis = offer.product.photos
             steps = [[10, 1000], [20, 500]]  # offer.steps
             offer_id = offer.offer_id
@@ -38,15 +38,14 @@ class Offers_Screen(RecycleView):
             photo_lis.append(AsyncImage(source='windows/images/a.png'))
             offers_list.append({'offer': [offer],
                                 'photo_lis': photo_lis})
-        # for on offers lis
-        # create oofer
-        # add offer to lis
-        # set data to be lis
+
         self.data = offers_list
-        # self.data[0]['more_details'].text = "bolo"
+        # need to add the photos here
+
 
 
 class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
+    caro = ObjectProperty()
     name = StringProperty()
     company = StringProperty()
     description = StringProperty()
@@ -80,17 +79,15 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
         else:
             self.m = OfferWindow(offer, photo_list)
             self.m.open()
-        print('bololololoolol')
 
 
 class Carousel2(Carousel):
-    sourc = StringProperty()
     def __init__(self,**kwargs):
         super(Carousel2, self).__init__(**kwargs)
 
 
 
-    def insert(self,  text):
-        im = AsyncImage(source="windows/images/e.png")
-        im1 = AsyncImage(source="windows/images/c.png")
-        self.add_widget(im)
+
+    def insert(self,  photos):
+        for photo in photos:
+            self.add_widget(photo)

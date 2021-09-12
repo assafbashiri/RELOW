@@ -1,4 +1,7 @@
+#:import Label kivy.uix.button.Button
+
 <RecycleViewRow>
+    id: RecycleViewRow
     orientation: 'vertical'
     Button:
         text: "load images"
@@ -6,6 +9,7 @@
         on_press: self.parent.ids.car.insert(self.parent.photo_lis)
 
     Carousel2:
+        photos: self.parent.photo_lis
         id: car
 
     Button:
