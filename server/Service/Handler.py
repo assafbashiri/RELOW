@@ -455,7 +455,7 @@ class Handler:
     def get_all_liked_offers(self, argument):
         lis = []
         try:
-            liked_offers_list = self.user_controller.get_all_liked_offers(self.user.user_id)
+            liked_offers_list = self.user_controller.get_liked_offers(self.user.user_id)
             for offer in liked_offers_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)

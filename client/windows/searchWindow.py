@@ -16,6 +16,7 @@ from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextField
 from windows.offers_list import RecycleViewRow
 
+from client.windows.SideBar import SideBar
 from client.windows.offers_list import Offers_Screen
 
 
@@ -112,6 +113,7 @@ class Search_box(BoxLayout):
         self.side = self.children[0]
         self.remove_widget(self.side)
         self.add_widget(self.cat)
+        # SideBar.change_to_cat(self)
 
     def back_to_menu(self):
         self.add_widget(self.side)

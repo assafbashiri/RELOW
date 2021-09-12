@@ -72,6 +72,13 @@ if __name__ == '__main__':
 
 
     c.add_category("sport")
+    c.add_category("electronic")
+    c.add_category("sea")
+    c.add_sub_category("swim2", "sport")
+    c.add_sub_category("swim3", "sport")
+    c.add_sub_category("swim4", "sport")
+    c.add_sub_category("surf", "sea")
+    c.add_sub_category("computers", "electronic")
     c.add_sub_category("swim", "sport")
     u.register("amit","moskovitz", "amitmosk","amit@gmail.com","123",date, 1)
     u.register("tom","nisim", "tomnis","tom@gmail.com","123",date, 1)
@@ -94,7 +101,8 @@ if __name__ == '__main__':
     # of2 = c.add_offer(1, "shorts1", "fila", "blue", "5/6", "nice shorts", "nophoto", 0, 0,  {1: step1, 2: step2, 3: step3}, date1)
     of2 = c.add_offer(2, "shorts2", "fila", "blue", "5/6", "nice shorts"," AsyncImage(source ='images/a.png')", "sport", "swim", {1: step1, 2: step2, 3: step3},date, False)
     res_to_check1 = c.get_offers_by_category("sport")
-
+    u.add_like_offer(2, of3)
+    u.add_like_offer(2, of2)
     u.add_active_sale_offer(of1)
     u.add_active_sale_offer(of2)
 

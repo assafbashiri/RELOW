@@ -139,7 +139,7 @@ class Backend_controller:
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
-            self.login_logout_json(False)
+            #self.login_logout_json(False)
             self.user_service = None
         return ans
 

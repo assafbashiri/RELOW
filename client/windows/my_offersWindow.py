@@ -10,7 +10,7 @@ class MY_OFFERS_Screen(Screen):
     def __init__(self, **kwargs):
         self.name = 'my_offers_screen'
         super(MY_OFFERS_Screen, self).__init__(**kwargs)
-        self.mes = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        self.mes = BoxLayout(orientation='vertical')
         self.of = Offers_Screen()
         self.first_time_bad_search = True
         self.first_time_good_search = True

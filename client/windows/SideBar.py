@@ -63,6 +63,7 @@ class SideBar:
         controller = App.get_running_app().controller
         cat_name = args[0][3]
         sub_cat_name = args[1]
+
         offers = controller.get_offers_by_sub_category(cat_name, sub_cat_name)
         a = 6
 

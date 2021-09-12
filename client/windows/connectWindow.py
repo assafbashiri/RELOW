@@ -5,6 +5,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.toast import toast
+
+from client.windows.SideBar import SideBar
+
+
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -22,6 +26,9 @@ class Sub_Category_box(BoxLayout):
 
 class Connect_box(BoxLayout):
 
+    def exit(self):
+        self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
+
     def __init__(self, **kwargs):
         super(Connect_box, self).__init__(**kwargs)
         self.cat = Category_box()
@@ -29,9 +36,10 @@ class Connect_box(BoxLayout):
         self.gender = 0
 
     def change_to_cat(self):
-        self.side = self.ids.side_box
-        self.remove_widget(self.side)
-        self.add_widget(self.cat)
+        SideBar.change_to_cat(self)
+        # self.side = self.ids.side_box
+        # self.remove_widget(self.side)
+        # self.add_widget(self.cat)
 
     def back_to_menu(self):
         self.add_widget(self.side)

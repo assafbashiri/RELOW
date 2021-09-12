@@ -30,6 +30,9 @@ from windows.addofferWindow import ADDOFFERScreen
 from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen
 
+from client.windows.SideBar import SideBar
+
+
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -81,8 +84,7 @@ class Menu_box(BoxLayout):
     def change_to_cat(self):
         SideBar.change_to_cat(self)
 
-    def change_to_sub_cat_tom(self, category_name_button, category):
-        SideBar.change_to_sub_cat()
+
 
 
 
