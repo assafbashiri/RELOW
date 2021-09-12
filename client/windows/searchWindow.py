@@ -82,7 +82,7 @@ class SEARCHScreen(Screen):
             else:
                 self.of.insert_offers(list=ans)
 
-    def show_dropdown_serch_by_category(self):
+    def show_dropdown_search_by_category(self):
         categories = App.get_running_app().controller.get_categories()
         menu_items=[]
         for cat in categories:

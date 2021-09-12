@@ -48,12 +48,6 @@
             icon_right: "account"
 
 
-        TextInput:
-            #text: "changed_password"
-            id:password
-            hint_text: "password"
-            icon_right: "eye-off"
-            password : True
 
 
         TextInput:
@@ -148,6 +142,7 @@
 
     GridLayout:
         cols:6
+        id: counti
         Button:
             text: "personal"
             font_size: 12
@@ -177,6 +172,11 @@
             text:"init"
             font_size: 12
             on_press:root.init_fields()
+
+        Button:
+            text:"change password"
+            font_size: 12
+            on_press:root.change_password()
 
 
 

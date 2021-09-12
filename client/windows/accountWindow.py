@@ -1,10 +1,12 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
 from kivymd.uix.picker import MDDatePicker
+from kivymd.uix.textfield import MDTextField
 from windows.SideBar import SideBar
 from datetime import datetime
 
@@ -51,7 +53,20 @@ class BoxiLayout(BoxLayout):
         super(BoxiLayout, self).__init__(**kwargs)
         self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
         self.gender = 0
+        self.controller = App.get_running_app().controller
 
+    def change_password(self):
+        temp1 = MDTextField(hint_text="old password")
+        temp2 = MDTextField(hint_text="new password")
+        temp3 = MDTextField(hint_text="new password again")
+        btn = Button(text='change!!', size_hint=(None, None), height=40)
+        btn.bind(on_release=lambda btn: self.controller.update_password(temp1.text, temp2.text))
+        # CHEK INPUT
+
+        self.ids.counti.add_widget(temp1)
+        self.ids.counti.add_widget(temp2)
+        self.ids.counti.add_widget(temp3)
+        self.ids.counti.add_widget(btn)
 
     def init_fields(self):
         controller = App.get_running_app().controller
@@ -62,11 +77,12 @@ class BoxiLayout(BoxLayout):
             self.ids.last_name.text = self.user.last_name
             self.ids.user_name.text = self.user.user_name
             self.ids.email.text = self.user.email
-            self.ids.password.text = self.user.password
 
-            strdate = self.user.birth_date
-            date = datetime.strptime(strdate, "%Y-%m-%d %S:%M:%H")
-            self.ids.birth_date.text =date
+            # strdate = self.user.birth_date
+            # date = datetime.strptime(strdate, "%Y-%m-%d %S:%M:%H")
+            # self.ids.birth_date.text =date
+
+
             if (self.user.city is None):
                 self.ids.city.text = ""
             else:
@@ -129,7 +145,6 @@ class BoxiLayout(BoxLayout):
         last_name = self.ids.last_name.text
         user_name = self.ids.user_name.text
         email = self.ids.email.text
-        password = self.ids.password.text
         birth_date = self.ids.birth_date.text
         gender = self.gender
         ans = App.get_running_app().controller.update(first_name, last_name, user_name, email, password, birth_date,
@@ -146,7 +161,6 @@ class BoxiLayout(BoxLayout):
         self.ids.last_name.text=""
         self.ids.user_name.text=""
         self.ids.email.text=""
-        self.ids.password.text=""
         self.ids.birth_date.text=""
 
 

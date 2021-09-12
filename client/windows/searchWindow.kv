@@ -19,25 +19,17 @@
                     font_size: 12
                     on_press:root.search_by_name()
 
-                #MDTextFieldRound:
-                 #   id:category
-                  #  hint_text: "search by category"
-
                 MDDropDownItem:
                     id: drop_category
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     text: "search by category"
-                    on_release: root.show_dropdown_serch_by_category()
+                    on_release: root.show_dropdown_search_by_category()
 
                 MDRoundFlatButton:
                     id: search_by_category
                     text:"Search"
                     font_size: 12
                     on_press:root.search_by_category()
-
-                #MDTextFieldRound:
-                 #   id:sub_category
-                  #  hint_text: "search sub_category"
 
                 MDDropDownItem:
                     id: drop_sub_category
@@ -51,20 +43,18 @@
                     font_size: 12
                     on_press:root.search_by_sub_category()
 
-
             Offers_Screen:
                 id: recycle2
 
-
+        Side_box:
+            id: side_box
 
 
 
 <Search_box>
     orientation: "horizontal"
-    Side_box:
-        id: side_box
+
 
 <Carousel1>:
     AsyncImage:
         source: root.sourc
-
