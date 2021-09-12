@@ -114,7 +114,7 @@ class TestApp(MDApp):
     def on_stop(self):
         print('fuck we stoped')
     def build(self):
-        # self.check_connection()
+        self.check_connection()
         return Manager()
 
     def check_connection(self):
@@ -132,6 +132,7 @@ class TestApp(MDApp):
             self.controller.guest_login(guest_id)
         else:
             self.controller.guest_register()
+            self.controller.guest_login(self.controller.user_service.user_id)
 
 
 

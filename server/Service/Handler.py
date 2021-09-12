@@ -12,7 +12,7 @@ from Response import Response
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 
-from server.BusinessLayer.Object.Step import Step
+from BusinessLayer.Object.Step import Step
 
 
 class Handler:
@@ -28,7 +28,7 @@ class Handler:
                          3: self.log_in,
                          4: self.logout,
                          5: self.update,
-                         # 6: self.update_last_name,
+                         6: self.update_password,
                          # 7: self.update_user_name,
                          # 8: self.update_email,
                          # 9: self.update_birth_date,
@@ -104,7 +104,7 @@ class Handler:
                 temp = vars(OfferService(offer))
                 to_return.append(temp)
             self.user = ans['user']
-            return Response({'liked_offers': to_return}, 'guest registered Successfully', True)
+            return Response({'liked_offers': to_return}, 'guest login Successfully', True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -342,15 +342,15 @@ class Handler:
     #     except Exception as e:
     #         return Response(None, str(e), False)
     #
-    # def update_password(self, argument):
-    #     try:
-    #         self.user_controller.update_password(self.user.user_id,
-    #                                              argument['old_password'],
-    #                                              argument['new_password'])
-    #         return Response(None, "Password Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
+    def update_password(self, argument):
+        try:
+            self.user_controller.update_password(self.user.user_id,
+                                                 argument['old_password'],
+                                                 argument['new_password'])
+            return Response(None, "Password Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
     # def update_birth_date(self, argument):
     #     try:
     #         self.user_controller.update_birth_date(self.user.user_id,
@@ -412,7 +412,7 @@ class Handler:
             for offer in offer_buy_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)
-                return Response(lis, "All Active Buy Offers", True)
+            return Response(lis, "All Active Buy Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -684,7 +684,12 @@ class Handler:
     def handling(self, argument):
         req = argument['op']
         func = self.switcher.get(int(req), "nada")
-        return func(argument)
+        ans = func(argument)
+        print(ans.message)
+        print(ans.res)
+        print(ans.data)
+
+        return ans
 
     def exit(self):
         print("exit")
