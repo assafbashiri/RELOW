@@ -7,6 +7,7 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from kivy.uix.textinput import TextInput
 from kivymd.uix.label import MDLabel
 from kivymd.uix.menu import MDDropdownMenu
 
@@ -14,6 +15,8 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
 from kivymd.uix.filemanager import MDFileManager
+from kivymd.uix.textfield import MDTextFieldRound
+
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
 from kivymd.uix.pickers import MDDatePicker
@@ -48,49 +51,51 @@ class Add_offer_box(BoxLayout):
             self.color_dropdown.add_widget(btn)
         self.color_mainbutton = Button(text='colors')
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
-        # self.color_dropdown.bind(on_select=lambda instance, x: self.color_list.append(x))
 
         self.size_list = []
         self.size_dropdown = DropDown()
-        btn = Button(text='%s' % '1 inch', size_hint=(None, None), height=40)
-        self.size_list.append('1 inch')
         btn.bind(on_release=lambda btn: self.remove_size(btn))
-        self.size_dropdown.add_widget(btn)
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_release= self.size_dropdown.open)
-        # self.size_mainbutton.bind(on_press=lambda x: self.add_size(x))
-        # self.size_dropdown.bind(on_select=lambda instance, x: self.add_size(instance,x))
 
     def add_color_start(self):
-        if len(self.color_list) == 0:
             self.ids.colors.add_widget(self.color_mainbutton)
             self.ids.colors.remove_widget(self.ids.color)
 
-    def add_size_start(self, tex):
-        print('add size start')
+    def add_size_start(self):
+        self.size_input = TextInput(hint_text= "choose size")
+        self.ids['sizes'] = self.size_input
+        self.ids.size_box.add_widget(self.size_input)
+        self.insert_size = Button(text='add size')
+        self.insert_size.bind(on_press=lambda tex: self.add_size(tex))
+        self.ids.size_box.remove_widget(self.ids.add_size)
+        self.ids.size_box.add_widget(self.insert_size)
         self.ids.size_box.add_widget(self.size_mainbutton)
         text = self.ids.sizes.text
 
         self.ids.add_size.bind(on_press= lambda tex: self.add_size(tex))
 
-    def size_drop(self, size):
-        if len(self.size_list) == 0:
-            self.ids.size_box.add_widget(self.size_dropdown)
-            self.size_dropdown.add_widget((MDLabel(text= 'my sizes')))
-
-        btn = Button(text='%s' %size, size_hint=(None, None), height=40, on_press= lambda btn: self.remove_size(btn))
-        self.size_list.append(size)
-        self.size_dropdown.add_widget(btn)
-        # self.size_dropdown.open(self.size_dropdown)
-        self.ids.sizes.text = ''
+    # def size_drop(self, size):
+    #     if len(self.size_list) == 0:
+    #         self.ids.size_box.add_widget(self.size_dropdown)
+    #         self.size_dropdown.add_widget((MDLabel(text= 'my sizes')))
+    #
+    #     btn = Button(text='%s' %size, size_hint=(None, None), height=40, on_press= lambda btn: self.remove_size(btn))
+    #     self.size_list.append(size)
+    #     self.size_dropdown.add_widget(btn)
+    #     # self.size_dropdown.open(self.size_dropdown)
+    #     self.ids.sizes.text = ''
 
     def remove_size(self, instance):
         self.size_list.remove(instance.text)
         self.size_dropdown.remove_widget(instance)
 
     def add_size(self, instance):
-        a = 7
+        text = self.ids.sizes.text
         print("fuck you man")
+        btn = Button(text='%s' % text, size_hint=(None, None), height=40)
+        btn.bind(on_release=lambda btn: self.remove_size(btn))
+        self.size_dropdown.add_widget(btn)
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
         #     self.size_list.remove(instance.text)
@@ -98,6 +103,9 @@ class Add_offer_box(BoxLayout):
         #     self.size_list.append(instance.text)
         #     self.size_dropdown.add_widget(instance)
         #     instance.background_color = (.34, 1, 1, 1)
+
+    def remove_size(self, btn):
+        self.size_dropdown.remove_widget(btn)
 
     def add_color(self, instance):
         if instance.text in self.color_list:
@@ -107,33 +115,6 @@ class Add_offer_box(BoxLayout):
             self.color_list.append(instance.text)
             instance.background_color =(.34, 1, 1, 1)
 
-
-    # def show_dropdown(self):
-    #
-    #     menu_items = [
-    #         {
-    #             "text": "black",
-    #             "viewclass": "OneLineListItem",
-    #             "on_release": lambda x=1: self.menu_callback(x,"black"),
-    #         },
-    #         {
-    #             "text": "green",
-    #             "viewclass": "OneLineListItem",
-    #             "on_release": lambda x=2: self.menu_callback(x, "green"),
-    #         }
-    #     ]
-    #     self.drop_down = MDDropdownMenu(
-    #         caller=self.ids.drop,
-    #         items=menu_items,
-    #         width_mult=4,
-    #     )
-    #     self.drop_down.open()
-    #
-    # def menu_callback(self, gender_int, gender_string):
-    #     self.color_list.append(gender_string)
-    #     self.gender = gender_int
-    #     self.ids.drop.text = gender_string
-    #     self.drop_down.dismiss()
 
     def add_offer(self):
         list = self.ids.choose.photo_list
@@ -226,27 +207,6 @@ class Add_offer_box(BoxLayout):
 
     def exit(self):
         App.get_running_app().controller.exit()
-
-
-
-
-#
-# class Color_choose(Popup):
-#     def __init__(self, **kwargs):
-#         super(Color_choose, self).__init__(**kwargs)
-#         self.box = BoxLayout(orientation= 'vertical')
-#         self.picker = ColorPicker()
-#         self.box.add_widget(self.picker)
-#         self.insert = Button(text='add color', on_press= lambda x:print(self.root))
-#         self.box.add_widget(self.insert)
-#         self.add_widget(self.box)
-#
-#     def have_color(self):
-#         a = self
-#         self.parent.color_list.append(self.picker.color)
-#         self.dismiss()
-
-
 
 
 class Sub_Category_box(BoxLayout):
