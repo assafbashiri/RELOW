@@ -40,18 +40,33 @@
                 hint_text: "description"
 
             MDTextFieldRound:
-                id:colors
-                hint_text: "colors"
-
-            MDTextFieldRound:
-                id:sizes
-                hint_text: "sizes"
-
-            MDTextFieldRound:
                 text : "11/11/22"
                 id:end_date
                 hint_text: "end date"
                 on_focus:root.show_date_picker()
+
+            BoxLayout:
+                orientation: 'horizontal'
+                id:colors
+                Button:
+                    id:color
+                    text: 'add color'
+                    on_press: root.add_color_start()
+
+
+
+
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                id: size_box
+                MDTextFieldRound:
+                    id:sizes
+                    hint_text: "choose size"
+                Button:
+                    id: add_size
+                    text: 'add size'
+                    on_press: root.add_size_start(root.ids.sizes.text)
 
             MDRoundFlatButton:
                 text:"ADD PHOTO"
@@ -133,3 +148,20 @@
 
     Side_box:
         id:side_box
+
+
+<CustomDropDown>
+    Button:
+        text: 'My first Item'
+        size_hint_y: None
+        height: 44
+        on_release: root.select('item1')
+    Label:
+        text: 'Unselectable item'
+        size_hint_y: None
+        height: 44
+    Button:
+        text: 'My second Item'
+        size_hint_y: None
+        height: 44
+        on_release: root.select('item2')
