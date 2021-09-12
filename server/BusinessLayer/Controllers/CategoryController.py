@@ -90,14 +90,14 @@ class CategoryController:
         self.sub_categoriesDAO.delete(SubCategoryDTO(sub_category_to_remove))
 
     # return offer that added, throw exceptions
-    def add_offer(self, user_id, name, company, colors, sizes, description, photos, category_name, sub_category_name, steps, end_date):
+    def add_offer(self, user_id, name, company, colors, sizes, description, photos, category_name, sub_category_name, steps, end_date, hot_deals):
         category = self.get_category_by_name(category_name)
         sub_category = self.get_sub_category_by_name(sub_category_name)
         sub_category_id = sub_category.get_id()
         if not category.is_exist_sub_category(sub_category_id):
             raise Exception("Sub Category Does Not Exist in this category")
         product = Product(self.offer_id, name, company, colors, sizes, description, photos)
-        offer_to_add = category.add_offer(self.offer_id, user_id, product, sub_category_id, steps, end_date)
+        offer_to_add = category.add_offer(self.offer_id, user_id, product, sub_category_id, steps, end_date, hot_deals)
         self.offer_id += 1
         self.add_to_hot_deals(offer_to_add.offer_id)
         return offer_to_add
@@ -278,12 +278,17 @@ class CategoryController:
                 current_buyers = all_current_buyers_dict[o[0]]
                 total_products = total_products_per_offer[o[0]]
 
+            hot = False
+            if  o[8] == 1:
+                hot = True
+
+
             offer = Offer(o[0], o[1], all_products_dictionary[o[0]], o[6], o[7], OfferStatus.ACTIVE, all_steps_dictionary[o[0]], o[2],
-                          o[3], current_buyers, total_products)
+                          o[3], current_buyers, total_products,hot)
 
             all_offers_to_return[o[0]] = offer
             self.category_dictionary[o[6]].add_offer_for_load(offer, o[7])
-            if o[8] is True:  # add to hot deals
+            if hot is True:  # add to hot deals
                 self.hot_deals[o[0]] = offer
         return all_offers_to_return
 

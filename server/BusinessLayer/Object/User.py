@@ -22,7 +22,7 @@ class User():
         #self.age = datetime.today() - self.birth_date
         today = date.today()
         born = self.birth_date
-        self.age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+        # self.age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
         # ---------- user extra details
         self.address = UserAddress()
@@ -99,6 +99,9 @@ class User():
 
     def set_id(self, id_number):
         self.payment.set_id_number(id_number)
+
+    def set_liked_offers(self, liked_offers):
+        self.liked_offers = liked_offers
 
 
     def add_like_offer(self, liked_offer):

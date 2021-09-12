@@ -16,34 +16,91 @@ from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextField
 from windows.offers_list import RecycleViewRow
 
+from client.windows.offers_list import Offers_Screen
+
 
 class SEARCHScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'search_screen'
         super(SEARCHScreen, self).__init__(**kwargs)
-
-
-
+        self.mes = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        self.of = Offers_Screen()
+        self.first_time_bad_search = True
+        self.first_time_good_search = True
 
     def search_by_name(self):
-        prod_name = "shoko"
+        prod_name = self.ids.name.text
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
-        self.insert_offers(list=ans)
+        # bad search
+        if len(ans) == 0:
+            self.of.insert_offers(list=[])
+            if self.first_time_bad_search is True:
+                self.lab = MDLabel(text="cant find offer")
+                self.mes.add_widget(self.lab)
+                self.ids.zibi.add_widget(self.mes)
+                self.first_time_bad_search = False
+            else:
+                self.lab.text = "cant find offer.."
+        # good search
+        else:
+            if self.first_time_bad_search is False:
+                self.lab.text = ""
+            if self.first_time_good_search is True:
+                self.of.insert_offers(list=ans)
+                self.ids.zibi.add_widget(self.of)
+                self.first_time_good_search = False
+            else:
+                self.of.insert_offers(list=ans)
+
 
     def search_by_sub_category(self):
+        sub_cat_name = self.ids.sub_category.text
+        # cat_name = self.ids.category.text
         cat_name = "sport"
-        sub_cat_name = "swim"
-        # cat_name = self.ids.zibi.ids.name
-        # sub_cat_name = self.ids.zibi.ids.name
         ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
-        self.insert_offers(list=ans)
+
+        if len(ans) == 0:
+            self.of.insert_offers(list=[])
+            if self.first_time_bad_search is True:
+                self.lab = MDLabel(text=sub_cat_name+" has 0 offers")
+                self.mes.add_widget(self.lab)
+                self.ids.zibi.add_widget(self.mes)
+                self.first_time_bad_search = False
+            else:
+                self.lab.text = sub_cat_name+" has 0 offers.."
+        # good search
+        else:
+            if self.first_time_bad_search is False:
+                self.lab.text = ""
+            if self.first_time_good_search is True:
+                self.of.insert_offers(list=ans)
+                self.ids.zibi.add_widget(self.of)
+                self.first_time_good_search = False
+            else:
+                self.of.insert_offers(list=ans)
 
     def search_by_category(self):
-        cat_name = "sport"
-        # cat_name = self.ids.zibi.ids.name
+        cat_name = self.ids.category.text
         ans = App.get_running_app().controller.get_offers_by_category(cat_name)
-        self.insert_offers(list=ans)
-
+        if len(ans) == 0:
+            self.of.insert_offers(list=[])
+            if self.first_time_bad_search is True:
+                self.lab = MDLabel(text=cat_name+" has 0 offers")
+                self.mes.add_widget(self.lab)
+                self.ids.zibi.add_widget(self.mes)
+                self.first_time_bad_search = False
+            else:
+                self.lab.text = cat_name+" has 0 offers.."
+        # good search
+        else:
+            if self.first_time_bad_search is False:
+                self.lab.text = ""
+            if self.first_time_good_search is True:
+                self.of.insert_offers(list=ans)
+                self.ids.zibi.add_widget(self.of)
+                self.first_time_good_search = False
+            else:
+                self.of.insert_offers(list=ans)
 
 class Search_box(BoxLayout):
     def __init__(self, **kwargs):

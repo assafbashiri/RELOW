@@ -127,6 +127,7 @@ if __name__ == '__main__':
     Builder.load_file('windows/searchWindow.kv')
     Builder.load_file('windows/addofferWindow.kv')
     Builder.load_file('windows/offers_list.kv')
+    Builder.load_file('windows/my_offersWindow.kv')
     store = JsonStore('hello.json')
     a = OurClient()
     req_answers = Req_Answers()

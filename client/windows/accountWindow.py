@@ -6,12 +6,15 @@ from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
 from kivymd.uix.picker import MDDatePicker
 
+from client.windows.offers_list import Offers_Screen
+
+
 class Category_box(BoxLayout):
     pass
 
 class ACCOUNTScreen(Screen):
     def __init__(self, **kwargs):
-        self.name = 'home'
+        self.name = 'account_screen'
         super(ACCOUNTScreen, self).__init__(**kwargs)
 
 
@@ -22,6 +25,13 @@ class Account_box(BoxLayout):
         super(Account_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
+
+
+    def active_offers(self):
+        ans = App.get_running_app().controller.get_all_active_buy_offers()
+        self.act_buy_offers = Offers_Screen()
+        self.act_buy_offers.insert_offers(list=ans)
+        self.ids.boxi.add_widget(self.act_buy_offers)
 
     def exit(self):
         App.get_running_app().controller.exit()
@@ -52,8 +62,6 @@ class BoxiLayout(BoxLayout):
         super(BoxiLayout, self).__init__(**kwargs)
         self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
         self.gender = 0
-
-
 
 
 

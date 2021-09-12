@@ -71,7 +71,8 @@ class Connect_box(BoxLayout):
         last_name =  self.ids.last_name.text
         email = self.ids.email.text
         password =  self.ids.password.text
-        birth_date = datetime.today()  # self.ids.birth_date.text
+        birth_date = datetime.datetime(1996, 12, 15)
+        # birth_date = self.ids.birth_date.text
         gender = self.gender
         ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,
                                                         gender)
@@ -138,15 +139,15 @@ class Connect_box(BoxLayout):
 
     def logout(self):
         print("po")
-        user =  App.get_running_app().controller.store['user']
-        user_info = user['user_info']
-        user_id = user_info['user_id']
-        print(user_id)
+        # user = App.get_running_app().controller.store['user']
+        # user_info = user['user_info']
+        # user_id = user_info['user_id']
+        # print(user_id)
         ans = App.get_running_app().controller.logout()
 
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.back_to_main()
 
-        print(ans.message)
+        print(ans.message+"aaaaaa")
 

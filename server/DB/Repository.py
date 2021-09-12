@@ -12,11 +12,11 @@ class repository():
         self._conn.executescript("""
             CREATE TABLE IF NOT EXISTS users_submission (
                 user_id INTEGER PRIMARY KEY UNIQUE,
-                first_name TEXT NOT NULL,
-                last_name TEXT NOT NULL,
-                user_name TEXT NOT NULL,
-                email TEXT NOT NULL ,
-                password TEXT NOT NULL,
+                first_name TEXT,
+                last_name TEXT,
+                user_name TEXT,
+                email TEXT,
+                password TEXT,
                 birth_date	DATETIME,
                 gender	TEXT,
                 is_logged BOOLEAN NOT NULL,

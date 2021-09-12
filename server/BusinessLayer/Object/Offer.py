@@ -7,7 +7,7 @@ from BusinessLayer.Object.Step import Step
 
 class Offer:
 
-    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date, current_buyers, total_product):
+    def __init__(self, next_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date, current_buyers, total_product, hot_deals):
         self.offer_id = next_id
         self.current_step = 1
         self.user_id = user_id #seller
@@ -20,7 +20,7 @@ class Offer:
         self.end_date = end_date
         self.current_buyers = current_buyers # with buyer_id, purchase(quantity and step, buyer_id)
         self.total_products = total_product
-        self.hot_deals = False
+        self.hot_deals = hot_deals
         if len(self.steps) == 0:
             raise Exception("steps cant be empty - have to be checked in client")
         self.max_amount = self.steps[len(self.steps)].get_limit()
