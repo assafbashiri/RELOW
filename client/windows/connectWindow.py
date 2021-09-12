@@ -6,7 +6,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.toast import toast
 
-from client.windows.SideBar import SideBar
+from windows.SideBar import SideBar
 
 
 class Struct(object):
@@ -78,8 +78,8 @@ class Connect_box(BoxLayout):
         first_name = self.ids.first_name.text
         last_name =  self.ids.last_name.text
         email = self.ids.email.text
-        password =  self.ids.password.text
-        birth_date = datetime.datetime(1996, 12, 15)
+        password = self.ids.password.text
+        birth_date = datetime(1996, 12, 15)
         # birth_date = self.ids.birth_date.text
         gender = self.gender
         ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,

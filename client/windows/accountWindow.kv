@@ -7,15 +7,9 @@
     BoxiLayout:
         id: boxi
         BoxLayout:
-            MDRoundFlatButton:
-                id: active_offers
-                text: "JOINED OFFERS"
-                font_size: 12
-                on_press: root.active_offers()
+
         BoxLayout:
-            MDLabel:
-                id: there
-                text: "MY OFFERS"
+
     Side_box:
         id: side_box
 
@@ -75,6 +69,7 @@
             text: 'gender'
             on_release: self.parent.parent.show_dropdown()
     GridLayout:
+        id:GL
         size_hint: 1,3
         cols: 1
 
@@ -178,6 +173,10 @@
             text:"clear_payment"
             font_size: 12
             on_press:root.clear_payment()
+        Button:
+            text:"init"
+            font_size: 12
+            on_press:root.init_fields()
 
 
 

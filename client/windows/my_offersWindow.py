@@ -2,8 +2,9 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.label import MDLabel
+from windows.SideBar import SideBar
 
-from client.windows.offers_list import Offers_Screen
+from windows.offers_list import Offers_Screen
 
 
 class MY_OFFERS_Screen(Screen):

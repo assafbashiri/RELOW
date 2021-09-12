@@ -5,8 +5,10 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
 from kivymd.uix.picker import MDDatePicker
+from windows.SideBar import SideBar
+from datetime import datetime
 
-from client.windows.offers_list import Offers_Screen
+from windows.offers_list import Offers_Screen
 
 
 class Category_box(BoxLayout):
@@ -37,21 +39,8 @@ class Account_box(BoxLayout):
         App.get_running_app().controller.exit()
 
     def change_to_cat(self):
-        self.side = self.ids.side_box
-        self.remove_widget(self.side)
-        self.add_widget(self.cat)
+        SideBar.change_to_cat(self)
 
-    def back_to_menu(self):
-        self.add_widget(self.side)
-        self.remove_widget(self.cat)
-
-    def change_to_sub_cat(self):
-        self.remove_widget(self.cat)
-        self.add_widget(self.sub_cat)
-
-    def back_to_cat(self):
-        self.add_widget(self.cat)
-        self.remove_widget(self.sub_cat)
 
 class Sub_Category_box(BoxLayout):
     pass
@@ -62,6 +51,75 @@ class BoxiLayout(BoxLayout):
         super(BoxiLayout, self).__init__(**kwargs)
         self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
         self.gender = 0
+
+
+    def init_fields(self):
+        controller = App.get_running_app().controller
+        self.user = controller.user_service
+        if(self.user is not None):
+
+            self.ids.first_name.text = self.user.first_name
+            self.ids.last_name.text = self.user.last_name
+            self.ids.user_name.text = self.user.user_name
+            self.ids.email.text = self.user.email
+            self.ids.password.text = self.user.password
+
+            strdate = self.user.birth_date
+            date = datetime.strptime(strdate, "%Y-%m-%d %S:%M:%H")
+            self.ids.birth_date.text =date
+            if (self.user.city is None):
+                self.ids.city.text = ""
+            else:
+                self.ids.city.text = self.user.city
+
+            if (self.user.street is None):
+                self.ids.street.text = ""
+            else:
+                self.ids.street.text = self.user.street
+
+            if (self.user.zip_code is None):
+                self.ids.zip_code.text = ""
+            else:
+                self.ids.zip_code.text = self.user.zip_code
+
+            if (self.user.floor is None):
+                self.ids.floor.text = ""
+            else:
+                self.ids.floor.text = self.user.floor
+
+
+            if (self.user.apartment_number is None):
+                self.ids.apt_number.text = ""
+            else:
+                self.ids.apt_number.text = self.user.apartment_number
+
+
+
+
+            if (self.user.credit_card_number is None):
+                self.ids.credit_card_number.text = ""
+            else:
+                self.ids.credit_card_number.text = self.user.credit_card_number
+
+            if (self.user.credit_card_exp_date is None):
+                self.ids.exp_date.text = ""
+            else:
+                self.ids.exp_date.text = self.user.credit_card_exp_date
+
+            if (self.user.cvv is None):
+                self.ids.cvv.text = ""
+            else:
+                self.ids.cvv.text = self.user.cvv
+
+            if (self.user.card_type is None):
+                self.ids.card_type.text = ""
+            else:
+                self.ids.card_type.text = self.user.card_type
+
+            if (self.user.id_number is None):
+                self.ids.id_number.text = ""
+            else:
+                self.ids.id_number.text = self.user.id_number
 
 
 

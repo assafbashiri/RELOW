@@ -154,9 +154,12 @@ class Backend_controller:
             toast(ex)
         changed_user = ans.data
         if ans.res is True:
-            user = self.store['user']
-            user['user_info'] = ans.data
-            self.store['user'] = user
+            a=9
+            # user = self.store['user_guest']
+            # user['user_info'] = ans.data
+            # self.store['user_guest']['user_info'] = ans.data
+            #self.store['user_guest'] = user
+            self.user_service = self.build_user(ans.data)
 
         return ans
 
@@ -223,12 +226,16 @@ class Backend_controller:
         add_liked_offer_req = {'op': 25, 'offer_id': offer_id}
         self.req_answers.add_request(add_liked_offer_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.user_service.liked_offers.append(offer_id)
         return ans
 
     def remove_liked_offer(self, offer_id):
         remove_liked_offer_req = {'op': 26, 'offer_id': offer_id}
         self.req_answers.add_request(remove_liked_offer_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.user_service.liked_offers.append(offer_id)
         return ans
 
     def add_active_buy_offer(self, offer_id, quantity, step, color, size):
@@ -580,8 +587,12 @@ class Backend_controller:
         return offer_temp
 
     def build_user(self, data):
+        print("999999999999999999999999999999999999999999999999999999999999999999999999999")
+        birth_date =  data['birth_date']
+        length= len(data['birth_date'])-1
+        birth =  birth_date[1:length]
         user_temp = UserService(data['user_id'], data['first_name'], data['last_name'], data['user_name'], data['email'],
-                                data['password'], data['birth_date'], data['gender'], data['city'],
+                                data['password'], birth, data['gender'], data['city'],
                                 data['street'], data['apartment_number'], data['zip_code'], data['floor'],
                                 data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
                                 data['card_type'],

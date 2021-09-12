@@ -16,10 +16,11 @@ from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
 from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.textfield import MDTextFieldRound
+from windows.SideBar import SideBar
 
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 
 
 class ADDOFFERScreen(Screen):
@@ -136,9 +137,7 @@ class Add_offer_box(BoxLayout):
         ans2 = ans
 
     def change_to_cat(self):
-        self.side = self.ids.side_box
-        self.remove_widget(self.side)
-        self.add_widget(self.cat)
+        SideBar.change_to_cat(self)
 
     def show_date_picker(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
@@ -197,13 +196,6 @@ class Add_offer_box(BoxLayout):
         self.add_widget(self.side)
         self.remove_widget(self.cat)
 
-    def change_to_sub_cat(self):
-        self.remove_widget(self.cat)
-        self.add_widget(self.sub_cat)
-
-    def back_to_cat(self):
-        self.add_widget(self.cat)
-        self.remove_widget(self.sub_cat)
 
     def exit(self):
         App.get_running_app().controller.exit()

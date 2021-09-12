@@ -15,9 +15,11 @@ from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextField
 from windows.offers_list import RecycleViewRow
+from windows.SideBar import SideBar
+from kivymd.uix.menu import MDDropdownMenu
 
-from client.windows.SideBar import SideBar
-from client.windows.offers_list import Offers_Screen
+from windows.SideBar import SideBar
+from windows.offers_list import Offers_Screen
 
 
 class SEARCHScreen(Screen):
@@ -55,9 +57,9 @@ class SEARCHScreen(Screen):
 
 
     def search_by_sub_category(self):
-        sub_cat_name = self.ids.sub_category.text
+        sub_cat_name = self.ids.drop_sub_category.text
         # cat_name = self.ids.category.text
-        cat_name = "sport"
+        cat_name = self.category_tom
         ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
 
         if len(ans) == 0:
@@ -80,8 +82,67 @@ class SEARCHScreen(Screen):
             else:
                 self.of.insert_offers(list=ans)
 
+    def show_dropdown_serch_by_category(self):
+        categories = App.get_running_app().controller.get_categories()
+        menu_items=[]
+        for cat in categories:
+            menu_items.append(
+                {"text": cat.name,
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=cat.name: self.on_save_category(x),
+                }
+            )
+
+        self.drop_down_category = MDDropdownMenu(
+            caller=self.ids.drop_category,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_category.open()
+
+    def show_dropdown_category(self):
+        categories = App.get_running_app().controller.get_categories()
+        menu_items=[]
+        for cat in categories:
+            menu_items.append(
+                {"text": cat.name,
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x=cat.get_sub_categories_names(), y=cat.name: self.show_dropdown_sub_category(x, y),
+                }
+            )
+
+        self.drop_down_category = MDDropdownMenu(
+            caller=self.ids.drop_category,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_category.open()
+    def show_dropdown_sub_category(self, sub_categories_names,cat_name):
+        menu_items = []
+        for sub_cat in sub_categories_names:
+            menu_items.append(
+                {"text": sub_cat,
+                 "viewclass": "OneLineListItem",
+                 # here we have to open page or the offers of this sub categories ya sharmutut
+                 "on_release": lambda x=sub_cat, y=cat_name: self.on_save_sub_category(x, y) }
+            )
+        self.drop_down_sub_category = MDDropdownMenu(
+            caller=self.ids.drop_category,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_sub_category.open()
+        self.drop_down_category.dismiss()
+    def on_save_sub_category(self, sub_cat, cat_name):
+        self.category_tom = cat_name
+        self.ids.drop_sub_category.text = sub_cat
+        self.drop_down_sub_category.dismiss()
+    def on_save_category(self, sub_cat):
+        self.ids.drop_category.text = sub_cat
+        self.drop_down_category.dismiss()
+
     def search_by_category(self):
-        cat_name = self.ids.category.text
+        cat_name = self.ids.drop_category.text
         ans = App.get_running_app().controller.get_offers_by_category(cat_name)
         if len(ans) == 0:
             self.of.insert_offers(list=[])
@@ -110,22 +171,7 @@ class Search_box(BoxLayout):
         self.sub_cat = Sub_Category_box()
 
     def change_to_cat(self):
-        self.side = self.children[0]
-        self.remove_widget(self.side)
-        self.add_widget(self.cat)
-        # SideBar.change_to_cat(self)
-
-    def back_to_menu(self):
-        self.add_widget(self.side)
-        self.remove_widget(self.cat)
-
-    def change_to_sub_cat(self):
-        self.remove_widget(self.cat)
-        self.add_widget(self.sub_cat)
-
-    def back_to_cat(self):
-        self.add_widget(self.cat)
-        self.remove_widget(self.sub_cat)
+        SideBar.change_to_cat(self)
 
 class Sub_Category_box(BoxLayout):
     pass
