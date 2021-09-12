@@ -8,9 +8,22 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
-from kivymd.uix.label import MDLabel
 from kivymd.uix.menu import MDDropdownMenu
-
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.carousel import Carousel
+from kivy.uix.dropdown import DropDown
+from kivy.uix.image import AsyncImage
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.uix.screenmanager import Screen
+from kivymd.uix.dropdownitem import MDDropDownItem
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.label import MDLabel
+from kivymd.uix.progressbar import MDProgressBar
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.slider import MDSlider
+from kivymd.uix.textfield import MDTextField
 from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
@@ -19,7 +32,9 @@ from kivymd.uix.textfield import MDTextFieldRound
 
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
+
+from client.Service.Object.StepService import StepService
 
 
 class ADDOFFERScreen(Screen):
@@ -39,9 +54,10 @@ class Add_offer_box(BoxLayout):
         # self.color_box = BoxLayout(orientation= 'horizontal')
         # self.add_widget(self.color_box)
         self.gender = 0
-
-
-
+        self.num_of_added_step = 0
+        self.next_step = []
+        self.price = []
+        self.limit = []
         self.color_list = []
         self.color_dropdown = DropDown()
         colors = ['green','black']
@@ -86,9 +102,7 @@ class Add_offer_box(BoxLayout):
     #     # self.size_dropdown.open(self.size_dropdown)
     #     self.ids.sizes.text = ''
 
-    def remove_size(self, instance):
-        self.size_list.remove(instance.text)
-        self.size_dropdown.remove_widget(instance)
+
 
     def add_size(self, instance):
         text = self.ids.sizes.text
@@ -96,6 +110,7 @@ class Add_offer_box(BoxLayout):
         btn = Button(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_dropdown.add_widget(btn)
+        self.size_list.append(text)
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
         #     self.size_list.remove(instance.text)
@@ -106,6 +121,7 @@ class Add_offer_box(BoxLayout):
 
     def remove_size(self, btn):
         self.size_dropdown.remove_widget(btn)
+#        self.size_list.remove(btn.text)
 
     def add_color(self, instance):
         if instance.text in self.color_list:
@@ -115,25 +131,41 @@ class Add_offer_box(BoxLayout):
             self.color_list.append(instance.text)
             instance.background_color =(.34, 1, 1, 1)
 
+    def add_step(self):
+        self.num_of_added_step = self.num_of_added_step + 1
+        num_of_step = self.num_of_added_step + 3
+        help = str(num_of_step)
+        temp1 = MDLabel(text="step " + help)
+        temp2 = MDTextField(hint_text= "limit")
+        temp3 = MDTextField(hint_text= "price")
+        self.next_step.append(temp1)
+        self.ids.stepi.add_widget(MDLabel(text="step " + help))
+        self.limit.append(temp2)
+        self.ids.stepi.add_widget(temp2)
+        self.price.append(temp3)
+        self.ids.stepi.add_widget(temp3)
 
     def add_offer(self):
         list = self.ids.choose.photo_list
         name = self.ids.product_name.text
-        category_name = "sport"
-        # category_name = self.ids.category.text
-        sub_category_name = "swim"
-        # sub_category_name = self.ids.sub_category.text
+        category_name = self.cat_name12
+        sub_category_name = self.sub_cat12
         company = self.ids.company.text
         description = self.ids.description.text
-        sizes = self.ids.sizes.text.split(",")
-        colors = self.ids.colors.text.split(",")
-        end_date = "19/04/2022"
-        # end_date = self.ids.end_date
-        steps = {}
+        sizes = self.build_string_from_list(self.size_list)
+        colors = self.build_string_from_list(self.color_list)
+        end_date = self.ids.end_date.text
+        step1 = StepService(0, self.ids.price1.text, 1, self.ids.limit1.text)
+        step2 = StepService(0, self.ids.price2.text, 2, self.ids.limit2.text)
+        step3 = StepService(0, self.ids.price3.text, 3, self.ids.limit3.text)
+        # more Steps - optional, CHECK INPUT
+        steps = [vars(step1), vars(step2),vars(step3)]
+        if self.num_of_added_step > 0:
+            for i in range(0, self.num_of_added_step):
+                steps.append(vars(StepService(0, self.price[i].text, i+4, self.limit[i].text)))
         ans = App.get_running_app().controller.add_active_sell_offer(name, company, colors, sizes, description, list, category_name,
                               sub_category_name, steps, end_date)
-        ans1 = ans
-        ans2 = ans
+
 
     def change_to_cat(self):
         self.side = self.ids.side_box
@@ -152,7 +184,7 @@ class Add_offer_box(BoxLayout):
             menu_items.append(
                 {"text": cat.name,
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x=cat.get_sub_categories_names(): self.show_dropdown_sub_category(x),
+                "on_release": lambda x=cat.get_sub_categories_names(), y=cat.name: self.show_dropdown_sub_category(x,y),
                 }
             )
 
@@ -163,7 +195,17 @@ class Add_offer_box(BoxLayout):
         )
         self.drop_down_category.open()
 
-    def show_dropdown_sub_category(self, sub_categories_names):
+    def build_string_from_list(self, list):
+        answer = list[0]
+        i = 0
+        for item in list:
+            if i != 0:
+                answer = answer + ", " + item
+            i = i + 1
+        return answer
+
+    def show_dropdown_sub_category(self, sub_categories_names, cat_name):
+        self.cat_name12 = cat_name
         menu_items = []
         for sub_cat in sub_categories_names:
             menu_items.append(
@@ -181,6 +223,7 @@ class Add_offer_box(BoxLayout):
         self.drop_down_category.dismiss()
 
     def on_save_sub_category(self, sub_cat):
+        self.sub_cat12 = sub_cat
         self.ids.drop_category.text = sub_cat
         self.drop_down_sub_category.dismiss()
 

@@ -66,16 +66,23 @@
                 text:"ADD PHOTO"
                 font_size: 12
                 on_press: root.ids.choose.file_manager_open()
+
+            MDRoundFlatButton:
+                text:"ADD STEP"
+                font_size: 12
+                on_press: root.add_step()
+
             MDGridLayout:
                 cols: 3
+                id: stepi
                 MDLabel:
                     id: steps_label1
                     text: "step 1"
 
                 MDTextFieldRound:
-                    #text:'amount'
-                    id:amount1
-                    hint_text: "buyers amount"
+                    #text:'limit'
+                    id:limit1
+                    hint_text: "limit"
                     icon_right: "account"
                     size_hint_x:None
                     width:200
@@ -89,14 +96,14 @@
                     icon_right: "account"
 
                 MDLabel:
-                    id: steps_label1
+                    id: steps_label2
                     text: "step 2"
 
 
                 MDTextFieldRound:
-                    #text:'amount'
-                    id:amount2
-                    hint_text: "buyers amount"
+                    #text:'limit'
+                    id:limit2
+                    hint_text: "limit"
                     icon_right: "account"
                     size_hint_x:None
                     width:200
@@ -109,13 +116,13 @@
                     icon_right: "account"
 
                 MDLabel:
-                    id: steps_label1
+                    id: steps_label3
                     text: "step 3"
 
                 MDTextFieldRound:
-                    #text:'amount'
-                    id:amount3
-                    hint_text: "buyers amount"
+                    #text:'limit'
+                    id:limit3
+                    hint_text: "limit"
                     icon_right: "account"
                     size_hint_x:None
                     width:200
