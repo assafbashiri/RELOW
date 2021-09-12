@@ -7,6 +7,7 @@ from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
+from kivymd.toast import toast
 from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.label import MDLabel
 from kivymd.uix.menu import MDDropdownMenu
@@ -29,8 +30,8 @@ class OfferWindow(Popup):
         # buyer/seller/viewer/user
         self.user = self.controller.user_service
         if self.controller.guest is True:
-            self.show_as_guest()
-        if self.offer.is_a_seller(self.user.user_id):
+            self.show_as_guest(photo_lis)
+        elif self.offer.is_a_seller(self.user.user_id):
             self.show_as_seller(photo_lis)
         elif self.user.is_a_buyer(self.offer.offer_id):
             self.show_as_buyer(photo_lis)
@@ -38,7 +39,89 @@ class OfferWindow(Popup):
             self.show_as_viewer(photo_lis)
 
     def show_as_guest(self, photo_lis):
-        pass
+        print('as a guest')
+        self.title = self.offer.product.name
+        self.box = BoxLayout(orientation='vertical')
+        self.carousel = Carousel(size_hint_y=6)
+        # for photo in photo_lis:
+        #     self.carousel.add_widget(photo)
+        image = AsyncImage(source="windows/images/a.png")
+        self.carousel.add_widget(image)
+        self.box.add_widget(self.carousel)
+        self.slider = MDSlider()
+        self.slider.min = 0
+        self.slider.max = 150
+        self.slider.value = 15
+        steps = self.offer.steps
+        # for step in steps:
+        #     pass
+        self.slider.min = 0
+        self.slider.max = 100  # steps[-1][1]
+        self.slider.value = 10  # self.offer.current_buyers
+        self.progress = MDProgressBar()
+        self.progress.value = self.slider.value
+        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        for step_id in steps:
+            step = steps[step_id]
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
+        self.box.add_widget(self.people_per_step)
+        self.box.add_widget(self.progress)
+        self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+
+
+        for step in steps:
+            step = steps[step_id]
+            # self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+        self.box.add_widget(self.price_per_step)
+        self.name = Label(text=self.offer.product.name)
+        self.box.add_widget(self.name)
+        self.company = Label(text=self.offer.product.company)
+        self.box.add_widget(self.company)
+        self.description = Label(text=self.offer.product.description)
+        self.color_size.add_widget(self.description)
+
+        self.color_size = BoxLayout(orientation='horizontal')
+        self.box.add_widget(self.color_size)
+
+        self.color_dropdown = DropDown()
+        colors = self.offer.product.colors
+        for color in colors:
+            btn = Button(text=' % s' % color, size_hint=(None, None), height=40)
+            btn.bind(on_release=lambda btn: self.color_dropdown.select(btn.text))
+            self.color_dropdown.add_widget(btn)
+        self.color_mainbutton = Button(text='colors')
+        self.color_mainbutton.bind(on_release=self.color_dropdown.open)
+        self.color_size.add_widget(self.color_mainbutton)
+        self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
+
+        self.size_dropdown = DropDown()
+        sizes = self.offer.product.sizes
+        for size in sizes:
+            btn = Button(text=' % s' % size, size_hint=(None, None), height=40)
+            btn.bind(on_release=lambda btn: self.size_dropdown.select(btn.text))
+            self.size_dropdown.add_widget(btn)
+        self.size_mainbutton = Button(text='sizes')
+        self.size_mainbutton.bind(on_release=self.size_dropdown.open)
+        self.color_size.add_widget(self.size_mainbutton)
+        self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton, 'text', x))
+        self.join_offer = BoxLayout(orientation='horizontal')
+        self.quantity = MDTextField(hint_text='QUANTITY')
+        self.join = Button(text="JOIN")
+        self.join.bind(on_press=lambda x: self.register())
+        self.join_offer.add_widget(self.quantity)
+        self.join_offer.add_widget(self.join)
+        self.box.add_widget(self.join_offer)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x: self.out())
+        self.box.add_widget(self.back)
+        if self.user.is_a_liker(self.offer_id):
+            self.like = Button(text="UNLIKE")
+        else:
+            self.like = Button(text="LIKE")
+        self.like.bind(on_press=lambda x: self.like_unlike())
+        self.box.add_widget(self.like)
+        self.add_widget(self.box)
 
     def show_as_seller(self, photo_lis):
         print("bolo1")
@@ -120,7 +203,7 @@ class OfferWindow(Popup):
         self.add_widget(self.box)
 
     def show_as_buyer(self, photo_lis):
-        a  = 5
+        print('as a buyer')
         purchases = self.offer.get_current_buyers()
         purchase =  None
         for purch in purchases:
@@ -159,6 +242,8 @@ class OfferWindow(Popup):
             step = steps[step_id]
             self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+
+
         self.box.add_widget(self.price_per_step)
         self.name = Label(text=self.offer.product.name)
         self.box.add_widget(self.name)
@@ -180,16 +265,17 @@ class OfferWindow(Popup):
         self.back = Button(text="BACK")
         self.back.bind(on_press=lambda x: self.out())
         self.box.add_widget(self.back)
+
         if self.user.is_a_liker(self.offer_id):
             self.like = Button(text="UNLIKE")
         else:
             self.like = Button(text="LIKE")
-        self.like.bind(on_press=lambda x: self.like())
+        self.like.bind(on_press=lambda x: self.like_unlike())
         self.box.add_widget(self.like)
         self.add_widget(self.box)
 
     def show_as_viewer(self, photo_lis):
-        print("bolo3")
+        print('as a viewer')
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
         self.carousel = Carousel(size_hint_y=6)
@@ -229,32 +315,32 @@ class OfferWindow(Popup):
         self.description = Label(text=self.offer.product.description)
         self.box.add_widget(self.description)
 
+        self.color_size = BoxLayout(orientation='horizontal')
+        self.box.add_widget(self.color_size)
+
         self.color_dropdown = DropDown()
         colors = self.offer.product.colors
         for color in colors:
-            btn = Button(text=' % s' % color, size_hint=(None,None), height=40)
+            btn = Button(text='%s' % color, size_hint=(None,None))
             btn.bind(on_release=lambda btn: self.color_dropdown.select(btn.text))
             self.color_dropdown.add_widget(btn)
-        self.color_mainbutton = Button(text='colors', size_hint=(None, None), pos=(350, 300))
+        self.color_mainbutton = Button(text='colors')
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
-        self.box.add_widget(self.color_mainbutton)
+
+        self.color_size.add_widget(self.color_mainbutton)
         self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
 
         self.size_dropdown = DropDown()
         sizes = self.offer.product.sizes
         for size in sizes:
-            btn = Button(text=' % s' % size, size_hint=(None, None), height=40)
+            btn = Button(text='%s' % size, size_hint=(None, None))
             btn.bind(on_release=lambda btn: self.size_dropdown.select(btn.text))
             self.size_dropdown.add_widget(btn)
-        self.size_mainbutton = Button(text='sizes', size_hint=(None, None), pos=(400, 300))
+        self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_release=self.size_dropdown.open)
-        self.box.add_widget(self.size_mainbutton)
+        self.color_size.add_widget(self.size_mainbutton)
         self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton, 'text', x))
 
-        # self.color_drop = MDDropDownItem(text="drop")
-        # self.ids['drop'] = self.color_drop
-        # self.color_drop.bind(on_release= lambda x:print("bolo5"))
-        # self.box.add_widget(self.color_drop)
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
         self.join = Button(text="JOIN")
@@ -269,9 +355,16 @@ class OfferWindow(Popup):
             self.like = Button(text="UNLIKE")
         else:
             self.like = Button(text="LIKE")
-        self.like.bind(on_press=lambda x: self.like())
+        self.like.bind(on_press=lambda x: self.like_unlike())
         self.box.add_widget(self.like)
         self.add_widget(self.box)
+
+    def register(self):
+        self.dismiss()
+        a = App.get_running_app()
+        a.root.current = 'connect_screen'
+        toast(' you need to register first')
+        b= 2
 
     # def open(self, offer, photo_lis):
     #     print('bolo4')
@@ -292,11 +385,15 @@ class OfferWindow(Popup):
         print('bolo10')
         Popup.dismiss(self)
 
-    def like(self):
+    def like_unlike(self):
+        print('in like')
         if self.user.is_a_liker(self.offer_id):
             self.controller.remove_liked_offer(self.offer_id)
+            self.like.text = 'LIKE'
+
         else:
             self.controller.add_liked_offer(self.offer_id)
+            self.like.text = 'UNLIKE'
 
     def join_(self):
         step = 0

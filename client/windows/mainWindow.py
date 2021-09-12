@@ -30,7 +30,7 @@ from windows.addofferWindow import ADDOFFERScreen
 from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen
 
-from client.windows.SideBar import SideBar
+from windows.SideBar import SideBar
 
 
 class Struct(object):
@@ -75,11 +75,12 @@ class Menu_box(BoxLayout):
         super(Menu_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
-    def exit(self):
-        self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
-        # App.get_running_app().controller.exit()
-    def insert_offers(self, **kwargs):
-        self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
+    # def exit(self):
+    #     self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
+    #     # App.get_running_app().controller.exit()
+    # def insert_offers(self, **kwargs):
+    #     a = 5
+    #     self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
@@ -100,9 +101,20 @@ class TestApp(MDApp):
     def __init__(self, controller):
         super(TestApp, self).__init__()
         self.controller = controller
+    def on_start(self):
+        b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
+        a = self.root.current_screen.ids.menu_box.ids.recycle1
+        q = self.root.current_screen
+        f = self.root.current_screen.ids
+        d = self.root.current_screen.ids.menu_box.ids.recycle1
+        dd = self.root.current_screen.ids.menu_box.ids.recycle1.data
+        # dd = d.children
+        c = 7
 
+    def on_stop(self):
+        print('fuck we stoped')
     def build(self):
-        self.check_connection()
+        # self.check_connection()
         return Manager()
 
     def check_connection(self):
