@@ -10,9 +10,9 @@ class SubCategory:
         self.id = id
         self.father_category_id = father_category_id
 
-    def add_offer(self, offer_id, user_id, product, steps, end_date):
+    def add_offer(self, offer_id, user_id, product, steps, end_date, hot_deals):
         status = OfferStatus.ACTIVE
-        offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status, steps, date.today(), end_date, {}, 0)
+        offer_to_add = Offer(offer_id, user_id, product, self.father_category_id, self.id, status, steps, date.today(), end_date, {}, 0, hot_deals)
         self.offers_dictionary[offer_id] = offer_to_add
         return offer_to_add
 

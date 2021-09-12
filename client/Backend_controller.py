@@ -15,7 +15,7 @@ class Backend_controller:
         self.client = client
         self.hot_deals = self.get_hot_deals()
         self.categories = None
-
+        self.guest = False
         self.insert_offers()
         self.store = store
         self.init_categories()
@@ -36,18 +36,46 @@ class Backend_controller:
                 y = CategoryService(cat)
                 self.categories.append(y)
 
+    def guest_register(self):
+        req = {'op': 78}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.store.put("user_guest", user_info=ans.data)
+            self.user_service = UserService(ans.data, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
+            self.guest = True
+
+    def guest_login(self, guest_id):
+        req = {'op': 79, 'guest_id': guest_id}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        if ans.res is True:
+            user = self.store['user_guest']
+            user_info = user['user_info']
+            user_info['liked_offers'] = ans.data['liked_offers']
+            liked_offers = ans.data['liked_offers']
+            self.user_service = UserService(guest_id, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],liked_offers,[],[])
+            self.guest = True
+            self.store.put("user_info", liked_offers=ans.data['liked_offers'])
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        # if self.store.exists('user'):
+        if self.store.exists('user_guest'):
+            user = self.store['user_guest']
+            user_info = user['user_info']
+            register_req = {
+                'op': 80, 'user_id': user_info['user_id'], 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
+                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender
+            }
         #     active = self.store['user']['user_info']['active']
         #     if active is True:
         #         toast("already register")
         #         return Response(None, None, False)
 
         # encode the request for Server-Language
-        register_req = {
-            'op': 1, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
-            'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender
+        else:
+            register_req = {
+                'op': 1, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
+                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender
         }
         # adding to the req_answers, and the Main-Thread should send them to the server
         self.req_answers.add_request(register_req)
@@ -56,6 +84,7 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         if ans.res is True:
             self.store.put("user", user_info=ans.data)
+            # have to delete guest from store
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
         return ans
@@ -89,7 +118,7 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         if ans.res is True:
             # JSON
-            self.login_logout_json(True)
+            # self.login_logout_json(True)
             # FIELD
             self.user_service = self.build_user(ans.data)
         print(ans.message)

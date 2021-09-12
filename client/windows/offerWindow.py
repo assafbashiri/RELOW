@@ -28,12 +28,17 @@ class OfferWindow(Popup):
         self.color = 0
         # buyer/seller/viewer/user
         self.user = self.controller.user_service
+        if self.controller.guest is True:
+            self.show_as_guest()
         if self.offer.is_a_seller(self.user.user_id):
             self.show_as_seller(photo_lis)
         elif self.user.is_a_buyer(self.offer.offer_id):
             self.show_as_buyer(photo_lis)
         else:
             self.show_as_viewer(photo_lis)
+
+    def show_as_guest(self, photo_lis):
+        pass
 
     def show_as_seller(self, photo_lis):
         print("bolo1")
@@ -83,7 +88,13 @@ class OfferWindow(Popup):
             self.color_dropdown.add_widget(btn)
         self.color_mainbutton = Button(text='colors', size_hint=(None, None), pos=(350, 300))
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
-        self.box.add_widget(self.color_mainbutton)
+        self.color_mainbutton = Button(text='colors', size_hint=(None, None), pos=(350, 300))
+        self.color_mainbutton.bind(on_release=self.color_dropdown.open)
+        self.color_box = BoxLayout(orientation='horizontal')
+        self.color_box.add_widget(self.color_mainbutton)
+        self.box.add_widget(self.color_box)
+        self.add_color = Button(text='add color')
+        self.color_box.add_widget(self.add_color)
         self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
 
         self.size_dropdown = DropDown()

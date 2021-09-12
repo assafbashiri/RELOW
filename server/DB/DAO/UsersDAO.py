@@ -3,6 +3,35 @@ class UsersDAO:
     def __init__(self, conn):
         self._conn = conn
 
+    def insert_guest(self, userDTO):
+        self._conn.execute(
+            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, is_logged, active) VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
+             userDTO.birth_date, None, userDTO.is_logged, userDTO.active])
+        self._conn.commit()
+        print("in insert in UserDAO step 2")
+
+        self._conn.execute(
+            """INSERT INTO users_extra_details (user_id) VALUES (?)""",
+            [userDTO.user_id])
+        self._conn.commit()
+        print("in insert in UserDAO step 3")
+
+        self._conn.execute(
+            """INSERT INTO users_address (user_id,city,street,zip_code,floor,apt) VALUES (?,?,?,?,?,?)""",
+            [userDTO.user_id, userDTO.city, userDTO.street, userDTO.zip_code, userDTO.floor, userDTO.apartment_number])
+        self._conn.commit()
+        print("in insert in UserDAO step 4")
+
+        self._conn.execute(
+            """INSERT INTO users_payment (user_id,card_number,expire_date,cvv,card_type, id_number) VALUES (?,?,?,?,?,?)""",
+            [userDTO.user_id, userDTO.credit_card_number, userDTO.credit_card_exp_date, userDTO.cvv,
+             userDTO.card_type, userDTO.id_number])
+        self._conn.commit()
+        print("in insert in UserDAO step 5")
+
+
+
     def insert(self, userDTO):
         print("in insert in UserDAO step 1")
         self._conn.execute(

@@ -1,0 +1,58 @@
+<MY_OFFERS_Screen>
+    id: offers
+    name:'my_offers_screen'
+    Offers_box:
+        id: offers_box
+        BoxLayout:
+            orientation: 'vertical'
+            MDGridLayout:
+                id: offi
+                cols:5
+
+                MDRoundFlatButton:
+                    id: active_buy
+                    text:"my active buy offers"
+                    font_size: 12
+                    on_press:root.active_buy()
+
+                MDRoundFlatButton:
+                    id: active_sell
+                    text:"my active sell offers"
+                    font_size: 12
+                    on_press:root.active_sell()
+
+                MDRoundFlatButton:
+                    id: liked
+                    text:"my liked offers"
+                    font_size: 12
+                    on_press:root.like_offers()
+
+                MDRoundFlatButton:
+                    id: history_buy
+                    text:"my history buy offers"
+                    font_size: 12
+                    on_press:root.history_buy()
+
+                MDRoundFlatButton:
+                    id: history_sell
+                    text:"my history sell offers"
+                    font_size: 12
+                    on_press:root.history_sell()
+
+
+            Offers_Screen:
+                id: recycle2
+
+        Side_box:
+            id: side_box
+
+
+
+<Search_box>
+    orientation: "horizontal"
+
+
+<Carousel1>:
+    AsyncImage:
+        source: root.sourc
+

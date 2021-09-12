@@ -5,16 +5,20 @@
 
 <Account_box>
     BoxiLayout:
+        id: boxi
         BoxLayout:
-            MDLabel:
-                id: my
+            MDRoundFlatButton:
+                id: active_offers
                 text: "JOINED OFFERS"
+                font_size: 12
+                on_press: root.active_offers()
         BoxLayout:
             MDLabel:
                 id: there
                 text: "MY OFFERS"
     Side_box:
         id: side_box
+
 
 
 <BoxiLayout>

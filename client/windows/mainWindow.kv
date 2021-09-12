@@ -12,7 +12,7 @@
         id: side_box
 <Side_box>
     id: side_box
-    size_hint: .2, .2
+    size_hint: .2, .3
     pos_hint: {'top':1}
     spacing: 10
     orientation: "vertical"
@@ -45,6 +45,11 @@
         text: "ADD OFFER"
         on_press:
             root.parent.parent.manager.current = 'add_offer_screen'
+
+    Button:
+        text: "MY OFFERS"
+        on_press:
+            root.parent.parent.manager.current = 'my_offers_screen'
 
 
 

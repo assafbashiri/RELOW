@@ -28,6 +28,7 @@ from windows.connectWindow import CONNECTScreen
 from windows.searchWindow import SEARCHScreen
 from windows.addofferWindow import ADDOFFERScreen
 from windows.offers_list import RecycleViewRow
+from windows.my_offersWindow import MY_OFFERS_Screen
 
 class Struct(object):
     def __init__(self, **entries):
@@ -78,44 +79,13 @@ class Menu_box(BoxLayout):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
     def change_to_cat(self):
-        cat_lis = App.get_running_app().controller.categories
-        self.categories = BoxLayout(orientation='vertical', size_hint=(.2 , .2), pos_hint={'top':1})
-        for category in cat_lis:
-            self.category_name = Button(text=category.name, on_press=lambda a:self.change_to_sub_cat_tom(self.category_name, category))
-            self.categories.add_widget(self.category_name)
+        SideBar.change_to_cat(self)
 
-
-
-
-        self.side = self.ids.side_box
-        self.remove_widget(self.side)
-        self.add_widget(self.categories)
-        # self.parent.parent.ids.menu_box.remove_widget(self.parent.ids.side_box)
-        # print(self.parent)
-        # self.parent.parent.ids.menu_box.add_widget(self.parent.ids.side1_box)
     def change_to_sub_cat_tom(self, category_name_button, category):
-        sub_category_names = category.get_sub_categories_names()
-
-        for sub_category_name in sub_category_names:
-            self.sub_category = Button(text=sub_category_name, on_press=lambda x:self.show_offers_for_sub_cat(category.name, sub_category_name))
-            self.categories.add_widget(self.sub_category)
-
-        self.categories.remove_widget(self.category_name)
+        SideBar.change_to_sub_cat()
 
 
-    def show_offers_for_sub_cat(self,cat_name,  sub_cat_name):
-        controller =  App.get_running_app().controller
-        offers = controller.get_offers_by_sub_category(cat_name, sub_cat_name)
-        a=6
 
-    def back_to_menu(self):
-        # self.remove_widget(self.ids.category_box)
-        self.add_widget(self.side)
-        self.remove_widget(self.cat)
-
-    def back_to_cat(self):
-        self.add_widget(self.cat)
-        self.remove_widget(self.sub_cat)
 
 
     def get_all_categories(self):
@@ -130,7 +100,7 @@ class TestApp(MDApp):
         self.controller = controller
 
     def build(self):
-        #self.check_connection()
+        self.check_connection()
         return Manager()
 
     def check_connection(self):
@@ -141,5 +111,14 @@ class TestApp(MDApp):
             password = user['password']
             self.controller.login(username, password)
             print("welcome back")
+        elif store.exists('user_guest'):
+            guest = store['user_guest']['user_info']
+            guest_id = guest['user_id']
+            # guest_liked_offers = guest['liked_offers']
+            self.controller.guest_login(guest_id)
+        else:
+            self.controller.guest_register()
+
+
 
 

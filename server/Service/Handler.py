@@ -79,11 +79,34 @@ class Handler:
                          53: self.remove_from_hot_deals,
                          54: self.update_step_for_offer,
                          55: self.exit,
-                         56: self.get_all_categories}
+                         56: self.get_all_categories,
+                         78 : self.guest_register,
+                         79 : self.guest_login,
+                         80: self.merge_register}
 
     # ------------------------------------------------userController----------------------------------------------------
 
     # -------------------------------------------------BASIC------------------------------------------------------------
+    def guest_register(self, argument):
+        try:
+            user = self.user_controller.guest_register()
+            self.user = user
+            return Response({'user_id': user.user_id,'liked_offers': []}, 'guest registered Successfully', True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def guest_login(self, argument):
+        to_return = []
+        try:
+            ans = self.user_controller.guest_login(argument['guest_id'])
+            offers_list = ans['liked_offers']
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                to_return.append(temp)
+            self.user = ans['user']
+            return Response({'liked_offers': to_return}, 'guest registered Successfully', True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def unregister(self, argument):
         try:
@@ -95,6 +118,23 @@ class Handler:
     def register(self, argument):
         try:
             user = self.user_controller.register(
+                argument['first_name'],
+                argument['last_name'],
+                argument['user_name'],
+                argument['email'],
+                argument['password'],
+                argument['birth_date'],
+                argument['gender'])
+            self.user = user
+            return Response(vars(UserService(user)), "Registered Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def merge_register(self, argument):
+        # this method register user after he use the system as a guest - and merge the info about him
+        try:
+            user = self.user_controller.merge_register(
+                argument['user_id'],
                 argument['first_name'],
                 argument['last_name'],
                 argument['user_name'],
@@ -154,7 +194,7 @@ class Handler:
                                                        argument['category_name'],
                                                        argument['sub_category_name'],steps,
                                                        # argument['steps'],
-                                                       argument['end_date'], )
+                                                       argument['end_date'], False)
             self.user_controller.add_active_sale_offer(offer)
             return Response(OfferService(offer), "Offer Added Successfully", True)
         except Exception as e:
@@ -336,7 +376,7 @@ class Handler:
     def get_all_history_buy_offers(self, argument):
         lis = []
         try:
-            offer_list = self.user_controller.get_all_history_buy_offer(self.user.user_id)
+            offer_list = self.user_controller.get_history_buy_offers(self.user.user_id)
             for offer in offer_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)
@@ -347,7 +387,7 @@ class Handler:
     def get_all_history_sell_offers(self, argument):
         lis = []
         try:
-            offers_list = self.user_controller.get_all_history_sell_offer(self.user.user_id)
+            offers_list = self.user_controller.get_history_sell_offers(self.user.user_id)
             for offer in offers_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)
@@ -372,7 +412,7 @@ class Handler:
     def get_all_active_buy_offers(self, argument):
         lis = []
         try:
-            offer_buy_list = self.user_controller.get_all_buy_offer(self.user.user_id)
+            offer_buy_list = self.user_controller.get_active_buy_offers(self.user.user_id)
             for offer in offer_buy_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)
@@ -383,7 +423,7 @@ class Handler:
     def get_all_active_sell_offers(self, argument):
         lis = []
         try:
-            offer_sell_list = self.user_controller.get_all_sell_offer(self.user.user_id)
+            offer_sell_list = self.user_controller.get_active_sale_offers(self.user.user_id)
             for offer in offer_sell_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)
@@ -415,7 +455,7 @@ class Handler:
     def get_all_liked_offers(self, argument):
         lis = []
         try:
-            liked_offers_list = self.user_controller.get_all_liked_offer(self.user.user_id)
+            liked_offers_list = self.user_controller.get_all_liked_offers(self.user.user_id)
             for offer in liked_offers_list:
                 temp = vars(OfferService(offer))
                 lis.append(temp)

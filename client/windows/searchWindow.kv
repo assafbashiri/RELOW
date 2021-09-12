@@ -17,7 +17,7 @@
                     id: search_by_name
                     text:"Search"
                     font_size: 12
-                    on_press:root.ids.recycle.search_by_name()
+                    on_press:root.search_by_name()
 
                 MDTextFieldRound:
                     id:category
@@ -27,7 +27,7 @@
                     id: search_by_category
                     text:"Search"
                     font_size: 12
-                    on_press:root.ids.recycle.search_by_category()
+                    on_press:root.search_by_category()
 
                 MDTextFieldRound:
                     id:sub_category
@@ -37,16 +37,9 @@
                     id: search_by_sub_category
                     text:"Search"
                     font_size: 12
-                    on_press:root.ids.recycle.search_by_sub_category()
+                    on_press:root.search_by_sub_category()
 
-                MDTextFieldRound:
-                    id:dates
-                    hint_text: "dates"
 
-                MDRoundFlatButton:
-                    id: search_by_dates
-                    text:"Search"
-                    font_size: 12
             Offers_Screen:
                 id: recycle2
 
