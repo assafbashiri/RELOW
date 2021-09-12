@@ -269,7 +269,7 @@ class UserController:
         seller = self.check_user_state(offer.user_id)
         seller.add_active_sale_offer(offer)
         offerDTO = OfferDTO(offer)
-        productDTO = ProductDTO(offer.product)
+        productDTO = offerDTO.productDTO
         self.offers_dao.insert(offerDTO, productDTO)
 
     # add a buyer into an offer

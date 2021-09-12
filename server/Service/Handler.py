@@ -175,11 +175,7 @@ class Handler:
             return Response(None, str(e), False)
 
     def add_active_sell_offer(self, argument):
-        step1 = Step(50, 20)
-        step2 = Step(100, 15)
-        step3 = Step(150, 10)
-        steps = {1: step1, 2: step2, 3: step3}
-
+        steps = self.build_steps(argument['steps'])
         if self.user is None:
             return Response(None, "not logged in motek", False)
         offer = None
@@ -693,3 +689,9 @@ class Handler:
     def exit(self):
         print("exit")
         return Response(None, "EXIT", None)
+
+    def build_steps(self, steps):
+        ans = {}
+        for step in steps:
+            ans[step['step_number']] = Step(step['limit'],step['price'])
+        return ans

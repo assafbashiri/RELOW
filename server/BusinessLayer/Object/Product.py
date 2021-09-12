@@ -2,8 +2,8 @@ class Product:
     def __init__(self, offer_id, name, company, colors, sizes, description, photos):
         self.name = name
         self.company = company
-        self.colors = colors
-        self.sizes = sizes
+        self.colors = self.build_list_from_string(colors)
+        self.sizes = self.build_list_from_string(sizes)
         self.description = description
         self.photos = photos
         self.offer_id = offer_id
