@@ -53,20 +53,14 @@
                     text: 'add color'
                     on_press: root.add_color_start()
 
-
-
-
-
             MDBoxLayout:
                 orientation: 'horizontal'
                 id: size_box
-                MDTextFieldRound:
-                    id:sizes
-                    hint_text: "choose size"
+
                 Button:
                     id: add_size
                     text: 'add size'
-                    on_press: root.add_size_start(root.ids.sizes.text)
+                    on_press: root.add_size_start()
 
             MDRoundFlatButton:
                 text:"ADD PHOTO"
