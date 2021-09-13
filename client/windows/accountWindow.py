@@ -9,6 +9,7 @@ from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.textfield import MDTextField
 from windows.SideBar import SideBar
 from datetime import datetime
+from kivymd.toast import toast
 
 from windows.offers_list import Offers_Screen
 
@@ -72,16 +73,33 @@ class BoxiLayout(BoxLayout):
         controller = App.get_running_app().controller
         self.user = controller.user_service
         if(self.user is not None):
+            if controller.guest is True:
+                toast("is a guest")
+                return
+            if (self.user.first_name is None):
+                self.ids.first_name.text = ""
+            else:
+                self.ids.first_name.text = self.user.first_name
+            if (self.user.last_name is None):
+                self.ids.last_name.text = ""
+            else:
+                self.ids.last_name.text = self.user.last_name
+            if (self.user.user_name is None):
+                self.ids.user_name.text = ""
+            else:
+                self.ids.user_name.text = self.user.user_name
+            if (self.user.email is None):
+                self.ids.email.text = ""
+            else:
+                self.ids.email.text = self.user.email
 
-            self.ids.first_name.text = self.user.first_name
-            self.ids.last_name.text = self.user.last_name
-            self.ids.user_name.text = self.user.user_name
-            self.ids.email.text = self.user.email
 
-            # strdate = self.user.birth_date
-            # date = datetime.strptime(strdate, "%Y-%m-%d %S:%M:%H")
-            # self.ids.birth_date.text =date
+            if (self.user.birth_date is None):
+                self.ids.birth_date.text = ""
+            else:
+                self.ids.birth_date.text = self.user.birth_date
 
+            #-----------------------------------------------------------------------------------------------------------
 
             if (self.user.city is None):
                 self.ids.city.text = ""
@@ -110,7 +128,7 @@ class BoxiLayout(BoxLayout):
                 self.ids.apt_number.text = self.user.apartment_number
 
 
-
+            #-----------------------------------------------------------------------------------------------------------
 
             if (self.user.credit_card_number is None):
                 self.ids.credit_card_number.text = ""
@@ -153,6 +171,7 @@ class BoxiLayout(BoxLayout):
         if ans.res is True:
             # update the json------------------------------------------------
             self.parent.parent.manager.back_to_main()
+            self.init_fields()
         return ans
 
 
@@ -175,6 +194,7 @@ class BoxiLayout(BoxLayout):
         if ans.res is True:
             # update the json------------------------------------------------
             self.parent.parent.manager.back_to_main()
+            self.init_fields()
         return ans
 
 
@@ -198,6 +218,7 @@ class BoxiLayout(BoxLayout):
         if ans.res is True:
             # update the json------------------------------------------------
             self.parent.parent.manager.back_to_main()
+            self.init_fields()
 
         return ans
 

@@ -1,11 +1,12 @@
 from datetime import datetime
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.toast import toast
-
+from Utils.CheckValidity import CheckValidity
+from Utils.Utils import Utils
 from windows.SideBar import SideBar
 
 
@@ -37,21 +38,6 @@ class Connect_box(BoxLayout):
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
-        # self.side = self.ids.side_box
-        # self.remove_widget(self.side)
-        # self.add_widget(self.cat)
-
-    def back_to_menu(self):
-        self.add_widget(self.side)
-        self.remove_widget(self.cat)
-
-    def change_to_sub_cat(self):
-        self.remove_widget(self.cat)
-        self.add_widget(self.sub_cat)
-
-    def back_to_cat(self):
-        self.add_widget(self.cat)
-        self.remove_widget(self.sub_cat)
 
     def clear_register(self):
         self.ids.user_name.text=""
@@ -61,26 +47,51 @@ class Connect_box(BoxLayout):
         self.ids.password.text=""
         self.ids.birth_date.text=""
 
-
-
-
     def unregister(self):
-        print('unregister')
         ans = App.get_running_app().controller.unregister()
 
         if ans.res is True:
             self.parent.parent.back_to_main()
-
+        print('unregister')
         print(ans.message)
 
     def register(self):
+        controller = App.get_running_app().controller
+        if controller.user_service is not None:
+            if controller.guest is False:
+                toast('you need to logout first')
+                return
         user_name = self.ids.user_name.text
+        user_name_string,user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)
+        toast(user_name_string)
+        if not user_name_bool:
+            return
+
+
         first_name = self.ids.first_name.text
-        last_name =  self.ids.last_name.text
+        bool_ans=self.validate_name(first_name)
+        if not bool_ans:
+            return
+
+        last_name = self.ids.last_name.text
+        bool_ans = self.validate_name(last_name)
+        if not bool_ans:
+            return
+
         email = self.ids.email.text
+        email_string, email_bool = CheckValidity.checkValidityEmail(self,email)
+        toast(email_string)
+        if not email_bool:
+            return
+
         password = self.ids.password.text
-        birth_date = datetime(1996, 12, 15)
-        # birth_date = self.ids.birth_date.text
+        password_string, password_bool = CheckValidity.checkValidityPassword(self,password)
+        toast(password_string)
+        if not password_bool:
+            return
+
+        birth_date_str = self.ids.birth_date.text
+        birth_date = Utils.string_to_datetime_without_hour(self, birth_date_str)
         gender = self.gender
         ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,
                                                         gender)
@@ -88,7 +99,10 @@ class Connect_box(BoxLayout):
             self.parent.parent.back_to_main()
 
         print(ans.message)
-
+    def validate_name(self,name):
+        name_string, name_bool = CheckValidity.checkValidityName(self,name)
+        toast(name_string)
+        return name_bool
 
 
     def show_date_picker(self):
@@ -146,16 +160,13 @@ class Connect_box(BoxLayout):
         self.ids.log_in_password.text=""
 
     def logout(self):
-        print("po")
-        # user = App.get_running_app().controller.store['user']
-        # user_info = user['user_info']
-        # user_id = user_info['user_id']
-        # print(user_id)
+
         ans = App.get_running_app().controller.logout()
 
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.back_to_main()
 
-        print(ans.message+"aaaaaa")
+        print(ans.message)
+        print("Logout")
 

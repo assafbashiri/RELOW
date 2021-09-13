@@ -1,6 +1,6 @@
 import socket
 import pickle
-
+from Utils.CheckValidity import CheckValidity
 from kivy.app import App
 import threading
 from kivymd.toast import toast
@@ -120,6 +120,8 @@ def ex():
     App.get_running_app().stop()
 
 if __name__ == '__main__':
+
+
     Builder.load_file('windows/mainWindow.kv')
     Builder.load_file('windows/managerWindow.kv')
     Builder.load_file('windows/connectWindow.kv')
