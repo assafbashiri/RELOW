@@ -36,6 +36,8 @@ class SideBar:
             self.categories.add_widget(bt1)
 
 
+
+
         self.categories.add_widget(self.back_to_main)
         self.side = self.ids.side_box
         self.remove_widget(self.side)

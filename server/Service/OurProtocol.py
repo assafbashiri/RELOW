@@ -17,6 +17,9 @@ class OurProtocol(Protocol):
 
     def connectionLost(self, res):
         print("connectionLost")
+        print(res)
+        a = 7
+        self.handler.handling({'op':4})
 
     def dataReceived(self, data):
         print("dataReceived")
