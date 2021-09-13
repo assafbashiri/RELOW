@@ -62,9 +62,8 @@ class Connect_box(BoxLayout):
                 toast('you need to logout first')
                 return
         user_name = self.ids.user_name.text
-        user_name_string,user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)
+        user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)
 
-        toast(user_name_string)
         if not user_name_bool:
             return
 
@@ -80,14 +79,12 @@ class Connect_box(BoxLayout):
             return
 
         email = self.ids.email.text
-        email_string, email_bool = CheckValidity.checkValidityEmail(self,email)
-        toast(email_string)
+        email_bool = CheckValidity.checkValidityEmail(self,email)
         if not email_bool:
             return
 
         password = self.ids.password.text
-        password_string, password_bool = CheckValidity.checkValidityPassword(self,password)
-        toast(password_string)
+        password_bool = CheckValidity.checkValidityPassword(self,password)
         if not password_bool:
             return
 
@@ -101,8 +98,7 @@ class Connect_box(BoxLayout):
 
         print(ans.message)
     def validate_name(self,name):
-        name_string, name_bool = CheckValidity.checkValidityName(self,name)
-        toast(name_string)
+        name_bool = CheckValidity.checkValidityName(self,name)
         return name_bool
 
 
