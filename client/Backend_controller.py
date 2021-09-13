@@ -93,6 +93,7 @@ class Backend_controller:
         # req_answers
         ans = self.req_answers.get_answer()
         if ans.res is True:
+            self.guest = False
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
@@ -160,16 +161,14 @@ class Backend_controller:
 
     # ------------------- Account Window ---------------------------------------------------------------------
 
-    def update(self, first_name, last_name, user_name, email, password, birth_date, gender):
-        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name, 'email': email,
-                      'password': password, 'birth_date': birth_date, 'gender': gender}
+    def update(self, first_name, last_name, email):
+        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
         for ex in ans.message:
             toast(ex)
         changed_user = ans.data
         if ans.res is True:
-            self.store.put('user', user_id = ans.data['user_id'], username = user_name, password = password, liked_offers = ans.data['liked_offers'])
             self.user_service = self.build_user(ans.data)
 
         return ans

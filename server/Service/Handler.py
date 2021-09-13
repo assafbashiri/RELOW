@@ -272,6 +272,7 @@ class Handler:
         if self.user is None:
             print("od paam ze null-----------------------")
 
+
         try:
             self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
         except Exception as e:
@@ -283,27 +284,7 @@ class Handler:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_user_name(self.user.user_id, argument['user_name'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
             self.user_controller.update_email(self.user.user_id, argument['email'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_password(self.user.user_id, self.user.password, argument['password'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_birth_date(self.user.user_id, argument['birth_date'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_gender(self.user.user_id, argument['gender'])
         except Exception as e:
             exceptions.append(str(e))
 

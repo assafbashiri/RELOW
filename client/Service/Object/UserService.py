@@ -14,7 +14,7 @@ class UserService():
         self.password = password
         self.birth_date = birth_date
         # gender - 0 / 1
-        self.gender = gender
+        self.gender = gender[7:len(gender)]
 
         # user address
         self.city = city

@@ -37,33 +37,22 @@
             icon_right: "account"
 
         TextInput:
-            #text: "changed_user_name"
-            id:user_name
-            hint_text: "username"
-            icon_right: "account"
-
-
-        TextInput:
             #text: "changed_email"
             id:email
             hint_text: "email"
             icon_right: "account"
 
+        MDLabel:
+            #text: "changed_user_name"
+            id:user_name
 
-
-
-        TextInput:
+        MDLabel:
             #text : "11/11/22"
             id:birth_date
-            hint_text: "birth date"
-            icon_right: "account"
-            on_focus:self.parent.parent.show_date_picker()
 
-        MDDropDownItem:
-            id: drop
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            text: 'gender'
-            on_release: self.parent.parent.show_dropdown()
+        MDLabel:
+            id: gender
+            #text: 'gender'
     GridLayout:
         id:GL
         size_hint: 1,3
@@ -170,11 +159,6 @@
             text:"clear_payment"
             font_size: 12
             on_press:root.clear_payment()
-        Button:
-            text:"init"
-            font_size: 12
-            on_press:root.init_fields()
-
         Button:
             text:"change password"
             font_size: 12

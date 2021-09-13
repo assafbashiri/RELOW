@@ -133,14 +133,20 @@ class UserController:
 
 
     def update_first_name(self, user_id, new_first_name):
-        user = self.check_user_state(user_id)
-        user.set_first_name(new_first_name)
-        self.users_dao.update(UserDTO(user))
+        if new_first_name == "":
+            return
+        else:
+            user = self.check_user_state(user_id)
+            user.set_first_name(new_first_name)
+            self.users_dao.update(UserDTO(user))
 
-    def update_last_name(self, user_id, lastname):
-        user = self.check_user_state(user_id)
-        user.set_last_name(lastname)
-        self.users_dao.update(UserDTO(user))
+    def update_last_name(self, user_id, new_last_name):
+        if new_last_name == "":
+            return
+        else:
+            user = self.check_user_state(user_id)
+            user.set_last_name(new_last_name)
+            self.users_dao.update(UserDTO(user))
 
     def update_user_name(self, user_id, username):
         user = self.check_user_state(user_id)
@@ -155,9 +161,12 @@ class UserController:
         self.users_dao.update(UserDTO(user))
 
     def update_email(self, user_id, new_email):
-        user = self.check_user_state(user_id)
-        user.set_email(new_email)
-        self.users_dao.update(UserDTO(user))
+        if new_email == "":
+            return
+        else:
+            user = self.check_user_state(user_id)
+            user.set_email(new_email)
+            self.users_dao.update(UserDTO(user))
 
     def update_birth_date(self, user_id, new_birthdate):
 

@@ -5,7 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.textfield import MDTextField
 from windows.SideBar import SideBar
 from datetime import datetime
@@ -93,6 +93,11 @@ class BoxiLayout(BoxLayout):
             else:
                 self.ids.email.text = self.user.email
 
+            if (self.user.gender is None):
+                self.ids.gender.text = ""
+            else:
+                self.ids.gender.text = self.user.gender
+
 
             if (self.user.birth_date is None):
                 self.ids.birth_date.text = ""
@@ -161,12 +166,8 @@ class BoxiLayout(BoxLayout):
     def personal(self):
         first_name = self.ids.first_name.text
         last_name = self.ids.last_name.text
-        user_name = self.ids.user_name.text
         email = self.ids.email.text
-        birth_date = self.ids.birth_date.text
-        gender = self.gender
-        ans = App.get_running_app().controller.update(first_name, last_name, user_name, email, password, birth_date,
-                                                      gender)
+        ans = App.get_running_app().controller.update(first_name, last_name, email)
         print(ans.message)
         if ans.res is True:
             # update the json------------------------------------------------
@@ -178,10 +179,7 @@ class BoxiLayout(BoxLayout):
     def clear_personal(self):
         self.ids.first_name.text=""
         self.ids.last_name.text=""
-        self.ids.user_name.text=""
         self.ids.email.text=""
-        self.ids.birth_date.text=""
-
 
     def address(self):
         city = self.ids.city.text
