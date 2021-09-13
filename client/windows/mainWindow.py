@@ -38,14 +38,10 @@ class Struct(object):
         self.__dict__.update(entries)
 
 
-
-
 class MENUScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
-
-
 
 
 class Manager(ScreenManager):
@@ -57,26 +53,24 @@ class Manager(ScreenManager):
         self.current = "menu_screen"
 
 
-
-
-
-
-
 class Side_box(BoxLayout):
     pass
 
+
 class Category_box(BoxLayout):
     pass
+
+
 class Sub_Category_box(BoxLayout):
     pass
 
 
-
 class Menu_box(BoxLayout):
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         super(Menu_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
+
     # def exit(self):
     #     self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
     #     # App.get_running_app().controller.exit()
@@ -87,29 +81,26 @@ class Menu_box(BoxLayout):
     def change_to_cat(self):
         SideBar.change_to_cat(self)
 
-
-
-
-
-
-
     def get_all_categories(self):
         App.get_running_app().controller.init_categories()
 
 
-
 class TestApp(MDApp):
     title = "RecycleView Direct Test"
+
     def __init__(self, controller):
         super(TestApp, self).__init__()
         self.controller = controller
+
     def on_start(self):
-        b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
+        b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(
+            list=App.get_running_app().controller.get_hot_deals())
         a = self.root.current_screen.ids.menu_box.ids.recycle1
         q = self.root.current_screen
 
     def on_stop(self):
         print('fuck we stoped')
+
     def build(self):
         self.check_connection()
         return Manager()
@@ -131,8 +122,3 @@ class TestApp(MDApp):
         else:
             self.controller.guest_register()
             self.controller.guest_login(self.controller.user_service.user_id)
-
-
-
-
-

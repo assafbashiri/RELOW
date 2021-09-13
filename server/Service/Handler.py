@@ -37,13 +37,13 @@ class Handler:
                          12: self.add_payment_method,
                          13: self.get_all_history_buy_offers,
                          14: self.get_all_history_sell_offers,
-                         15: self.get_history_buy_offer,
-                         16: self.get_history_sell_offer,
+                         # 15: self.get_history_buy_offer,
+                         # 16: self.get_history_sell_offer,
                          17: self.get_all_active_buy_offers,
                          18: self.get_all_active_sell_offers,
-                         19: self.get_active_buy_offer,
-                         20: self.get_active_sell_offer,
-                         21: self.get_liked_offer,
+                         # 19: self.get_active_buy_offer,
+                         # 20: self.get_active_sell_offer,
+                         # 21: self.get_liked_offer,
                          22: self.get_all_liked_offers,
                          23: self.add_active_buy_offer,
                          24: self.add_active_sell_offer,
@@ -73,7 +73,7 @@ class Handler:
                          47: self.get_offers_by_category,
                          48: self.get_offers_by_sub_category,
                          49: self.get_offers_by_product_name,
-                         50: self.get_offers_by_status,
+                         # 50: self.get_offers_by_status,
                          51: self.get_hot_deals,
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
@@ -272,6 +272,7 @@ class Handler:
         if self.user is None:
             print("od paam ze null-----------------------")
 
+
         try:
             self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
         except Exception as e:
@@ -283,27 +284,7 @@ class Handler:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_user_name(self.user.user_id, argument['user_name'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
             self.user_controller.update_email(self.user.user_id, argument['email'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_password(self.user.user_id, self.user.password, argument['password'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_birth_date(self.user.user_id, argument['birth_date'])
-        except Exception as e:
-            exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_gender(self.user.user_id, argument['gender'])
         except Exception as e:
             exceptions.append(str(e))
 
@@ -391,19 +372,19 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def get_history_buy_offer(self, argument):
-        try:
-            offer = self.user_controller.get_history_buy_offer(argument['offer_id'])
-            return Response(vars(OfferService(offer)), "Got offer Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def get_history_sell_offer(self, argument):
-        try:
-            offer = self.user_controller(argument['offer_id'])
-            return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
+    # def get_history_buy_offer(self, argument):
+    #     try:
+    #         offer = self.user_controller.get_history_buy_offer(argument['offer_id'])
+    #         return Response(vars(OfferService(offer)), "Got offer Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def get_history_sell_offer(self, argument):
+    #     try:
+    #         offer = self.user_controller(argument['offer_id'])
+    #         return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
 
     def get_all_active_buy_offers(self, argument):
         lis = []
@@ -427,26 +408,26 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def get_active_buy_offer(self, argument):
-        try:
-            offer = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
-            return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def get_active_sell_offer(self, argument):
-        try:
-            offer = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
-            return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def get_liked_offer(self, argument):
-        try:
-            offer = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
-            return Response(vars(OfferService(offer)), "Update Sub-Category Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
+    # def get_active_buy_offer(self, argument):
+    #     try:
+    #         offer = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
+    #         return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def get_active_sell_offer(self, argument):
+    #     try:
+    #         offer = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
+    #         return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
+    #
+    # def get_liked_offer(self, argument):
+    #     try:
+    #         offer = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
+    #         return Response(vars(OfferService(offer)), "Update Sub-Category Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
 
     def get_all_liked_offers(self, argument):
         lis = []
@@ -630,16 +611,16 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def get_offers_by_status(self, argument):
-        to_return = []
-        try:
-            offers_list = self.category_controller.get_offers_by_status(argument['status'])
-            for offer in offers_list:
-                temp = vars(OfferService(offer))
-                to_return.append(temp)
-            return Response(to_return, "Offers Lists Received Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
+    # def get_offers_by_status(self, argument):
+    #     to_return = []
+    #     try:
+    #         offers_list = self.category_controller.get_offers_by_status(argument['status'])
+    #         for offer in offers_list:
+    #             temp = vars(OfferService(offer))
+    #             to_return.append(temp)
+    #         return Response(to_return, "Offers Lists Received Successfully", True)
+    #     except Exception as e:
+    #         return Response(None, str(e), False)
 
     def get_hot_deals(self, argument):
         to_return = []

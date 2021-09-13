@@ -59,6 +59,8 @@ class UserController:
 
     def guest_login(self, guest_id):
         guest = self.usersDictionary[guest_id]
+        guest.log_in()
+        self.users_dao.log_in(guest_id)
         return {'liked_offers': guest.get_liked_offers(), 'user': guest}
 
     def merge_register(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender):
@@ -133,14 +135,20 @@ class UserController:
 
 
     def update_first_name(self, user_id, new_first_name):
-        user = self.check_user_state(user_id)
-        user.set_first_name(new_first_name)
-        self.users_dao.update(UserDTO(user))
+        if new_first_name == "":
+            return
+        else:
+            user = self.check_user_state(user_id)
+            user.set_first_name(new_first_name)
+            self.users_dao.update(UserDTO(user))
 
-    def update_last_name(self, user_id, lastname):
-        user = self.check_user_state(user_id)
-        user.set_last_name(lastname)
-        self.users_dao.update(UserDTO(user))
+    def update_last_name(self, user_id, new_last_name):
+        if new_last_name == "":
+            return
+        else:
+            user = self.check_user_state(user_id)
+            user.set_last_name(new_last_name)
+            self.users_dao.update(UserDTO(user))
 
     def update_user_name(self, user_id, username):
         user = self.check_user_state(user_id)
@@ -155,9 +163,12 @@ class UserController:
         self.users_dao.update(UserDTO(user))
 
     def update_email(self, user_id, new_email):
-        user = self.check_user_state(user_id)
-        user.set_email(new_email)
-        self.users_dao.update(UserDTO(user))
+        if new_email == "":
+            return
+        else:
+            user = self.check_user_state(user_id)
+            user.set_email(new_email)
+            self.users_dao.update(UserDTO(user))
 
     def update_birth_date(self, user_id, new_birthdate):
 
@@ -454,7 +465,8 @@ class UserController:
         for user in users_submission_db:
             if user[6] is not None:
                 date = datetime.strptime(user[6], "%Y-%m-%d %H:%M:%S")
-            user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], date, user[7])
+            gender_to_add = Gender(int(user[7]))
+            user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], date, gender_to_add)
             user_temp.is_logged = user[8]
             user_temp.active = user[9]
             self.usersDictionary[user[0]] = user_temp

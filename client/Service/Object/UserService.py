@@ -14,7 +14,10 @@ class UserService():
         self.password = password
         self.birth_date = birth_date
         # gender - 0 / 1
-        self.gender = gender
+        if gender is None:
+            self.gender = None
+        else:
+            self.gender = gender[7:len(gender)]
 
         # user address
         self.city = city
@@ -133,8 +136,6 @@ class UserService():
 
     def get_active_buy_offers(self):
         return self.active_buy_offers
-
-
 
     def build_offer(self, x):
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
