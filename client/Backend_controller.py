@@ -49,7 +49,7 @@ class Backend_controller:
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
-            self.store.put("user_guest", user_id = ans.data['user_id'], liked_offers=ans.data['liked_offers'])
+            self.store.put("user_guest", user_id = ans.data['user_id'])
             self.user_service = UserService(ans.data['user_id'], None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
             self.guest = True
 
@@ -62,11 +62,9 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         if ans.res is True:
             user = self.store.get('user_guest')
-            user['liked_offers'] = ans.data['liked_offers']
-            liked_offers = ans.data['liked_offers']
-            self.user_service = UserService(guest_id, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],liked_offers,[],[])
+            self.user_service = UserService(guest_id, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
             self.guest = True
-            self.store.put('user_guest', user_id= guest_id, liked_offers = liked_offers)
+            self.store.put('user_guest', user_id= guest_id)
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         store = JsonStore('hello.json')
@@ -98,8 +96,7 @@ class Backend_controller:
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
                            username = ans.data['user_name'],
-                           password = ans.data['password'],
-                           liked_offers = ans.data['liked_offers'])
+                           password = ans.data['password'])
             # have to delete guest from store
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)

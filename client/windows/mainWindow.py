@@ -117,7 +117,6 @@ class TestApp(MDApp):
         elif store.exists('user_guest'):
             guest = store.get('user_guest')
             guest_id = guest['user_id']
-            guest_liked_offers = guest['liked_offers']
             self.controller.guest_login(guest_id)
         else:
             self.controller.guest_register()
