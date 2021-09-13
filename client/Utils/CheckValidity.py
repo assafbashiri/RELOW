@@ -4,17 +4,23 @@ regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 class CheckValidity:
     def checkValidityName(self,name):
+        if len(name)<=1:
+            return "name is too short", False
         if name.replace(" ", "").isalpha():
-            return "Good Name" , True
+            return "Good Name" ,True
         else:
-            return "Bad Name",False
+            return "Bad Name - name should contain only letters",False
 
     # user name length is 8-20 letters
     def checkValidityUserName(self, user_name):
-        if len(user_name)<8:
-            return "User Name Must contain at least 8 letters", False
+        if len(user_name)<4:
+            return "User Name Must contain at least 4 letters", False
         if len(user_name)>20:
             return "User Name Must contain maximum of 20 letters", False
+        if not user_name[0].isalpha():
+            return "User Name Should Start With letter"
+        if ' ' in user_name:
+            return "User Name Shouldnt contain any spaces"
         #add an regex to validate that the user name contain only letters and numbers
         else:
             return "Good User Name", True
