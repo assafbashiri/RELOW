@@ -7,7 +7,7 @@ class UsersDAO:
         self._conn.execute(
             """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, is_logged, active) VALUES (?,?,?,?,?,?,?,?,?,?)""",
             [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
-             userDTO.birth_date, None, userDTO.is_logged, userDTO.active])
+             userDTO.birth_date, userDTO.gender.value, userDTO.is_logged, userDTO.active])
         self._conn.commit()
         print("in insert in UserDAO step 2")
 

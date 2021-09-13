@@ -61,14 +61,15 @@ class UserController:
         guest = self.usersDictionary[guest_id]
         guest.log_in()
         self.users_dao.log_in(guest_id)
-        return {'liked_offers': guest.get_liked_offers(), 'user': guest}
+        return {'user': guest}
 
     def merge_register(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender):
         if gender not in Gender._value2member_map_:
             raise Exception("bad gender")
         gender_to_add = Gender(gender)
         self.check.check_register(email, user_name, self.usersDictionary)
-        liked_offers = self.usersDictionary[user_id].get_liked_offers()
+        liked_offers = self.usersDictionary[user_id].liked_offers
+        # liked_offers = self.usersDictionary[user_id].get_liked_offers()
         user = User(user_id, first_name, last_name, user_name, email, password, birth_date, gender_to_add)
         user.set_liked_offers(liked_offers)
         userDTO = UserDTO(user)

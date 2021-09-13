@@ -45,8 +45,7 @@ class UserService():
 
         self.liked_offers = []
         for offer in liked_offers:
-            offer_service = self.build_offer(offer)
-            self.liked_offers.append(offer_service)
+            self.liked_offers.append(offer['offer_id'])
 
         self.active_sale_offers = []
         for offer in active_sale_offers:

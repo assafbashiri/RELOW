@@ -37,23 +37,28 @@ class UserService():
         self.card_type = business_user.get_card_type()
 
         self.history_buy_offers = []
-        for offer in business_user.get_history_buy_offers():
+        for index in business_user.history_buy_offers:
+            offer = business_user.history_buy_offers[index]
             self.history_buy_offers.append(vars(OfferService(offer)))
 
         self.history_sell_offers = []
-        for offer in business_user.get_history_sell_offers():
+        for index in business_user.history_sale_offers:
+            offer = business_user.history_sale_offers[index]
             self.history_sell_offers.append(vars(OfferService(offer)))
 
         self.liked_offers = []
-        for offer in business_user.get_liked_offers():
+        for index in business_user.liked_offers:
+            offer = business_user.liked_offers[index]
             self.liked_offers.append(vars(OfferService(offer)))
 
         self.active_sell_offers = []
-        for offer in business_user.get_active_sale_offers():
+        for index in business_user.active_sale_offers:
+            offer = business_user.active_sale_offers[index]
             self.active_sell_offers.append(vars(OfferService(offer)))
 
         self.active_buy_offers = []
-        for offer in business_user.get_active_buy_offers():
+        for index in business_user.active_buy_offers:
+            offer = business_user.active_buy_offers[index]
             self.active_buy_offers.append(vars(OfferService(offer)))
 
     # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
