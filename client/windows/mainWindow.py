@@ -49,10 +49,10 @@ class MENUScreen(Screen):
 
 
 class Manager(ScreenManager):
-    screen_main = ObjectProperty(None)
-    screen_account = ObjectProperty(None)
-    screen_connect = ObjectProperty(None)
-    screen_search = ObjectProperty(None)
+    # def __init__(self, **kwargs):
+    #     self.name = 'home'
+    #     super(Manager, self).__init__(**kwargs)
+    #     self.add_widget(ADDOFFERScreen)
     def back_to_main(self):
         self.current = "menu_screen"
 
@@ -61,8 +61,10 @@ class Manager(ScreenManager):
 
 
 
+
 class Side_box(BoxLayout):
     pass
+
 class Category_box(BoxLayout):
     pass
 class Sub_Category_box(BoxLayout):
@@ -105,11 +107,6 @@ class TestApp(MDApp):
         b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
         a = self.root.current_screen.ids.menu_box.ids.recycle1
         q = self.root.current_screen
-        f = self.root.current_screen.ids
-        d = self.root.current_screen.ids.menu_box.ids.recycle1
-        dd = self.root.current_screen.ids.menu_box.ids.recycle1.data
-        # dd = d.children
-        c = 7
 
     def on_stop(self):
         print('fuck we stoped')
@@ -120,19 +117,21 @@ class TestApp(MDApp):
     def check_connection(self):
         store = self.controller.store
         if store.exists('user'):
-            user = store['user']['user_info']
-            username = user['user_name']
+            user = store.get('user')
+            username = user['username']
             password = user['password']
             self.controller.login(username, password)
+            a = 8
             print("welcome back")
         elif store.exists('user_guest'):
-            guest = store['user_guest']['user_info']
+            guest = store.get('user_guest')
             guest_id = guest['user_id']
-            # guest_liked_offers = guest['liked_offers']
+            guest_liked_offers = guest['liked_offers']
             self.controller.guest_login(guest_id)
         else:
             self.controller.guest_register()
             self.controller.guest_login(self.controller.user_service.user_id)
+
 
 
 

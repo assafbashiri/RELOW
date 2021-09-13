@@ -49,7 +49,7 @@ class UserController:
         return self
 
     def guest_register(self):
-        user = User(self.user_id, None, None, None, None, None, None, None)
+        user = User(self.user_id, None, None, None, None, None, None, Gender.male)
         userDTO = UserDTO(user)
         self.usersDictionary[user.user_id] = user
         user.log_in()  # check this line
