@@ -250,7 +250,7 @@ class Backend_controller:
         self.req_answers.add_request(remove_liked_offer_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
-            self.user_service.liked_offers.append(offer_id)
+            self.user_service.liked_offers.remove(offer_id)
         return ans
 
     def add_active_buy_offer(self, offer_id, quantity, step, color, size):
@@ -390,16 +390,16 @@ class Backend_controller:
             print("bad search")
         return offers
 
-    def get_offers_by_status(self, status):
-        offers = []
-        req = {'op': 50, 'status': status}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        if ans.res is True:
-            offers = self.build_offers_list(ans.data)
-        else:
-            print("bad search")
-        return offers
+    # def get_offers_by_status(self, status):
+    #     offers = []
+    #     req = {'op': 50, 'status': status}
+    #     self.req_answers.add_request(req)
+    #     ans = self.req_answers.get_answer()
+    #     if ans.res is True:
+    #         offers = self.build_offers_list(ans.data)
+    #     else:
+    #         print("bad search")
+    #     return offers
 
     def get_hot_deals(self):
         offers = []
@@ -434,25 +434,25 @@ class Backend_controller:
             print("bad search")
         return offers
 
-    def get_history_buy_offer(self, offer_id):
-        req = {'op': 15, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        if ans.res is True:
-            offer = self.build_offer(ans.data)
-        else:
-            print("bad search")
-        return offer
-
-    def get_history_sell_offer(self, offer_id):
-        req = {'op': 16, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        if ans.res is True:
-            offer = self.build_offer(ans.data)
-        else:
-            print("bad search")
-        return offer
+    # def get_history_buy_offer(self, offer_id):
+    #     req = {'op': 15, 'offer_id': offer_id}
+    #     self.req_answers.add_request(req)
+    #     ans = self.req_answers.get_answer()
+    #     if ans.res is True:
+    #         offer = self.build_offer(ans.data)
+    #     else:
+    #         print("bad search")
+    #     return offer
+    #
+    # def get_history_sell_offer(self, offer_id):
+    #     req = {'op': 16, 'offer_id': offer_id}
+    #     self.req_answers.add_request(req)
+    #     ans = self.req_answers.get_answer()
+    #     if ans.res is True:
+    #         offer = self.build_offer(ans.data)
+    #     else:
+    #         print("bad search")
+    #     return offer
 
     def get_all_active_buy_offers(self):
         offers = []
@@ -476,35 +476,35 @@ class Backend_controller:
             print("bad search")
         return offers
 
-    def get_active_buy_offer(self, offer_id):
-        req = {'op': 19, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        if ans.res is True:
-            offer = self.build_offer(ans.data)
-        else:
-            print("bad search")
-        return offer
-
-    def get_active_sell_offer(self, offer_id):
-        req = {'op': 20, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        if ans.res is True:
-            offer = self.build_offer(ans.data)
-        else:
-            print("bad search")
-        return offer
-
-    def get_liked_offer(self, offer_id):
-        req = {'op': 21, 'offer_id': offer_id}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        if ans.res is True:
-            offer = self.build_offer(ans.data)
-        else:
-            print("bad search")
-        return offer
+    # def get_active_buy_offer(self, offer_id):
+    #     req = {'op': 19, 'offer_id': offer_id}
+    #     self.req_answers.add_request(req)
+    #     ans = self.req_answers.get_answer()
+    #     if ans.res is True:
+    #         offer = self.build_offer(ans.data)
+    #     else:
+    #         print("bad search")
+    #     return offer
+    #
+    # def get_active_sell_offer(self, offer_id):
+    #     req = {'op': 20, 'offer_id': offer_id}
+    #     self.req_answers.add_request(req)
+    #     ans = self.req_answers.get_answer()
+    #     if ans.res is True:
+    #         offer = self.build_offer(ans.data)
+    #     else:
+    #         print("bad search")
+    #     return offer
+    #
+    # def get_liked_offer(self, offer_id):
+    #     req = {'op': 21, 'offer_id': offer_id}
+    #     self.req_answers.add_request(req)
+    #     ans = self.req_answers.get_answer()
+    #     if ans.res is True:
+    #         offer = self.build_offer(ans.data)
+    #     else:
+    #         print("bad search")
+    #     return offer
 
     def get_all_liked_offers(self):
         offers = []
