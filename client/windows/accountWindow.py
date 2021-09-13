@@ -5,7 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
-from kivymd.uix.picker import MDDatePicker
+from kivymd.uix.pickers import MDDatePicker
 from kivymd.uix.textfield import MDTextField
 from windows.SideBar import SideBar
 from datetime import datetime
@@ -13,7 +13,7 @@ from kivymd.toast import toast
 
 from windows.offers_list import Offers_Screen
 
-from client.Utils.CheckValidity import CheckValidity
+from Utils.CheckValidity import CheckValidity
 
 
 class Category_box(BoxLayout):
