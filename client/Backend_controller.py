@@ -49,42 +49,31 @@ class Backend_controller:
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
-            self.store.put("user_guest",user_id = 'bolo' , liked_offers=ans.data['liked_offers'])
+            self.store.put("user_guest", user_id = ans.data['user_id'], liked_offers=ans.data['liked_offers'])
             self.user_service = UserService(ans.data['user_id'], None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
             self.guest = True
 
 
             # we removed the user_info dict, and we add element to user_guest insted- coplete tommorow
 
-
     def guest_login(self, guest_id):
         req = {'op': 79, 'guest_id': guest_id}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
-            user = self.store['user_guest']
-            user_info = user['user_info']
-            user_info['liked_offers'] = ans.data['liked_offers']
+            user = self.store.get('user_guest')
+            user['liked_offers'] = ans.data['liked_offers']
             liked_offers = ans.data['liked_offers']
             self.user_service = UserService(guest_id, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],liked_offers,[],[])
             self.guest = True
-            # self.store.put('user_guest', user_info=ans.data['liked_offers'])
-            a = self.store['user_guest']
-            b = a['user_info']
-            c = b['liked_offers']
-            d = 9
-            st = JsonStore('hello.json')
-            st['user_guest']['user_info']['liked_offers'] = 'bolo'#ans.data['liked_offers']
-            # self.store.get('user_guest').put('user_info', liked_offers='bolo')
-
+            self.store.put('user_guest', user_id= guest_id, liked_offers = liked_offers)
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
         store = JsonStore('hello.json')
         if store.exists('user_guest'):
             user = store.get('user_guest')
-            user_info = user['user_info']
             register_req = {
-                'op': 80, 'user_id': user_info['user_id'], 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
+                'op': 80, 'user_id': user['user_id'], 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
                 'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender
             }
         #     active = self.store['user']['user_info']['active']
@@ -104,7 +93,12 @@ class Backend_controller:
         # req_answers
         ans = self.req_answers.get_answer()
         if ans.res is True:
-            self.store.put("user", user_info=ans.data)
+            if store.exists('user_guest'):
+                self.store.delete('user_guest')
+            self.store.put("user", user_id= ans.data['user_id'],
+                           username = ans.data['user_name'],
+                           password = ans.data['password'],
+                           liked_offers = ans.data['liked_offers'])
             # have to delete guest from store
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
@@ -124,10 +118,10 @@ class Backend_controller:
         return ans
 
     def register_unregister_json(self, flag):
-        user = self.store['user']
-        user_info = user['user_info']
-        user_info['active'] = flag
-        self.store['user'] = user
+        pass
+        # user = self.store['user']
+        # user_info['active'] = flag
+        # self.store['user'] = user
 
     def login(self, user_name, password):
         # is_logged = self.store['user']['user_info']['is_logged']
@@ -145,11 +139,11 @@ class Backend_controller:
         print(ans.message)
         return ans
 
-    def login_logout_json(self, flag):
-        user = self.store['user']
-        user_info = user['user_info']
-        user_info['is_logged'] = flag
-        self.store['user'] = user
+    # def login_logout_json(self, flag):
+    #     user = self.store['user']
+    #     user_info = user['user_info']
+    #     user_info['is_logged'] = flag
+    #     self.store['user'] = user
 
     def logout(self):
         # is_logged = self.store['user']['user_info']['is_logged']
@@ -175,11 +169,7 @@ class Backend_controller:
             toast(ex)
         changed_user = ans.data
         if ans.res is True:
-            a=9
-            # user = self.store['user_guest']
-            # user['user_info'] = ans.data
-            # self.store['user_guest']['user_info'] = ans.data
-            #self.store['user_guest'] = user
+            self.store.put('user', user_id = ans.data['user_id'], username = user_name, password = password, liked_offers = ans.data['liked_offers'])
             self.user_service = self.build_user(ans.data)
 
         return ans
