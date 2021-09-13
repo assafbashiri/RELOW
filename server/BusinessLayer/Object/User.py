@@ -236,7 +236,7 @@ class User():
 
     def get_liked_offers(self):
         ans = []
-        ans.extend(self.liked_offers)
+        ans.extend(self.liked_offers.values())
         return ans
 
     def get_active_sale_offers(self):

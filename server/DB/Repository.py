@@ -34,14 +34,14 @@ class repository():
                 street TEXT,
                 zip_code INTEGER,
                 floor INTEGER,
-                apt TEXT,
+                apt INTEGER,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS users_payment (
                 user_id	INTEGER NOT NULL UNIQUE,
-                id_number INTEGER  ,
-                card_number TEXT ,
+                id_number INTEGER,
+                card_number TEXT,
                 expire_date DATETIME,
                 cvv INTEGER,
                 card_type TEXT,

@@ -13,6 +13,8 @@ from kivymd.toast import toast
 
 from windows.offers_list import Offers_Screen
 
+from client.Utils.CheckValidity import CheckValidity
+
 
 class Category_box(BoxLayout):
     pass
@@ -119,18 +121,18 @@ class BoxiLayout(BoxLayout):
             if (self.user.zip_code is None):
                 self.ids.zip_code.text = ""
             else:
-                self.ids.zip_code.text = self.user.zip_code
+                self.ids.zip_code.text = str(self.user.zip_code)
 
             if (self.user.floor is None):
                 self.ids.floor.text = ""
             else:
-                self.ids.floor.text = self.user.floor
+                self.ids.floor.text = str(self.user.floor)
 
 
             if (self.user.apartment_number is None):
                 self.ids.apt_number.text = ""
             else:
-                self.ids.apt_number.text = self.user.apartment_number
+                self.ids.apt_number.text = str(self.user.apartment_number)
 
 
             #-----------------------------------------------------------------------------------------------------------
@@ -138,7 +140,7 @@ class BoxiLayout(BoxLayout):
             if (self.user.credit_card_number is None):
                 self.ids.credit_card_number.text = ""
             else:
-                self.ids.credit_card_number.text = self.user.credit_card_number
+                self.ids.credit_card_number.text = str(self.user.credit_card_number)
 
             if (self.user.credit_card_exp_date is None):
                 self.ids.exp_date.text = ""
@@ -148,7 +150,7 @@ class BoxiLayout(BoxLayout):
             if (self.user.cvv is None):
                 self.ids.cvv.text = ""
             else:
-                self.ids.cvv.text = self.user.cvv
+                self.ids.cvv.text = str(self.user.cvv)
 
             if (self.user.card_type is None):
                 self.ids.card_type.text = ""
@@ -158,15 +160,28 @@ class BoxiLayout(BoxLayout):
             if (self.user.id_number is None):
                 self.ids.id_number.text = ""
             else:
-                self.ids.id_number.text = self.user.id_number
-
-
-
+                self.ids.id_number.text = str(self.user.id_number)
 
     def personal(self):
         first_name = self.ids.first_name.text
         last_name = self.ids.last_name.text
         email = self.ids.email.text
+
+        if first_name != "":
+            ans = CheckValidity.checkValidityName(self, first_name)
+            if ans is False:
+                return
+
+        if last_name != "":
+            ans = CheckValidity.checkValidityName(self, last_name)
+            if ans is False:
+                return
+
+        if email != "":
+            ans = CheckValidity.checkValidityEmail(self, email)
+            if ans is False:
+                return
+
         ans = App.get_running_app().controller.update(first_name, last_name, email)
         print(ans.message)
         if ans.res is True:

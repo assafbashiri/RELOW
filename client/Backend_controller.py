@@ -220,14 +220,19 @@ class Backend_controller:
                            'floor': floor, 'apt': apt}
         self.req_answers.add_request(add_address_req)
         ans = self.req_answers.get_answer()
-        return ans
+        if ans.res is True:
+            self.user_service = self.build_user(ans.data)
 
+        return ans
     def add_payment_method(self, credit_card_number, credit_card_exp_date, cvv, card_type, id):
         add_pay_req = {'op': 12, 'credit_card_number': credit_card_number,
                        'expire_date': credit_card_exp_date,
                        'cvv': cvv, 'card_type': card_type, 'id_number': id}
         self.req_answers.add_request(add_pay_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            self.user_service = self.build_user(ans.data)
+
         return ans
 
     # ----------------- offer Window ----------------------------------------
