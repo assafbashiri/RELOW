@@ -8,6 +8,7 @@ from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -148,7 +149,9 @@ class Add_offer_box(BoxLayout):
         self.ids.stepi.add_widget(temp3)
 
     def add_offer(self):
-        list = self.ids.choose.photo_list
+        list = [v for k,v in self.ids.choose.photo_list.items()]
+        # list = self.ids.choose.photo_list.values() #convert dict to list
+
         name = self.ids.product_name.text
         category_name = self.cat_name12
         sub_category_name = self.sub_cat12
@@ -248,13 +251,23 @@ class Add_offer_box(BoxLayout):
 class Sub_Category_box(BoxLayout):
     pass
 
-class choose_photo_layout(BoxLayout):
+class choose_photo_layout(MDBoxLayout):
     def __init__(self, **kwargs):
         super(choose_photo_layout, self).__init__(**kwargs)
-        self.carousel = Carousel()
-        self.add_widget(self.carousel)
+        self.carousel = None
         self.i = 0
-        self.photo_list = []
+        self.photo_list = {}
+
+
+    def remove_photo(self):
+        if self.i == 0:
+            return
+        # self.photo_list.remove(self.carousel.current_slide)
+        del self.photo_list[self.carousel.current_slide]
+        self.carousel.remove_widget(self.carousel.current_slide)
+        self.i -=1
+        if self.i == 0:
+            self.size_hint_y = 0.2
 
     def file_manager_open(self):
         path = '/'  # path to the directory that will be opened in the file manager
@@ -271,10 +284,17 @@ class choose_photo_layout(BoxLayout):
         :type path: str;
         :param path: path to the selected directory or file;
         '''
-        print(path)
-        self.im = Image(source = path)
-        self.carousel.add_widget(self.im,self.i)
-        self.photo_list.insert(self.i, self.im)
+        print('path      '+path)
+        self.size_hint_y = 1.5
+        im = Image(source = path)
+        if self.i == 0:
+            self.carousel = Carousel()
+            self.add_widget(self.carousel)
+        self.carousel.add_widget(im,self.i)
+        with open(path, "rb") as image:
+            f = image.read()
+            image.close()
+        self.photo_list[im] = f
         self.i+=1
         self.manager.exit_manager()
 

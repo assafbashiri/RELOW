@@ -94,7 +94,8 @@ def network(**kwargs):
         message = pickle.dumps(to_send)
         print(message, 'step 2\n')
 
-        ClientSocket.send(message)
+        a = ClientSocket.send(message)
+        b = 9
         # if to_send['op'] == 2:
         #     ClientSocket.close()2169-+
 
@@ -104,10 +105,18 @@ def network(**kwargs):
 
         #     App.get_running_app().stop()
         #     break
-        ans = ClientSocket.recv(4400)
-        print(ans, "step 3")
-        print(type(ans))
-        decoded_ans = Struct(**(pickle.loads(ans)))
+        BUFF_SIZE = 10000  # 4 KiB
+        data = b''
+        while True:
+            part = ClientSocket.recv(BUFF_SIZE)
+            data += part
+            if len(part) < BUFF_SIZE:
+                # either 0 or end of data
+                break
+        print(data, "step 3")
+        print(type(data))
+        a = pickle.loads(data)
+        decoded_ans = Struct(**(pickle.loads(data)))
         if decoded_ans.message == 'EXIT':
 
             ex()

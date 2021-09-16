@@ -35,7 +35,9 @@ class Offers_Screen(RecycleView):
             # for photo in lis:
             #     image = AsyncImage(source = str(photo))
             #     photo_lis.append(image)
-            photo_lis.append(AsyncImage(source='windows/images/a.png'))
+            a =8
+            for photo in lis:
+                photo_lis.append(photo)
             offers_list.append({'offer': [offer],
                                 'photo_lis': photo_lis})
 

@@ -47,6 +47,8 @@
             BoxLayout:
                 orientation: 'horizontal'
                 id:colors
+                size_hint_y: .2
+
                 Button:
                     id:color
                     text: 'add color'
@@ -55,16 +57,13 @@
             MDBoxLayout:
                 orientation: 'horizontal'
                 id: size_box
+                size_hint_y: .2
 
                 Button:
                     id: add_size
                     text: 'add size'
                     on_press: root.add_size_start()
 
-            MDRoundFlatButton:
-                text:"ADD PHOTO"
-                font_size: 12
-                on_press: root.ids.choose.file_manager_open()
 
             MDRoundFlatButton:
                 text:"ADD STEP"
@@ -133,22 +132,29 @@
                     hint_text: "price"
                     icon_right: "account"
 
-        MDBoxLayout:
-            orientation: "vertical"
+            MDRoundFlatButton:
+                text:"ADD PHOTO"
+                font_size: 12
+                on_press: root.ids.choose.file_manager_open()
+
+            choose_photo_layout:
+                id: choose
+                size_hint_y: .2
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                #orientation: "vertical"
+
+            MDRoundFlatButton:
+                text:"REMOVE PHOTO"
+                font_size: 12
+                on_press: root.ids.choose.remove_photo()
+
             MDRoundFlatButton:
                 text:"ADD OFFER"
                 font_size: 12
                 on_press: root.add_offer()
 
-        choose_photo_layout:
-            id: choose
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            size_hint_y:0.3
-            #orientation: "vertical"
-
     Side_box:
         id:side_box
-
 
 <CustomDropDown>
     Button:

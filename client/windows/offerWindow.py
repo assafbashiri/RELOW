@@ -1,4 +1,7 @@
+import io
+
 from kivy.app import App
+from kivy.uix.image import Image, CoreImage
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.carousel import Carousel
@@ -111,7 +114,7 @@ class OfferWindow(Popup):
         self.join.bind(on_press=lambda x: self.register())
         self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.join)
-        self.box.add_widget(self.join_offer)
+        # self.box.add_widget(self.join_offer)
         self.back = Button(text="BACK")
         self.back.bind(on_press=lambda x: self.out())
         self.box.add_widget(self.back)
@@ -124,14 +127,25 @@ class OfferWindow(Popup):
         self.add_widget(self.box)
 
     def show_as_seller(self, photo_lis):
-        print("bolo1")
+        print("as a seller")
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
         self.carousel = Carousel(size_hint_y=6)
         # for photo in photo_lis:
         #     self.carousel.add_widget(photo)
-        image = AsyncImage(source="windows/images/a.png")
-        self.carousel.add_widget(image)
+        for photo in photo_lis:
+            image = photo
+            # f = open("img.jpg", 'rb')
+            #
+            # binary_data = f.read()  # image opened in binary mode
+
+            data = io.BytesIO(image)
+            data.seek(0)
+            img = CoreImage(data, ext="png").texture
+
+            new_img = Image()
+            new_img.texture = img
+            self.carousel.add_widget(new_img)
         self.box.add_widget(self.carousel)
         self.slider = MDSlider()
         self.slider.min = 0
