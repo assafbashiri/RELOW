@@ -284,7 +284,7 @@ class BoxiLayout(BoxLayout):
             }
         ]
         self.drop_down = MDDropdownMenu(
-            caller=self.ids.drop,
+            caller=self.ids.gender,
             items=menu_items,
             width_mult=4,
         )
@@ -292,7 +292,7 @@ class BoxiLayout(BoxLayout):
 
     def menu_callback(self, gender_int, gender_string):
         self.gender = gender_int
-        self.ids.drop.text = gender_string
+        self.ids.gender.text = gender_string
         self.drop_down.dismiss()
 
 

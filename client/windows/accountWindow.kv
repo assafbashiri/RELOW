@@ -42,17 +42,19 @@
             hint_text: "email"
             icon_right: "account"
 
-        MDLabel:
+        TextInput:
             #text: "changed_user_name"
             id:user_name
 
-        MDLabel:
+        TextInput:
             #text : "11/11/22"
             id:birth_date
 
-        MDLabel:
+        MDDropDownItem:
             id: gender
-            #text: 'gender'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: 'Gender'
+            on_release: root.show_dropdown()
     GridLayout:
         id:GL
         size_hint: 1,3

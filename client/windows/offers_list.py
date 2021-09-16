@@ -1,3 +1,6 @@
+import io
+
+from kivy.uix.image import Image, CoreImage
 from kivy.properties import StringProperty, ListProperty, NumericProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
@@ -92,4 +95,12 @@ class Carousel2(Carousel):
 
     def insert(self,  photos):
         for photo in photos:
-            self.add_widget(photo)
+            if photo is not None:
+                image = photo
+                data = io.BytesIO(image)
+                data.seek(0)
+                img = CoreImage(data, ext="png").texture
+
+                new_img = Image()
+                new_img.texture = img
+                self.add_widget(new_img)
