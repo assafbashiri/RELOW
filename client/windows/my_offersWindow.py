@@ -17,6 +17,7 @@ class MY_OFFERS_Screen(Screen):
         self.first_time_good_search = True
 
     def active_buy(self):
+        self.ids.offi.remove_widget(self.mes)
         ans = App.get_running_app().controller.get_all_active_buy_offers()
         # bad search
         if len(ans) == 0:
@@ -40,6 +41,7 @@ class MY_OFFERS_Screen(Screen):
                 self.of.insert_offers(list=ans)
 
     def active_sell(self):
+        self.ids.offi.remove_widget(self.mes)
         ans = App.get_running_app().controller.get_all_active_sell_offers()
         # bad search
         if len(ans) == 0:
@@ -63,6 +65,7 @@ class MY_OFFERS_Screen(Screen):
                 self.of.insert_offers(list=ans)
 
     def like_offers(self):
+        self.ids.offi.remove_widget(self.mes)
         ans = App.get_running_app().controller.get_all_liked_offers()
         # bad search
         if len(ans) == 0:
@@ -84,7 +87,10 @@ class MY_OFFERS_Screen(Screen):
                 self.first_time_good_search = False
             else:
                 self.of.insert_offers(list=ans)
+
+
     def history_buy(self):
+        self.ids.offi.remove_widget(self.mes)
         ans = App.get_running_app().controller.get_all_history_buy_offers()
         # bad search
         if len(ans) == 0:
@@ -108,6 +114,7 @@ class MY_OFFERS_Screen(Screen):
                 self.of.insert_offers(list=ans)
 
     def history_sell(self):
+        self.ids.offi.remove_widget(self.mes)
         ans = App.get_running_app().controller.get_all_history_sell_offers()
         # bad search
         if len(ans) == 0:

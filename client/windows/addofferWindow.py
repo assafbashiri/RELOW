@@ -45,6 +45,11 @@ class ADDOFFERScreen(Screen):
         self.name = 'home'
         super(ADDOFFERScreen, self).__init__(**kwargs)
 
+    def update_offer(self, offer):
+        print('TODOO')
+        #we recieved an offer and we need to insert our offer values to the fileds in this window
+        # we need to change the button from add offer to update offer and at the end to change it back
+
 class Category_box(BoxLayout):
     pass
 
@@ -93,19 +98,6 @@ class Add_offer_box(BoxLayout):
         text = self.ids.sizes.text
 
         self.ids.add_size.bind(on_press= lambda tex: self.add_size(tex))
-
-    # def size_drop(self, size):
-    #     if len(self.size_list) == 0:
-    #         self.ids.size_box.add_widget(self.size_dropdown)
-    #         self.size_dropdown.add_widget((MDLabel(text= 'my sizes')))
-    #
-    #     btn = Button(text='%s' %size, size_hint=(None, None), height=40, on_press= lambda btn: self.remove_size(btn))
-    #     self.size_list.append(size)
-    #     self.size_dropdown.add_widget(btn)
-    #     # self.size_dropdown.open(self.size_dropdown)
-    #     self.ids.sizes.text = ''
-
-
 
     def add_size(self, instance):
         text = self.ids.sizes.text
@@ -267,6 +259,7 @@ class choose_photo_layout(MDBoxLayout):
         self.carousel.remove_widget(self.carousel.current_slide)
         self.i -=1
         if self.i == 0:
+            self.remove_widget(self.carousel)
             self.size_hint_y = 0.2
 
     def file_manager_open(self):

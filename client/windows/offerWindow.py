@@ -433,6 +433,14 @@ class OfferWindow(Popup):
                                         self.size.text)
 
     def update_offer(self):
+        self.dismiss()
+        App.get_running_app().root.current = 'add_offer_screen'
+        c = App.get_running_app().root
+        e = App.get_running_app().root.screens
+        f = App.get_running_app().root.screens[4]
+        f = App.get_running_app().root.screens[4].update_offer(self.offer)
+
+        d = 5
         print('bolo- need to update offer for seller')
 
 
