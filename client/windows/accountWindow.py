@@ -1,3 +1,5 @@
+
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -5,11 +7,12 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
 from Service.Object.UserService import UserService
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.textfield import MDTextField
 from windows.SideBar import SideBar
 from datetime import datetime
 from kivymd.toast import toast
+import csv
 
 from windows.offers_list import Offers_Screen
 
@@ -129,10 +132,10 @@ class BoxiLayout(BoxLayout):
                 self.ids.floor.text = str(self.user.floor)
 
 
-            if (self.user.apartment_number is None):
-                self.ids.apt_number.text = ""
-            else:
-                self.ids.apt_number.text = str(self.user.apartment_number)
+            # if (self.user.apartment_number is None):
+            #     self.ids.apt_number.text = ""
+            # else:
+            #     self.ids.apt_number.text = str(self.user.apartment_number)
 
 
             #-----------------------------------------------------------------------------------------------------------
@@ -294,6 +297,87 @@ class BoxiLayout(BoxLayout):
         self.gender = gender_int
         self.ids.gender.text = gender_string
         self.drop_down.dismiss()
+
+
+    def show_dropdown_address(self):
+        addresses={}
+        addresses = self.get_adress_list()
+        menu_items = []
+        for address in addresses:
+            menu_items.append(
+                {"text": address,
+                 "viewclass": "OneLineListItem",
+                 "on_release": lambda x=addresses[address], y=address: self.show_dropdown_streets(x, y),
+                 }
+            )
+
+        self.drop_down_cities = MDDropdownMenu(
+            caller=self.ids.drop_address,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_cities.open()
+
+    def show_dropdown_streets(self, streets, city):
+
+        menu_items = []
+        for street in streets:
+            menu_items.append(
+                {"text": street,
+                 "viewclass": "OneLineListItem",
+                 # here we have to open page or the offers of this sub categories ya sharmutut
+                 "on_release": lambda x=street, y=city: self.on_save_address(x, y) }
+            )
+        self.drop_down_streets = MDDropdownMenu(
+            caller=self.ids.drop_address,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_streets.open()
+        self.drop_down_cities.dismiss()
+
+    def on_save_address(self, street, city):
+        self.city = city
+        self.street = street
+        self.ids.city.text = city
+        self.ids.street.text = street
+        self.drop_down_streets.dismiss()
+
+    def get_adress_list(self):
+        rows={}
+        # with open('city-street.csv', 'rb') as csvfile:
+        #     reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+            #-------------------------------------------------------
+
+        with open('city-street.csv', 'r',encoding="utf8") as csv_file:
+            csv_reader = csv.reader(csv_file)
+            city_dictionary = {}
+            # with open('city-street.csv', 'r') as csv_file:
+            #     csv_reader = csv.reader(csv_file)
+            #
+            #     for line in csv_reader:
+            #         a = 5
+            #         # if line[0] == '9000‭':
+            #         print("\n  עיר:  " + line[1])
+            #         print(' רחוב: ' + line[2])
+            for line in csv_reader:
+
+                city = line[1]
+                city = ','.join(city)
+                street = line[2]
+                if city in city_dictionary.keys():
+                    city_dictionary[city].append(street)
+                else:
+                    city_dictionary[city] = []
+
+
+
+            return city_dictionary
+
+
+
+
+
 
 
 

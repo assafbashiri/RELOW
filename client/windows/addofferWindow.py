@@ -34,7 +34,7 @@ from windows.SideBar import SideBar
 
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 
 
 from Service.Object.StepService import StepService
