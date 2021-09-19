@@ -1,11 +1,11 @@
-<ADDOFFERScreen>
-    id: add_offer
-    name: 'add_offer_screen'
-    Add_offer_box:
+<UPDATEOFFERScreen>
+    id: update_offer
+    name: 'update_offer'
+    Update_offer_box:
         id: add_offer_box
 
 
-<Add_offer_box>
+<Update_offer_box>
     #orientation: "horizontal"
     id: add_offer_box
     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -153,9 +153,10 @@
 
             MDRoundFlatButton:
                 id: add_offer_button
-                text:"ADD OFFER"
+                text:"UPDATE OFFER"
                 font_size: 12
-                on_press: root.add_offer()
+                on_press: root.final_update_offer()
 
     Side_box:
         id:side_box
+

@@ -37,7 +37,7 @@ class Handler:
                          12: self.add_payment_method,
                          13: self.get_all_history_buy_offers,
                          14: self.get_all_history_sell_offers,
-                         # 15: self.get_history_buy_offer,
+                         15: self.update_offer,
                          # 16: self.get_history_sell_offer,
                          17: self.get_all_active_buy_offers,
                          18: self.get_all_active_sell_offers,
@@ -169,7 +169,7 @@ class Handler:
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
             self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'],
-                                                      argument['color'], argument['size'])
+                                                      argument['color'], argument['size'], argument['address'])
             return Response(OfferService(offer), "Joined To Offer Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -266,6 +266,53 @@ class Handler:
             return Response(None, str(e), False)
 
     # -------------------------------------------------UPDATE----------------------------------------------------------------
+    def update_offer(self, argument):
+        exceptions = []
+        try:
+            self.user_controller.update_end_date(argument['offer_id'], argument['end_date'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_product_name(argument['offer_id'], argument['name'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_product_company(argument['offer_id'], argument['company'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_product_colors(argument['offer_id'], argument['colors'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_sizes(argument['offer_id'], argument['sizes'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_product_description(argument['offer_id'], argument['description'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+
+        for step in argument['steps']:
+            try:
+                self.category_controller.update_step_for_offer(argument['offer_id'], argument['step_number'],
+                                                               argument['quantity'], argument['price'])
+            except Exception as e:
+                exceptions.append(str(e))
+
+        try:
+            offer = self.category_controller.update_sub_category_for_offer(argument['offer_id'],
+                                            argument['category_name'],argument['sub_category_name'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        return Response(vars(OfferService(offer)), exceptions, True)
 
     def update(self, argument):
         exceptions = []
