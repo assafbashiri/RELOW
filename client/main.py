@@ -26,13 +26,10 @@ class OurClient(protocol.Protocol):
 
     def dataReceived(self, data):
         to_send = req_answers.get_request()
-        print(to_send, 'step 11111\n')
         message = pickle.dumps(to_send)
-        print(message, 'step 2\n')
+        print(message.message, 'step 2\n')
 
         self.transport.write.send(message)
-        print("ans", "step 3")
-        print(type("ans"))
         decoded_ans = Struct(**(pickle.loads("ans")))
         if decoded_ans.message == 'EXIT':
             ex()
@@ -90,9 +87,7 @@ def network(**kwargs):
 
     while True:
         to_send = req_answers.get_request()
-        print(to_send, 'step 11111\n')
         message = pickle.dumps(to_send)
-        print(message, 'step 2\n')
 
         a = ClientSocket.send(message)
         b = 9
@@ -113,10 +108,8 @@ def network(**kwargs):
             if len(part) < BUFF_SIZE:
                 # either 0 or end of data
                 break
-        print(data, "step 3")
-        print(type(data))
-        a = pickle.loads(data)
         decoded_ans = Struct(**(pickle.loads(data)))
+        print(decoded_ans.message)
         if decoded_ans.message == 'EXIT':
 
             ex()
