@@ -157,6 +157,22 @@ class Backend_controller:
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
+    #(name, company, colors, sizes, description, list, category_name,
+                              #sub_category_name, steps, end_date)
+    def update_offer(self, offer_id,name, company, colors, sizes, description, category_name,
+                              sub_category_name, steps, end_date):
+        update_req = {'op': 15,'offer_id':offer_id,'name': name, 'company': company, 'colors': colors, 'sizes':sizes, 'description':description,
+                       'category_name':category_name, 'sub_category_name':sub_category_name,
+                      'steps':steps, 'end_date':end_date}
+        self.req_answers.add_request(update_req)
+        ans = self.req_answers.get_answer()
+        for ex in ans.message:
+            toast(ex)
+        if ans.res is True:
+            return ans
+
+        return ans
+
 
     def update(self, first_name, last_name, email):
         update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email}
@@ -250,8 +266,19 @@ class Backend_controller:
             self.user_service.liked_offers.remove(offer_id)
         return ans
 
-    def add_active_buy_offer(self, offer_id, quantity, step, color, size):
-        add_active_buy_offer_req = {'op': 23, 'offer_id': offer_id, 'quantity': quantity, 'step': step, 'color': color, 'size': size}
+    def add_active_buy_offer(self, offer_id, quantity, step, color, size, address):
+        if address is None:
+            address = self.user_service.get_address()
+            if address.res is False:
+                toast(address.message)
+                return address
+        add_active_buy_offer_req = {'op': 23,
+                                    'offer_id': offer_id,
+                                    'quantity': quantity,
+                                    'step': step,
+                                    'color': color,
+                                    'size': size,
+                                    'address':address}
         self.req_answers.add_request(add_active_buy_offer_req)
         ans = self.req_answers.get_answer()
         return ans

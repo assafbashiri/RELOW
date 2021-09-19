@@ -40,12 +40,24 @@ from kivymd.uix.picker import MDDatePicker
 from Service.Object.StepService import StepService
 
 
-class ADDOFFERScreen(Screen):
+class UPDATEOFFERScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'home'
-        super(ADDOFFERScreen, self).__init__(**kwargs)
+        super(UPDATEOFFERScreen, self).__init__(**kwargs)
 #---------------------------------------------------
+    def update_offer(self, offer):
+        print('TODOO')
 
+        #self.init_text_fields_with_offer_details(offer)
+        add_offer_box = self.ids.add_offer_box
+        #add_offer_box.init_fields()
+        add_offer_box.init_text_fields_with_offer_details(offer)
+        add_offer_button= self.ids.add_offer_box.ids.add_offer_button
+
+
+        b=8
+        #we recieved an offer and we need to insert our offer values to the fileds in this window
+        # we need to change the button from add offer to update offer and at the end to change it back
 
 
 
@@ -54,14 +66,11 @@ class Category_box(BoxLayout):
     pass
 MIN_DIFFERNCE_LIMIT = 10
 MIN_DIFFERNCE_PRICE = 100
-class Add_offer_box(BoxLayout):
+class Update_offer_box(BoxLayout):
     def __init__(self, **kwargs):
-        super(Add_offer_box, self).__init__(**kwargs)
+        super(Update_offer_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
-        # self.choose = Color_choose()
-        # self.color_box = BoxLayout(orientation= 'horizontal')
-        # self.add_widget(self.color_box)
         self.gender = 0
         self.num_of_added_step = 0
         self.next_step = []
@@ -85,6 +94,50 @@ class Add_offer_box(BoxLayout):
 
 
 
+    def init_text_fields_with_offer_details(self, offer):
+        self.offer = offer
+        self.ids.product_name.text = offer.product.name
+        self.ids.company.text = offer.product.company
+        self.ids.description.text = offer.product.description
+        self.ids.end_date.text = str(offer.end_date)
+        # self.ids.end_date.text = ""
+        # self.ids.size_box.text = ""
+        #self.size_input.text = ""
+
+
+        self.ids.limit1.text = str(offer.steps[1].limit)
+        self.ids.limit2.text = str(offer.steps[2].limit)
+        self.ids.limit3.text = str(offer.steps[3].limit)
+        self.ids.price1.text = str(offer.steps[1].price)
+        self.ids.price2.text = str(offer.steps[2].price)
+        self.ids.price3.text = str(offer.steps[3].price)
+        #cat_name = App.get_running_app().controller.get_category_by_id(offer.category_id).name
+        self.ids.drop_category.text = 'cat_name'
+        self.size_dropdown = DropDown()
+        self.add_size_start()
+        for size in offer.product.sizes:
+            self.ids.sizes.text = size
+            self.add_size(size)
+            self.ids.sizes.text = ""
+
+        # for color in offer.product.colors:
+        #     self.ids.sizes.text = size
+        #     self.add_color(color)
+        #     self.ids.sizes.text = ""
+
+
+
+        # for limit in self.limit:
+        #     limit.text = ""
+        #
+        # for price in self.price:
+        #     price.text = ""
+
+    def init_fields(self):
+        self.next_step = []
+        self.price = []
+        self.limit = []
+        self.color_list = []
     def add_color_start(self):
         self.ids.colors.add_widget(self.color_mainbutton)
         self.ids.colors.remove_widget(self.ids.color)
@@ -143,11 +196,12 @@ class Add_offer_box(BoxLayout):
         self.price.append(temp3)
         self.ids.stepi.add_widget(temp3)
 
-    def add_offer(self):
-        list = [v for k,v in self.ids.choose.photo_list.items()]
-        # list = self.ids.choose.photo_list.values() #convert dict to list
+    def final_update_offer(self):
+
         if not self.check_steps_validity():
             return
+        list = [v for k, v in self.ids.choose.photo_list.items()]
+        # list = self.ids.choose.photo_list.values() #convert dict to list
         name = self.ids.product_name.text
         category_name = self.chosen_cat_name
         sub_category_name = self.sub_cat12
@@ -164,7 +218,7 @@ class Add_offer_box(BoxLayout):
         if self.num_of_added_step > 0:
             for i in range(0, self.num_of_added_step):
                 steps.append(vars(StepService(0, self.price[i].text, i+4, self.limit[i].text)))
-        ans = App.get_running_app().controller.add_active_sell_offer(name, company, colors, sizes, description, list, category_name,
+        ans = App.get_running_app().controller.update_offer(self.offer.offer_id,name, company, colors, sizes, description, category_name,
                               sub_category_name, steps, end_date)
 
         toast(ans.message)
@@ -287,13 +341,14 @@ class Add_offer_box(BoxLayout):
         self.drop_down_category.open()
 
     def build_string_from_list(self, list):
-        answer = list[0]
-        i = 0
-        for item in list:
-            if i != 0:
-                answer = answer + ", " + item
-            i = i + 1
-        return answer
+        if len(list)>0:
+            answer = list[0]
+            i = 0
+            for item in list:
+                if i != 0:
+                    answer = answer + ", " + item
+                i = i + 1
+            return answer
 
     def show_dropdown_sub_category(self, sub_categories_names, cat_name):
         self.chosen_cat_name = cat_name
@@ -417,3 +472,19 @@ dropdown = CustomDropDown()
 mainbutton = Button(text='Hello', size_hint=(None, None))
 mainbutton.bind(on_release=dropdown.open)
 dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
+
+# <CustomDropDown>
+#     Button:
+#         text: 'My first Item'
+#         size_hint_y: None
+#         height: 44
+#         on_release: root.select('item1')
+#     Label:
+#         text: 'Unselectable item'
+#         size_hint_y: None
+#         height: 44
+#     Button:
+#         text: 'My second Item'
+#         size_hint_y: None
+#         height: 44
+#         on_release: root.select('item2')
