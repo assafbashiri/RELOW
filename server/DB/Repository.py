@@ -119,6 +119,7 @@ class repository():
                 step INTEGER NOT NULL,
                 color TEXT,
                 size TEXT,
+                address TEXT,
                 FOREIGN KEY(offer_id) REFERENCES active_offers(offer_id) ON DELETE CASCADE
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
             );

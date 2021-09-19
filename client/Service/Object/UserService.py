@@ -1,6 +1,5 @@
 from Service.Object.OfferService import OfferService
-
-
+from Response import Response
 class UserService():
     # CLIENT
     def __init__(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
@@ -101,6 +100,18 @@ class UserService():
 
     def get_floor(self):
         return self.floor
+
+    def get_address(self):
+        output = ''
+        if self.city is None:
+            return Response(False,'you need to add address first',False)
+        if self.street is None:
+            return Response(False,'you need to add address first',False)
+        if self.floor is None:
+            return Response(False,'you need to add address first',False)
+        if self.apartment_number is None:
+            return Response(False,'you need to add address first',False)
+        return Response(self.city+' '+self.street+' '+self.floor+''+self.apartment_number,'you need to add address first',True)
 
 # -------------------------------------------USER PAYMENT-----------------------------------------------------------
 

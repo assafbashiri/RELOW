@@ -27,60 +27,65 @@ class SEARCHScreen(Screen):
         self.name = 'search_screen'
         super(SEARCHScreen, self).__init__(**kwargs)
         self.mes = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        self.of = Offers_Screen()
+        self.of = Offers_Screen(size_hint_y= 2)
         self.first_time_bad_search = True
         self.first_time_good_search = True
+        self.lab = MDLabel(text="")
 
     def search_by_name(self):
-        prod_name = self.ids.name.text
+        self.ids.search_box.ids.helper.remove_widget(self.lab)
+        self.ids.search_box.ids.helper.remove_widget(self.of)
+        prod_name = self.ids.search_box.ids.name.text
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
         # bad search
         if len(ans) == 0:
             self.of.insert_offers(list=[])
-            if self.first_time_bad_search is True:
-                self.lab = MDLabel(text="cant find offer")
-                self.mes.add_widget(self.lab)
-                self.ids.zibi.add_widget(self.mes)
-                self.first_time_bad_search = False
-            else:
-                self.lab.text = "cant find offer.."
+            # if self.first_time_bad_search is True:
+            self.lab.text = "cant find offer"
+            # self.mes.add_widget(self.lab)
+            self.ids.search_box.ids.helper.add_widget(self.lab)
+                # self.first_time_bad_search = False
+            # else:
+            #     self.lab.text = "cant find offer.."
         # good search
         else:
-            if self.first_time_bad_search is False:
-                self.lab.text = ""
-            if self.first_time_good_search is True:
-                self.of.insert_offers(list=ans)
-                self.ids.zibi.add_widget(self.of)
-                self.first_time_good_search = False
-            else:
-                self.of.insert_offers(list=ans)
+            # if self.first_time_bad_search is False:
+
+            # if self.first_time_good_search is True:
+            self.of.insert_offers(list=ans)
+            self.ids.search_box.ids.helper.add_widget(self.of)
+            # self.first_time_good_search = False
+            # else:
+            #     self.of.insert_offers(list=ans)
 
 
     def search_by_sub_category(self):
-        sub_cat_name = self.ids.drop_sub_category.text
+        self.ids.search_box.ids.helper.remove_widget(self.lab)
+        self.ids.search_box.ids.helper.remove_widget(self.of)
+        sub_cat_name = self.ids.search_box.ids.drop_sub_category.text
         # cat_name = self.ids.category.text
         cat_name = self.category_tom
         ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
 
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
-            if self.first_time_bad_search is True:
-                self.lab = MDLabel(text=sub_cat_name+" has 0 offers")
-                self.mes.add_widget(self.lab)
-                self.ids.zibi.add_widget(self.mes)
-                self.first_time_bad_search = False
-            else:
-                self.lab.text = sub_cat_name+" has 0 offers.."
+            # self.of.insert_offers(list=[])
+            # if self.first_time_bad_search is True:
+            self.lab.text = sub_cat_name+" has 0 offers"
+                # self.mes.add_widget(self.lab)
+            self.ids.search_box.ids.helper.add_widget(self.lab)
+            # self.first_time_bad_search = False
+            # else:
+            #     self.lab.text = sub_cat_name+" has 0 offers.."
         # good search
         else:
-            if self.first_time_bad_search is False:
-                self.lab.text = ""
-            if self.first_time_good_search is True:
-                self.of.insert_offers(list=ans)
-                self.ids.zibi.add_widget(self.of)
-                self.first_time_good_search = False
-            else:
-                self.of.insert_offers(list=ans)
+            # if self.first_time_bad_search is False:
+            #     self.lab.text = ""
+            # if self.first_time_good_search is True:
+            self.of.insert_offers(list=ans)
+            self.ids.search_box.ids.helper.add_widget(self.of)
+                # self.first_time_good_search = False
+            # else:
+            #     self.of.insert_offers(list=ans)
 
     def show_dropdown_search_by_category(self):
         categories = App.get_running_app().controller.get_categories()
@@ -94,7 +99,7 @@ class SEARCHScreen(Screen):
             )
 
         self.drop_down_category = MDDropdownMenu(
-            caller=self.ids.drop_category,
+            caller=self.ids.search_box.ids.drop_category,
             items=menu_items,
             width_mult=4,
         )
@@ -112,7 +117,7 @@ class SEARCHScreen(Screen):
             )
 
         self.drop_down_category = MDDropdownMenu(
-            caller=self.ids.drop_category,
+            caller=self.ids.search_box.ids.drop_category,
             items=menu_items,
             width_mult=4,
         )
@@ -127,7 +132,7 @@ class SEARCHScreen(Screen):
                  "on_release": lambda x=sub_cat, y=cat_name: self.on_save_sub_category(x, y) }
             )
         self.drop_down_sub_category = MDDropdownMenu(
-            caller=self.ids.drop_category,
+            caller=self.ids.search_box.ids.drop_category,
             items=menu_items,
             width_mult=4,
         )
@@ -135,38 +140,41 @@ class SEARCHScreen(Screen):
         self.drop_down_category.dismiss()
     def on_save_sub_category(self, sub_cat, cat_name):
         self.category_tom = cat_name
-        self.ids.drop_sub_category.text = sub_cat
+        self.ids.search_box.ids.drop_sub_category.text = sub_cat
         self.drop_down_sub_category.dismiss()
     def on_save_category(self, sub_cat):
-        self.ids.drop_category.text = sub_cat
+        self.ids.search_box.ids.drop_category.text = sub_cat
         self.drop_down_category.dismiss()
 
     def search_by_category(self):
-        cat_name = self.ids.drop_category.text
+        self.ids.search_box.ids.helper.remove_widget(self.lab)
+        self.ids.search_box.ids.helper.remove_widget(self.of)
+        cat_name = self.ids.search_box.ids.drop_category.text
         ans = App.get_running_app().controller.get_offers_by_category(cat_name)
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
-            if self.first_time_bad_search is True:
-                self.lab = MDLabel(text=cat_name+" has 0 offers")
-                self.mes.add_widget(self.lab)
-                self.ids.zibi.add_widget(self.mes)
-                self.first_time_bad_search = False
-            else:
-                self.lab.text = cat_name+" has 0 offers.."
+            # self.of.insert_offers(list=[])
+            # if self.first_time_bad_search is True:
+            self.lab.text = cat_name+" has 0 offers"
+                # self.mes.add_widget(self.lab)
+            self.ids.search_box.ids.helper.add_widget(self.of)
+            # self.first_time_bad_search = False
+            # else:
+            #     self.lab.text = cat_name+" has 0 offers.."
         # good search
         else:
-            if self.first_time_bad_search is False:
-                self.lab.text = ""
-            if self.first_time_good_search is True:
-                self.of.insert_offers(list=ans)
-                self.ids.zibi.add_widget(self.of)
-                self.first_time_good_search = False
-            else:
-                self.of.insert_offers(list=ans)
+            # if self.first_time_bad_search is False:
+            #     self.lab.text = ""
+            # if self.first_time_good_search is True:
+            self.of.insert_offers(list=ans)
+            self.ids.search_box.ids.helper.add_widget(self.of)
+                # self.first_time_good_search = False
+            # else:
+            #     self.of.insert_offers(list=ans)
 
 class Search_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Search_box, self).__init__(**kwargs)
+        self.name = 'search_box'
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
 

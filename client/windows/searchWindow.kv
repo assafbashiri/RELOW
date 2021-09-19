@@ -3,54 +3,54 @@
     name:'search_screen'
     Search_box:
         id: search_box
-        BoxLayout:
-            orientation: 'vertical'
-            MDGridLayout:
-                id:zibi
-                cols:2
-
-                MDTextFieldRound:
-                    id:name
-                    hint_text: "search by name"
-
-                MDRoundFlatButton:
-                    id: search_by_name
-                    text:"Search"
-                    font_size: 12
-                    on_press:root.search_by_name()
-
-                MDDropDownItem:
-                    id: drop_category
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-                    text: "search by category"
-                    on_release: root.show_dropdown_search_by_category()
-
-                MDRoundFlatButton:
-                    id: search_by_category
-                    text:"Search"
-                    font_size: 12
-                    on_press:root.search_by_category()
-
-                MDDropDownItem:
-                    id: drop_sub_category
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-                    text: "search by sub category"
-                    on_release: root.show_dropdown_category()
-
-                MDRoundFlatButton:
-                    id: search_by_sub_category
-                    text:"Search"
-                    font_size: 12
-                    on_press:root.search_by_sub_category()
-
-
-
-        Side_box:
-            id: side_box
-
-
 
 <Search_box>
-    orientation: "horizontal"
+    BoxLayout:
+        id: helper
+        orientation: 'vertical'
+        MDGridLayout:
+            id:zibi
+            cols:2
+            MDTextFieldRound:
+                id:name
+                hint_text: "search by name"
+
+            MDRoundFlatButton:
+                id: search_by_name
+                text:"Search"
+                font_size: 12
+                on_press:root.parent.search_by_name()
+
+            MDDropDownItem:
+                id: drop_category
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: "search by category"
+                on_release: root.parent.show_dropdown_search_by_category()
+
+            MDRoundFlatButton:
+                id: search_by_category
+                text:"Search"
+                font_size: 12
+                on_press:root.parent.search_by_category()
+
+            MDDropDownItem:
+                id: drop_sub_category
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: "search by sub category"
+                on_release: root.parent.show_dropdown_category()
+
+            MDRoundFlatButton:
+                id: search_by_sub_category
+                text:"Search"
+                font_size: 12
+                on_press:root.parent.search_by_sub_category()
+
+
+
+    Side_box:
+        id: side_box
+
+
+
 
 

@@ -14,11 +14,10 @@ class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
 
-class CONNECTScreen(Screen):
+class REGISTERScreen(Screen):
     def __init__(self, **kwargs):
-        self.name = 'connect_screen'
-        super(CONNECTScreen, self).__init__(**kwargs)
-
+        self.name = 'register_screen'
+        super(REGISTERScreen, self).__init__(**kwargs)
 
 class Category_box(BoxLayout):
     pass
@@ -26,26 +25,19 @@ class Category_box(BoxLayout):
 class Sub_Category_box(BoxLayout):
     pass
 
-class Connect_box(BoxLayout):
+class Register_box(BoxLayout):
 
     def exit(self):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
     def __init__(self, **kwargs):
-        super(Connect_box, self).__init__(**kwargs)
+        super(Register_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
         self.gender = 0
 
-    def register_new(self):
-        App.get_running_app().root.current = 'register_screen'
-
-    def login_new(self):
-        App.get_running_app().root.current = 'login_screen'
-
     def change_to_cat(self):
         SideBar.change_to_cat(self)
-
 
     def clear_register(self):
         self.ids.user_name.text=""
@@ -102,7 +94,7 @@ class Connect_box(BoxLayout):
         ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,
                                                         gender)
         if ans.res is True:
-            self.parent.parent.back_to_main()
+            self.parent.parent.parent.back_to_main()
 
         print(ans.message)
     def validate_name(self,name):
@@ -175,126 +167,3 @@ class Connect_box(BoxLayout):
         print(ans.message)
         print("Logout")
 
-
-
-
-    # orientation: "horizontal"
-    # BoxLayout:
-    #     orientation: "vertical"
-    #     padding:20
-    #     spacing:20
-    #     MDGridLayout:
-    #         cols: 1
-    #         spacing:5
-    #         adaptive_height: True
-    #         #adaptive_width: True
-    #         #daptive_size: True
-    #         MDLabel:
-    #             id: register_label
-    #             text: "Register"
-    #
-    #         MDTextFieldRound:
-    #             text : "tom"
-    #             id:first_name
-    #             hint_text: "first name"
-    #             icon_right: "account"
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "nisim"
-    #             id:last_name
-    #             hint_text: "last name"
-    #             icon_right: "account"
-    #
-    #         MDTextFieldRound:
-    #             text : "tomnis1234"
-    #             id:user_name
-    #             hint_text: "username"
-    #             icon_right: "account"
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "tomnisim@gmail.com"
-    #             id:email
-    #             hint_text: "email"
-    #             icon_right: "account"
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "12345678Tn"
-    #             id:password
-    #             hint_text: "password"
-    #             icon_right: "eye-off"
-    #             password : True
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "2022-11-11"
-    #             id:birth_date
-    #             hint_text: "birth date"
-    #             icon_right: "account"
-    #             on_focus:root.show_date_picker()
-    #
-    #
-    #
-    #         MDDropDownItem:
-    #             id: drop
-    #             pos_hint: {'center_x': .5, 'center_y': .5}
-    #             text: 'gender'
-    #             on_release: root.show_dropdown()
-    #
-    #     MDGridLayout:
-    #         cols:3
-    #
-    #         MDRoundFlatButton:
-    #             text:"Register"
-    #             font_size: 12
-    #             on_press:root.register()
-    #
-    #         MDRoundFlatButton:
-    #             text:"Unregister"
-    #             font_size: 12
-    #             on_press:root.unregister()
-    #
-    #         MDRoundFlatButton:
-    #             text:"clear_register"
-    #             font_size: 12
-    #             on_press:root.clear_register()
-    #
-    #
-    #
-        # MDGridLayout:
-        #     cols: 1
-        #     MDLabel:
-        #         id: login_label
-        #         text: "LOGIN"
-        #
-        #     MDTextFieldRound:
-        #         text:'tomnis'
-        #         id:log_in_username
-        #         hint_text: "user name"
-        #         icon_right: "account"
-        #
-        #
-        #     MDTextFieldRound:
-        #         text:'123'
-        #         id:log_in_password
-        #         hint_text: "password"
-        #         icon_right: "account"
-        # MDGridLayout:
-        #     cols:3
-        #
-        #     MDRoundFlatButton:
-        #         text:"Login"
-        #         font_size: 12
-        #         on_press:root.login()
-        #
-        #     MDRoundFlatButton:
-        #         text:"Logout"
-        #         font_size: 12
-        #         on_press:root.logout()
-        #
-        #     MDRoundFlatButton:
-        #         text:"clear_login"
-        #         font_size: 12
-        #         on_press:root.clear_login()

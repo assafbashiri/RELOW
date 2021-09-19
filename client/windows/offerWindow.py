@@ -17,7 +17,7 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.progressbar import MDProgressBar
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.textfield import MDTextField, MDTextFieldRound
 
 # from Backend_controller import Backend_controller
 from Service.Object.OfferService import OfferService
@@ -30,6 +30,8 @@ class OfferWindow(Popup):
         self.offer = offer[0]  # Offer Service
         self.offer_id = self.offer.offer_id
         self.color = 0
+        self.change = False
+        self.new_address = None
         # buyer/seller/viewer/user
         self.user = self.controller.user_service
         if self.controller.guest is True:
@@ -134,14 +136,15 @@ class OfferWindow(Popup):
         # for photo in photo_lis:
         #     self.carousel.add_widget(photo)
         for photo in photo_lis:
-            image = photo
-            # f = open("img.jpg", 'rb')
-            #
-            # binary_data = f.read()  # image opened in binary mode
+            if photo is not None:
+                image = photo
+                # f = open("img.jpg", 'rb')
+                #
+                # binary_data = f.read()  # image opened in binary mode
 
-            data = io.BytesIO(image)
-            data.seek(0)
-            img = CoreImage(data, ext="png").texture
+                data = io.BytesIO(image)
+                data.seek(0)
+                img = CoreImage(data, ext="png").texture
 
             new_img = Image()
             new_img.texture = img
@@ -189,9 +192,8 @@ class OfferWindow(Popup):
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
         self.color_box = BoxLayout(orientation='horizontal')
         self.color_box.add_widget(self.color_mainbutton)
-        self.box.add_widget(self.color_box)
-        self.add_color = Button(text='add color')
-        self.color_box.add_widget(self.add_color)
+        # self.box.add_widget(self.color_box)
+
         self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
 
         self.size_dropdown = DropDown()
@@ -202,12 +204,12 @@ class OfferWindow(Popup):
             self.size_dropdown.add_widget(btn)
         self.size_mainbutton = Button(text='sizes', size_hint=(None, None), pos=(400, 300))
         self.size_mainbutton.bind(on_release=self.size_dropdown.open)
-        self.box.add_widget(self.size_mainbutton)
+        # self.box.add_widget(self.size_mainbutton)
         self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton, 'text', x))
         self.join_offer = BoxLayout(orientation='horizontal')
         # self.quantity = MDTextField(hint_text='QUANTITY')
         self.update = Button(text="UPDATE")
-        self.update.bind(on_press=lambda x: print(self.update_offer()))
+        self.update.bind(on_press=lambda x: self.update_offer())
         # self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.update)
         self.box.add_widget(self.join_offer)
@@ -359,18 +361,23 @@ class OfferWindow(Popup):
         self.quantity = MDTextField(hint_text='QUANTITY')
         self.join = Button(text="JOIN")
         self.join.bind(on_press=lambda x: print(self.join_()))
+        self.other_address = Button(text='NEW ADDRESS FOR THIS PRODUCT')
+        self.other_address.bind(on_press=lambda x: self.add_address())
+
         self.join_offer.add_widget(self.quantity)
-        self.join_offer.add_widget(self.join)
+        self.join_offer.add_widget(self.other_address)
         self.box.add_widget(self.join_offer)
-        self.back = Button(text="BACK")
-        self.back.bind(on_press=lambda x: self.out())
-        self.box.add_widget(self.back)
+        self.box.add_widget(self.join)
         if self.user.is_a_liker(self.offer_id):
             self.like = Button(text="UNLIKE")
         else:
             self.like = Button(text="LIKE")
         self.like.bind(on_press=lambda x: self.like_unlike())
         self.box.add_widget(self.like)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x: self.out())
+        self.box.add_widget(self.back)
+
         self.add_widget(self.box)
 
     def register(self):
@@ -392,6 +399,7 @@ class OfferWindow(Popup):
     #         else:
     #             self.show_as_viewer(photo_lis)
     #         Popup.open(self)
+
     def out(self):
         self.dismiss()
 
@@ -420,7 +428,7 @@ class OfferWindow(Popup):
                     d = self.color_mainbutton.text
                     e = self.size_mainbutton.text
                     f = 5
-                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, int(self.quantity.text), int(step), self.color_mainbutton.text, self.size_mainbutton.text)
+                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, int(self.quantity.text), int(step), self.color_mainbutton.text, self.size_mainbutton.text, self.new_address)
                     if ans.res is True:
                         self.user.get_active_buy_offers().append(self.offer)
                         self.offer = ans.data
@@ -434,15 +442,45 @@ class OfferWindow(Popup):
 
     def update_offer(self):
         self.dismiss()
-        App.get_running_app().root.current = 'add_offer_screen'
+        App.get_running_app().root.current = 'update_offer'
         c = App.get_running_app().root
         e = App.get_running_app().root.screens
-        f = App.get_running_app().root.screens[4]
-        f = App.get_running_app().root.screens[4].update_offer(self.offer)
-
-        d = 5
+        f = App.get_running_app().root.screens[6]
+        c = self.offer
+        f = App.get_running_app().root.screens[6].update_offer(self.offer)
         print('bolo- need to update offer for seller')
+    def add_address(self):
+        if hasattr(self, 'm'):
+            self.m =Add_address(title = 'address', size_hint=(None,None), size = (400,400))
+            self.m.open()
+        else:
+            self.m = Add_address(title='address', size_hint=(None, None), size=(400, 400))
+            self.m.open()
+        print(self.m)
 
+class Add_address(Popup):
+    def __init__(self, **kwargs):
+        super(Add_address, self).__init__(**kwargs)
+        self.box = BoxLayout(orientation='vertical')
+        self.address = MDTextField(hint_text='ADDRESS')
+        self.box.add_widget(self.address)
+        self.insert = Button(text="INSERT")
+        self.insert.bind(on_press=lambda x:self.insert_add())
+        self.box.add_widget(self.insert)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x:self.out())
+        self.box.add_widget(self.back)
+        self.add_widget(self.box)
+
+    def out(self):
+        print('foo')
+        self.dismiss()
+
+    def insert_add(self):
+        self.parent.children[1].new_address = self.address.text
+        self.parent.children[1].other_address.text = self.address.text
+        self.parent.children[1].change = True
+        self.dismiss()
 
 # class offerWindow(Screen):
 #     def __init__(self, controller):

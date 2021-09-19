@@ -26,6 +26,8 @@ from kivymd.uix.textfield import MDTextFieldRound, MDTextField
 from windows.accountWindow import ACCOUNTScreen
 from windows.connectWindow import CONNECTScreen
 from windows.searchWindow import SEARCHScreen
+from windows.registerWindow import REGISTERScreen
+from windows.loginWindow import LOGINScreen
 from windows.addofferWindow import ADDOFFERScreen
 from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen

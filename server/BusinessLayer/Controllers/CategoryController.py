@@ -311,7 +311,7 @@ class CategoryController:
         for cb in all_current_buyers:
             if cb[0] not in all_current_buyers_dict.keys():
                 all_current_buyers_dict[cb[0]] = {}
-            purchase = Purchase(cb[2], cb[3], cb[1], cb[4], cb[5])
+            purchase = Purchase(cb[2], cb[3], cb[1], cb[4], cb[5], cb[6])
             all_current_buyers_dict[cb[0]][cb[1]] = purchase
 
     def load_all_total_products(self, total_products_per_offer, all_current_buyers_dict):

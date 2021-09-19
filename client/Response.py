@@ -1,5 +1,4 @@
 
-
 class Response:
     def __init__(self, data, message, res):
         self.data = data

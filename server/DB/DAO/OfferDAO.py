@@ -55,9 +55,9 @@ class OfferDAO:
         self._conn.commit()
 
 
-    def add_active_buy_offer(self, offerDTO, user_id, quantity, step, color, size):
-        self._conn.execute("""INSERT INTO active_buyers (offer_id,user_id,quantity,step, color, size)
-         VALUES (?,?,?,?,?,?)""", [offerDTO.offer_id, user_id, quantity, step, color, size])
+    def add_active_buy_offer(self, offerDTO, user_id, quantity, step, color, size, address):
+        self._conn.execute("""INSERT INTO active_buyers (offer_id, user_id, quantity, step, color, size, address)
+         VALUES (?,?,?,?,?,?,?)""", [offerDTO.offer_id, user_id, quantity, step, color, size, address])
         self._conn.commit()
 
     def add_like_offer(self, user_id, offer_id):
