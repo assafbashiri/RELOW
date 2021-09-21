@@ -186,7 +186,6 @@ class BoxiLayout(BoxLayout):
                 return
 
         ans = App.get_running_app().controller.update(first_name, last_name, email)
-        print(ans.message)
         if ans.res is True:
             # update the json------------------------------------------------
             self.parent.parent.manager.back_to_main()
@@ -206,7 +205,6 @@ class BoxiLayout(BoxLayout):
         floor = self.ids.floor.text
         apt = self.ids.apt_number.text
         ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
-        print(ans.message)
         if ans.res is True:
             # update the json------------------------------------------------
             self.parent.parent.manager.back_to_main()
@@ -230,7 +228,6 @@ class BoxiLayout(BoxLayout):
         id = self.ids.id_number.text
         ans = App.get_running_app().controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv,
                                                                   card_type, id)
-        print(ans.message)
         if ans.res is True:
             # update the json------------------------------------------------
             self.parent.parent.manager.back_to_main()

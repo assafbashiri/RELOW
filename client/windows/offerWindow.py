@@ -33,7 +33,12 @@ class OfferWindow(Popup):
         self.change = False
         self.new_address = None
         # buyer/seller/viewer/user
+        if (self.controller.user_service is None):
+            toast('not log in')
+            print('not log in')
+            return
         self.user = self.controller.user_service
+
         if self.controller.guest is True:
             self.show_as_guest(photo_lis)
         elif self.offer.is_a_seller(self.user.user_id):
@@ -226,7 +231,6 @@ class OfferWindow(Popup):
             p = purchases[purch]
             if p.buyer_id == self.user.user_id:
                 purchase = p
-        print("bolo2")
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
         self.carousel = Carousel(size_hint_y=6)
@@ -274,7 +278,7 @@ class OfferWindow(Popup):
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
         self.unjoin = Button(text="UPDATE")
-        self.unjoin.bind(on_press=lambda x: print(self.update_purchase()))
+        self.unjoin.bind(on_press=lambda x: self.update_purchase())
         self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.unjoin)
         self.box.add_widget(self.join_offer)
@@ -404,11 +408,9 @@ class OfferWindow(Popup):
         self.dismiss()
 
     def dismiss(self):
-        print('bolo10')
         Popup.dismiss(self)
 
     def like_unlike(self):
-        print('in like')
         if self.user.is_a_liker(self.offer_id):
             self.controller.remove_liked_offer(self.offer_id)
             self.like.text = 'LIKE'
@@ -448,7 +450,6 @@ class OfferWindow(Popup):
         f = App.get_running_app().root.screens[6]
         c = self.offer
         f = App.get_running_app().root.screens[6].update_offer(self.offer)
-        print('bolo- need to update offer for seller')
     def add_address(self):
         if hasattr(self, 'm'):
             self.m =Add_address(title = 'address', size_hint=(None,None), size = (400,400))
@@ -456,7 +457,6 @@ class OfferWindow(Popup):
         else:
             self.m = Add_address(title='address', size_hint=(None, None), size=(400, 400))
             self.m.open()
-        print(self.m)
 
 class Add_address(Popup):
     def __init__(self, **kwargs):
@@ -473,7 +473,6 @@ class Add_address(Popup):
         self.add_widget(self.box)
 
     def out(self):
-        print('foo')
         self.dismiss()
 
     def insert_add(self):

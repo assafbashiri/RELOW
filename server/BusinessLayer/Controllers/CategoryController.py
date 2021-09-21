@@ -222,20 +222,40 @@ class CategoryController:
         ans.extend(self.hot_deals.values())
         return ans
 
-    # return the updated offer, throw exceptions
-    def update_sub_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
+    # # return the updated offer, throw exceptions
+    # def update_sub_category_for_offer(self, offer_id, new_category_id, new_sub_category_id):
+    #     offer_to_move = self.get_offer_by_offer_id(offer_id)
+    #     old_sub_category_id = offer_to_move.get_sub_category_id()
+    #     old_category = self.get_category_by_id(offer_to_move.category_id)
+    #     new_category = self.get_category_by_id(new_category_id)
+    #     if not new_category.is_exist_sub_category(new_sub_category_id):
+    #         raise Exception("No Such Sub Category")
+    #     # removing the offer from the old category
+    #     old_category.remove_offer(offer_id, old_sub_category_id)
+    #     # adding the offer to the new sub category
+    #     offer_to_move.set_category_id(new_category_id)
+    #     offer_to_move.set_sub_category_id(new_category_id)
+    #     new_category.add_exist_offer(offer_to_move, new_sub_category_id)
+    #     self.offerDAO.update(OfferDTO(offer_to_move))
+    #     return offer_to_move
+    #
+
+
+    def update_sub_category_for_offer(self, offer_id, new_category_name, new_sub_category_name):
         offer_to_move = self.get_offer_by_offer_id(offer_id)
-        old_sub_category_id = offer_to_move.set_category_id
+        old_sub_category_id = offer_to_move.get_sub_category_id()
         old_category = self.get_category_by_id(offer_to_move.category_id)
-        new_category = self.get_category_by_id(new_category_id)
-        if not new_category.is_exist_sub_category(new_sub_category_id):
+        new_category = self.get_category_by_name(new_category_name)
+        new_sub_category = self.get_sub_category_by_name(new_sub_category_name)
+        if not new_category.is_exist_sub_category_by_name(new_sub_category_name):
             raise Exception("No Such Sub Category")
         # removing the offer from the old category
         old_category.remove_offer(offer_id, old_sub_category_id)
         # adding the offer to the new sub category
-        offer_to_move.set_category_id(new_category_id)
-        offer_to_move.set_sub_category_id(new_category_id)
-        new_category.add_exist_offer(offer_to_move, new_sub_category_id)
+
+        offer_to_move.set_category_id(new_category.id)
+        offer_to_move.set_sub_category_id(new_sub_category.id)
+        new_category.add_exist_offer(offer_to_move, new_sub_category.id)
         self.offerDAO.update(OfferDTO(offer_to_move))
         return offer_to_move
 

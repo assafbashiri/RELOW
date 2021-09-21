@@ -104,7 +104,6 @@ class Add_offer_box(BoxLayout):
 
     def add_size(self, instance):
         text = self.ids.sizes.text
-        print("fuck you man")
         btn = Button(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_dropdown.add_widget(btn)
@@ -242,7 +241,7 @@ class Add_offer_box(BoxLayout):
         self.ids.product_name.text = ""
         self.ids.company.text = ""
         self.ids.description.text = ""
-        self.ids.end_date.text = "11/11/22"
+        self.ids.end_date.text = ""
         #self.ids.end_date.text = ""
         #self.ids.size_box.text = ""
         self.size_input.text = ""
@@ -287,12 +286,14 @@ class Add_offer_box(BoxLayout):
         self.drop_down_category.open()
 
     def build_string_from_list(self, list):
-        answer = list[0]
-        i = 0
-        for item in list:
-            if i != 0:
-                answer = answer + ", " + item
-            i = i + 1
+        answer = []
+        if len(list)>0:
+            answer = list[0]
+            i = 0
+            for item in list:
+                if i != 0:
+                    answer = answer + ", " + item
+                i = i + 1
         return answer
 
     def show_dropdown_sub_category(self, sub_categories_names, cat_name):

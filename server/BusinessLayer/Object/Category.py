@@ -135,6 +135,12 @@ class Category:
 
 #----------------------------------------------------private methods --------------------------------------------
     def is_exist_sub_category(self, sub_category_id):
-        if sub_category_id in self.sub_categories_dictionary:
+        if sub_category_id in self.sub_categories_dictionary.keys():
             return True
+        return False
+
+    def is_exist_sub_category_by_name(self,sub_category_name):
+        for sub_category_id in self.sub_categories_dictionary.keys():
+            if self.sub_categories_dictionary[sub_category_id].name == sub_category_name:
+                return True
         return False

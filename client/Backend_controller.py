@@ -42,12 +42,14 @@ class Backend_controller:
         update_password_req = {'op': 6, 'old_password': old_password, 'new_password': new_password}
         self.req_answers.add_request(update_password_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def guest_register(self):
         req = {'op': 78}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.store.put("user_guest", user_id = ans.data['user_id'])
             self.user_service = UserService(ans.data['user_id'], None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
@@ -60,6 +62,7 @@ class Backend_controller:
         req = {'op': 79, 'guest_id': guest_id}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             user = self.store.get('user_guest')
             self.user_service = UserService(guest_id, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
@@ -90,6 +93,7 @@ class Backend_controller:
         # waiting for an answer from the server to the Main-Thread, and for the Main_thread adding the answer to the
         # req_answers
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.guest = False
             if store.exists('user_guest'):
@@ -110,6 +114,7 @@ class Backend_controller:
         unregister_req = {'op': 2}
         self.req_answers.add_request(unregister_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.register_unregister_json(False)
             self.user_service = None
@@ -129,12 +134,12 @@ class Backend_controller:
         login_req = {'op': 3, 'user_name': user_name, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             # JSON
             # self.login_logout_json(True)
             # FIELD
             self.user_service = self.build_user(ans.data)
-        print(ans.message)
         return ans
 
     # def login_logout_json(self, flag):
@@ -151,6 +156,7 @@ class Backend_controller:
         logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             #self.login_logout_json(False)
             self.user_service = None
@@ -159,18 +165,17 @@ class Backend_controller:
     # ------------------- Account Window ---------------------------------------------------------------------
     #(name, company, colors, sizes, description, list, category_name,
                               #sub_category_name, steps, end_date)
-    def update_offer(self, offer_id,name, company, colors, sizes, description, category_name,
-                              sub_category_name, steps, end_date):
-        update_req = {'op': 15,'offer_id':offer_id,'name': name, 'company': company, 'colors': colors, 'sizes':sizes, 'description':description,
-                       'category_name':category_name, 'sub_category_name':sub_category_name,
-                      'steps':steps, 'end_date':end_date}
+    def update_offer(self, offer_id, category_name, sub_category_name,user_id, name, company, colors, sizes, description, steps, end_date):
+        update_req = {'op': 15,'offer_id':offer_id, 'category_name':category_name,'sub_category_name':sub_category_name,'user_id':user_id,'name': name,
+                      'company': company, 'colors': colors, 'sizes':sizes, 'description':description,
+                       'steps':steps, 'end_date':end_date}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         for ex in ans.message:
             toast(ex)
-        if ans.res is True:
-            return ans
-
+        if ans.res is False:
+            print("Bad Offer Update")
         return ans
 
 
@@ -178,6 +183,10 @@ class Backend_controller:
         update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
+        if len(ans.message) == 0:
+            print("User Details Updated Succesfully")
+        else:
+            print(ans.message)
         for ex in ans.message:
             toast(ex)
         changed_user = ans.data
@@ -233,6 +242,7 @@ class Backend_controller:
                            'floor': floor, 'apt': apt}
         self.req_answers.add_request(add_address_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
 
@@ -243,6 +253,7 @@ class Backend_controller:
                        'cvv': cvv, 'card_type': card_type, 'id_number': id}
         self.req_answers.add_request(add_pay_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
 
@@ -254,6 +265,7 @@ class Backend_controller:
         add_liked_offer_req = {'op': 25, 'offer_id': offer_id}
         self.req_answers.add_request(add_liked_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.user_service.liked_offers.append(offer_id)
         return ans
@@ -262,6 +274,7 @@ class Backend_controller:
         remove_liked_offer_req = {'op': 26, 'offer_id': offer_id}
         self.req_answers.add_request(remove_liked_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             self.user_service.liked_offers.remove(offer_id)
         return ans
@@ -281,12 +294,14 @@ class Backend_controller:
                                     'address':address}
         self.req_answers.add_request(add_active_buy_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def remove_active_buy_offer(self, offer_id):
         remove_act_buy_offer_req = {'op': 28, 'offer_id': offer_id}
         self.req_answers.add_request(remove_act_buy_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def add_active_sell_offer(self, name, company, colors, sizes, description, photos, category_name,
@@ -297,12 +312,14 @@ class Backend_controller:
                                      'steps': steps, 'end_date': end_date}
         self.req_answers.add_request(add_active_sell_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_purchase(self, offer_id, quantity, step, color, size):
         req = {'op': 37, 'offer_id': offer_id, 'quantity': quantity, 'step': step, 'color': color, 'size': size}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     # ----- seller methods ---------------------------------
@@ -311,72 +328,84 @@ class Backend_controller:
         remove_act_sell_offer_req = {'op': 27, 'offer_id': offer_id}
         self.req_answers.add_request(remove_act_sell_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def add_photo(self, offer_id, photo):
         add_photo_req = {'op': 31}
         self.req_answers.add_request(add_photo_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def remove_photo(self, offer_id, photo):
         remove_photo_req = {'op': 34}
         self.req_answers.add_request(remove_photo_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_end_date(self, offer_id, end_date):
         up_end_date_req = {'op': 39, 'offer_id': offer_id, 'end_date': end_date}
         self.req_answers.add_request(up_end_date_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_step(self, offer_id, step):
         req = {'op': 41, 'offer_id': offer_id, 'step': step}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_product_name(self, offer_id, name):
         req = {'op': 42, 'offer_id': offer_id, 'name': name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_product_company(self, offer_id, company):
         req = {'op': 43, 'offer_id': offer_id, 'company': company}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_product_colors(self, offer_id, colors):
         req = {'op': 44, 'offer_id': offer_id, 'colors': colors}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_product_sizes(self, offer_id, sizes):
         req = {'op': 45, 'offer_id': offer_id, 'sizes': sizes}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_product_description(self, offer_id, description):
         req = {'op': 46, 'offer_id': offer_id, 'description': description}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_sub_category_for_offer(self, offer_id, sub_category_name):
         up_sub_cat_for_offer_req = {'op': 38, 'offer_id': offer_id, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(up_sub_cat_for_offer_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_step_for_offer(self, offer_id, step_number, quantity, price):
         req = {'op': 54, 'offer_id': offer_id, 'step_number': step_number, 'quantity': quantity, 'price': price}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     # ------------------------ search & getters methods ----------------------------
@@ -386,10 +415,11 @@ class Backend_controller:
         req = {'op': 47, 'category_name': category_name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - offers_by_category")
         return offers
 
     def get_offers_by_sub_category(self, category_name, sub_category_name):
@@ -397,10 +427,11 @@ class Backend_controller:
         req = {'op': 48, 'category_name': category_name, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - offers_by_sub_category")
         return offers
 
     def get_offers_by_product_name(self, name):
@@ -408,10 +439,11 @@ class Backend_controller:
         req = {'op': 49, 'name': name}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - offers_by_product_name")
         return offers
 
     # def get_offers_by_status(self, status):
@@ -430,10 +462,11 @@ class Backend_controller:
         req = {'op': 51}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - hot_deals")
         return offers
 
     def get_all_history_buy_offers(self):
@@ -441,10 +474,11 @@ class Backend_controller:
         req = {'op': 13}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - all_history_buy_offers")
         return offers
 
     def get_all_history_sell_offers(self):
@@ -452,10 +486,11 @@ class Backend_controller:
         req = {'op': 14}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - all_history_sell_offers")
         return offers
 
     # def get_history_buy_offer(self, offer_id):
@@ -483,10 +518,11 @@ class Backend_controller:
         req = {'op': 17}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - all_active_buy_offers")
         return offers
 
     def get_all_active_sell_offers(self):
@@ -494,10 +530,11 @@ class Backend_controller:
         req = {'op': 18}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
-            print("bad search")
+            print("bad search - all_active_sell_offers")
         return offers
 
     # def get_active_buy_offer(self, offer_id):
@@ -535,6 +572,7 @@ class Backend_controller:
         req = {'op': 22}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         if ans.res is True:
             offers = self.build_offers_list(ans.data)
         else:
@@ -553,18 +591,21 @@ class Backend_controller:
         req = {'op': 53, 'offer_id': offer_id}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_start_date(self, offer_id, start_date):
         req = {'op': 40, 'offer_id': offer_id, 'start_date': start_date}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_category_name(self, category_name, name):
         up_cat_name_req = {'op': 35, 'category_name': category_name, 'name': name}
         self.req_answers.add_request(up_cat_name_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def update_sub_category_name(self, category_name, sub_category_name, name):
@@ -572,30 +613,35 @@ class Backend_controller:
                                'name': name}
         self.req_answers.add_request(up_sub_cat_name_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def remove_category(self, category_name):
         remove_cat_req = {'op': 32, 'category_name': category_name}
         self.req_answers.add_request(remove_cat_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def remove_sub_category(self, category_name, sub_category_name):
         remove_sub_cat_req = {'op': 33, 'category_name': category_name, 'sub_category_name': sub_category_name}
         self.req_answers.add_request(remove_sub_cat_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def add_category(self, name):
         add_cat_req = {'op': 29, 'name': name}
         self.req_answers.add_request(add_cat_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def add_sub_category(self, name, category_name):
         add_sub_cat_req = {'op': 30, 'name': name, 'category_name': category_name}
         self.req_answers.add_request(add_sub_cat_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     def exit(self):
@@ -603,6 +649,7 @@ class Backend_controller:
         exit_req = {'op': 55}
         self.req_answers.add_request(exit_req)
         ans = self.req_answers.get_answer()
+        print(ans.message)
         return ans
 
     # ------------------------------- private methods
@@ -622,11 +669,10 @@ class Backend_controller:
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
                                   x['status'],
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
-                                  x['current_buyers'])
+                                  x['current_buyers'], x['category_name'], x['sub_category_name'])
         return offer_temp
 
     def build_user(self, data):
-        print("999999999999999999999999999999999999999999999999999999999999999999999999999")
         birth_date =  data['birth_date']
         length= len(data['birth_date'])-1
         birth =  birth_date[1:length]

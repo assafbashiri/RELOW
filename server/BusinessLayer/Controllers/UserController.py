@@ -262,16 +262,19 @@ class UserController:
 
     def update_product_colors(self, user_id, offer_id, colors):
         offer = self.check_offer_state(user_id, offer_id)
-        offer.product.set_colors(colors)
+        colors_list = offer.product.build_list_from_string(colors)
+        offer.product.update_colors(colors_list)
         self.offers_dao.update(OfferDTO(offer))
 
     def update_product_size(self, user_id, offer_id, size):
         offer = self.check_offer_state(user_id, offer_id)
+
         offer.product.set_size(size)
         self.offers_dao.update(OfferDTO(offer))
     def update_product_sizes(self, user_id, offer_id, sizes):
         offer = self.check_offer_state(user_id, offer_id)
-        offer.product.set_sizes(sizes)
+        sizes_list = offer.product.build_list_from_string(sizes)
+        offer.product.set_sizes(sizes_list)
         self.offers_dao.update(OfferDTO(offer))
     def update_product_description(self, user_id, offer_id, description):
         offer = self.check_offer_state(user_id, offer_id)

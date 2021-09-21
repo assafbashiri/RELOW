@@ -31,7 +31,8 @@ class OfferService:
                     'color':business_offer.get_current_buyers()[buyer_id].get_color(),
                     'size':business_offer.get_current_buyers()[buyer_id].get_size()}
             self.current_buyers.append(temp)
-
+        # self.category_name = business_offer.category_name
+        # self.sub_category_name - business_offer.sub_category_name
 
 # --------------------------------------------GETTERS--------------------------------------------------------------
     def get_offer_id(self):

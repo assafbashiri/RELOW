@@ -7,7 +7,7 @@ from Service.Object.StepService import StepService
 class OfferService:
     # CLIENT
     def __init__(self, offer_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date,
-                 current_step, current_buyers):
+                 current_step, current_buyers):#, category_name, sub_category_name):
         self.offer_id = offer_id
         self.current_step = current_step
         # seller
@@ -32,9 +32,8 @@ class OfferService:
         for buyer in current_buyers:
             self.current_buyers[buyer['buyer_id']] = PurchaseService(buyer['buyer_id'], buyer['step_id'], buyer['quantity'], buyer['color'], buyer['size'])
 
-
-
-
+        # self.category_name =category_name
+        # self.sub_category_name - sub_category_name
     # --------------------------------------------GETTERS--------------------------------------------------------------
     def get_offer_id(self):
         return self.offer_id

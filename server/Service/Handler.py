@@ -267,42 +267,44 @@ class Handler:
 
     # -------------------------------------------------UPDATE----------------------------------------------------------------
     def update_offer(self, argument):
+        if self.user is None:
+            return Response(None, "not logged in motek", False)
         exceptions = []
         try:
-            self.user_controller.update_end_date(argument['offer_id'], argument['end_date'])
+            self.user_controller.update_end_date(argument['user_id'],argument['offer_id'], argument['end_date'])
         except Exception as e:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_product_name(argument['offer_id'], argument['name'])
+            self.user_controller.update_product_name(argument['user_id'],argument['offer_id'], argument['name'])
         except Exception as e:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_product_company(argument['offer_id'], argument['company'])
+            self.user_controller.update_product_company(argument['user_id'],argument['offer_id'], argument['company'])
         except Exception as e:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_product_colors(argument['offer_id'], argument['colors'])
+            self.user_controller.update_product_colors(argument['user_id'],argument['offer_id'], argument['colors'])
         except Exception as e:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_sizes(argument['offer_id'], argument['sizes'])
+            self.user_controller.update_product_sizes(argument['user_id'],argument['offer_id'], argument['sizes'])
         except Exception as e:
             exceptions.append(str(e))
 
         try:
-            self.user_controller.update_product_description(argument['offer_id'], argument['description'])
+            self.user_controller.update_product_description(argument['user_id'],argument['offer_id'], argument['description'])
         except Exception as e:
             exceptions.append(str(e))
 
-
-        for step in argument['steps']:
+        steps = self.build_steps(argument['steps'])
+        for step_number in steps.keys():
             try:
-                self.category_controller.update_step_for_offer(argument['offer_id'], argument['step_number'],
-                                                               argument['quantity'], argument['price'])
+                self.category_controller.update_step_for_offer(argument['offer_id'], step_number,
+                                                               steps[step_number].limit,steps[step_number].price)
             except Exception as e:
                 exceptions.append(str(e))
 
@@ -315,10 +317,9 @@ class Handler:
         return Response(vars(OfferService(offer)), exceptions, True)
 
     def update(self, argument):
-        exceptions = []
         if self.user is None:
-            print("od paam ze null-----------------------")
-
+            return Response(None, "not logged in motek", False)
+        exceptions = []
 
         try:
             self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
@@ -631,7 +632,7 @@ class Handler:
             for offer in offers_list:
                 temp = vars(OfferService(offer))
                 to_return.append(temp)
-            return Response(to_return, "Offers Lists Received Successfully", True)
+            return Response(to_return, "Offers Lists (by category) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -643,7 +644,7 @@ class Handler:
             for offer in offers_list:
                 temp = vars(OfferService(offer))
                 to_return.append(temp)
-            return Response(to_return, "Offers Lists Received Successfully", True)
+            return Response(to_return, "Offers Lists (by sub category) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -654,7 +655,7 @@ class Handler:
             for offer in offers_list:
                 temp = vars(OfferService(offer))
                 to_return.append(temp)
-            return Response(to_return, "Offers Lists Received Successfully", True)
+            return Response(to_return, "Offers Lists (by product name) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -676,7 +677,7 @@ class Handler:
             for offer in offers_list:
                 temp = vars(OfferService(offer))
                 to_return.append(temp)
-            return Response(to_return, "Offers Lists Received Successfully", True)
+            return Response(to_return, "Offers Lists (hot deals) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -713,7 +714,6 @@ class Handler:
         req = argument['op']
         func = self.switcher.get(int(req), "nada")
         ans = func(argument)
-        print(ans.message)
         print(ans.res)
         print(ans.data)
 

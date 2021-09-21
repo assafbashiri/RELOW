@@ -1,5 +1,5 @@
 from datetime import datetime
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.picker import MDDatePicker
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
@@ -53,8 +53,6 @@ class Login_box(BoxLayout):
 
         if ans.res is True:
             self.parent.parent.back_to_main()
-        print('unregister')
-        print(ans.message)
 
     def register(self):
         controller = App.get_running_app().controller
@@ -97,7 +95,6 @@ class Login_box(BoxLayout):
         if ans.res is True:
             self.parent.parent.back_to_main()
 
-        print(ans.message)
     def validate_name(self,name):
         name_bool = CheckValidity.checkValidityName(self,name)
         return name_bool
@@ -151,7 +148,6 @@ class Login_box(BoxLayout):
         if ans.res is True:
             self.parent.parent.back_to_main()
 
-        print(ans.message)
 
     def clear_login(self):
         self.ids.log_in_username.text=""
@@ -165,6 +161,5 @@ class Login_box(BoxLayout):
         if ans.res is True:
             self.parent.parent.parent.back_to_main()
 
-        print(ans.message)
-        print("Logout")
+
 

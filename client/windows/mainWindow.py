@@ -33,7 +33,7 @@ from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen
 
 from windows.SideBar import SideBar
-
+from windows.updateOfferWindow import UPDATEOFFERScreen
 
 class Struct(object):
     def __init__(self, **entries):

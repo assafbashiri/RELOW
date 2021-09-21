@@ -68,15 +68,17 @@ class SideBar:
 
     def show_offers_for_sub_cat(self,bt1, cat_name, sub_cat_name):
         offers = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
-        a = 6
 
+        parent = self.parent
+        #parent.remove_widget(self)
+        self.clear_widgets()
         if len(offers) == 0:
             self.of.insert_offers(list=[])
             if self.first_time_bad_search is True:
                 self.lab = MDLabel(text=cat_name+" has 0 offers")
-                #self.mes.add_widget(self.lab)
-                self.parent.add_widget(self.lab)
-                #self.parent.add_widget(self.mes)
+                #self.add_widget(self.of)
+                self.add_widget(self.lab)
+                self.add_widget(self.side)
                 self.first_time_bad_search = False
             else:
                 self.lab.text = cat_name+" has 0 offers.."
@@ -86,7 +88,9 @@ class SideBar:
                 self.lab.text = ""
             if self.first_time_good_search is True:
                 self.of.insert_offers(list=offers)
-                self.parent.add_widget(self.of)
+                #self.parent.add_widget(self.of)
+                self.add_widget(self.of)
+                self.add_widget(self.side)
                 self.first_time_good_search = False
             else:
                 self.of.insert_offers(list=offers)

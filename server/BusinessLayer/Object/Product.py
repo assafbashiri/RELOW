@@ -19,6 +19,9 @@ class Product:
     def set_colors(self, colors):
         self.colors = colors
 
+    def update_colors(self, colors):
+        self.colors.extend(colors)
+
     def set_sizes(self, sizes):
         self.sizes = sizes
 
@@ -55,7 +58,6 @@ class Product:
         return self.offer_id
 
     def build_list_from_string(self, str):
-        x=6
         answer = str.split(", ")
         return answer
 

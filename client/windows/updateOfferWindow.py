@@ -92,7 +92,7 @@ class Update_offer_box(BoxLayout):
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_press = self.size_dropdown.open)
 
-
+        self.chosen_cat_name = 'fix this name'
 
     def init_text_fields_with_offer_details(self, offer):
         self.offer = offer
@@ -113,6 +113,8 @@ class Update_offer_box(BoxLayout):
         self.ids.price3.text = str(offer.steps[3].price)
         #cat_name = App.get_running_app().controller.get_category_by_id(offer.category_id).name
         self.ids.drop_category.text = 'cat_name'
+        #self.ids.drop_category.text = offer.product.sub_category_name
+
         self.size_dropdown = DropDown()
         self.add_size_start()
         for size in offer.product.sizes:
@@ -157,7 +159,6 @@ class Update_offer_box(BoxLayout):
 
     def add_size(self, instance):
         text = self.ids.sizes.text
-        print("fuck you man")
         btn = Button(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_dropdown.add_widget(btn)
@@ -218,12 +219,15 @@ class Update_offer_box(BoxLayout):
         if self.num_of_added_step > 0:
             for i in range(0, self.num_of_added_step):
                 steps.append(vars(StepService(0, self.price[i].text, i+4, self.limit[i].text)))
-        ans = App.get_running_app().controller.update_offer(self.offer.offer_id,name, company, colors, sizes, description, category_name,
-                              sub_category_name, steps, end_date)
+        ans = App.get_running_app().controller.update_offer(self.offer.offer_id, self.chosen_cat_name, self.sub_cat12, self.offer.user_id,name, company, colors, sizes, description
+                              , steps, end_date)
 
         toast(ans.message)
+        # have to change the fields of this offer
         if ans.res is True:
-            self.clear_fields()
+            pass
+            #?self.clear_fields()
+
 
 
     def check_steps_validity(self):
