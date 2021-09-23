@@ -102,6 +102,7 @@ class TestApp(MDApp):
         a = self.root.current_screen.ids.menu_box.ids.recycle1
         q = self.root.current_screen
 
+
     def on_stop(self):
         print('fuck we stoped')
 

@@ -85,7 +85,10 @@ class Handler:
                          80: self.merge_register,
                          81: self.complete_register,
                          94: self.contact_us,
-                         99: self.get_offers_by_product_company}
+                         99: self.get_offers_by_product_company,
+                         500: self.confirm_add_active_sell_offer,
+                         501: self.confirm_remove_active_sell_offer}
+
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -102,10 +105,11 @@ class Handler:
         to_return = []
         try:
             ans = self.user_controller.guest_login(argument['guest_id'])
-            offers_list = ans['liked_offers']
-            for offer in offers_list:
-                temp = vars(OfferService(offer))
-                to_return.append(temp)
+            # offers_list = ans['liked_offers']
+            # for offer in offers_list:
+            #     temp = vars(OfferService(offer))
+            #     if offer.confirm:
+            #         to_return.append(temp)
             self.user = ans['user']
             return Response({'liked_offers': to_return}, 'guest login Successfully', True)
         except Exception as e:
@@ -634,7 +638,8 @@ class Handler:
             offers_list = self.category_controller.get_offers_by_category(argument['category_name'])
             for offer in offers_list:
                 temp = vars(OfferService(offer))
-                to_return.append(temp)
+                if offer.confirm:
+                    to_return.append(temp)
             return Response(to_return, "Offers Lists (by category) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -646,7 +651,8 @@ class Handler:
                                                                               argument['sub_category_name'])
             for offer in offers_list:
                 temp = vars(OfferService(offer))
-                to_return.append(temp)
+                if offer.confirm:
+                    to_return.append(temp)
             return Response(to_return, "Offers Lists (by sub category) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -657,7 +663,8 @@ class Handler:
             offers_list = self.category_controller.get_offers_by_product_name(argument['name'])
             for offer in offers_list:
                 temp = vars(OfferService(offer))
-                to_return.append(temp)
+                if offer.confirm:
+                    to_return.append(temp)
             return Response(to_return, "Offers Lists (by product name) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -679,7 +686,8 @@ class Handler:
             offers_list = self.category_controller.get_hot_deals()
             for offer in offers_list:
                 temp = vars(OfferService(offer))
-                to_return.append(temp)
+                if offer.confirm:
+                    to_return.append(temp)
             return Response(to_return, "Offers Lists (hot deals) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -731,7 +739,8 @@ class Handler:
             offers_list = self.category_controller.get_offers_by_company_name(argument['company'])
             for offer in offers_list:
                 temp = vars(OfferService(offer))
-                to_return.append(temp)
+                if offer.confirm:
+                    to_return.append(temp)
             return Response(to_return, "Offers Lists (by product company) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -766,3 +775,10 @@ class Handler:
         for step in steps:
             ans[step['step_number']] = Step(step['limit'],step['price'])
         return ans
+
+    def confirm_add_active_sell_offer(self, argument):
+        self.category_controller.get_offer_by_offer_id(argument['offer_id']).confirm = True
+
+    def confirm_remove_active_sell_offer(self, argument):
+        offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
+        self.user_controller.remove_active_sale_offer(offer)

@@ -65,6 +65,7 @@ class repository():
                 category_id INTEGER NOT NULL,
                 sub_category_id INTEGER NOT NULL,
                 hot_deals BOOLEAN NOT NULL,
+                confirm BOOLEAN NOT NULL,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
                 FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id) ON DELETE CASCADE
@@ -145,6 +146,7 @@ class repository():
                 category_id INTEGER NOT NULL,
                 sub_category_id INTEGER NOT NULL,
                 hot_deals BOOLEAN NOT NULL,
+                confirm BOOLEAN NOT NULL,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
                 FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id) ON DELETE CASCADE
