@@ -62,7 +62,7 @@ class MY_OFFERS_Screen(Screen):
             #     self.lab.text = ""
             # if self.first_time_good_search is True:
             self.of.insert_offers(list=ans)
-            self.ids.offres_box.ids.offi.add_widget(self.of)
+            self.ids.offers_box.ids.offi.add_widget(self.of)
                 # self.first_time_good_search = False
             # else:
             #     self.of.insert_offers(list=ans)
@@ -77,7 +77,7 @@ class MY_OFFERS_Screen(Screen):
             # if self.first_time_bad_search is True:
                 self.lab.text = "0 liked offers"
                 # self.mes.add_widget(self.lab)
-                self.ids.offers_box.ids.offi.add_widget(self.of)
+                self.ids.offers_box.ids.offi.add_widget(self.lab)
                 # self.first_time_bad_search = False
             # else:
             #     self.lab.text = "0 liked offers.."

@@ -1,3 +1,5 @@
+import smtplib
+import ssl
 from datetime import datetime
 
 from BusinessLayer.Utils import CheckValidity
@@ -23,6 +25,8 @@ from BusinessLayer.Utils.OfferStatus import OfferStatus
 from BusinessLayer.Utils.CheckValidity import checkValidity
 from BusinessLayer.Utils.Gender import Gender
 
+from server.BusinessLayer.emailHandler import emailHandler
+
 
 class UserController:
     __instance = None
@@ -43,6 +47,7 @@ class UserController:
             self.offers_dao = OfferDAO(conn)
             self.usersDictionary = {}
             self.check = checkValidity()
+            self.emailHandler = emailHandler()
 
     def getme(self):
         print('return singelton')
@@ -77,6 +82,14 @@ class UserController:
         self.users_dao.update(userDTO)
         self.user_id += 1
         self.log_in(user_name, password)
+
+        msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
+        message = """\
+        Subject: welcome to share-it
+
+        """ + msg
+        self.emailHandler.sendemail(email, message)
+
         return user
 
     def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
@@ -90,6 +103,13 @@ class UserController:
         self.users_dao.insert(userDTO)
         self.user_id += 1
         self.log_in(user_name, password)
+        # send email
+        msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
+        message = """\
+        Subject: welcome to share-it
+
+        """ + msg
+        self.emailHandler.sendemail(email, message)
         return user
 
     def unregister(self, user_id):
@@ -289,6 +309,12 @@ class UserController:
         offerDTO = OfferDTO(offer)
         productDTO = offerDTO.productDTO
         self.offers_dao.insert(offerDTO, productDTO)
+        msg = "thank you for selling "
+        message = """\
+        Subject: you add offer successfully
+
+        """ + msg
+        self.emailHandler.sendemail(seller.get_email(), message)
 
     # add a buyer into an offer
     def add_active_buy_offer(self, user_id, offer, quantity, step_id, color, size, address):
@@ -304,6 +330,12 @@ class UserController:
         offer_DTO = OfferDTO(offer)
         self.offers_dao.add_active_buy_offer(offer_DTO, user_id, quantity, step_id, color, size, address)
         self.update_curr_step(offer)
+        msg = "thank you for buying "
+        message = """\
+        Subject: you joined successfully to offer
+
+        """ + msg
+        self.emailHandler.sendemail(buyer.get_email(), message)
 
 
     def add_like_offer(self, user_id, offer):
