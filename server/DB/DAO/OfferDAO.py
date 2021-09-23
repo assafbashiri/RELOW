@@ -5,10 +5,10 @@ class OfferDAO:
 
     def insert(self, offerDTO, productDTO):
         s = offerDTO.status
-        self._conn.execute("""INSERT INTO active_offers (offer_id,user_id,start_date,end_date,current_step,total_products,category_id,sub_category_id,hot_deals)
-         VALUES (?,?,?,?,?,?,?,?,?)""",
+        self._conn.execute("""INSERT INTO active_offers (offer_id,user_id,start_date,end_date,current_step,total_products,category_id,sub_category_id,hot_deals,confirm)
+         VALUES (?,?,?,?,?,?,?,?,?,?)""",
                            [offerDTO.offer_id,offerDTO.user_id, offerDTO.start_date, offerDTO.end_date,offerDTO.current_step,offerDTO.total_products, offerDTO.category_id,
-                            offerDTO.sub_category_id, offerDTO.hot_deals])
+                            offerDTO.sub_category_id, offerDTO.hot_deals,offerDTO.confirm])
         self._conn.commit()
         colors = self.build_string_from_list(productDTO.colors)
         sizes = self.build_string_from_list(productDTO.sizes)
@@ -27,10 +27,10 @@ class OfferDAO:
             self._conn.commit()
 
     def update(self, offerDTO):
-        self._conn.execute("""UPDATE active_offers set user_id=?,start_date=?,end_date=?,current_step=?,total_products=?,category_id=?,sub_category_id=?,hot_deals=?
+        self._conn.execute("""UPDATE active_offers set user_id=?,start_date=?,end_date=?,current_step=?,total_products=?,category_id=?,sub_category_id=?,hot_deals=?,confirm=?
          where offer_id=?""",
                            [offerDTO.user_id, offerDTO.start_date, offerDTO.end_date, offerDTO.current_step, offerDTO.total_products, offerDTO.category_id,
-                            offerDTO.sub_category_id, offerDTO.hot_deals, offerDTO.offer_id])
+                            offerDTO.sub_category_id, offerDTO.hot_deals, offerDTO.offer_id,offerDTO.confirm])
         self._conn.commit()
         productDTO = offerDTO.productDTO
         colors = self.build_string_from_list(productDTO.colors)
@@ -134,11 +134,12 @@ class OfferDAO:
             [user_id, offer_id, status.name, step])
 
     def insert_to_history_offers(self, offer_dto):
-        self._conn.execute(
-            """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?)""",
-            [offer_dto.offer_id, offer_dto.user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
-             offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
-             offer_dto.hot_deals])
+        pass
+        # self._conn.execute(
+        #     """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?)""",
+        #     [offer_dto.offer_id, offer_dto.user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
+        #      offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
+        #      offer_dto.hot_deals])
 
     def update_active_buy_offer(self, user_id, offer_id, quantity, step):
         self._conn.execute("""UPDATE active_buyers set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",

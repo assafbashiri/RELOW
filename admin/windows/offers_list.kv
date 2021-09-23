@@ -1,0 +1,29 @@
+#:import Label kivy.uix.button.Button
+
+<RecycleViewRow>
+    id: RecycleViewRow
+    orientation: 'vertical'
+    Button:
+        text: "load images"
+        size_hint: .2 , .2
+        on_press: self.parent.ids.car.insert(self.parent.photo_lis)
+
+    Carousel2:
+        photos: self.parent.photo_lis
+        id: car
+
+    Button:
+        text: "more"
+        size_hint: .2 , .2
+        on_press: root.www(self.parent.offer, self.parent.photo_lis)
+
+
+<Offers_Screen>
+    viewclass: 'RecycleViewRow'
+    RecycleBoxLayout:
+        default_size: None, dp(500)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        spacing:10

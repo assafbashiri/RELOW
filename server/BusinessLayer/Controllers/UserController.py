@@ -344,7 +344,7 @@ class UserController:
 
 
     def add_like_offer(self, user_id, offer):
-        user_temp = self.check_user_state(user_id)
+        user_temp = self.get_user_by_id(user_id)
         user_temp.add_like_offer(offer)
         self.offers_dao.add_like_offer(user_id, offer.offer_id)
 
@@ -404,7 +404,7 @@ class UserController:
         return user_temp.get_history_sell_offers()
 
     def get_liked_offers(self, user_id):
-        user_temp = self.check_user_state(user_id)
+        user_temp = self.get_user_by_id(user_id)
         return user_temp.get_liked_offers()
 
     def get_active_buy_offer(self, user_id, offer_id):

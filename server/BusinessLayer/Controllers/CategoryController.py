@@ -299,12 +299,15 @@ class CategoryController:
                 total_products = total_products_per_offer[o[0]]
 
             hot = False
-            if  o[8] == 1:
+            if o[8] == 1:
                 hot = True
 
+            confirm = False
+            if o[9] == 1:
+                confirm = True
 
             offer = Offer(o[0], o[1], all_products_dictionary[o[0]], o[6], o[7], OfferStatus.ACTIVE, all_steps_dictionary[o[0]], o[2],
-                          o[3], current_buyers, total_products,hot)
+                          o[3], current_buyers, total_products,hot, confirm)
 
             all_offers_to_return[o[0]] = offer
             self.category_dictionary[o[6]].add_offer_for_load(offer, o[7])
