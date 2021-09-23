@@ -25,7 +25,7 @@ from BusinessLayer.Utils.OfferStatus import OfferStatus
 from BusinessLayer.Utils.CheckValidity import checkValidity
 from BusinessLayer.Utils.Gender import Gender
 
-from server.BusinessLayer.emailHandler import emailHandler
+from BusinessLayer.emailHandler import emailHandler
 
 
 class UserController:
@@ -81,7 +81,7 @@ class UserController:
         self.usersDictionary[user_id] = user
         self.users_dao.update(userDTO)
         self.user_id += 1
-        self.log_in(user_name, password)
+        # self.log_in(user_name, password)
 
         msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
         message = """\
@@ -118,6 +118,11 @@ class UserController:
         self.logout(user_id)
         self.usersDictionary[user_id].active = False
         self.users_dao.unregister(user_id)
+
+    def complete_register(self, user_id):
+        self.usersDictionary[user_id].active = True
+        self.users_dao.complete_register(user_id)
+        self.log_in(self.usersDictionary[user_id].user_name, self.usersDictionary[user_id].password)
 
     def log_in(self, user_name, password):
         if not self.exist_user_name1(user_name):

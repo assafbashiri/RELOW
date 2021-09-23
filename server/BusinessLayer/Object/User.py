@@ -9,7 +9,7 @@ from BusinessLayer.Utils import CheckValidity
 class User():
     def __init__(self, next_user_id, first_name, last_name, user_name, email, password, birth_date, gender):
         # ---------- user submission
-        self.active = True
+        self.active = False
         self.is_logged = False
         self.user_id = next_user_id
         self.first_name = first_name

@@ -135,6 +135,8 @@ if __name__ == '__main__':
     Builder.load_file('windows/loginWindow.kv')
     Builder.load_file('windows/offers_list.kv')
     Builder.load_file('windows/my_offersWindow.kv')
+    Builder.load_file('windows/confirmationWindow.kv')
+    Builder.load_file('windows/contactWindow.kv')
     store = JsonStore('hello.json')
     a = OurClient()
     req_answers = Req_Answers()

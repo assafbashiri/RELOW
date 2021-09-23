@@ -1,0 +1,14 @@
+<CONFIRMATIONScreen>
+    id: confirm
+    name: 'confirmation_screen'
+    BoxLayout:
+        id: box
+        MDTextFieldRound:
+            id:code
+            hint_text: "CONFIRMATION CODE"
+
+
+        MDRoundFlatButton:
+            text:"OK"
+            font_size: 12
+            on_press: root.complete_register()

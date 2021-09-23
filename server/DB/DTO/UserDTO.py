@@ -11,7 +11,7 @@ class UserDTO:
         self.password = password
         self.birth_date = birth_date
         self.gender = gender
-        self.active = True
+        self.active = False
         self.is_logged = False
 
         # user address

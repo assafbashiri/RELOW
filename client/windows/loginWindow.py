@@ -146,7 +146,7 @@ class Login_box(BoxLayout):
         ans = App.get_running_app().controller.login(username, password)
         # after logout back to the main menu
         if ans.res is True:
-            self.parent.parent.back_to_main()
+            self.parent.parent.parent.back_to_main()
 
 
     def clear_login(self):
