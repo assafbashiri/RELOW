@@ -31,6 +31,8 @@ from windows.loginWindow import LOGINScreen
 from windows.addofferWindow import ADDOFFERScreen
 from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen
+from windows.contactWindow import CONTACTScreen
+from windows.confirmationWindow import CONFIRMATIONScreen
 
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen

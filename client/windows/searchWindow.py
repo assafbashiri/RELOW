@@ -58,6 +58,31 @@ class SEARCHScreen(Screen):
             # else:
             #     self.of.insert_offers(list=ans)
 
+    def search_by_company(self):
+        self.ids.search_box.ids.helper.remove_widget(self.lab)
+        self.ids.search_box.ids.helper.remove_widget(self.of)
+        prod_company = self.ids.search_box.ids.company.text
+        ans = App.get_running_app().controller.get_offers_by_product_company(prod_company)
+        # bad search
+        if len(ans) == 0:
+            self.of.insert_offers(list=[])
+            # if self.first_time_bad_search is True:
+            self.lab.text = "cant find offer"
+            # self.mes.add_widget(self.lab)
+            self.ids.search_box.ids.helper.add_widget(self.lab)
+            # self.first_time_bad_search = False
+            # else:
+            #     self.lab.text = "cant find offer.."
+        # good search
+        else:
+            # if self.first_time_bad_search is False:
+
+            # if self.first_time_good_search is True:
+            self.of.insert_offers(list=ans)
+            self.ids.search_box.ids.helper.add_widget(self.of)
+            # self.first_time_good_search = False
+            # else:
+            #     self.of.insert_offers(list=ans)
 
     def search_by_sub_category(self):
         self.ids.search_box.ids.helper.remove_widget(self.lab)

@@ -21,6 +21,16 @@
                 font_size: 12
                 on_press:root.parent.search_by_name()
 
+            MDTextFieldRound:
+                id:company
+                hint_text: "search by company"
+
+            MDRoundFlatButton:
+                id: search_by_company
+                text:"Search"
+                font_size: 12
+                on_press:root.parent.search_by_company()
+
             MDDropDownItem:
                 id: drop_category
                 pos_hint: {'center_x': .5, 'center_y': .5}
