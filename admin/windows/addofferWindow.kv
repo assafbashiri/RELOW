@@ -1,0 +1,161 @@
+<ADDOFFERScreen>
+    id: add_offer
+    name: 'add_offer_screen'
+    Add_offer_box:
+        id: add_offer_box
+
+
+<Add_offer_box>
+    #orientation: "horizontal"
+    id: add_offer_box
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    MDBoxLayout:
+        id: package
+        orientation: "vertical"
+
+        MDBoxLayout:
+            id:content
+            orientation: "vertical"
+
+
+
+            MDDropDownItem:
+                id: drop_category
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: 'category'
+                on_release: root.show_dropdown_category()
+
+
+            MDTextFieldRound:
+                id:product_name
+                text:'product name'
+                hint_text: "product name"
+
+            MDTextFieldRound:
+                id:company
+                text:'comapny'
+                hint_text: "company name"
+
+            MDTextFieldRound:
+                id:description
+                text:'description'
+                hint_text: "description"
+
+            MDTextFieldRound:
+                text : "11-11-22"
+                id:end_date
+                hint_text: "end date"
+                on_focus:root.show_date_picker()
+
+            BoxLayout:
+                orientation: 'horizontal'
+                id:colors
+                size_hint_y: .2
+
+                Button:
+                    id:color
+                    text: 'add color'
+                    on_press: root.add_color_start()
+
+            MDBoxLayout:
+                orientation: 'horizontal'
+                id: size_box
+                size_hint_y: .2
+
+                Button:
+                    id: add_size
+                    text: 'add size'
+                    on_press: root.add_size_start()
+
+
+            MDRoundFlatButton:
+                text:"ADD STEP"
+                font_size: 12
+                on_press: root.add_step()
+
+            MDGridLayout:
+                cols: 3
+                id: stepi
+                MDLabel:
+                    id: steps_label1
+                    text: "step 1"
+
+                MDTextFieldRound:
+                    text:'10'
+                    id:limit1
+                    hint_text: "limit"
+                    icon_right: "account"
+                    size_hint_x:None
+                    width:200
+
+
+
+                MDTextFieldRound:
+                    text:'1000'
+                    id:price1
+                    hint_text: "price"
+                    icon_right: "account"
+
+                MDLabel:
+                    id: steps_label2
+                    text: "step 2"
+
+
+                MDTextFieldRound:
+                    text:'30'
+                    id:limit2
+                    hint_text: "limit"
+                    icon_right: "account"
+                    size_hint_x:None
+                    width:200
+
+
+                MDTextFieldRound:
+                    text:'800'
+                    id:price2
+                    hint_text: "price"
+                    icon_right: "account"
+
+                MDLabel:
+                    id: steps_label3
+                    text: "step 3"
+
+                MDTextFieldRound:
+                    text:'50'
+                    id:limit3
+                    hint_text: "limit"
+                    icon_right: "account"
+                    size_hint_x:None
+                    width:200
+
+
+                MDTextFieldRound:
+                    text:'500'
+                    id:price3
+                    hint_text: "price"
+                    icon_right: "account"
+
+            MDRoundFlatButton:
+                text:"ADD PHOTO"
+                font_size: 12
+                on_press: root.ids.choose.file_manager_open()
+
+            choose_photo_layout:
+                id: choose
+                size_hint_y: .2
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                #orientation: "vertical"
+
+            MDRoundFlatButton:
+                text:"REMOVE PHOTO"
+                font_size: 12
+                on_press: root.ids.choose.remove_photo()
+
+            MDRoundFlatButton:
+                id: add_offer_button
+                text:"ADD OFFER"
+                font_size: 12
+                on_press: root.add_offer()
+
+    Side_box:
+        id:side_box
