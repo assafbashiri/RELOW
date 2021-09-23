@@ -644,6 +644,31 @@ class Backend_controller:
         print(ans.message)
         return ans
 
+    def complete_register(self, code):
+        complegte_register_req = {'op': 81, 'code': int(code)}
+        self.req_answers.add_request(complegte_register_req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        return ans
+
+    def get_offers_by_product_company(self, company):
+        offers = []
+        req = {'op': 99, 'company': company}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search - offers_by_product_company")
+        return offers
+
+    def contact_us(self, subject, description):
+        req = {'op': 94, 'subject': subject, 'description': description}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
     def exit(self):
         self.logout()
         exit_req = {'op': 55}
@@ -687,3 +712,6 @@ class Backend_controller:
 
     def get_user_service(self):
         return self.user_service
+
+
+

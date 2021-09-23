@@ -82,7 +82,10 @@ class Handler:
                          56: self.get_all_categories,
                          78 : self.guest_register,
                          79 : self.guest_login,
-                         80: self.merge_register}
+                         80: self.merge_register,
+                         81: self.complete_register,
+                         94: self.contact_us,
+                         99: self.get_offers_by_product_company}
 
     # ------------------------------------------------userController----------------------------------------------------
 
@@ -707,6 +710,41 @@ class Handler:
             self.remove_active_buy_offer(argument)
             self.add_active_buy_offer(argument)
             return Response(None, "purchase Updated Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def complete_register(self, argument):
+        code = argument['code']
+        user_id = self.user.user_id
+        if code == user_id:
+            try:
+                self.user_controller.complete_register(user_id)
+                return Response(None, 'good confirmation', True)
+            except Exception as e:
+                    return Response(None, str(e), False)
+        else:
+            return Response(None, 'the code is incorrect', False)
+
+    def get_offers_by_product_company(self, argument):
+        to_return = []
+        try:
+            offers_list = self.category_controller.get_offers_by_company_name(argument['company'])
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                to_return.append(temp)
+            return Response(to_return, "Offers Lists (by product company) Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def contact_us(self, argument):
+        try:
+            msg = argument['subject'] + ":\n " + argument['description'] + "\n user_id:" + str(self.user.user_id)
+            message = """\
+            Subject: contact from client
+
+            """ + msg
+            self.user_controller.emailHandler.sendemail("shareit1256@gmail.com", message)
+            return Response(True, "contact good", True)
         except Exception as e:
             return Response(None, str(e), False)
 

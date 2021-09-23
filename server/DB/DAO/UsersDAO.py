@@ -109,6 +109,10 @@ class UsersDAO:
         # self._conn.commit()
 
     # update users_submission
+    def complete_register(self, user_id):
+        self._conn.execute("""UPDATE users_submission set active = ? WHERE user_id = ?""",
+                           [True, user_id])
+        self._conn.commit()
 
     def unregister(self, user_id):
         self._conn.execute("""UPDATE users_submission set active = ? WHERE user_id = ?""",
