@@ -217,6 +217,10 @@ class OfferWindow(Popup):
         self.update.bind(on_press=lambda x: self.update_offer())
         # self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.update)
+        self.remove_offer_bt = Button(text="REMOVE OFFER")
+        self.remove_offer_bt.bind(on_press=lambda x: self.remove_offer())
+        # self.join_offer.add_widget(self.quantity)
+        self.join_offer.add_widget(self.remove_offer_bt)
         self.box.add_widget(self.join_offer)
         self.back = Button(text="BACK")
         self.back.bind(on_press=lambda x: self.out())
@@ -441,6 +445,13 @@ class OfferWindow(Popup):
     def update_purchase(self):
         self.controller.update_purchase(self.offer_id, self.quantity.text, self.step.text, self.color.text,
                                         self.size.text)
+    def remove_offer(self):
+        self.dismiss()
+        ans = self.controller.remove_active_sell_offer(self.offer_id)
+        if ans.res is True:
+
+            # have to return to the offers list screen
+            pass
 
     def update_offer(self):
         self.dismiss()
