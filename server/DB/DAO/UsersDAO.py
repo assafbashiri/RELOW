@@ -167,6 +167,6 @@ class UsersDAO:
              userDTO.card_type, userDTO.id_number, userDTO.user_id])
         self._conn.commit()
 
-        def delete_guest(self, guest_id):
-            self._conn.execute("DELETE FROM users_submission WHERE user_id=?", [guest_id])
-            self._conn.commit()
+    def delete_guest(self, guest_id):
+        self._conn.execute("DELETE FROM users_submission WHERE user_id=?", [guest_id])
+        self._conn.commit()
