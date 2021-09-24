@@ -13,6 +13,8 @@ from windows.SideBar import SideBar
 from datetime import datetime
 from kivymd.toast import toast
 import csv
+import requests
+import json
 
 from windows.offers_list import Offers_Screen
 
@@ -298,7 +300,8 @@ class BoxiLayout(BoxLayout):
 
     def show_dropdown_address(self):
         addresses={}
-        addresses = self.get_adress_list()
+        # addresses = self.get_adress_list()
+        addresses = self.get_countries_cities_dict()
         menu_items = []
         for address in addresses:
             menu_items.append(
@@ -370,6 +373,19 @@ class BoxiLayout(BoxLayout):
 
 
             return city_dictionary
+
+    def get_countries_cities_dict(self):
+        response = requests.get('https://countriesnow.space/api/v0.1/countries/population/cities')
+        data = response.json()
+        cities = {}
+        for elem in data['data']:
+            if elem['country'] not in cities.keys():
+                cities[elem['country']] = []
+                cities[elem['country']].append(elem['city'])
+            else:
+                cities[elem['country']].append(elem['city'])
+
+        return cities
 
 
 

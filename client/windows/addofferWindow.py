@@ -143,6 +143,11 @@ class Add_offer_box(BoxLayout):
         self.ids.stepi.add_widget(temp3)
 
     def add_offer(self):
+        cont = App.get_running_app().controller
+        if App.get_running_app().controller.guest:
+            label = MDLabel(text="please log in")
+            self.add_widget(label)
+            return
         list = [v for k,v in self.ids.choose.photo_list.items()]
         # list = self.ids.choose.photo_list.values() #convert dict to list
         if not self.check_steps_validity():

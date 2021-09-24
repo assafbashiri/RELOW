@@ -582,7 +582,7 @@ class Backend_controller:
     # ------------------- Admin Functions ---------------------------------------------------------------------
     def get_all_waiting_offers(self):
         offers = []
-        req = {'op': 22}
+        req = {'op': 502}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -593,7 +593,7 @@ class Backend_controller:
         return offers
 
     def confirm_add_active_sell_offer(self, offer_id):
-        req = {'op': 500}
+        req = {'op': 500, 'offer_id':offer_id}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -713,7 +713,7 @@ class Backend_controller:
             offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
                                       x['status'],
                                       x['steps'], x['start_date'], x['end_date'], x['current_step'],
-                                      x['current_buyers'])
+                                      x['current_buyers'], x['confirm'])
 
             offers.append(offer_temp)
         return offers
@@ -722,7 +722,7 @@ class Backend_controller:
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
                                   x['status'],
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
-                                  x['current_buyers'], x['category_name'], x['sub_category_name'])
+                                  x['current_buyers'], x['category_name'], x['sub_category_name'], x['confirm'])
         return offer_temp
 
     def build_user(self, data):

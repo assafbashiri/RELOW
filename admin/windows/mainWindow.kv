@@ -22,10 +22,15 @@
             root.parent.parent.manager.current = 'menu_screen'
 
     Button:
-        text: "ACCOUNT"
+        text: "confirm offers"
         on_press:
             root.parent.parent.manager.current = 'account_screen';
-            root.parent.parent.manager.ids.account.ids.account_box.ids.boxi.init_fields()
+
+    Button:
+        text: "manage hot deals"
+        on_press:
+            root.parent.parent.manager.current = 'connect_screen'
+
     Button:
         text: "SEARCH"
         on_press:
@@ -34,10 +39,6 @@
         text: "CAT"
         on_press:
             root.parent.change_to_cat()
-    Button:
-        text: "CONNECT"
-        on_press:
-            root.parent.parent.manager.current = 'connect_screen'
 
     Button:
         text: "ADD OFFER"

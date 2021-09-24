@@ -131,6 +131,8 @@ class User():
             return False
         self.active_sale_offers.pop(offer_to_move.offer_id, None)
         self.add_to_history_seller(offer_to_move)
+        return True
+    # try catch
 
     def add_to_history_buyer(self, offer_to_add):
         if offer_to_add.offer_id in self.history_buy_offers:

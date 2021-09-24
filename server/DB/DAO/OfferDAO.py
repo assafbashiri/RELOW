@@ -32,7 +32,7 @@ class OfferDAO:
                            [offerDTO.user_id, offerDTO.start_date, offerDTO.end_date, offerDTO.current_step, offerDTO.total_products, offerDTO.category_id,
                             offerDTO.sub_category_id, offerDTO.hot_deals, offerDTO.offer_id,offerDTO.confirm])
         self._conn.commit()
-        productDTO = offerDTO.productDTO
+        productDTO = offerDTO.product
         colors = self.build_string_from_list(productDTO.colors)
         sizes = self.build_string_from_list(productDTO.sizes)
         self._conn.execute(

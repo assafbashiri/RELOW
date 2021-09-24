@@ -49,6 +49,9 @@ class Account_box(BoxLayout):
     def change_to_cat(self):
         SideBar.change_to_cat(self)
 
+    def init_fields(self):
+        a = 5
+
 
 class Sub_Category_box(BoxLayout):
     pass

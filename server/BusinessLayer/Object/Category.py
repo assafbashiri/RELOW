@@ -74,6 +74,7 @@ class Category:
                 all_category_offers.extend(curr_sub_category_offers)
         return all_category_offers
 
+
     def get_offers_by_sub_category(self, sub_category_id):
         #already checked if sub category exist
         return self.sub_categories_dictionary[sub_category_id].get_offers()

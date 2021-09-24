@@ -33,6 +33,7 @@ class OfferService:
             self.current_buyers.append(temp)
         # self.category_name = business_offer.category_name
         # self.sub_category_name - business_offer.sub_category_name
+        self.confirm = business_offer.confirm
 
 # --------------------------------------------GETTERS--------------------------------------------------------------
     def get_offer_id(self):
