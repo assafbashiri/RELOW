@@ -84,11 +84,13 @@ class Handler:
                          79 : self.guest_login,
                          80: self.merge_register,
                          81: self.complete_register,
+                         82: self.log_in_from_guest,
                          94: self.contact_us,
                          99: self.get_offers_by_product_company,
                          500: self.confirm_add_active_sell_offer,
                          501: self.confirm_remove_active_sell_offer,
                          502: self.get_offers_to_confirm}
+
 
 
     # ------------------------------------------------userController----------------------------------------------------
@@ -155,11 +157,19 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    def log_in(self, argument):
+    def log_in_from_guest(self, argument):
         try:
             user = self.user_controller.log_in(argument['user_name'], argument['password'])
             self.user = user
             self.user_controller.delete_guest(argument['guest_id'])
+            return Response(vars(UserService(user)), "Log-In Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def log_in(self, argument):
+        try:
+            user = self.user_controller.log_in(argument['user_name'], argument['password'])
+            self.user = user
             return Response(vars(UserService(user)), "Log-In Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
