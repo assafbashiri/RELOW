@@ -81,52 +81,52 @@ class OfferDAO:
                            [offer_id, user_id])
         self._conn.commit()
 
-    def update_end_date(self, offer_id, new_end_date):
-        self._conn.execute("""UPDATE active_offers set end_date = ? WHERE offer_id = ?""",
-                           [new_end_date, offer_id])
-        self._conn.commit()
-
-    def update_start_date(self, offer_id, new_start_date):
-        self._conn.execute("""UPDATE active_offers set start_date = ? WHERE offer_id = ?""",
-                           [new_start_date, offer_id])
-        self._conn.commit()
-
-    def update_step(self, offer_id, step):
-        self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
-                           [step, offer_id])
-        self._conn.commit()
-
-    def update_step(self, offer_id, step):
-        self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
-                           [step, offer_id])
-        self._conn.commit()
-
-    def update_product_name(self, offer_id, name):
-        self._conn.execute("""UPDATE products set name = ? WHERE offer_id = ?""",
-                           [name, offer_id])
-        self._conn.commit()
-
-    def update_product_company(self, offer_id, company):
-        self._conn.execute("""UPDATE products set company = ? WHERE offer_id = ?""",
-                           [company, offer_id])
-        self._conn.commit()
-
-    def update_product_colors(self, offer_id, colors1):
-        colors = self.build_string_from_list(colors1)
-        self._conn.execute("""UPDATE products set colors = ? WHERE offer_id = ?""",
-                           [colors, offer_id])
-        self._conn.commit()
-
-    def update_product_sizes(self, offer_id, sizes1):
-        sizes = self.build_string_from_list(sizes1)
-        self._conn.execute("""UPDATE products set sizes = ? WHERE offer_id = ?""",
-                           [sizes, offer_id])
-        self._conn.commit()
-
-    def update_product_description(self, offer_id, description):
-        self._conn.execute("""UPDATE products set description = ? WHERE offer_id = ?""",
-                           [description, offer_id])
-        self._conn.commit()
+    # def update_end_date(self, offer_id, new_end_date):
+    #     self._conn.execute("""UPDATE active_offers set end_date = ? WHERE offer_id = ?""",
+    #                        [new_end_date, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_start_date(self, offer_id, new_start_date):
+    #     self._conn.execute("""UPDATE active_offers set start_date = ? WHERE offer_id = ?""",
+    #                        [new_start_date, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_step(self, offer_id, step):
+    #     self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
+    #                        [step, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_step(self, offer_id, step):
+    #     self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
+    #                        [step, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_product_name(self, offer_id, name):
+    #     self._conn.execute("""UPDATE products set name = ? WHERE offer_id = ?""",
+    #                        [name, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_product_company(self, offer_id, company):
+    #     self._conn.execute("""UPDATE products set company = ? WHERE offer_id = ?""",
+    #                        [company, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_product_colors(self, offer_id, colors1):
+    #     colors = self.build_string_from_list(colors1)
+    #     self._conn.execute("""UPDATE products set colors = ? WHERE offer_id = ?""",
+    #                        [colors, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_product_sizes(self, offer_id, sizes1):
+    #     sizes = self.build_string_from_list(sizes1)
+    #     self._conn.execute("""UPDATE products set sizes = ? WHERE offer_id = ?""",
+    #                        [sizes, offer_id])
+    #     self._conn.commit()
+    #
+    # def update_product_description(self, offer_id, description):
+    #     self._conn.execute("""UPDATE products set description = ? WHERE offer_id = ?""",
+    #                        [description, offer_id])
+    #     self._conn.commit()
 
     def insert_to_history_buyers(self, user_id, offer_id, status, step):
         self._conn.execute(
@@ -134,12 +134,11 @@ class OfferDAO:
             [user_id, offer_id, status.name, step])
 
     def insert_to_history_offers(self, offer_dto):
-        pass
-        # self._conn.execute(
-        #     """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?)""",
-        #     [offer_dto.offer_id, offer_dto.user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
-        #      offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
-        #      offer_dto.hot_deals])
+        self._conn.execute(
+            """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals,confirm) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            [offer_dto.offer_id, offer_dto.user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
+             offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
+             offer_dto.hot_deals,offer_dto.confirm])
 
     def update_active_buy_offer(self, user_id, offer_id, quantity, step):
         self._conn.execute("""UPDATE active_buyers set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",

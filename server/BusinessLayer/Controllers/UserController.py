@@ -102,7 +102,7 @@ class UserController:
         self.usersDictionary[user.user_id] = user
         self.users_dao.insert(userDTO)
         self.user_id += 1
-        self.log_in(user_name, password)
+#        self.log_in(user_name, password)
         # send email
         msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
         message = """\
