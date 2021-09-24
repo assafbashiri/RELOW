@@ -78,11 +78,12 @@ class Update_offer_box(BoxLayout):
         self.limit = []
         self.color_list = []
         self.color_dropdown = DropDown()
-        colors = ['green','black', 'blue', 'white']
-        for color in colors:
+        self.colors = ['green','black', 'blue', 'white']
+        for color in self.colors:
             btn = Button(text=' % s' % color, size_hint=(None, None), height=40)
             btn.bind(on_release=lambda btn: self.add_color(btn))
             self.color_dropdown.add_widget(btn)
+
         self.color_mainbutton = Button(text='colors')
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
 
@@ -94,8 +95,13 @@ class Update_offer_box(BoxLayout):
 
         self.chosen_cat_name = 'fix this name'
 
+
     def init_text_fields_with_offer_details(self, offer):
-        self.offer = offer
+        #(self, offer_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date,
+           #      current_step, current_buyers)
+        #self.offer = OfferService(offer['offer_id'])
+        self.sub_cat12 = 'change this name'
+        self.offer=offer
         self.ids.product_name.text = offer.product.name
         self.ids.company.text = offer.product.company
         self.ids.description.text = offer.product.description
@@ -121,6 +127,59 @@ class Update_offer_box(BoxLayout):
             self.ids.sizes.text = size
             self.add_size(size)
             self.ids.sizes.text = ""
+        self.size_mainbutton.bind(on_press=self.size_dropdown.open)
+        #self.color_list
+        # for color in offer.product.colors:
+        #     self.ids.sizes.text = size
+        #     self.add_color(color)
+        #     self.ids.sizes.text = ""
+        for btn in self.color_dropdown.children[0].children:
+            if btn.text in self.offer.product.colors:
+                self.add_color(btn)
+
+
+
+        # for limit in self.limit:
+        #     limit.text = ""
+        #
+        # for price in self.price:
+        #     price.text = ""
+
+    def init_text_fields_after_update(self, offer):
+        #(self, offer_id, user_id, product, category_id, sub_category_id, status, steps, start_date, end_date,
+           #      current_step, current_buyers)
+
+        #offer_product = offer[product]
+        #self.offer = OfferService(offer['offer_id'])
+        self.sub_cat12 = 'change this name'
+        self.offer=offer
+        self.ids.product_name.text = offer.product.name
+        self.ids.company.text = offer.product.company
+        self.ids.description.text = offer.product.description
+        self.ids.end_date.text = str(offer.end_date)
+        # self.ids.end_date.text = ""
+        # self.ids.size_box.text = ""
+        #self.size_input.text = ""
+
+
+        self.ids.limit1.text = str(offer.steps[1].limit)
+        self.ids.limit2.text = str(offer.steps[2].limit)
+        self.ids.limit3.text = str(offer.steps[3].limit)
+        self.ids.price1.text = str(offer.steps[1].price)
+        self.ids.price2.text = str(offer.steps[2].price)
+        self.ids.price3.text = str(offer.steps[3].price)
+        #cat_name = App.get_running_app().controller.get_category_by_id(offer.category_id).name
+        self.ids.drop_category.text = 'cat_name'
+        #self.ids.drop_category.text = offer.product.sub_category_name
+
+        for size in offer.product.sizes:
+            self.ids.sizes.text = size
+            self.add_size(size)
+            self.ids.sizes.text = ""
+        self.size_mainbutton.bind(on_press=self.size_dropdown.open)
+        # self.size_dropdown = DropDown()
+        # btn.bind(on_release=lambda btn: self.remove_size(btn))
+        # self.size_mainbutton = Button(text='sizes')
 
         # for color in offer.product.colors:
         #     self.ids.sizes.text = size
@@ -162,7 +221,8 @@ class Update_offer_box(BoxLayout):
         btn = Button(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_dropdown.add_widget(btn)
-        self.size_list.append(text)
+        if text not in self.size_list:
+            self.size_list.append(text)
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
         #     self.size_list.remove(instance.text)
@@ -173,7 +233,7 @@ class Update_offer_box(BoxLayout):
 
     def remove_size(self, btn):
         self.size_dropdown.remove_widget(btn)
-#        self.size_list.remove(btn.text)
+        self.size_list.remove(btn.text)
 
     def add_color(self, instance):
         if instance.text in self.color_list:
@@ -201,6 +261,8 @@ class Update_offer_box(BoxLayout):
 
         if not self.check_steps_validity():
             return
+        if not self.check_empty_fields():
+            return
         list = [v for k, v in self.ids.choose.photo_list.items()]
         # list = self.ids.choose.photo_list.values() #convert dict to list
         name = self.ids.product_name.text
@@ -223,14 +285,25 @@ class Update_offer_box(BoxLayout):
                                                             self.offer.user_id, name, company, colors, sizes,
                                                             description, steps, end_date)
 
-        toast(ans.message)
         # have to change the fields of this offer
         if ans.res is True:
-            self.offer = ans.data
-            self.init_text_fields_with_offer_details(self.offer)
-            #?self.clear_fields()
+            updated_offer = ans.data
 
+            self.offer = OfferService(updated_offer['offer_id'], updated_offer['user_id'], updated_offer['product'], updated_offer['category_id'], updated_offer['sub_category_id'], updated_offer['status'],
+                         updated_offer['steps'],updated_offer['start_date'],updated_offer['end_date'],updated_offer['current_step'],updated_offer['current_buyers'])
+            self.init_text_fields_after_update(self.offer)
 
+    def check_empty_fields(self):
+        if self.ids.end_date.text == "":
+            toast("have to chose end date")
+            return False
+        if self.size_list == []:
+            toast("have to add size")
+            return False
+        if self.color_list == []:
+            toast("have to add color")
+            return False
+        return True
 
     def check_steps_validity(self):
         step1limit = int(self.ids.limit1.text)
