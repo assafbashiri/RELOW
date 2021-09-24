@@ -349,7 +349,7 @@ class UserController:
         self.offers_dao.add_like_offer(user_id, offer.offer_id)
 
     def remove_like_offer(self, user_id, offer_id_to_remove):
-        user_temp = self.check_user_state(user_id)
+        user_temp = self.get_user_by_id(user_id)
         flag = user_temp.remove_from_liked_offers(offer_id_to_remove)
         if not flag:
             raise Exception("offer didnt exist in 'Liked Offers'")

@@ -219,13 +219,15 @@ class Update_offer_box(BoxLayout):
         if self.num_of_added_step > 0:
             for i in range(0, self.num_of_added_step):
                 steps.append(vars(StepService(0, self.price[i].text, i+4, self.limit[i].text)))
-        ans = App.get_running_app().controller.update_offer(self.offer.offer_id, self.chosen_cat_name, self.sub_cat12, self.offer.user_id,name, company, colors, sizes, description
-                              , steps, end_date)
+        ans = App.get_running_app().controller.update_offer(self.offer.offer_id, self.chosen_cat_name, self.sub_cat12,
+                                                            self.offer.user_id, name, company, colors, sizes,
+                                                            description, steps, end_date)
 
         toast(ans.message)
         # have to change the fields of this offer
         if ans.res is True:
-            pass
+            self.offer = ans.data
+            self.init_text_fields_with_offer_details(self.offer)
             #?self.clear_fields()
 
 
