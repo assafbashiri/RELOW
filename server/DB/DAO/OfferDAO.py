@@ -13,10 +13,18 @@ class OfferDAO:
         colors = self.build_string_from_list(productDTO.colors)
         sizes = self.build_string_from_list(productDTO.sizes)
 
+        photos_to_write = []
+        for i in range(0,len(productDTO.photos)):
+            photos_to_write.append([productDTO.photos[i]])
+        for i in range(len(productDTO.photos),10):
+            photos_to_write.append(None)
+
+
         self._conn.execute(
-            """INSERT INTO products (offer_id,name, company, colors, sizes, description) VALUES (?,?,?,?,?,?)""",
+            """INSERT INTO products (offer_id,name, company, colors, sizes, description,photo1) VALUES (?,?,?,?,?,?,?)""",
             [productDTO.offer_id, productDTO.name, productDTO.company, colors, sizes,
-             productDTO.description
+             productDTO.description,photos_to_write[0],photos_to_write[1],photos_to_write[2],photos_to_write[3],
+             photos_to_write[4],photos_to_write[5],photos_to_write[6],photos_to_write[7],photos_to_write[8],photos_to_write[9]
              ])
         self._conn.commit()
         for numOfStep in offerDTO.steps.keys():
