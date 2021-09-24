@@ -124,9 +124,26 @@ class Backend_controller:
     def register_unregister_json(self, flag):
         pass
 
+    def login_from_exist_user(self, user_name, password):
+        store = JsonStore('hello.json')
+        login_req = {'op': 3, 'user_name': user_name, 'password': password}
+        self.req_answers.add_request(login_req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        if ans.res is True:
+            # JSON
+            if store.exists('user_guest'):
+                self.store.delete('user_guest')
+            self.store.put("user", user_id=ans.data['user_id'],
+                           username=ans.data['user_name'],
+                           password=ans.data['password'])
+            self.user_service = self.build_user(ans.data)
+            self.guest = False
+        return ans
+
     def login(self, user_name, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 3, 'user_name': user_name, 'password': password, 'guest_id': self.user_service.user_id}
+        login_req = {'op': 82, 'user_name': user_name, 'password': password, 'guest_id': self.user_service.user_id}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)

@@ -140,7 +140,7 @@ class TestApp(MDApp):
             user = store.get('user')
             username = user['username']
             password = user['password']
-            self.controller.login(username, password)
+            self.controller.login_from_exist_user(username, password)
             a = 8
             print("welcome back")
         elif store.exists('user_guest'):
