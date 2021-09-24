@@ -73,7 +73,7 @@ class OfferWindow(Popup):
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())+"/"+str(step.get_limit())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
@@ -170,7 +170,7 @@ class OfferWindow(Popup):
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            self.people_per_step.add_widget(MDLabel(text='people:' +str(step.get_buyers_amount())+'/'+str(step.get_limit())))
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())+"/"+str(step.get_limit())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
@@ -258,7 +258,7 @@ class OfferWindow(Popup):
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())+"/"+str(step.get_limit())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
@@ -323,7 +323,7 @@ class OfferWindow(Popup):
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())))
+            self.people_per_step.add_widget(MDLabel(text='people:' + str(step.get_buyers_amount())+"/"+str(step.get_limit())))
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
