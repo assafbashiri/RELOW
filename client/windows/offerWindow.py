@@ -151,9 +151,9 @@ class OfferWindow(Popup):
                 data.seek(0)
                 img = CoreImage(data, ext="png").texture
 
-            new_img = Image()
-            new_img.texture = img
-            self.carousel.add_widget(new_img)
+                new_img = Image()
+                new_img.texture = img
+                self.carousel.add_widget(new_img)
         self.box.add_widget(self.carousel)
         self.slider = MDSlider()
         self.slider.min = 0

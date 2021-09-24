@@ -136,6 +136,20 @@ class CategoryController:
             self.remove_offer(offer.offer_id)
         return ans
 
+    def get_offers_to_confirm(self):
+        ans = []
+        for category_id in self.category_dictionary.keys():
+            category_offers = self.category_dictionary[category_id].get_offers()
+            if category_offers is not None:
+                ans.extend(category_offers)
+        return ans
+
+    def confirm_offer(self, offer):
+        offer.confirm = True
+        offer_update = self.offerDAO.update(offer)
+        return offer
+
+
     # ------------------------------------------------update -----------------------------------------------------
 
     # check input validity in client layer
@@ -274,6 +288,8 @@ class CategoryController:
 
     # return list of all offers
     def load_all_offers(self):
+        # all_history_offers = self.offerDAO.load_history_sellers()
+        # all_history_buyers = self.offerDAO.load_history_buyers()
         all_offers_to_return = {}
         # load_all offers for each sub category
         all_offers = self.offerDAO.load_all_offers()

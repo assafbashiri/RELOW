@@ -151,7 +151,7 @@ class UserService():
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
                                   x['status'],
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
-                                  x['current_buyers'])
+                                  x['current_buyers'], x['confirm'])
         return offer_temp
 
 

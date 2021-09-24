@@ -87,7 +87,8 @@ class Handler:
                          94: self.contact_us,
                          99: self.get_offers_by_product_company,
                          500: self.confirm_add_active_sell_offer,
-                         501: self.confirm_remove_active_sell_offer}
+                         501: self.confirm_remove_active_sell_offer,
+                         502: self.get_offers_to_confirm}
 
 
     # ------------------------------------------------userController----------------------------------------------------
@@ -669,6 +670,18 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
+    def get_offers_to_confirm(self, argument):
+        to_return = []
+        try:
+            offers_list = self.category_controller.get_offers_to_confirm()
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                if offer.confirm is False:
+                    to_return.append(temp)
+            return Response(to_return, "Offers Lists (by product name) Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
     # def get_offers_by_status(self, argument):
     #     to_return = []
     #     try:
@@ -777,7 +790,12 @@ class Handler:
         return ans
 
     def confirm_add_active_sell_offer(self, argument):
-        self.category_controller.get_offer_by_offer_id(argument['offer_id']).confirm = True
+        try:
+            offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
+            ans = self.category_controller.confirm_offer(offer)
+            return Response(vars(OfferService(ans)), "confirm offer succes", True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def confirm_remove_active_sell_offer(self, argument):
         offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])

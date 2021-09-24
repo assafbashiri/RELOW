@@ -99,6 +99,8 @@ class TestApp(MDApp):
     def on_start(self):
         b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.get_hot_deals())
+        bb = self.root.ids.account.ids.account_box.ids.recycle2.insert_offers(
+            list=App.get_running_app().controller.get_all_waiting_offers())
         a = self.root.current_screen.ids.menu_box.ids.recycle1
         q = self.root.current_screen
 

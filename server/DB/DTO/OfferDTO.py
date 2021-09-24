@@ -14,5 +14,5 @@ class OfferDTO:
         self.steps = offer.get_steps()
         self.total_products = offer.get_total_products()
         self.hot_deals = offer.get_hot_deals()
-        self.productDTO = ProductDTO(offer.product)
+        self.product = ProductDTO(offer.product)
         self.confirm = offer.confirm
