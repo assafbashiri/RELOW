@@ -127,19 +127,20 @@ class Backend_controller:
         # self.store['user'] = user
 
     def login(self, user_name, password):
-        # is_logged = self.store['user']['user_info']['is_logged']
-        # if is_logged is True:
-        #     toast("already log in")
-        #     return Response(None, None, False)
+        store = JsonStore('hello.json')
         login_req = {'op': 3, 'user_name': user_name, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
         if ans.res is True:
             # JSON
-            # self.login_logout_json(True)
-            # FIELD
+            if store.exists('user_guest'):
+                self.store.delete('user_guest')
+            self.store.put("user", user_id=ans.data['user_id'],
+                           username=ans.data['user_name'],
+                           password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
+            self.guest = False
         return ans
 
     # def login_logout_json(self, flag):

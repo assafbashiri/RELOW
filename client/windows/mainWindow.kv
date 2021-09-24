@@ -24,9 +24,7 @@
     Button:
         text: "ACCOUNT"
         on_press:
-            root.helper();
-            #root.parent.parent.manager.current = 'account_screen';
-            #root.parent.parent.manager.ids.account.ids.account_box.ids.boxi.init_fields()
+            root.move_to_account();
     Button:
         text: "SEARCH"
         on_press:
@@ -43,7 +41,8 @@
     Button:
         text: "ADD OFFER"
         on_press:
-            root.parent.parent.manager.current = 'add_offer_screen'
+            root.move_to_add_offer()
+
 
     Button:
         text: "MY OFFERS"
@@ -53,8 +52,7 @@
     Button:
         text: "CONTACT US"
         on_press:
-            root.parent.parent.manager.current = 'contact_us_screen'
-
+            root.move_to_contact_us()
 
 
 <Category_box>
