@@ -170,3 +170,9 @@ class UsersDAO:
     def delete_guest(self, guest_id):
         self._conn.execute("DELETE FROM users_submission WHERE user_id=?", [guest_id])
         self._conn.commit()
+        self._conn.execute("DELETE FROM users_address WHERE user_id=?", [guest_id])
+        self._conn.commit()
+        self._conn.execute("DELETE FROM users_payment WHERE user_id=?", [guest_id])
+        self._conn.commit()
+        self._conn.execute("DELETE FROM users_extra_details WHERE user_id=?", [guest_id])
+        self._conn.commit()
