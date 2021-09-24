@@ -15,6 +15,7 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
 from kivy.uix.button import Button
+from kivymd.toast import toast
 from kivymd.uix.label import MDLabel
 # from kivy.config import Config
 # Config.set('kivy', 'exit_on_escape', '0')
@@ -58,7 +59,15 @@ class Manager(ScreenManager):
 
 
 class Side_box(BoxLayout):
-    pass
+    def helper(self):
+        a = App.get_running_app()
+        b = a.controller
+        if b.guest is True:
+            toast("guest cant go to account")
+            return
+        App.get_running_app().root.current = 'account_screen'
+        App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
+        print('bolbol')
 
 
 class Category_box(BoxLayout):

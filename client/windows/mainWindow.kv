@@ -24,8 +24,9 @@
     Button:
         text: "ACCOUNT"
         on_press:
-            root.parent.parent.manager.current = 'account_screen';
-            root.parent.parent.manager.ids.account.ids.account_box.ids.boxi.init_fields()
+            root.helper();
+            #root.parent.parent.manager.current = 'account_screen';
+            #root.parent.parent.manager.ids.account.ids.account_box.ids.boxi.init_fields()
     Button:
         text: "SEARCH"
         on_press:
