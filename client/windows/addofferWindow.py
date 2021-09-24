@@ -39,7 +39,7 @@ from kivymd.uix.picker import MDDatePicker
 
 from Service.Object.StepService import StepService
 
-from client.Utils.CheckValidity import CheckValidity
+from Utils.CheckValidity import CheckValidity
 
 
 class ADDOFFERScreen(Screen):
