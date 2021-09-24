@@ -335,7 +335,7 @@ class CategoryController:
         for s in all_steps:
             if s[0] not in all_steps_dictionary.keys():
                 all_steps_dictionary[s[0]] = {}
-            step = Step(s[2], s[3])
+            step = Step(s[3], s[4], s[2])
             all_steps_dictionary[s[0]][s[1]] = step
 
     def load_all_products(self, all_products, all_products_dictionary):

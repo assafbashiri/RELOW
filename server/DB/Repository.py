@@ -19,7 +19,6 @@ class repository():
                 password TEXT,
                 birth_date	DATETIME,
                 gender	TEXT,
-                is_logged BOOLEAN NOT NULL,
                 active BOOLEAN NOT NULL
             );
 

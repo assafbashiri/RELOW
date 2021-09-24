@@ -63,7 +63,7 @@ class Offer:
         self.status = status
 
     def set_steps(self, step_number, quantity, price):
-        new_step = Step(quantity , price)
+        new_step = Step(quantity , price, 0)
         self.steps[step_number] = new_step
 
     def set_start_date(self, start_days):

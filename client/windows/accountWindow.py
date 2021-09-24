@@ -202,10 +202,25 @@ class BoxiLayout(BoxLayout):
 
     def address(self):
         city = self.ids.city.text
+        if city == '':
+            toast('the city is not valid')
+            return
         street = self.ids.street.text
+        if street == '':
+            toast('the street is not valid')
+            return
         zip_code = self.ids.zip_code.text
+        if zip_code == '':
+            toast('the zip_code is not valid')
+            return
         floor = self.ids.floor.text
+        if floor == '':
+            toast('the floor is not valid')
+            return
         apt = self.ids.apt_number.text
+        if apt == '':
+            toast('the apt is not valid')
+            return
         ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
         if ans.res is True:
             # update the json------------------------------------------------
@@ -224,10 +239,25 @@ class BoxiLayout(BoxLayout):
 
     def payment(self):
         credit_card_number = self.ids.credit_card_number.text
+        if credit_card_number == '':
+            toast('the CC is not valid')
+            return
         credit_card_exp_date = self.ids.exp_date.text
+        if credit_card_exp_date == '':
+            toast('the credit_card_exp_date is not valid')
+            return
         cvv = self.ids.cvv.text
+        if cvv == '':
+            toast('the cvv is not valid')
+            return
         card_type = self.ids.card_type.text
+        if card_type == '':
+            toast('the card_type is not valid')
+            return
         id = self.ids.id_number.text
+        if id == '':
+            toast('the id is not valid')
+            return
         ans = App.get_running_app().controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv,
                                                                   card_type, id)
         if ans.res is True:

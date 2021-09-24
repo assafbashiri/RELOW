@@ -12,7 +12,6 @@ class UserDTO:
         self.birth_date = birth_date
         self.gender = gender
         self.active = False
-        self.is_logged = False
 
         # user address
         self.city = None
@@ -38,7 +37,6 @@ class UserDTO:
         self.birth_date = user.get_birth_date()
         self.gender = user.get_gender()
         self.active = user.get_active()
-        self.is_logged = user.get_is_logged()
 
         # user address
         self.city = user.get_city()

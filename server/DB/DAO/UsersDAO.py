@@ -5,9 +5,9 @@ class UsersDAO:
 
     def insert_guest(self, userDTO):
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, is_logged, active) VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
             [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value, userDTO.is_logged, userDTO.active])
+             userDTO.birth_date, userDTO.gender.value, userDTO.active])
         self._conn.commit()
         print("in insert in UserDAO step 2")
 
@@ -35,9 +35,9 @@ class UsersDAO:
     def insert(self, userDTO):
         print("in insert in UserDAO step 1")
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, is_logged, active) VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
             [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value, userDTO.is_logged, userDTO.active])
+             userDTO.birth_date, userDTO.gender.value,  userDTO.active])
         self._conn.commit()
         print("in insert in UserDAO step 2")
 
@@ -119,15 +119,6 @@ class UsersDAO:
                            [False, user_id])
         self._conn.commit()
 
-    def log_in(self, user_id):
-        self._conn.execute("""UPDATE users_submission set is_logged = ? WHERE user_id = ?""",
-                           [True, user_id])
-        self._conn.commit()
-
-    def logout(self, user_id):
-        self._conn.execute("""UPDATE users_submission set is_logged = ? WHERE user_id = ?""",
-                           [False, user_id])
-        self._conn.commit()
 
 
     # getters
@@ -159,9 +150,9 @@ class UsersDAO:
 
     def update(self, userDTO):
         self._conn.execute(
-            """UPDATE users_submission SET first_name=?, last_name=?, user_name=?, email=?, password=?, birth_date=?, gender=?, is_logged=?, active=? WHERE user_id=?""",
+            """UPDATE users_submission SET first_name=?, last_name=?, user_name=?, email=?, password=?, birth_date=?, gender=?, active=? WHERE user_id=?""",
             [userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value, userDTO.is_logged, userDTO.active, userDTO.user_id])
+             userDTO.birth_date, userDTO.gender.value, userDTO.active, userDTO.user_id])
         self._conn.commit()
 
 
@@ -175,3 +166,7 @@ class UsersDAO:
             [userDTO.credit_card_number, userDTO.credit_card_exp_date, userDTO.cvv,
              userDTO.card_type, userDTO.id_number, userDTO.user_id])
         self._conn.commit()
+
+        def delete_guest(self, guest_id):
+            self._conn.execute("DELETE FROM users_submission WHERE user_id=?", [guest_id])
+            self._conn.commit()

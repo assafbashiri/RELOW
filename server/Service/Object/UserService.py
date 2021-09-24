@@ -8,7 +8,6 @@ class UserService():
     def __init__(self, business_user):
         self.user_id = business_user.user_id
         self.active = business_user.get_active()
-        self.is_logged = business_user.get_is_logged()
         # CheckValidity.checkValidityName(first_name)
         # CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
         # CheckValidity.checkValidityEmail(email)
@@ -63,8 +62,6 @@ class UserService():
 
     # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
 
-    def get_is_logged(self):
-        return self.is_logged
 
     def get_active(self):
         return self.active

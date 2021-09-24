@@ -57,16 +57,20 @@ class UserController:
         user = User(self.user_id, None, None, None, None, None, None, Gender.male)
         userDTO = UserDTO(user)
         self.usersDictionary[user.user_id] = user
-        user.log_in()  # check this line
+        # user.log_in()  # check this line
         self.users_dao.insert_guest(userDTO)
         self.user_id += 1
         return user
 
     def guest_login(self, guest_id):
         guest = self.usersDictionary[guest_id]
-        guest.log_in()
-        self.users_dao.log_in(guest_id)
+        # guest.log_in()
+        # self.users_dao.log_in(guest_id)
         return {'user': guest}
+
+    def delete_guest(self, guest_id):
+        self.usersDictionary.pop(guest_id)
+        self.users_dao.delete_guest(guest_id)
 
     def merge_register(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender):
         if gender not in Gender._value2member_map_:
@@ -133,17 +137,13 @@ class UserController:
         user_to_log_in = self.get_user_by_user_name(user_name)
         if user_to_log_in.active == 0:
             raise Exception("user is not active")
-        if user_to_log_in.is_logged == 1:
-            # raise Exception("user is already logged in")
-            raise Exception("user is already logged in")
-        user_to_log_in.log_in()  # check this line
         self.users_dao.update(UserDTO(user_to_log_in))
         return user_to_log_in
 
     def logout(self, user_id):
         user = self.check_user_state(user_id)
-        user.logout()
-        self.users_dao.update(UserDTO(user))
+        # user.logout()
+        # self.users_dao.update(UserDTO(user))
 
     def add_payment_method(self, user_id, credit_card_number, credit_card_exp_date, cvv, card_type, id):
         user_to_add = self.check_user_state(user_id)
@@ -158,6 +158,7 @@ class UserController:
         address.add_address_details(city, street, apartment_number, zip_code, floor)
         user_to_add.set_address_details(address)
         self.users_dao.update(UserDTO(user_to_add))
+        return user_to_add
 
 
     def update_first_name(self, user_id, new_first_name):
@@ -511,8 +512,7 @@ class UserController:
                 date = datetime.strptime(user[6], "%Y-%m-%d %H:%M:%S")
             gender_to_add = Gender(int(user[7]))
             user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], date, gender_to_add)
-            user_temp.is_logged = user[8]
-            user_temp.active = user[9]
+            user_temp.active = user[8]
             self.usersDictionary[user[0]] = user_temp
 
         users_payment_db = self.users_dao.load_users_payment()
@@ -566,8 +566,6 @@ class UserController:
         user = self.get_user_by_id(user_id)
         if user.active == 0:
             raise Exception("user is not active")
-        if user.is_logged == 0:
-            raise Exception("user is not logged in")
         return user
 
     def check_offer_state(self, user_id, offer_id):

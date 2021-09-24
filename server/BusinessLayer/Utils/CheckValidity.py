@@ -60,10 +60,8 @@ class checkValidity:
     def check_unregister(self, user):
         if user is None:
             raise Exception("User does not exist")
-        if user.active is not True:
-            raise Exception("user is not active")
-        if user.is_logged is not True:
-            raise Exception("user is not logged in")
+        # if user.active is not True:
+        #     raise Exception("user is not active")
         if user.is_active_buyer():
             raise Exception("the user is subscribe to an offer as a buyer")
         if user.is_active_seller():

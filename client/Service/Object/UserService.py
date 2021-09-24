@@ -58,8 +58,7 @@ class UserService():
 
 
 # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
-    def get_is_logged(self):
-        return self.is_logged
+
 
     def get_active(self):
         return self.active

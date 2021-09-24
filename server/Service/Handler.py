@@ -159,6 +159,7 @@ class Handler:
         try:
             user = self.user_controller.log_in(argument['user_name'], argument['password'])
             self.user = user
+            self.user_controller.delete_guest(argument['guest_id'])
             return Response(vars(UserService(user)), "Log-In Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -166,7 +167,7 @@ class Handler:
     def logout(self, argument):
         try:
             user_id = self.user.user_id
-            self.user_controller.logout(user_id)
+            # self.user_controller.logout(user_id)
             return Response(None, "Log-Out Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
@@ -216,13 +217,13 @@ class Handler:
 
     def add_address_details(self, argument):
         try:
-            self.user_controller.add_address_details(self.user.user_id,
+            user = self.user_controller.add_address_details(self.user.user_id,
                                                      argument['city'],
                                                      argument['street'],
                                                      argument['zip_code'],
                                                      argument['floor'],
                                                      argument['apt'])
-            return Response(None, "Address Details Added Successfully", True)
+            return Response(vars(UserService(user)), "Address Details Added Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -786,7 +787,7 @@ class Handler:
     def build_steps(self, steps):
         ans = {}
         for step in steps:
-            ans[step['step_number']] = Step(step['limit'],step['price'])
+            ans[step['step_number']] = Step(int(step['limit']), int(step['price']), 0)
         return ans
 
     def confirm_add_active_sell_offer(self, argument):

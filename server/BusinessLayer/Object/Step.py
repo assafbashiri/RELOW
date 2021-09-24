@@ -1,7 +1,7 @@
 
 class Step:
-    def __init__(self, limit, price):
-        self.buyers_amount = 0
+    def __init__(self, limit, price, buyers_amount):
+        self.buyers_amount = buyers_amount
         self.price = price
         self.limit = limit
 

@@ -10,7 +10,6 @@ class User():
     def __init__(self, next_user_id, first_name, last_name, user_name, email, password, birth_date, gender):
         # ---------- user submission
         self.active = False
-        self.is_logged = False
         self.user_id = next_user_id
         self.first_name = first_name
         self.last_name = last_name
@@ -34,11 +33,6 @@ class User():
         self.active_sale_offers = {}
         self.active_buy_offers = {}
 
-    def log_in(self):
-        self.is_logged = True
-
-    def logout(self):
-        self.is_logged = False
 
     def set_address_details(self, user_address):
         self.address = user_address
@@ -160,8 +154,7 @@ class User():
 
 
     # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
-    def get_is_logged(self):
-        return self.is_logged
+
 
     def get_user_id(self):
         return self.user_id
