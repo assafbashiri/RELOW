@@ -59,15 +59,30 @@ class Manager(ScreenManager):
 
 
 class Side_box(BoxLayout):
-    def helper(self):
+    def move_to_account(self):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to account")
+            toast("guest cant go to account window")
             return
         App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
-        print('bolbol')
+
+    def move_to_add_offer(self):
+        a = App.get_running_app()
+        b = a.controller
+        if b.guest is True:
+            toast("guest cant go to add offer window")
+            return
+        App.get_running_app().root.current = 'add_offer_screen'
+
+    def move_to_contact_us(self):
+        a = App.get_running_app()
+        b = a.controller
+        if b.guest is True:
+            toast("guest cant go to contact us window")
+            return
+        App.get_running_app().root.current = 'contact_us_screen'
 
 
 class Category_box(BoxLayout):
