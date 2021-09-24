@@ -99,3 +99,34 @@ class CheckValidity:
         elif difference_in_years > 100.0:
             raise Exception("Input date is not valid..")
 
+    def checkEndDate(self, end_date):
+        day, month, year = end_date.split('-')
+        isValidDate = True
+        try:
+            datetime.datetime(int(year), int(month), int(day))
+        except ValueError:
+            isValidDate = False
+        if not isValidDate:
+            toast("Input date is not valid..")
+        today = datetime.datetime.now()
+        today_day = today.day.real
+        today_month = today.month.real
+        today_year = today.year.real
+        difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
+        if today_year > year:
+            toast("bad year")
+            return False
+        if today_year < year:
+            return True
+        if today_month < month:
+            toast("bad month")
+            return False
+        if today_month > month:
+            return True
+        if today_day > day:
+            toast("bad day")
+            return False
+        return True
+
+
+

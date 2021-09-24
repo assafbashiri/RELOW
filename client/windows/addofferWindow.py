@@ -39,6 +39,8 @@ from kivymd.uix.picker import MDDatePicker
 
 from Service.Object.StepService import StepService
 
+from client.Utils.CheckValidity import CheckValidity
+
 
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):
@@ -62,6 +64,8 @@ class Add_offer_box(BoxLayout):
         # self.choose = Color_choose()
         # self.color_box = BoxLayout(orientation= 'horizontal')
         # self.add_widget(self.color_box)
+        self.chosen_cat_name = None
+        self.sub_cat12 = None
         self.gender = 0
         self.num_of_added_step = 0
         self.next_step = []
@@ -147,6 +151,24 @@ class Add_offer_box(BoxLayout):
         # list = self.ids.choose.photo_list.values() #convert dict to list
         if not self.check_steps_validity():
             return
+        if self.size_list == []:
+            toast("have to add size")
+            return
+        if self.color_list == []:
+            toast("have to add color")
+            return
+        if self.sub_cat12 is None:
+            toast("have to chose sub category")
+            return
+        if self.ids.end_date.text == "":
+            toast("have to chose end date")
+            return
+        if not CheckValidity.checkValidityName(self,self.ids.product_name.text):
+            return
+        if not CheckValidity.checkValidityName(self,self.ids.company.text):
+            return
+        if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
+            return
         name = self.ids.product_name.text
         category_name = self.chosen_cat_name
         sub_category_name = self.sub_cat12
@@ -168,6 +190,7 @@ class Add_offer_box(BoxLayout):
 
         toast(ans.message)
         if ans.res is True:
+            toast("your offer is waiting for approve by admin")
             self.clear_fields()
 
 
@@ -254,7 +277,6 @@ class Add_offer_box(BoxLayout):
         self.ids.drop_category.text='Category'
         for limit in self.limit:
             limit.text = ""
-
         for price in self.price:
             price.text = ""
 

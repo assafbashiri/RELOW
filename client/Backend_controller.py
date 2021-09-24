@@ -118,17 +118,15 @@ class Backend_controller:
         if ans.res is True:
             self.register_unregister_json(False)
             self.user_service = None
+            self.guest = True
         return ans
 
     def register_unregister_json(self, flag):
         pass
-        # user = self.store['user']
-        # user_info['active'] = flag
-        # self.store['user'] = user
 
     def login(self, user_name, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 3, 'user_name': user_name, 'password': password}
+        login_req = {'op': 3, 'user_name': user_name, 'password': password, 'guest_id': self.user_service.user_id}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -143,38 +141,31 @@ class Backend_controller:
             self.guest = False
         return ans
 
-    # def login_logout_json(self, flag):
-    #     user = self.store['user']
-    #     user_info = user['user_info']
-    #     user_info['is_logged'] = flag
-    #     self.store['user'] = user
-
     def logout(self):
-        # is_logged = self.store['user']['user_info']['is_logged']
-        # if is_logged is False:
-        #     toast("already log out")
-        #     return Response(None, None, False)
         logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
         if ans.res is True:
-            #self.login_logout_json(False)
             self.user_service = None
+            self.guest = True
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
-    #(name, company, colors, sizes, description, list, category_name,
-                              #sub_category_name, steps, end_date)
-    def update_offer(self, offer_id, category_name, sub_category_name,user_id, name, company, colors, sizes, description, steps, end_date):
-        update_req = {'op': 15,'offer_id':offer_id, 'category_name':category_name,'sub_category_name':sub_category_name,'user_id':user_id,'name': name,
-                      'company': company, 'colors': colors, 'sizes':sizes, 'description':description,
-                       'steps':steps, 'end_date':end_date}
+    def update_offer(self, offer_id, category_name, sub_category_name, user_id, name, company, colors, sizes,
+                     description, steps, end_date):
+        update_req = {'op': 15, 'offer_id': offer_id, 'category_name': category_name,
+                      'sub_category_name': sub_category_name, 'user_id': user_id, 'name': name,
+                      'company': company, 'colors': colors, 'sizes': sizes, 'description': description,
+                      'steps': steps, 'end_date': end_date}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
-        print(ans.message)
+
         for ex in ans.message:
             toast(ex)
+        if len(ans.message) == 0:
+            toast('offer updated successfully')
+            print('offer updated successfully')
         if ans.res is False:
             print("Bad Offer Update")
         return ans
