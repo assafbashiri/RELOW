@@ -111,33 +111,36 @@ class Add_offer_box(BoxLayout):
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_press = self.size_dropdown.open)
+        Clock.schedule_once(self.add_color_start, 0)
+        Clock.schedule_once(self.add_size_start, 0)
 
 
 
 
-    def add_color_start(self):
+
+    def add_color_start(self,  num):
         self.ids.colors.add_widget(self.color_mainbutton)
-        self.ids.colors.remove_widget(self.ids.color)
+        # self.ids.colors.remove_widget(self.ids.color)
 
-    def add_size_start(self):
+    def add_size_start(self, num):
         self.size_input = TextInput(hint_text= "choose size")
         self.ids['sizes'] = self.size_input
         self.ids.size_box.add_widget(self.size_input)
         self.insert_size = Button(text='add size')
-        self.insert_size.bind(on_press=lambda tex: self.add_size(tex))
-        self.ids.size_box.remove_widget(self.ids.add_size)
+        self.insert_size.bind(on_press=lambda tex: self.add_size_(tex))
+        # self.ids.size_box.remove_widget(self.ids.add_size)
         self.ids.size_box.add_widget(self.insert_size)
         self.ids.size_box.add_widget(self.size_mainbutton)
-        text = self.ids.sizes.text
+        # self.ids.add_size.bind(on_press= lambda tex: self.add_size_(tex))
 
-        self.ids.add_size.bind(on_press= lambda tex: self.add_size(tex))
-
-    def add_size(self, instance):
+    def add_size_(self, instance):
+        # self.size_dropdown.dismiss()
         text = self.ids.sizes.text
         btn = Button(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_dropdown.add_widget(btn)
         self.size_list.append(text)
+        self.size_dropdown.open(self.ids.sizes)
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
         #     self.size_list.remove(instance.text)
