@@ -1,6 +1,8 @@
 
 
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.graphics import Color, Rectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
@@ -62,6 +64,23 @@ class BoxiLayout(BoxLayout):
         self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
         self.gender = 0
         self.controller = App.get_running_app().controller
+        Clock.schedule_once(self.insert_color, 0)
+        self.bind(pos=self.update_rect, size=self.update_rect)
+        self.rect = Rectangle(pos=self.pos, size=self.size)
+
+
+    def update_rect(self,instance, value):
+        self.rect.pos = self.pos
+        self.rect.size = self.size
+
+        # listen to size and position changes
+
+        # self.insert_offers()
+    def insert_color(self, num):
+        with self.canvas.before:
+            Color(0, 0, 0)
+            self.rect = Rectangle(pos=self.pos, size=self.size)
+            print('done')
 
     def change_password(self):
         temp1 = MDTextField(hint_text="old password")

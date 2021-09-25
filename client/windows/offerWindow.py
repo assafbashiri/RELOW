@@ -282,7 +282,7 @@ class OfferWindow(Popup):
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
         self.unjoin = Button(text="UPDATE")
-        self.unjoin.bind(on_press=lambda x: self.update_purchase())
+        self.unjoin.bind(on_press=lambda x: self.update_offer())
         self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.unjoin)
         self.box.add_widget(self.join_offer)

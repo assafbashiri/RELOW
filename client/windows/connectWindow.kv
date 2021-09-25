@@ -6,6 +6,12 @@
 <Connect_box>
     BoxLayout:
         orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         Button:
             text: "REGISTER"
             on_press: root.register_new()

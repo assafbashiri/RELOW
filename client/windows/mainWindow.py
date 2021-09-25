@@ -1,8 +1,10 @@
 from datetime import datetime
 
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.core.image import Image
 from kivy.event import EventDispatcher
+from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -20,6 +22,7 @@ from kivymd.uix.label import MDLabel
 # from kivy.config import Config
 # Config.set('kivy', 'exit_on_escape', '0')
 from kivymd.uix.progressbar import MDProgressBar
+from kivymd.uix.screen import MDScreen
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextFieldRound, MDTextField
@@ -59,6 +62,16 @@ class Manager(ScreenManager):
 
 
 class Side_box(BoxLayout):
+    def __init__(self, **kwargs):
+        super(Side_box, self).__init__(**kwargs)
+    #     self.bind(pos=self.update_rect, size=self.update_rect)
+    #     self.rect = Rectangle(pos=self.pos, size=self.size)
+    #
+    # def update_rect(self, instance, value):
+    #     self.rect.pos = self.pos
+    #     self.rect.size = self.size
+
+
     def move_to_account(self):
         a = App.get_running_app()
         b = a.controller
@@ -121,10 +134,12 @@ class TestApp(MDApp):
         self.controller = controller
 
     def on_start(self):
+        print(Clock.max_iteration)
+        # Clock.max_iteration = 5000
+        print(Clock.max_iteration)
+
         b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.get_hot_deals())
-        a = self.root.current_screen.ids.menu_box.ids.recycle1
-        q = self.root.current_screen
 
 
     def on_stop(self):

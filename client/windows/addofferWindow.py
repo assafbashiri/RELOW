@@ -1,4 +1,6 @@
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.graphics import Rectangle, Color
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.carousel import Carousel
@@ -56,6 +58,29 @@ class Category_box(BoxLayout):
     pass
 MIN_DIFFERNCE_LIMIT = 10
 MIN_DIFFERNCE_PRICE = 100
+
+class BoxLayout_helper(BoxLayout):
+    def __init__(self, **kwargs):
+        super(BoxLayout_helper, self).__init__(**kwargs)
+    #     Clock.schedule_once(self.insert_color, 0)
+    #     self.bind(pos=self.update_rect, size=self.update_rect)
+    #     self.rect = Rectangle(pos=self.pos, size=self.size)
+    #
+    # def update_rect(self, instance, value):
+    #     self.rect.pos = self.pos
+    #     self.rect.size = self.size
+    #
+    #     # listen to size and position changes
+    #
+    #     # self.insert_offers()
+    #
+    # def insert_color(self, num):
+    #     with self.canvas.before:
+    #         Color(0, 0, 0)
+    #         self.rect = Rectangle(pos=self.pos, size=self.size)
+    #         print('done')
+
+
 class Add_offer_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Add_offer_box, self).__init__(**kwargs)
@@ -86,6 +111,7 @@ class Add_offer_box(BoxLayout):
         btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_press = self.size_dropdown.open)
+
 
 
 
@@ -167,8 +193,8 @@ class Add_offer_box(BoxLayout):
             return
         if not CheckValidity.checkValidityName(self,self.ids.company.text):
             return
-        if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
-            return
+        # if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
+        #     return
         name = self.ids.product_name.text
         category_name = self.chosen_cat_name
         sub_category_name = self.sub_cat12
@@ -177,6 +203,7 @@ class Add_offer_box(BoxLayout):
         sizes = self.build_string_from_list(self.size_list)
         colors = self.build_string_from_list(self.color_list)
         end_date = self.ids.end_date.text
+        end_date = '2021-12-15'
         step1 = StepService(0, self.ids.price1.text, 1, self.ids.limit1.text)
         step2 = StepService(0, self.ids.price2.text, 2, self.ids.limit2.text)
         step3 = StepService(0, self.ids.price3.text, 3, self.ids.limit3.text)
@@ -405,7 +432,7 @@ class choose_photo_layout(MDBoxLayout):
         self.carousel.add_widget(im,self.i)
         with open(path, "rb") as image:
             f = image.read()
-            image.close()
+            # image.close()
         self.photo_list[im] = f
         self.i+=1
         self.manager.exit_manager()

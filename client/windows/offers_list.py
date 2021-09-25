@@ -1,5 +1,9 @@
 import io
 
+from kivy.app import App
+from kivy.clock import Clock
+from kivy.graphics import Color, Rectangle
+from kivy.uix.button import Button
 from kivy.uix.image import Image, CoreImage
 from kivy.properties import StringProperty, ListProperty, NumericProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -7,7 +11,7 @@ from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-
+from kivymd.uix.boxlayout import MDBoxLayout
 
 from windows.offerWindow import OfferWindow
 
@@ -15,8 +19,7 @@ from windows.offerWindow import OfferWindow
 class Offers_Screen(RecycleView):
     def __init__(self, **kwargs):
         super(Offers_Screen, self).__init__(**kwargs)
-        # self.insert_offers()
-
+        a = App.get_running_app()
     def insert_offers(self, **kwargs):
         # get the offer liat from the user
         # loop all the offer and add them to the recycl
@@ -45,12 +48,13 @@ class Offers_Screen(RecycleView):
                                 'photo_lis': photo_lis})
 
         self.data = offers_list
+        a =8
         # need to add the photos here
 
 
 
 class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
-    caro = ObjectProperty()
+    # caro = ObjectProperty()
     name = StringProperty()
     company = StringProperty()
     description = StringProperty()
@@ -60,9 +64,11 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
     steps = ListProperty()
     current_buyers = NumericProperty()
     offer_id = NumericProperty()
+
     offer = ListProperty()
-    # def __init__(self,**kwargs):
-    #     super(RecycleViewRow, self).__init__(**kwargs)
+    def __init__(self, **kwargs):
+        super(RecycleViewRow, self).__init__(**kwargs)
+        Clock.schedule_once(self.insert, 0)
     #     self.car = Carousel(direction='left', size_hint_y= 2)
     #     # for photo in kwargs['photos']:
     #     for photo in kwargs:
@@ -72,10 +78,11 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
     #     self.more = Button(text="more", size_hint_y=.5 ,on_press= lambda a:self.insert())
     #     self.add_widget(self.more_details)
     #     self.add_widget(self.more)
-    def insert(self, **kwargs):
-        im = AsyncImage(source="windows/images/e.png")
-        im1 = AsyncImage(source="windows/images/c.png")
-        self.car.add_widget(im)
+
+    def insert(self, num):
+        self.ids.car.insert(self.photo_lis)
+        print('bolo')
+
 
     def www(self,offer, photo_list):
         if hasattr(self, 'm'):
@@ -103,4 +110,5 @@ class Carousel2(Carousel):
 
                 new_img = Image()
                 new_img.texture = img
+                new_img.allow_stretch = True
                 self.add_widget(new_img)

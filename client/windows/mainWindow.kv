@@ -12,47 +12,65 @@
         id: side_box
 <Side_box>
     id: side_box
-    size_hint: .2, .3
+    size_hint_x: .2
+    #size_hint_y: .3
     pos_hint: {'top':1}
     spacing: 10
     orientation: "vertical"
+    canvas.before:
+        Color:
+            rgba: 255/256, 255/256, 100/256, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     Button:
+        size_hint_y: .2
         text: "MENU"
         on_press:
             root.parent.parent.manager.current = 'menu_screen'
 
     Button:
+        size_hint_y: .2
         text: "ACCOUNT"
         on_press:
             root.move_to_account();
     Button:
+        size_hint_y: .2
         text: "SEARCH"
         on_press:
             root.parent.parent.manager.current = 'search_screen'
     Button:
+        size_hint_y: .2
         text: "CAT"
         on_press:
             root.parent.change_to_cat()
     Button:
+        size_hint_y: .2
         text: "CONNECT"
         on_press:
             root.parent.parent.manager.current = 'connect_screen'
 
     Button:
+        size_hint_y: .2
         text: "ADD OFFER"
         on_press:
             root.move_to_add_offer()
 
 
     Button:
+        size_hint_y: .2
         text: "MY OFFERS"
         on_press:
             root.parent.parent.manager.current = 'my_offers_screen'
 
     Button:
+        size_hint_y: .2
         text: "CONTACT US"
         on_press:
             root.move_to_contact_us()
+    Label:
+        text: ''
 
 
 <Category_box>

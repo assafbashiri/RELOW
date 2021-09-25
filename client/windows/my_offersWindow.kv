@@ -9,6 +9,12 @@
     BoxLayout:
         orientation: 'vertical'
         id: offi
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         MDGridLayout:
             id: bolbol
             cols:5

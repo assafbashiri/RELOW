@@ -1,4 +1,6 @@
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.graphics import Color, Rectangle
 from kivymd.uix.label import MDLabel
 from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -25,6 +27,7 @@ from windows.offers_list import Offers_Screen
 
 class SideBar:
 
+
     def change_to_cat(self):
         self.of = Offers_Screen()
         self.first_time_bad_search = True
@@ -47,6 +50,7 @@ class SideBar:
         # self.parent.parent.ids.menu_box.remove_widget(self.parent.ids.side_box)
         # print(self.parent)
         # self.parent.parent.ids.menu_box.add_widget(self.parent.ids.side1_box)
+
 
 
     def change_to_sub_cat(self, sub_cat_list, cat_name, cat_list):

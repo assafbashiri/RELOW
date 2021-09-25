@@ -8,11 +8,16 @@
 <Add_offer_box>
     #orientation: "horizontal"
     id: add_offer_box
-    pos_hint: {'center_x': .5, 'center_y': .5}
-    MDBoxLayout:
+    #pos_hint: {'center_x': .5, 'center_y': .5}
+    BoxLayout_helper:
         id: package
         orientation: "vertical"
-
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         MDBoxLayout:
             id:content
             orientation: "vertical"
@@ -28,7 +33,7 @@
 
             MDTextFieldRound:
                 id:product_name
-                text:'product name'
+                text:'productname'
                 hint_text: "product name"
 
             MDTextFieldRound:
