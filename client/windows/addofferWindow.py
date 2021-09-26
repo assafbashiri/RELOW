@@ -138,9 +138,11 @@ class Add_offer_box(BoxLayout):
         text = self.ids.sizes.text
         btn = Button(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
-        self.size_dropdown.add_widget(btn)
-        self.size_list.append(text)
-        self.size_dropdown.open(self.ids.sizes)
+
+        if text not in self.size_list:
+            self.size_list.append(text)
+            self.size_dropdown.add_widget(btn)
+        #self.size_dropdown.open(self.ids.sizes)
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
         #     self.size_list.remove(instance.text)
