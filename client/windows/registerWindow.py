@@ -8,7 +8,7 @@ from kivymd.toast import toast
 from Utils.CheckValidity import CheckValidity
 from Utils.Utils import Utils
 from windows.SideBar import SideBar
-
+from kivy.core.text import LabelBase
 
 class Struct(object):
     def __init__(self, **entries):

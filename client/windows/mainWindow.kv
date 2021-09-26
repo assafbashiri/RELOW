@@ -74,49 +74,6 @@
         text: ''
 
 
-<Category_box>
-    id: category_box
-    size_hint: .2, .2
-    pos_hint: {'top':1}
-    spacing: 10
-    orientation: "vertical"
-    Button:
-        text: "bolo1"
-        on_press: root.parent.change_to_sub_cat()
-    Button:
-        text: "bolo2"
-    Button:
-        text: "bolo3"
-    Button:
-        text: "bolo4"
-    Button:
-        text: "bolo5"
-    Button:
-        text: "BACK"
-        on_press:
-            root.parent.back_to_menu()
-
-<Sub_Category_box>
-    id: sub_category_box
-    size_hint: .2, .2
-    pos_hint: {'top':1}
-    spacing: 10
-    orientation: "vertical"
-    Button:
-        text: "bolo11"
-    Button:
-        text: "bolo21"
-    Button:
-        text: "bolo31"
-    Button:
-        text: "bolo41"
-    Button:
-        text: "bolo51"
-    Button:
-        text: "BACK"
-        on_press: root.parent.back_to_cat()
-
-
 
 
 
