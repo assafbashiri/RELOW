@@ -74,6 +74,12 @@
 
 
             MDDropDownItem:
+                canvas.before:
+                    Color:
+                        rgba: 0/256, 165/256, 255/256, .69
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 id: drop
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: 'gender'

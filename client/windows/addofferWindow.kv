@@ -25,6 +25,12 @@
 
 
             MDDropDownItem:
+                canvas.before:
+                    Color:
+                        rgba: 0/256, 165/256, 255/256, .69
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 id: drop_category
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: 'category'
@@ -57,20 +63,20 @@
                 id:colors
                 size_hint_y: .2
 
-                Button:
-                    id:color
-                    text: 'add color'
-                    on_press: root.add_color_start()
+                #Button:
+                   # id:color
+                    #text: 'add color'
+                    #on_press: root.add_color_start()
 
             MDBoxLayout:
                 orientation: 'horizontal'
                 id: size_box
                 size_hint_y: .2
 
-                Button:
-                    id: add_size
-                    text: 'add size'
-                    on_press: root.add_size_start()
+                #Button:
+                   # id: add_size
+                   # text: 'add size'
+                   # on_press: root.add_size_start()
 
 
             MDRoundFlatButton:

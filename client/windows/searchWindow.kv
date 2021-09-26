@@ -38,6 +38,12 @@
                 on_press:root.parent.search_by_company()
 
             MDDropDownItem:
+                canvas.before:
+                    Color:
+                        rgba: 0/256, 165/256, 255/256, .69
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 id: drop_category
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: "search by category"
@@ -50,6 +56,12 @@
                 on_press:root.parent.search_by_category()
 
             MDDropDownItem:
+                canvas.before:
+                    Color:
+                        rgba: 0/256, 165/256, 255/256, .69
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 id: drop_sub_category
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: "search by sub category"

@@ -65,7 +65,7 @@ def network(**kwargs):
     print(kwargs['arg1'])
     print("start thread work")
     ClientSocket = socket.socket()
-    host = '127.0.0.1'
+    host =  '127.0.0.1' #'192.168.1.19'
     port = 4000
     print('Waiting for connection..')
     try:

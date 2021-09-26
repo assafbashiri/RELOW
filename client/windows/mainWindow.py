@@ -134,10 +134,6 @@ class TestApp(MDApp):
         self.controller = controller
 
     def on_start(self):
-        print(Clock.max_iteration)
-        # Clock.max_iteration = 5000
-        print(Clock.max_iteration)
-
         b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.get_hot_deals())
 
