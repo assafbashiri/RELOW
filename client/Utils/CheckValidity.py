@@ -100,30 +100,31 @@ class CheckValidity:
             raise Exception("Input date is not valid..")
 
     def checkEndDate(self, end_date):
-        day, month, year = end_date.split('-')
+        year, month, day = end_date.split('-')
         isValidDate = True
         try:
-            datetime.datetime(int(year), int(month), int(day))
-        except ValueError:
+            a=datetime.datetime(int(year), int(month), int(day))
+        except ValueError as v:
             isValidDate = False
         if not isValidDate:
             toast("Input date is not valid..")
+            print("Input date is not valid..")
         today = datetime.datetime.now()
         today_day = today.day.real
         today_month = today.month.real
         today_year = today.year.real
-        difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
-        if today_year > year:
+        #difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
+        if today_year > int(year):
             toast("bad year")
             return False
-        if today_year < year:
+        if today_year < int(year):
             return True
-        if today_month < month:
+        if today_month < int(month):
             toast("bad month")
             return False
-        if today_month > month:
+        if today_month > int(month):
             return True
-        if today_day > day:
+        if today_day > int(day):
             toast("bad day")
             return False
         return True

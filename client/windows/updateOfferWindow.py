@@ -31,6 +31,7 @@ from kivymd.toast import toast
 from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.textfield import MDTextFieldRound
 from windows.SideBar import SideBar
+from Utils.CheckValidity import CheckValidity
 
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
@@ -265,6 +266,10 @@ class Update_offer_box(BoxLayout):
             return
         if not self.check_empty_fields():
             return
+        if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
+            toast('end date is already passed')
+            print('end date is already passed')
+            return
         list = [v for k, v in self.ids.choose.photo_list.items()]
         # list = self.ids.choose.photo_list.values() #convert dict to list
         name = self.ids.product_name.text
@@ -399,7 +404,7 @@ class Update_offer_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog = MDDatePicker(year=2021, month=9, day=15)
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 

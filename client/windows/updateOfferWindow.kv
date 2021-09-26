@@ -20,6 +20,7 @@
 
 
             MDDropDownItem:
+                write_tab: False
                 id: drop_category
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: 'category'
@@ -27,21 +28,25 @@
 
 
             MDTextFieldRound:
+                write_tab: False
                 id:product_name
                 text:'product name'
                 hint_text: "product name"
 
             MDTextFieldRound:
+                write_tab: False
                 id:company
                 text:'comapny'
                 hint_text: "company name"
 
             MDTextFieldRound:
+                write_tab: False
                 id:description
                 text:'description'
                 hint_text: "description"
 
             MDTextFieldRound:
+                write_tab: False
                 text : "11/11/22"
                 id:end_date
                 hint_text: "end date"
@@ -69,6 +74,7 @@
 
 
             MDRoundFlatButton:
+                write_tab: False
                 text:"ADD STEP"
                 font_size: 12
                 on_press: root.add_step()
@@ -81,6 +87,7 @@
                     text: "step 1"
 
                 MDTextFieldRound:
+                    write_tab: False
                     text:'10'
                     id:limit1
                     hint_text: "limit"
@@ -91,6 +98,7 @@
 
 
                 MDTextFieldRound:
+                    write_tab: False
                     text:'1000'
                     id:price1
                     hint_text: "price"
@@ -102,6 +110,7 @@
 
 
                 MDTextFieldRound:
+                    write_tab: False
                     text:'30'
                     id:limit2
                     hint_text: "limit"
@@ -111,6 +120,7 @@
 
 
                 MDTextFieldRound:
+                    write_tab: False
                     text:'800'
                     id:price2
                     hint_text: "price"
@@ -121,6 +131,7 @@
                     text: "step 3"
 
                 MDTextFieldRound:
+                    write_tab: False
                     text:'50'
                     id:limit3
                     hint_text: "limit"
@@ -130,28 +141,33 @@
 
 
                 MDTextFieldRound:
+                    write_tab: False
                     text:'500'
                     id:price3
                     hint_text: "price"
                     icon_right: "account"
 
             MDRoundFlatButton:
+                write_tab: False
                 text:"ADD PHOTO"
                 font_size: 12
                 on_press: root.ids.choose.file_manager_open()
 
             choose_photo_layout:
+                write_tab: False
                 id: choose
                 size_hint_y: .2
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 #orientation: "vertical"
 
             MDRoundFlatButton:
+                write_tab: False
                 text:"REMOVE PHOTO"
                 font_size: 12
                 on_press: root.ids.choose.remove_photo()
 
             MDRoundFlatButton:
+                write_tab: False
                 id: add_offer_button
                 text:"UPDATE OFFER"
                 font_size: 12
