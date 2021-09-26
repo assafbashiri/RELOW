@@ -289,7 +289,7 @@ class UserController:
     def update_product_colors(self, user_id, offer_id, colors):
         offer = self.check_offer_state(user_id, offer_id)
         colors_list = offer.product.build_list_from_string(colors)
-        offer.product.update_colors(colors_list)
+        offer.product.set_colors(colors_list)
         self.offers_dao.update(OfferDTO(offer))
 
     def update_product_size(self, user_id, offer_id, size):

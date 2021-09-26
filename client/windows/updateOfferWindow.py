@@ -80,16 +80,16 @@ class Update_offer_box(BoxLayout):
         self.color_dropdown = DropDown()
         self.colors = ['green','black', 'blue', 'white']
         for color in self.colors:
-            btn = Button(text=' % s' % color, size_hint=(None, None), height=40)
-            btn.bind(on_release=lambda btn: self.add_color(btn))
-            self.color_dropdown.add_widget(btn)
+            btn_color = Button(text=' % s' % color, size_hint=(None, None), height=40)
+            btn_color.bind(on_release=lambda a=btn_color: self.add_color(a))
+            self.color_dropdown.add_widget(btn_color)
 
         self.color_mainbutton = Button(text='colors')
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
 
         self.size_list = []
         self.size_dropdown = DropDown()
-        btn.bind(on_release=lambda btn: self.remove_size(btn))
+        #btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_press = self.size_dropdown.open)
 
@@ -218,11 +218,13 @@ class Update_offer_box(BoxLayout):
 
     def add_size(self, instance):
         text = self.ids.sizes.text
-        btn = Button(text='%s' % text, size_hint=(None, None), height=40)
-        btn.bind(on_release=lambda btn: self.remove_size(btn))
-        self.size_dropdown.add_widget(btn)
         if text not in self.size_list:
             self.size_list.append(text)
+
+            btn = Button(text='%s' % text, size_hint=(None, None), height=40)
+            btn.bind(on_release=lambda btn: self.remove_size(btn))
+            self.size_dropdown.add_widget(btn)
+
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
         #     self.size_list.remove(instance.text)

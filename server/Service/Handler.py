@@ -786,7 +786,7 @@ class Handler:
         func = self.switcher.get(int(req), "nada")
         ans = func(argument)
         print(ans.res)
-        print(ans.data)
+
 
         return ans
 
