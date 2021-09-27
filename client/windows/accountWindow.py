@@ -1,5 +1,5 @@
 
-
+from kivy.core.text import LabelBase
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle
@@ -67,6 +67,7 @@ class BoxiLayout(BoxLayout):
         Clock.schedule_once(self.insert_color, 0)
         self.bind(pos=self.update_rect, size=self.update_rect)
         self.rect = Rectangle(pos=self.pos, size=self.size)
+        LabelBase.register(name="Arial", fn_regular="Arial.ttf")
 
 
     def update_rect(self,instance, value):
@@ -349,8 +350,8 @@ class BoxiLayout(BoxLayout):
 
     def show_dropdown_address(self):
         addresses={}
-        # addresses = self.get_adress_list()
-        addresses = self.get_countries_cities_dict()
+        addresses = self.get_address_list()
+        #addresses = self.get_countries_cities_dict()
         menu_items = []
         for address in addresses:
             menu_items.append(
@@ -392,15 +393,17 @@ class BoxiLayout(BoxLayout):
         self.ids.street.text = street
         self.drop_down_streets.dismiss()
 
-    def get_adress_list(self):
+    def get_address_list(self):
         rows={}
         # with open('city-street.csv', 'rb') as csvfile:
         #     reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
             #-------------------------------------------------------
 
-        with open('city-street.csv', 'r',encoding="utf8") as csv_file:
+        #with open('city-street.csv', 'r',encoding="utf8") as csv_file:
+        with open('worldcities.csv', 'r',encoding="utf8") as csv_file:
             csv_reader = csv.reader(csv_file)
             city_dictionary = {}
+            country_dictionary = {}
             # with open('city-street.csv', 'r') as csv_file:
             #     csv_reader = csv.reader(csv_file)
             #
@@ -412,16 +415,21 @@ class BoxiLayout(BoxLayout):
             for line in csv_reader:
 
                 city = line[1]
-                city = ','.join(city)
+                country = line[4]
                 street = line[2]
-                if city in city_dictionary.keys():
-                    city_dictionary[city].append(street)
+                # if city in city_dictionary.keys():
+                #     city_dictionary[city].append(street)
+                # else:
+                #     city_dictionary[city] = []
+                if country in country_dictionary.keys():
+                    country_dictionary[country].append(city)
                 else:
-                    city_dictionary[city] = []
+                    country_dictionary[country] = []
+                    country_dictionary[country].append(city)
 
 
 
-            return city_dictionary
+            return country_dictionary
 
     def get_countries_cities_dict(self):
         response = requests.get('https://countriesnow.space/api/v0.1/countries/population/cities')
@@ -435,6 +443,93 @@ class BoxiLayout(BoxLayout):
                 cities[elem['country']].append(elem['city'])
 
         return cities
+
+    def show_dropdown_address_gov_il(self):
+        addresses={}
+        addresses = self.get_countries_cities_dict_gov_il()
+        menu_items = []
+        for address in addresses.keys():
+            menu_items.append(
+                {"text": address,
+                 "font_name": "Arial",
+                 "viewclass": "OneLineListItem",
+                 "on_release": lambda x=addresses[address], y=address: self.show_dropdown_cities_gov_il(x, y),
+                 }
+            )
+
+        self.drop_down_regoins_gov_il = MDDropdownMenu(
+            caller=self.ids.drop_address,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_regoins_gov_il.open()
+
+    def show_dropdown_cities_gov_il(self, cities, region):
+
+        menu_items = []
+        for city in cities.keys():
+            menu_items.append(
+                {"text": city,
+                 "font_name":"Arial",
+                 "viewclass": "OneLineListItem",
+                 # here we have to open page or the offers of this sub categories ya sharmutut
+                 "on_release": lambda x=cities[city], y=city ,z=region: self.show_dropdown_streets_gov_il(x, y, z) }
+            )
+            #
+        self.drop_down_cities_gov_il = MDDropdownMenu(
+            caller=self.ids.drop_address,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_cities_gov_il.open()
+        self.drop_down_regoins_gov_il.dismiss()
+
+    def show_dropdown_streets_gov_il(self, streets, city, region):
+        menu_items = []
+        for street in streets:
+            menu_items.append(
+
+                {   "font_name":"Arial",
+                    "text": street,
+                 "viewclass": "OneLineListItem",
+                 # here we have to open page or the offers of this sub categories ya sharmutut
+                 "on_release": lambda x=street, y=city, z=region: self.on_save_address_gov_il(x, y,z)}
+            )
+            # self.on_save_address(x, y)
+        self.drop_down_streets_gov_il = MDDropdownMenu(
+            caller=self.ids.drop_address,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_streets_gov_il.open()
+        self.drop_down_cities_gov_il.dismiss()
+    def on_save_address_gov_il(self, region,street, city):
+        self.region = region
+        self.city = city
+        self.street = street
+        self.ids.city.text = city[::-1]
+        self.ids.street.text = street[::-1]
+        self.ids.region.text = region[::-1]
+        self.drop_down_streets_gov_il.dismiss()
+
+
+    def get_countries_cities_dict_gov_il(self):
+        address_dict = {}
+        res=requests.get(
+            'https://data.gov.il/api/3/action/datastore_search?resource_id=1b14e41c-85b3-4c21-bdce-9fe48185ffca&limit=116621')
+        data = json.loads(res.text)  # Here you have the data that you need
+        for d in data['result']['records']:
+            region = d['region_name']
+            city = d['city_name']
+            street = d['street_name']
+            if region not in address_dict.keys():
+                address_dict[region] = {}
+            if city not in address_dict[region].keys():
+                address_dict[region][city] = []
+            address_dict[region][city].append(street)
+
+        return address_dict
 
 
 

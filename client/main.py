@@ -1,12 +1,21 @@
 import socket
 import pickle
+import urllib
+import urllib3
 from Utils.CheckValidity import CheckValidity
 from kivy.app import App
 import threading
 from kivymd.toast import toast
 from kivy.lang import Builder
 from twisted.internet import reactor, protocol
-
+import googlemaps
+import pprint
+import time
+import urllib
+from geosky import geo_plug
+import ast
+import json
+import requests
 from Backend_controller import Backend_controller
 from Req_Answers import Req_Answers
 from kivy.storage.jsonstore import JsonStore
@@ -56,7 +65,7 @@ class OurFactory(protocol.ClientFactory):
 
 def net():
     f = OurFactory()
-    reactor.connectTCP("localhost", 4000, f)
+    reactor.connectTCP("129.168.1.19", 4000, f)
     reactor.run()
 
 
