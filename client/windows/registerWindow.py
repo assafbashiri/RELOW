@@ -9,7 +9,7 @@ from Utils.CheckValidity import CheckValidity
 from Utils.Utils import Utils
 from windows.SideBar import SideBar
 from kivy.core.text import LabelBase
-
+from Utils.Utils import Utils
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -35,6 +35,7 @@ class Register_box(BoxLayout):
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
         self.gender = 0
+        self.dialog=None
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
@@ -57,7 +58,8 @@ class Register_box(BoxLayout):
         controller = App.get_running_app().controller
         if controller.user_service is not None:
             if controller.guest is False:
-                toast('you need to logout first')
+                Utils.pop(self,"you need to logout first", 'alert')
+                #toast('you need to logout first')
                 return
         user_name = self.ids.user_name.text
         user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)

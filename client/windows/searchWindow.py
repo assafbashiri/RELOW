@@ -17,7 +17,7 @@ from kivymd.uix.textfield import MDTextField
 from windows.offers_list import RecycleViewRow
 from windows.SideBar import SideBar
 from kivymd.uix.menu import MDDropdownMenu
-
+from Utils.Utils import Utils
 from windows.SideBar import SideBar
 from windows.offers_list import Offers_Screen
 
@@ -31,6 +31,8 @@ class SEARCHScreen(Screen):
         self.first_time_bad_search = True
         self.first_time_good_search = True
         self.lab = MDLabel(text="")
+        self.category_name= None
+        self.dialog = None
 
     def search_by_name(self):
         self.ids.search_box.ids.helper.remove_widget(self.lab)
@@ -89,7 +91,10 @@ class SEARCHScreen(Screen):
         self.ids.search_box.ids.helper.remove_widget(self.of)
         sub_cat_name = self.ids.search_box.ids.drop_sub_category.text
         # cat_name = self.ids.category.text
-        cat_name = self.category_tom
+        if self.category_name is None:
+            Utils.pop(self, 'have to choose sub category', 'alert')
+            return
+        cat_name = self.category_name
         ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
 
         if len(ans) == 0:
@@ -164,7 +169,7 @@ class SEARCHScreen(Screen):
         self.drop_down_sub_category.open()
         self.drop_down_category.dismiss()
     def on_save_sub_category(self, sub_cat, cat_name):
-        self.category_tom = cat_name
+        self.category_name = cat_name
         self.ids.search_box.ids.drop_sub_category.text = sub_cat
         self.drop_down_sub_category.dismiss()
     def on_save_category(self, sub_cat):
@@ -175,6 +180,10 @@ class SEARCHScreen(Screen):
         self.ids.search_box.ids.helper.remove_widget(self.lab)
         self.ids.search_box.ids.helper.remove_widget(self.of)
         cat_name = self.ids.search_box.ids.drop_category.text
+        #if cat_name not in App.get_running_app().controller.get_categories().keys():
+        if cat_name == 'search by category':
+            Utils.pop(self, 'have to choose category')
+            return
         ans = App.get_running_app().controller.get_offers_by_category(cat_name)
         if len(ans) == 0:
             # self.of.insert_offers(list=[])

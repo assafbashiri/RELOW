@@ -1,4 +1,4 @@
-
+from Utils.Utils import Utils
 from kivy.core.text import LabelBase
 from kivy.app import App
 from kivy.clock import Clock
@@ -39,6 +39,7 @@ class Account_box(BoxLayout):
         super(Account_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
+        self.dialog = None
 
 
     def active_offers(self):
@@ -59,6 +60,7 @@ class Sub_Category_box(BoxLayout):
 class BoxiLayout(BoxLayout):
     drop_down = ObjectProperty()
 
+
     def __init__(self, **kwargs):
         super(BoxiLayout, self).__init__(**kwargs)
         self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
@@ -68,7 +70,7 @@ class BoxiLayout(BoxLayout):
         self.bind(pos=self.update_rect, size=self.update_rect)
         self.rect = Rectangle(pos=self.pos, size=self.size)
         LabelBase.register(name="Arial", fn_regular="Arial.ttf")
-
+        self.dialog = None
 
     def update_rect(self,instance, value):
         self.rect.pos = self.pos
@@ -79,9 +81,12 @@ class BoxiLayout(BoxLayout):
         # self.insert_offers()
     def insert_color(self, num):
         with self.canvas.before:
-            Color(0, 0, 0)
+            Color(251, 255, 230)
             self.rect = Rectangle(pos=self.pos, size=self.size)
             print('done')
+
+    def change_password(self):
+        App.get_running_app().root.current = 'change_password_screen'
 
     def change_password(self):
         temp1 = MDTextField(hint_text="old password")
@@ -101,7 +106,7 @@ class BoxiLayout(BoxLayout):
         self.user = controller.user_service
         if(self.user is not None):
             if controller.guest is True:
-                toast("is a guest")
+
                 return
             if (self.user.first_name is None):
                 self.ids.first_name.text = ""
@@ -222,24 +227,20 @@ class BoxiLayout(BoxLayout):
 
     def address(self):
         city = self.ids.city.text
-        if city == '':
-            toast('the city is not valid')
+        if not self.check_empty(city, 'city'):
             return
+
         street = self.ids.street.text
-        if street == '':
-            toast('the street is not valid')
+        if not self.check_empty(street, 'street'):
             return
         zip_code = self.ids.zip_code.text
-        if zip_code == '':
-            toast('the zip_code is not valid')
+        if not self.check_empty(zip_code, 'zip_code'):
             return
         floor = self.ids.floor.text
-        if floor == '':
-            toast('the floor is not valid')
+        if not self.check_empty(floor, 'floor'):
             return
         apt = self.ids.apt_number.text
-        if apt == '':
-            toast('the apt is not valid')
+        if not self.check_empty(apt, 'apt'):
             return
         ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
         if ans.res is True:
@@ -248,6 +249,12 @@ class BoxiLayout(BoxLayout):
             self.init_fields()
         return ans
 
+    def check_empty(self, to_check, obj):
+        if to_check == '':
+            Utils.pop(self, f'the {obj} is not valid', 'alert')
+            #toast('the apt is not valid')
+            return False
+        return True
 
     def clear_address(self):
         self.ids.city.text=""
@@ -259,24 +266,19 @@ class BoxiLayout(BoxLayout):
 
     def payment(self):
         credit_card_number = self.ids.credit_card_number.text
-        if credit_card_number == '':
-            toast('the CC is not valid')
+        if not self.check_empty(credit_card_number, 'credit_card_number'):
             return
         credit_card_exp_date = self.ids.exp_date.text
-        if credit_card_exp_date == '':
-            toast('the credit_card_exp_date is not valid')
+        if not self.check_empty(credit_card_exp_date, 'credit_card_exp_date'):
             return
         cvv = self.ids.cvv.text
-        if cvv == '':
-            toast('the cvv is not valid')
+        if not self.check_empty(cvv, 'cvv'):
             return
         card_type = self.ids.card_type.text
-        if card_type == '':
-            toast('the card_type is not valid')
+        if not self.check_empty(card_type, 'card_type'):
             return
         id = self.ids.id_number.text
-        if id == '':
-            toast('the id is not valid')
+        if not self.check_empty(id, 'id'):
             return
         ans = App.get_running_app().controller.add_payment_method(credit_card_number, credit_card_exp_date, cvv,
                                                                   card_type, id)

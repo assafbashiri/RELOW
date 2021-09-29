@@ -1,4 +1,5 @@
 from kivy.app import App
+from Utils.Utils import Utils
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.carousel import Carousel
@@ -267,7 +268,8 @@ class Update_offer_box(BoxLayout):
         if not self.check_empty_fields():
             return
         if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
-            toast('end date is already passed')
+            Utils.pop("end date is already passed", 'alert')
+            #toast('end date is already passed')
             print('end date is already passed')
             return
         list = [v for k, v in self.ids.choose.photo_list.items()]
@@ -302,13 +304,16 @@ class Update_offer_box(BoxLayout):
 
     def check_empty_fields(self):
         if self.ids.end_date.text == "":
-            toast("have to chose end date")
+            Utils.pop("have to chose end date", 'alert')
+            #toast("have to chose end date")
             return False
         if self.size_list == []:
-            toast("have to add size")
+            Utils.pop("have to add size", 'alert')
+            #toast("have to add size")
             return False
         if self.color_list == []:
-            toast("have to add color")
+            Utils.pop("have to add color", 'alert')
+            #toast("have to add color")
             return False
         return True
 
@@ -358,23 +363,31 @@ class Update_offer_box(BoxLayout):
 
         return True
 
-    def check_limits(self,limit1,limit2):
-        if limit1>limit2:
-            toast('limit should be greater then her following limit '+str(limit1)+" "+str(limit2))
+    def check_limits(self, limit1, limit2):
+        if limit1 > limit2:
+            Utils.pop(self, f'limit should be greater then her following limit {str(limit1)} {str(limit2)}', 'alert')
+            # toast('limit should be greater then her following limit '+str(limit1)+" "+str(limit2))
             return False
 
         if (limit2 - limit1) < MIN_DIFFERNCE_LIMIT:
-            toast('the differnce between your limit is too short -> '+ str(limit1) + " "+str(limit2)+ 'this is the min differnce: '+str(MIN_DIFFERNCE_LIMIT))
+            Utils.pop(self,
+                      f'the differnce between your limit is too short ->  {str(limit1)} {str(limit2)} this is the min differnce: {str(MIN_DIFFERNCE_LIMIT)}',
+                      'alert')
+            # toast('the differnce between your limit is too short -> '+ str(limit1) + " "+str(limit2)+ 'this is the min differnce: '+str(MIN_DIFFERNCE_LIMIT))
             return False
         return True
 
-    def check_prices(self,price1,price2 ):
-        if price2>price1:
-            toast('price should be smaller then his following price '+str(price1) + " " + str(price2))
+    def check_prices(self, price1, price2):
+        if price2 > price1:
+            Utils.pop(self, f'price should be smaller then his following price {str(price1)} {str(price2)}', 'alert')
+            # toast('price should be smaller then his following price '+str(price1) + " " + str(price2))
             return False
 
         if (price1 - price2) < MIN_DIFFERNCE_PRICE:
-            toast('the differnce between your price is too short -> '+ str(price1) +" "+str(price2)+'this is the min differnce: '+str(MIN_DIFFERNCE_PRICE))
+            Utils.pop(self,
+                      f'the differnce between your price is too short -> {str(price1)} {str(price2)} this is the min differnce: {str(MIN_DIFFERNCE_PRICE)}',
+                      'alert')
+            # toast('the differnce between your price is too short -> '+ str(price1) +" "+str(price2)+'this is the min differnce: '+str(MIN_DIFFERNCE_PRICE))
             return False
         return True
 
@@ -527,8 +540,8 @@ class choose_photo_layout(MDBoxLayout):
         self.photo_list[im] = f
         self.i+=1
         self.manager.exit_manager()
-
-        toast("picture add succesfully")
+        Utils.pop("picture add succesfully", 'succes')
+        #toast("picture add succesfully")
 
     def exit_manager(self, *args):
         '''Called when the user reaches the root of the directory tree.'''

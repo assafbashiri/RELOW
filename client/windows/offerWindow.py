@@ -1,5 +1,5 @@
 import io
-
+from Utils.Utils import Utils
 from kivy.app import App
 from kivy.uix.image import Image, CoreImage
 from kivy.uix.boxlayout import BoxLayout
@@ -34,7 +34,8 @@ class OfferWindow(Popup):
         self.new_address = None
         # buyer/seller/viewer/user
         if (self.controller.user_service is None):
-            toast('not log in')
+            Utils.pop("not log in", 'alert')
+            #toast('not log in')
             print('not log in')
             return
         self.user = self.controller.user_service
@@ -392,7 +393,8 @@ class OfferWindow(Popup):
         self.dismiss()
         a = App.get_running_app()
         a.root.current = 'connect_screen'
-        toast(' you need to register first')
+        Utils.pop("you need to register first", 'alert')
+        #toast('you need to register first')
         b= 2
 
     # def open(self, offer, photo_lis):
