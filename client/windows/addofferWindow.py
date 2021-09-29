@@ -186,16 +186,20 @@ class Add_offer_box(BoxLayout):
         if not self.check_steps_validity():
             return
         if self.size_list == []:
-            toast("have to add size")
+            Utils.pop(self, f'have to add size', 'alert')
+            #toast("have to add size")
             return
         if self.color_list == []:
-            toast("have to add color")
+            Utils.pop(self, f'have to add color', 'alert')
+            #toast("have to add color")
             return
         if self.sub_cat12 is None:
-            toast("have to chose sub category")
+            Utils.pop(self, f'have to chose sub category', 'alert')
+            #toast("have to chose sub category")
             return
         if self.ids.end_date.text == "":
-            toast("have to chose end date")
+            Utils.pop(self, f'have to chose end date', 'alert')
+            #toast("have to chose end date")
             return
         if not CheckValidity.checkValidityName(self,self.ids.product_name.text):
             return
@@ -223,7 +227,7 @@ class Add_offer_box(BoxLayout):
         ans = App.get_running_app().controller.add_active_sell_offer(name, company, colors, sizes, description, list, category_name,
                               sub_category_name, steps, end_date)
 
-        toast(ans.message)
+        #toast(ans.message)
         if ans.res is True:
             Utils.pop(self, ans.message, 'succes')
             Utils.pop(self, 'your offer is waiting for approve by admin', 'succes')
@@ -232,7 +236,7 @@ class Add_offer_box(BoxLayout):
         else:
             Utils.pop(self, ans.message, 'alert')
 
-        
+
 
 
     def check_steps_validity(self):

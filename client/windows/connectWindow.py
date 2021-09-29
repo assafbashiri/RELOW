@@ -65,7 +65,8 @@ class Connect_box(BoxLayout):
         controller = App.get_running_app().controller
         if controller.user_service is not None:
             if controller.guest is False:
-                toast('you need to logout first')
+                Utils.pop(self, 'you need to logout first', 'alert')
+                #toast('you need to logout first')
                 return
         user_name = self.ids.user_name.text
         user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)

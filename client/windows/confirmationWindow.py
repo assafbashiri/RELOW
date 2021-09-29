@@ -2,6 +2,8 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
 
+from Utils.Utils import Utils
+
 
 class CONFIRMATIONScreen(Screen):
     def __init__(self, **kwargs):
@@ -11,6 +13,7 @@ class CONFIRMATIONScreen(Screen):
     def complete_register(self):
         code = self.ids.code.text
         if code == '':
+            Utils.pop(self, 'you need to insert code','alert')
             toast('you need to insert code')
             return
         else:

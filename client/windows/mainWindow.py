@@ -27,6 +27,7 @@ from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextFieldRound, MDTextField
 
+from Utils.Utils import Utils
 from windows.accountWindow import ACCOUNTScreen
 from windows.connectWindow import CONNECTScreen
 from windows.searchWindow import SEARCHScreen
@@ -64,6 +65,7 @@ class Manager(ScreenManager):
 class Side_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Side_box, self).__init__(**kwargs)
+        self.dialog = None
     #     self.bind(pos=self.update_rect, size=self.update_rect)
     #     self.rect = Rectangle(pos=self.pos, size=self.size)
     #
@@ -76,7 +78,8 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to account window")
+            Utils.pop(self, 'guest cant go to account window', 'alert')
+            #toast("guest cant go to account window")
             return
         App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
@@ -85,7 +88,8 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to add offer window")
+            Utils.pop(self, 'guest cant go to add offer window', 'alert')
+            #toast("guest cant go to add offer window")
             return
         App.get_running_app().root.current = 'add_offer_screen'
 
@@ -93,7 +97,8 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to contact us window")
+            Utils.pop(self, 'guest cant go to contact us window', 'alert')
+            #toast("guest cant go to contact us window")
             return
         App.get_running_app().root.current = 'contact_us_screen'
 
