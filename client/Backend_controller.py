@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.storage.jsonstore import JsonStore
 
 from Service.Object.OfferService import OfferService
@@ -42,7 +43,13 @@ class Backend_controller:
         update_password_req = {'op': 6, 'old_password': old_password, 'new_password': new_password}
         self.req_answers.add_request(update_password_req)
         ans = self.req_answers.get_answer()
-        print(ans.message)
+        if ans.res is True:
+            user = self.store.get('user')
+            user_id = user['user_id']
+            email = user['email']
+            self.store.put("user", user_id= user_id,
+                           email = email,
+                           password = new_password)
         return ans
 
     def guest_register(self):
@@ -99,7 +106,7 @@ class Backend_controller:
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
-                           username = ans.data['user_name'],
+                           email = ans.data['email'],
                            password = ans.data['password'])
             # have to delete guest from store
             self.register_unregister_json(True)
@@ -124,9 +131,9 @@ class Backend_controller:
     def register_unregister_json(self, flag):
         pass
 
-    def login_from_exist_user(self, user_name, password):
+    def login_from_exist_user(self, email, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 3, 'user_name': user_name, 'password': password}
+        login_req = {'op': 3, 'email': email, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -135,15 +142,24 @@ class Backend_controller:
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id=ans.data['user_id'],
-                           username=ans.data['user_name'],
+                           email=ans.data['email'],
                            password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
             self.guest = False
+        else:
+            if ans.message == "user is not active":
+                if App.get_running_app().root is None:
+                    print('login failed, have to register as a guest')
+                    self.guest_register()
+                    self.guest_login(self.user_service.user_id)
+                    # think what happend here
+                else:
+                    App.get_running_app().root.current = "confirmation_screen"
         return ans
 
-    def login(self, user_name, password):
+    def login(self, email, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 82, 'user_name': user_name, 'password': password, 'guest_id': self.user_service.user_id}
+        login_req = {'op': 82, 'email': email, 'password': password, 'guest_id': self.user_service.user_id}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -152,10 +168,19 @@ class Backend_controller:
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id=ans.data['user_id'],
-                           username=ans.data['user_name'],
+                           email=ans.data['email'],
                            password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
             self.guest = False
+        else:
+            if ans.message == "user is not active":
+                if App.get_running_app().root is None:
+                    print('login failed, have to register as a guest')
+                    self.guest_register()
+                    self.guest_login(self.user_service.user_id)
+                    # think what happend here
+                else:
+                    App.get_running_app().root.current = "confirmation_screen"
         return ans
 
     def logout(self):
@@ -166,6 +191,19 @@ class Backend_controller:
         if ans.res is True:
             self.user_service = None
             self.guest = True
+        return ans
+
+    def forgot_password(self, email):
+        req = {'op': 92, 'email': email}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        if ans.res is True:
+            user = self.store.get('user')
+            user_id = user['user_id']
+            email = user['email']
+            self.store.put("user", user_id= user_id,
+                           email = email,
+                           password = ans.data)
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------

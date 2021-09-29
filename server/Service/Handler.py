@@ -85,6 +85,7 @@ class Handler:
                          80: self.merge_register,
                          81: self.complete_register,
                          82: self.log_in_from_guest,
+                         92: self.forgot_password,
                          94: self.contact_us,
                          99: self.get_offers_by_product_company,
                          500: self.confirm_add_active_sell_offer,
@@ -159,7 +160,7 @@ class Handler:
 
     def log_in_from_guest(self, argument):
         try:
-            user = self.user_controller.log_in(argument['user_name'], argument['password'])
+            user = self.user_controller.log_in(argument['email'], argument['password'])
             self.user = user
             self.user_controller.delete_guest(argument['guest_id'])
             return Response(vars(UserService(user)), "Log-In Successfully", True)
@@ -168,7 +169,7 @@ class Handler:
 
     def log_in(self, argument):
         try:
-            user = self.user_controller.log_in(argument['user_name'], argument['password'])
+            user = self.user_controller.log_in(argument['email'], argument['password'])
             self.user = user
             return Response(vars(UserService(user)), "Log-In Successfully", True)
         except Exception as e:
@@ -181,6 +182,13 @@ class Handler:
             return Response(None, "Log-Out Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
+
+    def forgot_password(self, argument):
+        try:
+            new_password = self.user_controller.forgot_password(argument['email'])
+            return Response(new_password, "password changed Successfully", True)
+        except Exception as e:
+            return Response(None,str(e), False)
 
     # -------------------------------------------------ADD------------------------------------------------------------------
 

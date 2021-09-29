@@ -21,6 +21,7 @@ from kivymd.toast import toast
 from kivymd.uix.label import MDLabel
 # from kivy.config import Config
 # Config.set('kivy', 'exit_on_escape', '0')
+from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.progressbar import MDProgressBar
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.selectioncontrol import MDCheckbox
@@ -37,9 +38,13 @@ from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen
 from windows.contactWindow import CONTACTScreen
 from windows.confirmationWindow import CONFIRMATIONScreen
+from windows.changePasswordWindow import PasswordScreen
 
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen
+
+from client.Utils.Utils import Utils
+
 
 class Struct(object):
     def __init__(self, **entries):
@@ -76,7 +81,7 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to account window")
+            Utils.pop(self, "guest cant go to account window", 'alert')
             return
         App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
@@ -85,7 +90,7 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to add offer window")
+            Utils.pop("guest cant go to add offer window", 'alert')
             return
         App.get_running_app().root.current = 'add_offer_screen'
 
@@ -93,18 +98,66 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to contact us window")
+            Utils.pop("guest cant go to contact us window", 'alert')
             return
         App.get_running_app().root.current = 'contact_us_screen'
 
+    def open_to_do_list(self):
+        menu_items = [
+            {
+                "text": "pdf summery of offer",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "addresses drop dowm",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "fix user controller load offers from history bug",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "add platform for get payment details",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "change al toast to pop up",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "fix login faild = user service is None bug",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "find and fix Side Bar bug",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "add to check validty func to be used in add/update offer that make sure size does not contain letters etc.",
+                "viewclass": "OneLineListItem",
+
+            },
+
+        ]
+        self.drop_down = MDDropdownMenu(
+            caller=self.ids.TO_DO_LIST,
+            items=menu_items,
+            width_mult=13,
+        )
+        self.drop_down.open()
 
 class Category_box(BoxLayout):
     pass
 
-
 class Sub_Category_box(BoxLayout):
     pass
-
 
 class Menu_box(BoxLayout):
     def __init__(self, **kwargs):
@@ -149,10 +202,10 @@ class TestApp(MDApp):
         store = self.controller.store
         if store.exists('user'):
             user = store.get('user')
-            username = user['username']
+            email = user['email']
             password = user['password']
-            self.controller.login_from_exist_user(username, password)
-            a = 8
+            # if answer is False?
+            ans = self.controller.login_from_exist_user(email, password)
             print("welcome back")
         elif store.exists('user_guest'):
             guest = store.get('user_guest')

@@ -18,3 +18,6 @@ class CONFIRMATIONScreen(Screen):
             if ans.res is True:
                 toast('lets start')
                 App.get_running_app().root.current = 'menu_screen'
+            else:
+                toast(ans.message)
+                return
