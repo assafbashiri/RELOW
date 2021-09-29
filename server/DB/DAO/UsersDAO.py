@@ -30,14 +30,12 @@ class UsersDAO:
         self._conn.commit()
         print("in insert in UserDAO step 5")
 
-
-
     def insert(self, userDTO):
         print("in insert in UserDAO step 1")
         self._conn.execute(
             """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
             [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value,  userDTO.active])
+             userDTO.birth_date, userDTO.gender.value, userDTO.active])
         self._conn.commit()
         print("in insert in UserDAO step 2")
 
@@ -119,35 +117,6 @@ class UsersDAO:
                            [False, user_id])
         self._conn.commit()
 
-
-
-    # getters
-
-    def usersFirst_Name(self, name):
-        this = self._conn.cursor()
-        output1 = this.execute("SELECT * FROM users_submission WHERE first_name=?", [name])
-        output = this.fetchone()
-        return output
-
-    def usersLast_Name(self, name):
-        this = self._conn.cursor()
-        this.execute("SELECT * FROM users_submission WHERE last_name=?", [name])
-        output = this.fetchone()[0]
-        return output
-
-    def usersPassword(self, password):
-        this = self._conn.cursor()
-        this.execute("SELECT * FROM users_submission WHERE country=?", [password])
-        output = this.fetchone()[0]
-        return output
-
-    def users_email(self, email):
-        this = self._conn.cursor()
-        this.execute("SELECT * FROM users_submission WHERE email=?", [email])
-        output = this.fetchone()[0]
-        return output
-
-
     def update(self, userDTO):
         self._conn.execute(
             """UPDATE users_submission SET first_name=?, last_name=?, user_name=?, email=?, password=?, birth_date=?, gender=?, active=? WHERE user_id=?""",
@@ -155,10 +124,9 @@ class UsersDAO:
              userDTO.birth_date, userDTO.gender.value, userDTO.active, userDTO.user_id])
         self._conn.commit()
 
-
         self._conn.execute(
             """UPDATE users_address SET city=?,street=?,zip_code=?,floor=?,apt=? WHERE user_id=? """,
-            [userDTO.city, userDTO.street, userDTO.zip_code, userDTO.floor, userDTO.apartment_number,userDTO.user_id])
+            [userDTO.city, userDTO.street, userDTO.zip_code, userDTO.floor, userDTO.apartment_number, userDTO.user_id])
         self._conn.commit()
 
         self._conn.execute(

@@ -61,7 +61,6 @@ class OfferDAO:
         self._conn.execute("DELETE FROM active_offers WHERE offer_id=?", [offer_id])
         self._conn.commit()
 
-
     def add_active_buy_offer(self, offerDTO, user_id, quantity, step, color, size, address):
         self._conn.execute("""INSERT INTO active_buyers (offer_id, user_id, quantity, step, color, size, address)
          VALUES (?,?,?,?,?,?,?)""", [offerDTO.offer_id, user_id, quantity, step, color, size, address])
