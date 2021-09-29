@@ -56,30 +56,25 @@ class BoxiLayout1(BoxLayout):
 
 
     def send(self):
-        self.ids.counti.remove_widget(self.label)
-
         if self.controller.guest is True:
-            self.label.text = "have to log in or register to contact us"
-            self.ids.counti.add_widget(self.label)
+            toast("have to log in or register to contact us")
             return
 
         subject = self.ids.subject.text
         description = self.ids.description.text
         self.label.text = ""
         if subject == "":
-            self.label.text = "please write a subject "
-            self.ids.counti.add_widget(self.label)
+            toast("please write a subject ")
             return
         if description == "":
-            self.label.text = "please write a description"
-            self.ids.counti.add_widget(self.label)
+            toast("please write a description")
             return
 
         ans = App.get_running_app().controller.contact_us(subject, description)
         if ans.res is True:
-            self.label.text = "thank you for contact us, we will answer you soon via your mail"
-            self.ids.counti.add_widget(self.label)
+            toast("thank you for contact us, we will answer you soon via your mail")
             self.ids.subject.text = ""
             self.ids.description.text = ""
+            App.get_running_app().root.current = 'menu_screen'
 
 

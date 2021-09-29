@@ -128,22 +128,36 @@ class UserController:
         self.users_dao.complete_register(user_id)
         self.log_in(self.usersDictionary[user_id].user_name, self.usersDictionary[user_id].password)
 
-    def log_in(self, user_name, password):
-        if not self.exist_user_name1(user_name):
-            raise Exception("User Name Not Exist")
-        password_of_user = self.get_password_by_user_name(user_name)
+    def log_in(self, email, password):
+        user = self.get_user_by_email(email)
+        if user is None:
+            raise Exception("there is no such an email address in the system")
+        password_of_user = user.get_password()
         if password_of_user != password:
             raise Exception("incorrect Password")
-        user_to_log_in = self.get_user_by_user_name(user_name)
-        if user_to_log_in.active == 0:
+        if user.active == 0:
             raise Exception("user is not active")
-        self.users_dao.update(UserDTO(user_to_log_in))
-        return user_to_log_in
+        return user
 
     def logout(self, user_id):
         user = self.check_user_state(user_id)
         # user.logout()
         # self.users_dao.update(UserDTO(user))
+
+    def forgot_password(self, email):
+        user = self.get_user_by_email(email)
+        if user is None:
+            raise Exception("there is no such an email address in the system")
+        new_password = "aA12345678aA"
+        user_id = user.user_id
+        old_pass = user.password
+        self.update_password(user_id, old_pass, new_password)
+        # send email
+        msg = "your new password is: " + new_password
+        message = """\
+        Subject: your password has changed
+        """ + msg
+        self.emailHandler.sendemail(email, "your password is changed, your password is : " + message)
 
     def add_payment_method(self, user_id, credit_card_number, credit_card_exp_date, cvv, card_type, id):
         user_to_add = self.check_user_state(user_id)
@@ -489,6 +503,13 @@ class UserController:
         for curr_user_id in user_ids:
             if user_name == self.usersDictionary.get(curr_user_id).user_name:
                 return self.usersDictionary.get(curr_user_id)
+        return None
+
+    def get_user_by_email(self, email):
+        user_ids = self.usersDictionary.keys()
+        for curr_user_id in user_ids:
+            if email == self.usersDictionary[curr_user_id].email:
+                return self.usersDictionary[curr_user_id]
         return None
 
     def get_user_by_id(self, user_id):

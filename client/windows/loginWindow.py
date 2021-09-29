@@ -142,25 +142,33 @@ class Login_box(BoxLayout):
         self.drop_down.dismiss()
 
     def login(self):
-        username = self.ids.user_name.text
+        email = self.ids.email.text
         password = self.ids.password.text
-        ans = App.get_running_app().controller.login(username, password)
+        if App.get_running_app().controller.user_service is None:
+            ans = App.get_running_app().controller.login_from_exist_user(email, password)
+        else:
+            ans = App.get_running_app().controller.login(email, password)
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.parent.back_to_main()
-
 
     def clear_login(self):
-        self.ids.log_in_username.text=""
-        self.ids.log_in_password.text=""
+        self.ids.email.text=""
+        self.ids.password.text=""
 
     def logout(self):
-
         ans = App.get_running_app().controller.logout()
-
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.parent.back_to_main()
+
+    def forgot_password(self):
+        email = self.ids.email.text
+        ans = App.get_running_app().controller.forgot_password(email)
+        if ans.res is True:
+            Utils.pop(self, "your new password send to your mail", 'alert')
+        else:
+            Utils.pop(self, "the email is not exist in out system", 'alert')
 
 
 
