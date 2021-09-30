@@ -512,6 +512,12 @@ class UserController:
                 return self.usersDictionary[curr_user_id]
         return None
 
+    def get_user_id_by_email(self, email):
+        user = self.get_user_by_email(email)
+        if user is None:
+            raise Exception("no such an email")
+        return  user.user_id
+
     def get_user_by_id(self, user_id):
         return self.usersDictionary[user_id]
 
@@ -526,7 +532,7 @@ class UserController:
         offerDTO = OfferDTO(offer)
         self.offers_dao.update(offerDTO)
 
-    def load_users(self, offers):
+    def load_users(self, offers, history_offers):
         users_submission_db = self.users_dao.load_users_sub()
         for user in users_submission_db:
             if user[6] is not None:
@@ -554,7 +560,8 @@ class UserController:
 
         buyers_in_offer_per_buyer_db = self.offers_dao.load_buyers_in_offers()
         liked_offers_from_db = self.offers_dao.load_liked_offers()
-        history_sellers_db = self.offers_dao.load_history_sellers()
+
+        history_offers_db = self.offers_dao.load_history_offers()
         history_buyers_db = self.offers_dao.load_history_buyers()
 
         for user_id in self.usersDictionary.keys():
@@ -569,9 +576,9 @@ class UserController:
                 if user_id == buyerInOffer[1]:
                     user.add_active_buy_offer(offers[buyerInOffer[0]])
             # history seller
-            for history_seller in history_sellers_db:
-                if user_id == history_seller[0]:
-                    user.add_to_history_seller(offers[history_seller[1]])
+            for history_offer in history_offers_db:
+                if user_id == history_offer[1]:
+                    user.add_to_history_seller(history_offers[history_offer[0]])
             # history buyer
             for history_buyer in history_buyers_db:
                 if user_id == history_buyer[0]:
