@@ -69,7 +69,7 @@ class BoxiLayout(BoxLayout):
         Clock.schedule_once(self.insert_color, 0)
         self.bind(pos=self.update_rect, size=self.update_rect)
         self.rect = Rectangle(pos=self.pos, size=self.size)
-        LabelBase.register(name="Arial", fn_regular="Arial.ttf")
+
         self.dialog = None
 
     def update_rect(self,instance, value):
@@ -77,6 +77,7 @@ class BoxiLayout(BoxLayout):
         self.rect.size = self.size
 
         # listen to size and position changes
+
 
         # self.insert_offers()
     def insert_color(self, num):
@@ -358,6 +359,7 @@ class BoxiLayout(BoxLayout):
         for address in addresses:
             menu_items.append(
                 {"text": address,
+                 'font':'Arial',
                  "viewclass": "OneLineListItem",
                  "on_release": lambda x=addresses[address], y=address: self.show_dropdown_streets(x, y),
                  }
@@ -451,18 +453,24 @@ class BoxiLayout(BoxLayout):
         addresses = self.get_countries_cities_dict_gov_il()
         menu_items = []
         for address in addresses.keys():
+
+
             menu_items.append(
-                {"text": address,
-                 "font_name": "Arial",
-                 "viewclass": "OneLineListItem",
-                 "on_release": lambda x=addresses[address], y=address: self.show_dropdown_cities_gov_il(x, y),
-                 }
+                {
+                    'text': f"[font=Arial]{address[::-1]}[/font]",
+                     'font_name':'Arimo',
+                     "viewclass": "OneLineListItem",
+                     "on_release": lambda x=addresses[address], y=address: self.show_dropdown_cities_gov_il(x, y),
+                }
             )
+
+
 
         self.drop_down_regoins_gov_il = MDDropdownMenu(
             caller=self.ids.drop_address,
             items=menu_items,
             width_mult=4,
+
 
         )
         self.drop_down_regoins_gov_il.open()
@@ -472,7 +480,7 @@ class BoxiLayout(BoxLayout):
         menu_items = []
         for city in cities.keys():
             menu_items.append(
-                {"text": city,
+                {'text': f"[font=Arial]{city[::-1]}[/font]",
                  "font_name":"Arial",
                  "viewclass": "OneLineListItem",
                  # here we have to open page or the offers of this sub categories ya sharmutut
@@ -492,8 +500,7 @@ class BoxiLayout(BoxLayout):
         for street in streets:
             menu_items.append(
 
-                {   "font_name":"Arial",
-                    "text": street,
+                {   'text': f"[font=Arial]{street[::-1]}[/font]",
                  "viewclass": "OneLineListItem",
                  # here we have to open page or the offers of this sub categories ya sharmutut
                  "on_release": lambda x=street, y=city, z=region: self.on_save_address_gov_il(x, y,z)}
@@ -506,7 +513,7 @@ class BoxiLayout(BoxLayout):
         )
         self.drop_down_streets_gov_il.open()
         self.drop_down_cities_gov_il.dismiss()
-    def on_save_address_gov_il(self, region,street, city):
+    def on_save_address_gov_il(self, street, city, region):
         self.region = region
         self.city = city
         self.street = street

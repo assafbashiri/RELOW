@@ -44,7 +44,7 @@ from windows.changePasswordWindow import PasswordScreen
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen
 
-from client.Utils.Utils import Utils
+from Utils.Utils import Utils
 
 
 class Struct(object):
@@ -147,6 +147,76 @@ class Side_box(BoxLayout):
             },
             {
                 "text": "add to check validty func to be used in add/update offer that make sure size does not contain letters etc.",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "check how geast and user create together in the json",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "check validity of end date",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer Bugds - check validity empty fields",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer- choose step - opposite",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer- set address city/street confuse",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer- build address remove the address response",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "as a buyer - the update take to update offer instead of to update purchase",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "my active buy offer - have to show the purchase details",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "add phone number to the user",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "instead of quantity  - choose color and size for each product ( like the steps )",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "account window - deal with the fields of the ",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "end of the join - move to window that recieve payment method ",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "confirm is 2 in the db ",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "get all expired= cant <= between str and datetime ",
                 "viewclass": "OneLineListItem",
 
             },
