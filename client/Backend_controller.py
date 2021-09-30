@@ -150,6 +150,8 @@ class Backend_controller:
             if ans.message == "user is not active":
                 if App.get_running_app().root is None:
                     print('login failed, have to register as a guest')
+                    if store.exists('user'):
+                        self.store.delete('user')
                     self.guest_register()
                     self.guest_login(self.user_service.user_id)
                     # think what happend here
@@ -338,7 +340,7 @@ class Backend_controller:
                                     'step': step,
                                     'color': color,
                                     'size': size,
-                                    'address':address}
+                                    'address':address.data}
         self.req_answers.add_request(add_active_buy_offer_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -691,9 +693,9 @@ class Backend_controller:
         print(ans.message)
         return ans
 
-    def complete_register(self, code):
-        complegte_register_req = {'op': 81, 'code': int(code)}
-        self.req_answers.add_request(complegte_register_req)
+    def complete_register(self, code, email):
+        complete_register_req = {'op': 81, 'code': int(code), 'email': email}
+        self.req_answers.add_request(complete_register_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
         return ans

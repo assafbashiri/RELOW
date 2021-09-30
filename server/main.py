@@ -54,8 +54,8 @@ if __name__ == '__main__':
     # c.add_sub_category('ee', 'e')
     print("%")
 
-    offers = c.load()
-    u.load_users(offers)
+    offers, history_offers = c.load()
+    u.load_users(offers, history_offers)
     # u.usersDictionary[4].log_in()
     # u.add_like_offer(4, offers[1])
     x=5

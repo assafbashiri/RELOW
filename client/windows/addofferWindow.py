@@ -334,7 +334,7 @@ class Add_offer_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog = MDDatePicker(year=2022, month=12, day=15)
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 
