@@ -11,11 +11,10 @@ from Response import Response
 
 
 class Backend_controller:
-    def __init__(self, req_answers, store, client):
+    def __init__(self, req_answers, store):
         self.req_answers = req_answers
         # user / categories DATA
         self.user_service = None
-        self.client = client
         self.hot_deals = self.get_hot_deals()
         self.categories = None
         self.guest = False
@@ -343,7 +342,6 @@ class Backend_controller:
                                     'address':address.data}
         self.req_answers.add_request(add_active_buy_offer_req)
         ans = self.req_answers.get_answer()
-        print(ans.message)
         return ans
 
     def remove_active_buy_offer(self, offer_id):
