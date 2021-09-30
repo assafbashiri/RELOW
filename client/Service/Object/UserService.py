@@ -111,7 +111,7 @@ class UserService():
         if self.apartment_number is None:
             return Response(False,'you need to add address first',False)
         adr_str = str(self.city)+' '+str(self.street)+' '+str(self.floor)+''+str(self.apartment_number)
-        return Response(adr_str,'you need to add address first',True)
+        return Response(adr_str,'you have an address',True)
 
 # -------------------------------------------USER PAYMENT-----------------------------------------------------------
 
