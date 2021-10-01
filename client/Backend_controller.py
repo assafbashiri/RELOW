@@ -1,20 +1,26 @@
+import pickle
+
 from kivy.storage.jsonstore import JsonStore
+
+from twisted.internet import reactor
+
+from kivymd.toast import toast
 
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 from Service.Object.CategoryService import CategoryService
 from windows.mainWindow import Menu_box
 from windows.offers_list import Offers_Screen
-from kivymd.toast import toast
+
 from Response import Response
 
 
 class Backend_controller:
-    def __init__(self, req_answers, store, client):
+    def __init__(self, req_answers, store):
         self.req_answers = req_answers
         # user / categories DATA
         self.user_service = None
-        self.client = client
+        # self.client = client
         self.hot_deals = self.get_hot_deals()
         self.categories = None
         self.guest = False
@@ -28,8 +34,10 @@ class Backend_controller:
         # Menu_box.insert_offers(self= Menu_box)
     def get_categories(self):
         return self.categories
+
     def init_categories(self):
         self.categories = []
+
         categories_req = {"op":56}
         self.req_answers.add_request(categories_req)
         ans = self.req_answers.get_answer()
@@ -470,6 +478,7 @@ class Backend_controller:
         offers = []
         req = {'op': 51}
         self.req_answers.add_request(req)
+        # self.client.transport.write('req'.encode('utf8'))
         ans = self.req_answers.get_answer()
         print(ans.message)
         if ans.res is True:
