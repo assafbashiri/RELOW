@@ -21,12 +21,14 @@ from kivymd.toast import toast
 from kivymd.uix.label import MDLabel
 # from kivy.config import Config
 # Config.set('kivy', 'exit_on_escape', '0')
+from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.progressbar import MDProgressBar
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextFieldRound, MDTextField
 
+from Utils.Utils import Utils
 from windows.accountWindow import ACCOUNTScreen
 from windows.connectWindow import CONNECTScreen
 from windows.searchWindow import SEARCHScreen
@@ -37,9 +39,13 @@ from windows.offers_list import RecycleViewRow
 from windows.my_offersWindow import MY_OFFERS_Screen
 from windows.contactWindow import CONTACTScreen
 from windows.confirmationWindow import CONFIRMATIONScreen
+from windows.changePasswordWindow import PasswordScreen
 
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen
+
+from Utils.Utils import Utils
+
 
 class Struct(object):
     def __init__(self, **entries):
@@ -64,6 +70,7 @@ class Manager(ScreenManager):
 class Side_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Side_box, self).__init__(**kwargs)
+        self.dialog = None
     #     self.bind(pos=self.update_rect, size=self.update_rect)
     #     self.rect = Rectangle(pos=self.pos, size=self.size)
     #
@@ -76,7 +83,9 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to account window")
+
+            Utils.pop(self, 'guest cant go to account window', 'alert')
+            #toast("guest cant go to account window")
             return
         App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
@@ -85,7 +94,8 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to add offer window")
+            Utils.pop(self, 'guest cant go to add offer window', 'alert')
+            #toast("guest cant go to add offer window")
             return
         App.get_running_app().root.current = 'add_offer_screen'
 
@@ -93,18 +103,137 @@ class Side_box(BoxLayout):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-            toast("guest cant go to contact us window")
+            Utils.pop(self, 'guest cant go to contact us window', 'alert')
+            #toast("guest cant go to contact us window")
             return
         App.get_running_app().root.current = 'contact_us_screen'
 
+    def open_to_do_list(self):
+        menu_items = [
+            {
+                "text": "pdf summery of offer",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "addresses drop dowm",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "fix user controller load offers from history bug",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "add platform for get payment details",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "change al toast to pop up",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "fix login faild = user service is None bug",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "find and fix Side Bar bug",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "add to check validty func to be used in add/update offer that make sure size does not contain letters etc.",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "check how geast and user create together in the json",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "check validity of end date",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer Bugds - check validity empty fields",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer- choose step - opposite",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer- set address city/street confuse",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "Join Offer- build address remove the address response",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "as a buyer - the update take to update offer instead of to update purchase",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "my active buy offer - have to show the purchase details",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "add phone number to the user",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "instead of quantity  - choose color and size for each product ( like the steps )",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "account window - deal with the fields of the ",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "end of the join - move to window that recieve payment method ",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "confirm is 2 in the db ",
+                "viewclass": "OneLineListItem",
+
+            },
+            {
+                "text": "get all expired= cant <= between str and datetime ",
+                "viewclass": "OneLineListItem",
+
+            },
+
+        ]
+        self.drop_down = MDDropdownMenu(
+            caller=self.ids.TO_DO_LIST,
+            items=menu_items,
+            width_mult=13,
+        )
+        self.drop_down.open()
 
 class Category_box(BoxLayout):
     pass
 
-
 class Sub_Category_box(BoxLayout):
     pass
-
 
 class Menu_box(BoxLayout):
     def __init__(self, **kwargs):
@@ -149,10 +278,10 @@ class TestApp(MDApp):
         store = self.controller.store
         if store.exists('user'):
             user = store.get('user')
-            username = user['username']
+            email = user['email']
             password = user['password']
-            self.controller.login_from_exist_user(username, password)
-            a = 8
+            # if answer is False?
+            ans = self.controller.login_from_exist_user(email, password)
             print("welcome back")
         elif store.exists('user_guest'):
             guest = store.get('user_guest')

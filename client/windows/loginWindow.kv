@@ -32,13 +32,6 @@
                 text: "LOGIN"
 
 
-            MDTextFieldRound:
-                write_tab: False
-                text : "tomnis1234"
-                id:user_name
-                hint_text: "username"
-                icon_right: "account"
-
 
             MDTextFieldRound:
                 write_tab: False
@@ -75,5 +68,10 @@
                 text:"clear_login"
                 font_size: 12
                 on_press:root.clear_login()
+
+            MDRoundFlatButton:
+                text:"forgot password"
+                font_size: 12
+                on_press:root.forgot_password()
 
 

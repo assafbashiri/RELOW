@@ -4,7 +4,10 @@
 # from Object.SubCategoryService import SubCategoryService
 # from Object.OfferService import OfferService
 # from Object.ProductService import ProductService
+from kivy.clock import Clock
+
 from BusinessLayer.Controllers.CategoryController import CategoryController
+from BusinessLayer.Utils.Utils import Utils
 from Service.Object.CategoryService import CategoryService
 from BusinessLayer.Controllers.UserController import UserController
 from Response import Response
@@ -20,9 +23,11 @@ class Handler:
     def __init__(self, conn):
         self.conn = conn
         self.user = None
+        self.offers_by_date={}
 
         self.category_controller = CategoryController.getInstance()
         self.user_controller = UserController.getInstance()
+        #Clock.schedule_interval(Utils.create_summery_end_offer(self.category_controller.get_all_expired_offers(), self.user_controller, self.category_controller), 5)#change the time
         self.switcher = {1: self.register,
                          2: self.unregister,
                          3: self.log_in,
@@ -85,6 +90,7 @@ class Handler:
                          80: self.merge_register,
                          81: self.complete_register,
                          82: self.log_in_from_guest,
+                         92: self.forgot_password,
                          94: self.contact_us,
                          99: self.get_offers_by_product_company,
                          500: self.confirm_add_active_sell_offer,
@@ -159,7 +165,7 @@ class Handler:
 
     def log_in_from_guest(self, argument):
         try:
-            user = self.user_controller.log_in(argument['user_name'], argument['password'])
+            user = self.user_controller.log_in(argument['email'], argument['password'])
             self.user = user
             self.user_controller.delete_guest(argument['guest_id'])
             return Response(vars(UserService(user)), "Log-In Successfully", True)
@@ -168,7 +174,7 @@ class Handler:
 
     def log_in(self, argument):
         try:
-            user = self.user_controller.log_in(argument['user_name'], argument['password'])
+            user = self.user_controller.log_in(argument['email'], argument['password'])
             self.user = user
             return Response(vars(UserService(user)), "Log-In Successfully", True)
         except Exception as e:
@@ -181,6 +187,13 @@ class Handler:
             return Response(None, "Log-Out Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
+
+    def forgot_password(self, argument):
+        try:
+            new_password = self.user_controller.forgot_password(argument['email'])
+            return Response(new_password, "password changed Successfully", True)
+        except Exception as e:
+            return Response(None,str(e), False)
 
     # -------------------------------------------------ADD------------------------------------------------------------------
 
@@ -211,10 +224,12 @@ class Handler:
                                                        # argument['steps'],
                                                        argument['end_date'], False)
             self.user_controller.add_active_sale_offer(offer)
+            if offer.end_date not in self.offers_by_date.keys():
+                self.offers_by_date[offer.end_date]=[]
+            self.offers_by_date[offer.end_date].append(offer)
             return Response(OfferService(offer), "Offer Added Successfully", True)
         except Exception as e:
-            if str(e) == "wow":
-                self.category_controller.remove_offer(offer)
+            self.category_controller.remove_offer(offer)
             return Response(None, str(e), False)
 
     def add_liked_offer(self, argument):
@@ -747,13 +762,14 @@ class Handler:
 
     def complete_register(self, argument):
         code = argument['code']
-        user_id = self.user.user_id
+        email = argument['email']
+        user_id = self.user_controller.get_user_id_by_email(email)
         if code == user_id:
             try:
                 self.user_controller.complete_register(user_id)
                 return Response(None, 'good confirmation', True)
             except Exception as e:
-                    return Response(None, str(e), False)
+                return Response(None, str(e), False)
         else:
             return Response(None, 'the code is incorrect', False)
 
@@ -804,7 +820,7 @@ class Handler:
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
             ans = self.category_controller.confirm_offer(offer)
-            return Response(vars(OfferService(ans)), "confirm offer succes", True)
+            return Response(vars(OfferService(ans)), "confirm offer success", True)
         except Exception as e:
             return Response(None, str(e), False)
 

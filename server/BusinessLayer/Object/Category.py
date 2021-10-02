@@ -51,7 +51,10 @@ class Category:
             return None
         self.sub_categories_dictionary[sub_category_id].set_name(new_sub_category_name)
         return self.sub_categories_dictionary[sub_category_id]
-
+    def get_sub_category_name_by_id(self, sub_category_id):
+        for sub_cat_id in self.sub_categories_dictionary.keys():
+            if self.sub_categories_dictionary[sub_cat_id].id == sub_category_id:
+                return self.sub_categories_dictionary[sub_category_id].name
     def get_all_expired_offers(self):
         ans = []
         curr_sub_category_offers = []

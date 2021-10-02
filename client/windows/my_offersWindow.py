@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from kivymd.toast import toast
 from kivymd.uix.label import MDLabel
 from windows.SideBar import SideBar
 
@@ -25,9 +26,9 @@ class MY_OFFERS_Screen(Screen):
         if len(ans) == 0:
             # self.of.insert_offers(list=[])
             # if self.first_time_bad_search is True:
-            self.lab.text = "0 active buy offers"
+            toast("0 active buy offers")
                 # self.mes.add_widget(self.lab)
-            self.ids.offers_box.ids.offi.add_widget(self.lab)
+            # self.ids.offers_box.ids.offi.add_widget(self.lab)
                 # self.first_time_bad_search = False
             # else:
             #     self.lab.text = "0 active buy offers.."
@@ -50,9 +51,9 @@ class MY_OFFERS_Screen(Screen):
         if len(ans) == 0:
             # self.of.insert_offers(list=[])
             # if self.first_time_bad_search is True:
-                self.lab.text = "0 active sell offers"
+                toast("0 active sell offers")
                 # self.mes.add_widget(self.lab)
-                self.ids.offers_box.ids.offi.add_widget(self.lab)
+                # self.ids.offers_box.ids.offi.add_widget(self.lab)
                 # self.first_time_bad_search = False
             # else:
             #     self.lab.text = "0 active sell offers.."
@@ -75,9 +76,9 @@ class MY_OFFERS_Screen(Screen):
         if len(ans) == 0:
             # self.of.insert_offers(list=[])
             # if self.first_time_bad_search is True:
-                self.lab.text = "0 liked offers"
+                toast("0 liked offers")
                 # self.mes.add_widget(self.lab)
-                self.ids.offers_box.ids.offi.add_widget(self.lab)
+                # self.ids.offers_box.ids.offi.add_widget(self.lab)
                 # self.first_time_bad_search = False
             # else:
             #     self.lab.text = "0 liked offers.."
@@ -101,9 +102,9 @@ class MY_OFFERS_Screen(Screen):
         if len(ans) == 0:
             # self.of.insert_offers(list=[])
             # if self.first_time_bad_search is True:
-                self.lab.text = "0 history buy offers"
+                toast("0 history buy offers")
                 # self.mes.add_widget(self.lab)
-                self.ids.offers_box.ids.offi.add_widget(self.lab)
+                #self.ids.offers_box.ids.offi.add_widget(self.lab)
                 # self.first_time_bad_search = False
             # else:
             #     self.lab.text = "0 history buy offers.."
@@ -126,9 +127,9 @@ class MY_OFFERS_Screen(Screen):
         if len(ans) == 0:
             # self.of.insert_offers(list=[])
             # if self.first_time_bad_search is True:
-                self.lab.text = "0 history sell offers"
+                toast("0 history sell offers")
                 # self.mes.add_widget(self.lab)
-                self.ids.offers_box.ids.offi.add_widget(self.lab)
+                # self.ids.offers_box.ids.offi.add_widget(self.lab)
                 # self.first_time_bad_search = False
             # else:
             #     self.lab.text = "0 history sell offers.."

@@ -26,7 +26,7 @@
 
         TextInput:
             write_tab: False
-            text: "changed_first_name"
+            text: "first name"
             id:first_name
             hint_text: "first name"
             icon_right: "account"
@@ -34,41 +34,33 @@
 
         TextInput:
             write_tab: False
-            text: "changed_last_name"
+            text: "last name"
             id:last_name
             hint_text: "last name"
             icon_right: "account"
 
-        TextInput:
-            write_tab: False
+        MDLabel:
             font_name: "Arial"
-            #text: "changed_email"
             id:email
             #hint_text: "email"
             icon_right: "account"
 
-        TextInput:
+        MDLabel:
             write_tab: False
-            text: "changed_user_name"
+            text: "user name"
             id:user_name
 
-        TextInput:
+        MDLabel:
             write_tab: False
             text : "11/11/22"
             id:birth_date
 
-        MDDropDownItem:
+        MDLabel:
             write_tab: False
-            canvas.before:
-                Color:
-                    rgba: 0/256, 165/256, 255/256, .69
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-            id: gender
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            text: 'Gender'
-            on_release: root.show_dropdown()
+            text : "male"
+            id:gender
+
+
     GridLayout:
         id:GL
         size_hint: 1,9
@@ -76,7 +68,6 @@
 
 
         MDDropDownItem:
-
             write_tab: False
             canvas.before:
                 Color:
@@ -87,6 +78,7 @@
             id: drop_address
             pos_hint: {'center_x': .5, 'center_y': .5}
             text: 'pick address'
+            font_name: "Arial"
             on_release: root.show_dropdown_address_gov_il()
 
         TextInput:
@@ -94,7 +86,7 @@
             font_name: "Arial"
             #text: "Rehovot"
             id:region
-            #hint_text: "region"
+            hint_text: "region"
             icon_right: "account"
 
         TextInput:

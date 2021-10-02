@@ -730,6 +730,3 @@ class Backend_controller:
 
     def get_user_service(self):
         return self.user_service
-
-
-

@@ -1,5 +1,5 @@
 import io
-
+from Utils.Utils import Utils
 from kivy.app import App
 from kivy.uix.image import Image, CoreImage
 from kivy.uix.boxlayout import BoxLayout
@@ -30,11 +30,13 @@ class OfferWindow(Popup):
         self.offer = offer[0]  # Offer Service
         self.offer_id = self.offer.offer_id
         self.color = 0
+        self.num_of_quantity = 1
         self.change = False
         self.new_address = None
         # buyer/seller/viewer/user
         if (self.controller.user_service is None):
-            toast('not log in')
+            Utils.pop("not log in", 'alert')
+            #toast('not log in')
             print('not log in')
             return
         self.user = self.controller.user_service
@@ -79,7 +81,7 @@ class OfferWindow(Popup):
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
 
 
-        for step in steps:
+        for step_id in steps:
             step = steps[step_id]
             # self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
@@ -174,7 +176,7 @@ class OfferWindow(Popup):
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        for step in steps:
+        for step_id in steps:
             step = steps[step_id]
             self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
@@ -230,7 +232,7 @@ class OfferWindow(Popup):
     def show_as_buyer(self, photo_lis):
         print('as a buyer')
         purchases = self.offer.get_current_buyers()
-        purchase =  None
+        purchase = None
         for purch in purchases:
             p = purchases[purch]
             if p.buyer_id == self.user.user_id:
@@ -262,7 +264,7 @@ class OfferWindow(Popup):
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        for step in steps:
+        for step_id in steps:
             step = steps[step_id]
             self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
@@ -281,10 +283,13 @@ class OfferWindow(Popup):
         self.box.add_widget(self.color)
         self.join_offer = BoxLayout(orientation='horizontal')
         self.quantity = MDTextField(hint_text='QUANTITY')
-        self.unjoin = Button(text="UPDATE")
-        self.unjoin.bind(on_press=lambda x: self.update_offer())
+        self.unjoin = Button(text="CANCEL")
+        self.unjoin.bind(on_press=lambda x: self.cancel_purchase())
+        self.update = Button(text="UPDATE")
+        self.unjoin.bind(on_press=lambda x: self.update_purchase())
         self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.unjoin)
+        self.join_offer.add_widget(self.update)
         self.box.add_widget(self.join_offer)
         self.back = Button(text="BACK")
         self.back.bind(on_press=lambda x: self.out())
@@ -327,7 +332,7 @@ class OfferWindow(Popup):
         self.box.add_widget(self.people_per_step)
         self.box.add_widget(self.progress)
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        for step in steps:
+        for step_id in steps:
             step = steps[step_id]
             self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
@@ -342,37 +347,74 @@ class OfferWindow(Popup):
         self.color_size = BoxLayout(orientation='horizontal')
         self.box.add_widget(self.color_size)
 
-        self.color_dropdown = DropDown()
+        self.color_mainbutton = {}
+        self.size_mainbutton = {}
+
+        self.chosen_colors={}
+        self.chosen_sizes={}
+
+
+
+
+        self.color_dropdown = {}
+        self.color_dropdown[self.num_of_quantity] = DropDown()
         colors = self.offer.product.colors
         for color in colors:
             btn = Button(text='%s' % color, size_hint=(None,None))
-            btn.bind(on_release=lambda btn: self.color_dropdown.select(btn.text))
-            self.color_dropdown.add_widget(btn)
-        self.color_mainbutton = Button(text='colors')
-        self.color_mainbutton.bind(on_release=self.color_dropdown.open)
+            btn.bind(on_release=lambda btn=self.num_of_quantity,color_chosen=btn.text, quant=self.num_of_quantity: self.save_color_first(btn, color_chosen,quant))
+            self.color_dropdown[self.num_of_quantity].add_widget(btn)
+        self.color_mainbutton[self.num_of_quantity] = Button(text='colors')
+        self.color_mainbutton[self.num_of_quantity].bind(on_release=self.color_dropdown[self.num_of_quantity].open)
 
-        self.color_size.add_widget(self.color_mainbutton)
-        self.color_dropdown.bind(on_select=lambda instance, x: setattr(self.color_mainbutton, 'text', x))
+        self.color_size.add_widget(self.color_mainbutton[self.num_of_quantity])
+        self.color_dropdown[self.num_of_quantity].bind(on_select=lambda a=self.num_of_quantity, instance=self.color_mainbutton[self.num_of_quantity]: self.save_color_first(a,instance))
 
-        self.size_dropdown = DropDown()
+        self.size_dropdown = {}
+        self.size_dropdown[self.num_of_quantity] = DropDown()
         sizes = self.offer.product.sizes
         for size in sizes:
             btn = Button(text='%s' % size, size_hint=(None, None))
-            btn.bind(on_release=lambda btn: self.size_dropdown.select(btn.text))
-            self.size_dropdown.add_widget(btn)
-        self.size_mainbutton = Button(text='sizes')
-        self.size_mainbutton.bind(on_release=self.size_dropdown.open)
-        self.color_size.add_widget(self.size_mainbutton)
-        self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton, 'text', x))
+            btn.bind(on_release=lambda btn=self.num_of_quantity, size_chosen=btn.text,
+                                       quant=self.num_of_quantity: self.save_size_first(btn, size_chosen, quant))
+            self.size_dropdown[self.num_of_quantity].add_widget(btn)
+        self.size_mainbutton[self.num_of_quantity] = Button(text='sizes')
+        self.size_mainbutton[self.num_of_quantity].bind(on_release=self.size_dropdown[self.num_of_quantity].open)
 
+        self.color_size.add_widget(self.size_mainbutton[self.num_of_quantity])
+        self.size_dropdown[self.num_of_quantity].bind(on_select=lambda a=self.num_of_quantity,
+                                                                        instance=self.size_mainbutton[
+                                                                            self.num_of_quantity]: self.save_size_first(
+            a, instance))
+
+
+        # self.size_dropdown = DropDown()
+        # sizes = self.offer.product.sizes
+        # for size in sizes:
+        #     btn = Button(text='%s' % size, size_hint=(None, None))
+        #     btn.bind(on_release=lambda btn: self.size_dropdown.select(btn.text))
+        #     self.size_dropdown.add_widget(btn)
+        # self.size_mainbutton[self.num_of_quantity] = Button(text='sizes')
+        # self.size_mainbutton[self.num_of_quantity].bind(on_release=self.size_dropdown.open)
+        # self.color_size.add_widget(self.size_mainbutton[self.num_of_quantity])
+        # self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton[self.num_of_quantity], 'text', x))
+        #
         self.join_offer = BoxLayout(orientation='horizontal')
-        self.quantity = MDTextField(hint_text='QUANTITY')
+        #
+        self.another_item = Button(text="another item")
+        self.another_item.bind(on_press=lambda x: print(self.add_quantity()))
+        self.box.add_widget(self.another_item)
+
+
+
+
+
+
+
         self.join = Button(text="JOIN")
         self.join.bind(on_press=lambda x: print(self.join_()))
         self.other_address = Button(text='NEW ADDRESS FOR THIS PRODUCT')
         self.other_address.bind(on_press=lambda x: self.add_address())
 
-        self.join_offer.add_widget(self.quantity)
         self.join_offer.add_widget(self.other_address)
         self.box.add_widget(self.join_offer)
         self.box.add_widget(self.join)
@@ -387,12 +429,23 @@ class OfferWindow(Popup):
         self.box.add_widget(self.back)
 
         self.add_widget(self.box)
+    def save_color_first(self, btn, text,num_of_quantity):
+        self.color_mainbutton[num_of_quantity].text=text
+        self.color_dropdown[num_of_quantity].dismiss()
+        self.chosen_colors[num_of_quantity] = text
+
+    def save_size_first(self, btn, text,num_of_quantity):
+        self.size_mainbutton[num_of_quantity].text=text
+        self.size_dropdown[num_of_quantity].dismiss()
+        self.chosen_sizes[num_of_quantity] = text
+
 
     def register(self):
         self.dismiss()
         a = App.get_running_app()
         a.root.current = 'connect_screen'
-        toast(' you need to register first')
+        Utils.pop("you need to register first", 'alert')
+        #toast('you need to register first')
         b= 2
 
     # def open(self, offer, photo_lis):
@@ -423,28 +476,92 @@ class OfferWindow(Popup):
             self.controller.add_liked_offer(self.offer_id)
             self.like.text = 'UNLIKE'
 
+    def add_quantity(self):
+        self.num_of_quantity = self.num_of_quantity + 1
+
+        #self.color_size = BoxLayout(orientation='horizontal')
+        #self.box.add_widget(self.color_size)
+
+        self.color_dropdown[self.num_of_quantity] = DropDown()
+        colors = self.offer.product.colors
+        for color in colors:
+            btn = Button(text='%s' % color, size_hint=(None,None))
+            btn.bind(on_release=lambda btn=self.num_of_quantity,color_chosen=btn.text, quant=self.num_of_quantity: self.save_color_first(btn, color_chosen,quant))
+            self.color_dropdown[self.num_of_quantity].add_widget(btn)
+        self.color_mainbutton[self.num_of_quantity] = Button(text='colors')
+        self.color_mainbutton[self.num_of_quantity].bind(on_release=self.color_dropdown[self.num_of_quantity].open)
+
+        self.color_size.add_widget(self.color_mainbutton[self.num_of_quantity])
+        self.color_dropdown[self.num_of_quantity].bind\
+            (on_select=lambda a=self.num_of_quantity, instance=self.color_mainbutton[self.num_of_quantity]: self.save_color_first(a,instance))
+
+
+
+        #------------------------------------------size-----------------
+
+        self.size_dropdown[self.num_of_quantity] = DropDown()
+        sizes = self.offer.product.sizes
+        for size in sizes:
+            btn = Button(text='%s' % size, size_hint=(None, None))
+            btn.bind(on_release=lambda btn=self.num_of_quantity, size_chosen=btn.text,
+                                       quant=self.num_of_quantity: self.save_size_first(btn, size_chosen, quant))
+            self.size_dropdown[self.num_of_quantity].add_widget(btn)
+        self.size_mainbutton[self.num_of_quantity] = Button(text='sizes')
+        self.size_mainbutton[self.num_of_quantity].bind(on_release=self.size_dropdown[self.num_of_quantity].open)
+
+        self.color_size.add_widget(self.size_mainbutton[self.num_of_quantity])
+        self.size_dropdown[self.num_of_quantity].bind(on_select=lambda a=self.num_of_quantity,
+                                                                       instance=self.size_mainbutton[
+                                                                           self.num_of_quantity]: self.save_size_first(a, instance))
+
+
+
+        #self.color_size.add_widget(self.size_mainbutton[self.num_of_quantity])
+        #self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton[self.num_of_quantity], 'text', x))
+
+    def open_drop(self, a, num_of_quantity):
+        self.color_dropdown[num_of_quantity].open
     def join_(self):
-        step = 0
+        step = len(self.offer.steps)
         for checkbox in self.price_per_step.children:
             if type(checkbox) is MDCheckbox:
                 if checkbox.active:
-                    a = self.offer_id
-                    b = self.quantity.text
-                    c = step
-                    d = self.color_mainbutton.text
-                    e = self.size_mainbutton.text
-                    f = 5
-                    ans = App.get_running_app().controller.add_active_buy_offer(self.offer_id, int(self.quantity.text), int(step), self.color_mainbutton.text, self.size_mainbutton.text, self.new_address)
+                    offer_id = self.offer_id
+                    quantity = self.num_of_quantity
+                    # check Validity Quantity Per Step
+                    if quantity > self.offer.steps[step].limit - self.offer.steps[step].buyers_amount:
+                        toast("there is not enough items for this step")
+                        return
+                        # loop for all the selected colors & sizes
+                    colors = ""
+                    sizes = ""
+                    for i in range(1, self.num_of_quantity):
+                        # check validity colors and sizes
+                        if self.color_mainbutton[i].text == "" or self.size_mainbutton[i].text == "":
+                            toast("you have to choose color & size for item number "+str(i))
+                            return
+                        colors = colors+self.color_mainbutton[i].text
+                        sizes = sizes+self.size_mainbutton[i].text+','
+                    if self.color_mainbutton[i].text == "" or self.size_mainbutton[i].text == "":
+                        toast("you have to choose color & size for item number " + str(i))
+                        return
+                    colors = colors + self.color_mainbutton[i].text
+                    sizes = sizes + self.size_mainbutton[i].text
+                    ans = App.get_running_app().controller.add_active_buy_offer(offer_id, int(quantity), step, colors,
+                                                                                sizes, self.new_address)
                     if ans.res is True:
                         self.user.get_active_buy_offers().append(self.offer)
                         self.offer = ans.data
-                        x = 5
                         return
-                step += 1
+                step -= 1
 
     def update_purchase(self):
-        self.controller.update_purchase(self.offer_id, self.quantity.text, self.step.text, self.color.text,
-                                        self.size.text)
+        # check quantity < step limit - amount
+        self.controller.remove_active_buy_offer(self.offer_id)
+        self.controller.add_active_buy_offer(self.offer_id, quantity, step, color, size, address)
+
+    def cancel_purchase(self):
+        self.controller.remove_active_buy_offer(self.offer_id)
     def remove_offer(self):
         self.dismiss()
         ans = self.controller.remove_active_sell_offer(self.offer_id)

@@ -30,10 +30,11 @@ from kivymd.uix.textfield import MDTextField
 from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
+from Utils.Utils import Utils
 from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.textfield import MDTextFieldRound
 from windows.SideBar import SideBar
-
+from Utils.Utils import Utils
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
 from kivymd.uix.picker import MDDatePicker
@@ -47,6 +48,7 @@ from Utils.CheckValidity import CheckValidity
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'home'
+
         super(ADDOFFERScreen, self).__init__(**kwargs)
 #---------------------------------------------------
 
@@ -98,6 +100,7 @@ class Add_offer_box(BoxLayout):
         self.limit = []
         self.color_list = []
         self.color_dropdown = DropDown()
+        self.dialog=None
         colors = ['green','black', 'blue', 'white']
         for color in colors:
             btn = Button(text=' % s' % color, size_hint=(None, None), height=40)
@@ -183,23 +186,27 @@ class Add_offer_box(BoxLayout):
         if not self.check_steps_validity():
             return
         if self.size_list == []:
-            toast("have to add size")
+            Utils.pop(self, f'have to add size', 'alert')
+            #toast("have to add size")
             return
         if self.color_list == []:
-            toast("have to add color")
+            Utils.pop(self, f'have to add color', 'alert')
+            #toast("have to add color")
             return
         if self.sub_cat12 is None:
-            toast("have to chose sub category")
+            Utils.pop(self, f'have to chose sub category', 'alert')
+            #toast("have to chose sub category")
             return
         if self.ids.end_date.text == "":
-            toast("have to chose end date")
+            Utils.pop(self, f'have to chose end date', 'alert')
+            #toast("have to chose end date")
             return
         if not CheckValidity.checkValidityName(self,self.ids.product_name.text):
             return
         if not CheckValidity.checkValidityName(self,self.ids.company.text):
             return
-        # if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
-        #     return
+        if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
+             return
         name = self.ids.product_name.text
         category_name = self.chosen_cat_name
         sub_category_name = self.sub_cat12
@@ -220,10 +227,16 @@ class Add_offer_box(BoxLayout):
         ans = App.get_running_app().controller.add_active_sell_offer(name, company, colors, sizes, description, list, category_name,
                               sub_category_name, steps, end_date)
 
-        toast(ans.message)
+        #toast(ans.message)
         if ans.res is True:
-            toast("your offer is waiting for approve by admin")
+            Utils.pop(self, ans.message, 'succes')
+            Utils.pop(self, 'your offer is waiting for approve by admin', 'succes')
             self.clear_fields()
+            App.get_running_app().root.current = 'menu_screen'
+        else:
+            Utils.pop(self, ans.message, 'alert')
+
+
 
 
     def check_steps_validity(self):
@@ -274,21 +287,25 @@ class Add_offer_box(BoxLayout):
 
     def check_limits(self,limit1,limit2):
         if limit1>limit2:
-            toast('limit should be greater then her following limit '+str(limit1)+" "+str(limit2))
+            Utils.pop(self, f'limit should be greater then her following limit {str(limit1)} {str(limit2)}', 'alert')
+            #toast('limit should be greater then her following limit '+str(limit1)+" "+str(limit2))
             return False
 
         if (limit2 - limit1) < MIN_DIFFERNCE_LIMIT:
-            toast('the differnce between your limit is too short -> '+ str(limit1) + " "+str(limit2)+ 'this is the min differnce: '+str(MIN_DIFFERNCE_LIMIT))
+            Utils.pop(self, f'the differnce between your limit is too short ->  {str(limit1)} {str(limit2)} this is the min differnce: {str(MIN_DIFFERNCE_LIMIT)}', 'alert')
+            #toast('the differnce between your limit is too short -> '+ str(limit1) + " "+str(limit2)+ 'this is the min differnce: '+str(MIN_DIFFERNCE_LIMIT))
             return False
         return True
 
     def check_prices(self,price1,price2 ):
         if price2>price1:
-            toast('price should be smaller then his following price '+str(price1) + " " + str(price2))
+            Utils.pop(self, f'price should be smaller then his following price {str(price1)} {str(price2)}', 'alert')
+            #toast('price should be smaller then his following price '+str(price1) + " " + str(price2))
             return False
 
         if (price1 - price2) < MIN_DIFFERNCE_PRICE:
-            toast('the differnce between your price is too short -> '+ str(price1) +" "+str(price2)+'this is the min differnce: '+str(MIN_DIFFERNCE_PRICE))
+            Utils.pop(self, f'the differnce between your price is too short -> {str(price1)} {str(price2)} this is the min differnce: {str(MIN_DIFFERNCE_PRICE)}', 'alert')
+            #toast('the differnce between your price is too short -> '+ str(price1) +" "+str(price2)+'this is the min differnce: '+str(MIN_DIFFERNCE_PRICE))
             return False
         return True
 
@@ -317,7 +334,7 @@ class Add_offer_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog = MDDatePicker(year=2022, month=12, day=15)
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 
@@ -441,8 +458,8 @@ class choose_photo_layout(MDBoxLayout):
         self.photo_list[im] = f
         self.i+=1
         self.manager.exit_manager()
-
-        toast("picture add succesfully")
+        Utils.pop(self, 'picture add succesfully', 'succes')
+        #toast("picture add succesfully")
 
     def exit_manager(self, *args):
         '''Called when the user reaches the root of the directory tree.'''

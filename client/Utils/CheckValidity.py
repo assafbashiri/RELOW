@@ -1,5 +1,8 @@
 import re
 import datetime
+
+from Utils.Utils import Utils
+
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 from kivymd.toast import toast
 
@@ -7,79 +10,96 @@ class CheckValidity:
     def checkValidityName(self,name):
         if ' ' in name:
             res = "Name Shouldnt contain any spaces"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         if len(name)<=1:
             res =  "name is too short"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         if name.replace(" ", "").isalpha():
             res =  "Good Name"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return True
         else:
             res =  "Bad Name - name should contain only letters"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
 
     # user name length is 8-20 letters
     def checkValidityUserName(self, user_name):
         if len(user_name)<4:
             res = "User Name Must contain at least 4 letters"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         if len(user_name)>20:
             res = "User Name Must contain maximum of 20 letters"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         if not user_name[0].isalpha():
             res = "User Name Should Start With letter"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         if ' ' in user_name:
             res = "User Name Shouldnt contain any spaces"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         else:
             res = "Good User Name"
-            toast(res)
+            Utils.pop(self, res, 'succes')
+            #toast(res)
             return  True
 
     def checkValidityEmail(self, email):
         # have to check if email exist in the world
         if not re.match(regex, email):
             res = "Bad Email"
-            toast(res)
+            Utils.pop(self, res, 'alert')
+            #toast(res)
             return False
         res= "Good Email"
-        toast(res)
+        Utils.pop(self, res, 'succes')
+        #toast(res)
         return True
 
     #password length 8-20
     def checkValidityPassword(self, password):
             if len(password) < 8:
                 res= "Make sure your password is at lest 8 letters"
-                toast(res)
+                Utils.pop(self, res, 'alert')
+                #toast(res)
                 return False
             elif len(password) > 20:
                 res= "Make sure your password is less then 20 letters"
-                toast(res)
+                Utils.pop(self, res, 'alert')
+                #toast(res)
                 return False
             elif not any(char.isdigit() for char in password):
                 res = "Make sure your password has a number in it"
-                toast(res)
+                Utils.pop(self, res, 'alert')
+                #toast(res)
                 return False
             elif not any(char.isupper() for char in password):
                 res= "Make sure your password has a lower letter in it"
-                toast(res)
+                Utils.pop(self, res, 'alert')
+                #toast(res)
                 return False
             elif not any(char.islower() for char in password):
                 res= "Make sure your password has a capital letter in it"
-                toast(res)
+                Utils.pop(self, res, 'alert')
+                #toast(res)
                 return False
             else:
                 res ="Your password seems fine"
-                toast(res)
+                Utils.pop(self, res, 'succes')
+                #toast(res)
                 return True
 
     #check if this function is important due to date picker
@@ -109,6 +129,7 @@ class CheckValidity:
         if not isValidDate:
             toast("Input date is not valid..")
             print("Input date is not valid..")
+            return
         today = datetime.datetime.now()
         today_day = today.day.real
         today_month = today.month.real
@@ -119,10 +140,10 @@ class CheckValidity:
             return False
         if today_year < int(year):
             return True
-        if today_month < int(month):
+        if today_month > int(month):
             toast("bad month")
             return False
-        if today_month > int(month):
+        if today_month < int(month):
             return True
         if today_day > int(day):
             toast("bad day")

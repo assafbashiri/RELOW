@@ -81,7 +81,7 @@ class repository():
 	        );
 
             CREATE TABLE IF NOT EXISTS products (
-                offer_id INTEGER NOT NULL,
+                offer_id INTEGER NOT NULL PRIMARY KEY UNIQUE,
                 name TEXT NOT NULL,
                 company TEXT NOT NULL,
                 colors TEXT NOT NULL,
@@ -101,7 +101,7 @@ class repository():
             );
 
             CREATE TABLE IF NOT EXISTS category (
-                category_id INTEGER PRIMARY KEY  UNIQUE,
+                category_id INTEGER PRIMARY KEY UNIQUE,
                 name TEXT NOT NULL UNIQUE 
             );
 
@@ -145,7 +145,6 @@ class repository():
                 category_id INTEGER NOT NULL,
                 sub_category_id INTEGER NOT NULL,
                 hot_deals BOOLEAN NOT NULL,
-                confirm BOOLEAN NOT NULL,
                 FOREIGN KEY(user_id) REFERENCES users_submission(user_id) ON DELETE CASCADE
                 FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
                 FOREIGN KEY(sub_category_id) REFERENCES sub_category(sub_category_id) ON DELETE CASCADE

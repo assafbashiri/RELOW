@@ -146,7 +146,7 @@ class CategoryController:
 
     def confirm_offer(self, offer):
         offer.confirm = True
-        offer_update = self.offerDAO.update(offer)
+        offer_update = self.offerDAO.update(OfferDTO(offer))
         return offer
 
 
@@ -291,8 +291,10 @@ class CategoryController:
         # all_history_offers = self.offerDAO.load_history_sellers()
         # all_history_buyers = self.offerDAO.load_history_buyers()
         all_offers_to_return = {}
+        history_offers_to_return = {}
         # load_all offers for each sub category
         all_offers = self.offerDAO.load_all_offers()
+        all_history_offers = self.offerDAO.load_history_offers()
         all_products = self.offerDAO.load_all_products()
         all_steps = self.offerDAO.load_all_steps()
         all_current_buyers = self.offerDAO.load_buyers_in_offers()
@@ -329,7 +331,26 @@ class CategoryController:
             self.category_dictionary[o[6]].add_offer_for_load(offer, o[7])
             if hot is True:  # add to hot deals
                 self.hot_deals[o[0]] = offer
-        return all_offers_to_return
+
+        for o in all_history_offers:
+            if o[0] not in all_current_buyers_dict.keys():
+                current_buyers = {}
+                total_products = 0
+            else:
+                current_buyers = all_current_buyers_dict[o[0]]
+                total_products = total_products_per_offer[o[0]]
+
+            hot = False
+            if o[8] == 1:
+                hot = True
+
+            offer = Offer(o[0], o[1], all_products_dictionary[o[0]], o[6], o[7], OfferStatus(o[4]), all_steps_dictionary[o[0]], o[2],
+                          o[3], current_buyers, total_products,hot, True)
+
+            history_offers_to_return[o[0]] = offer
+
+
+        return all_offers_to_return, history_offers_to_return
 
     def load_all_steps(self, all_steps, all_steps_dictionary):
         for s in all_steps:
