@@ -79,15 +79,14 @@ class Utils:
 
     #type = alert/succes
     def pop(self, text, type):
-        if self.dialog is None:
-            self.dialog=MDDialog(
-                title=type,
-                text=text,
-                buttons = [
-                    MDFlatButton(text='OK', on_release=lambda a=self.dialog:Utils.close_pop(self, a)),
-                ],
-            )
+        self.dialog = MDDialog(
+            title=type,
+            text=text,
+            buttons = [
+                MDFlatButton(text='OK', on_release=lambda a:Utils.close_pop(self)),
+            ],
+        )
         self.dialog.open()
 
-    def close_pop(self,d):
+    def close_pop(self):
         self.dialog.dismiss()

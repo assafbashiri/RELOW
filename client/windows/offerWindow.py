@@ -35,7 +35,7 @@ class OfferWindow(Popup):
         self.new_address = None
         # buyer/seller/viewer/user
         if (self.controller.user_service is None):
-            Utils.pop("not log in", 'alert')
+            Utils.pop(self,"not log in", 'alert')
             #toast('not log in')
             print('not log in')
             return
