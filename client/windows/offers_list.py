@@ -11,8 +11,9 @@ from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
 
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDIconButton
 from windows.offerWindow import OfferWindow
 
 
@@ -21,8 +22,8 @@ class Offers_Screen(RecycleView):
         super(Offers_Screen, self).__init__(**kwargs)
         a = App.get_running_app()
     def insert_offers(self, **kwargs):
-        # get the offer list from the user
-        # loop all the offer and add them to the recycle
+        # get the offer liat from the user
+        # loop all the offer and add them to the recycl
         offers_list = []
         for offer in kwargs['list']:
             name = offer.product.name
@@ -41,11 +42,14 @@ class Offers_Screen(RecycleView):
             # for photo in lis:
             #     image = AsyncImage(source = str(photo))
             #     photo_lis.append(image)
+            a =8
             for photo in lis:
                 photo_lis.append(photo)
             offers_list.append({'offer': [offer],
                                 'photo_lis': photo_lis})
+
         self.data = offers_list
+        a =8
         # need to add the photos here
 
 
@@ -61,6 +65,7 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
     steps = ListProperty()
     current_buyers = NumericProperty()
     offer_id = NumericProperty()
+
     offer = ListProperty()
     def __init__(self, **kwargs):
         super(RecycleViewRow, self).__init__(**kwargs)
@@ -79,7 +84,8 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
         self.ids.car.insert(self.photo_lis)
         print('bolo')
 
-    def www(self, offer, photo_list):
+
+    def www(self,offer, photo_list):
         if hasattr(self, 'm'):
             self.m = OfferWindow(offer, photo_list)
             self.m.open()
@@ -89,14 +95,21 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
 
     def move_right(self):
         self.ids.car.load_next(mode='next')
-
+        # if self.ids.car.next_slide is not None:
+        #     self.ids.car.current_slide = self.ids.car.next_slide
+        # self.current_slide
+        # self.next_slide
+        # self.previous_slide
     def move_left(self):
         self.ids.car.load_previous()
-
+        # if self.ids.car.previous_slide is not None:
+        #     self.ids.car.current_slide = self.ids.car.previous_slide
 
 class Carousel2(Carousel):
-    def __init__(self, **kwargs):
+    def __init__(self,**kwargs):
         super(Carousel2, self).__init__(**kwargs)
+
+
 
 
     def insert(self,  photos):
