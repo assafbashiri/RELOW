@@ -21,7 +21,7 @@ class CONFIRMATIONScreen(Screen):
         else:
             ans = App.get_running_app().controller.complete_register(code, email)
             if ans.res is True:
-                Utils.pop(self, 'lets start', 'succes')
+                # Utils.pop(self, 'lets start', 'succes')
                 #toast('lets start')
                 App.get_running_app().root.current = 'menu_screen'
             else:

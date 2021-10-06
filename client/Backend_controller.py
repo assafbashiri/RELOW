@@ -135,7 +135,7 @@ class Backend_controller:
 
     def login_from_exist_user(self, user_name, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 3, 'user_name': user_name, 'password': password}
+        login_req = {'op': 3, 'email': user_name, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -144,7 +144,7 @@ class Backend_controller:
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id=ans.data['user_id'],
-                           username=ans.data['user_name'],
+                           email=ans.data['email'],
                            password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
             self.guest = False

@@ -20,7 +20,7 @@ class CheckValidity:
             return False
         if name.replace(" ", "").isalpha():
             res =  "Good Name"
-            Utils.pop(self, res, 'alert')
+            # Utils.pop(self, res, 'success')
             #toast(res)
             return True
         else:
@@ -53,7 +53,7 @@ class CheckValidity:
             return False
         else:
             res = "Good User Name"
-            Utils.pop(self, res, 'succes')
+            # Utils.pop(self, res, 'succes')
             #toast(res)
             return  True
 
@@ -65,7 +65,7 @@ class CheckValidity:
             #toast(res)
             return False
         res= "Good Email"
-        Utils.pop(self, res, 'succes')
+        # Utils.pop(self, res, 'succes')
         #toast(res)
         return True
 
@@ -98,7 +98,7 @@ class CheckValidity:
                 return False
             else:
                 res ="Your password seems fine"
-                Utils.pop(self, res, 'succes')
+                # Utils.pop(self, res, 'succes')
                 #toast(res)
                 return True
 
