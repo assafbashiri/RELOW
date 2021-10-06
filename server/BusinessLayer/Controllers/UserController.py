@@ -126,7 +126,7 @@ class UserController:
     def complete_register(self, user_id):
         self.usersDictionary[user_id].active = True
         self.users_dao.complete_register(user_id)
-        self.log_in(self.usersDictionary[user_id].user_name, self.usersDictionary[user_id].password)
+        self.log_in(self.usersDictionary[user_id].email, self.usersDictionary[user_id].password)
 
     def log_in(self, email, password):
         user = self.get_user_by_email(email)
@@ -508,8 +508,9 @@ class UserController:
     def get_user_by_email(self, email):
         user_ids = self.usersDictionary.keys()
         for curr_user_id in user_ids:
-            if email == self.usersDictionary[curr_user_id].email:
-                return self.usersDictionary[curr_user_id]
+            us = self.usersDictionary[curr_user_id]
+            if email == us.email:
+                return us
         return None
 
     def get_user_id_by_email(self, email):

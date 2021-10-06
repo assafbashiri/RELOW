@@ -209,7 +209,6 @@ class Connect_box(BoxLayout):
     #
     #
     #         MDTextFieldRound:
-    #             text : "tomnisim@gmail.com"
     #             id:email
     #             hint_text: "email"
     #             icon_right: "account"
