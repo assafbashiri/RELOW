@@ -7,13 +7,13 @@ from BusinessLayer.Utils import CheckValidity
 
 
 class User():
-    def __init__(self, next_user_id, first_name, last_name, user_name, email, password, birth_date, gender):
+    def __init__(self, next_user_id, first_name, last_name, phone, email, password, birth_date, gender):
         # ---------- user submission
         self.active = False
         self.user_id = next_user_id
         self.first_name = first_name
         self.last_name = last_name
-        self.user_name = user_name
+        self.phone = phone
         self.email = email
         self.password = password
         self.birth_date = birth_date
@@ -45,11 +45,9 @@ class User():
 
     def set_last_name(self, last_name):
         self.last_name = last_name
-        # update DB
 
-    def set_user_name(self, user_name):
-        self.user_name = user_name
-        # update DB
+    def set_phone(self, phone):
+        self.phone = phone
 
     def set_password(self, password):
         self.password = password
@@ -168,8 +166,8 @@ class User():
     def get_last_name(self):
         return self.last_name
 
-    def get_user_name(self):
-        return self.user_name
+    def get_phone(self):
+        return self.phone
 
     def get_email(self):
         return self.email

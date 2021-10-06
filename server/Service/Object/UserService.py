@@ -15,7 +15,7 @@ class UserService():
         # self.user_id = business_user.get_next_user_id()
         self.first_name = business_user.get_first_name()
         self.last_name = business_user.get_last_name()
-        self.user_name = business_user.get_user_name()
+        self.phone = business_user.get_phone()
         self.email = business_user.get_email()
         self.password = business_user.get_password()
         self.birth_date = json.dumps(business_user.get_birth_date(), indent=4, sort_keys=True, default=str)
@@ -61,8 +61,6 @@ class UserService():
             self.active_buy_offers.append(vars(OfferService(offer)))
 
     # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
-
-
     def get_active(self):
         return self.active
 
@@ -72,8 +70,8 @@ class UserService():
     def get_last_name(self):
         return self.last_name
 
-    def get_user_name(self):
-        return self.user_name
+    def get_phone(self):
+        return self.phone
 
     def get_email(self):
         return self.email
@@ -104,7 +102,6 @@ class UserService():
         return self.floor
 
     # -------------------------------------------USER PAYMENT-----------------------------------------------------------
-
     def get_card_number(self):
         return self.credit_card_number
 
@@ -121,7 +118,6 @@ class UserService():
         return self.card_type
 
     # -------------------------------------------USER OFFERS-----------------------------------------------------------
-
     def get_history_buy_offers(self):
         return self.history_buy_offers
 

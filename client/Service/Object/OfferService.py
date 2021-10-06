@@ -1,8 +1,6 @@
 from Service.Object.ProductService import ProductService
-
 from Service.Object.PurchaseService import PurchaseService
 from Service.Object.StepService import StepService
-
 
 class OfferService:
     # CLIENT

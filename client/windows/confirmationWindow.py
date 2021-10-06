@@ -15,8 +15,7 @@ class CONFIRMATIONScreen(Screen):
         email = App.get_running_app().controller.user_service.email
         code = self.ids.code.text
         if code == '':
-            Utils.pop(self, 'you need to insert code','alert')
-            #toast('you need to insert code')
+            Utils.pop(self, 'you need to insert code', 'alert')
             return
         else:
             ans = App.get_running_app().controller.complete_register(code, email)
@@ -26,5 +25,4 @@ class CONFIRMATIONScreen(Screen):
                 App.get_running_app().root.current = 'menu_screen'
             else:
                 Utils.pop(self, ans.message, 'alert')
-                #toast(ans.message)
                 return

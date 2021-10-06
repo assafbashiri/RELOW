@@ -136,7 +136,7 @@ class Handler:
             user = self.user_controller.register(
                 argument['first_name'],
                 argument['last_name'],
-                argument['user_name'],
+                argument['phone'],
                 argument['email'],
                 argument['password'],
                 argument['birth_date'],
@@ -153,7 +153,7 @@ class Handler:
                 argument['user_id'],
                 argument['first_name'],
                 argument['last_name'],
-                argument['user_name'],
+                argument['phone'],
                 argument['email'],
                 argument['password'],
                 argument['birth_date'],
@@ -252,12 +252,6 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    # def update_city(argument): user_id *
-    # def update_street(argument): user_id *
-    # def update_zip_code(argument): user_id *
-    # def update_floor(argument): user_id *
-    # def update_apt(argument): user_id *
-
     def add_payment_method(self, argument):
         try:
             self.user_controller.add_payment_method(self.user.user_id,
@@ -270,11 +264,6 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    # def update_card_number(argument): user_id *
-    # def update_expire_date(argument): user_id *
-    # def update_cvv(argument): user_id *
-    # def update_id_number user_id *
-    # def update_card_type(argument): user_id *
     # -------------------------------------------------REMOVE------------------------------------------------------------------
 
     def remove_liked_offer(self, argument):
@@ -374,37 +363,7 @@ class Handler:
             user = self.user_controller.get_user_by_id(self.user.user_id)
             return Response(vars(UserService(user)), exceptions, True)
 
-    #
-    #
-    # def update_first_name(self, argument):
-    #     try:
-    #         self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
-    #         return Response(None, "First Name Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def update_last_name(self, argument):
-    #     try:
-    #         self.user_controller.update_last_name(self.user.user_id, argument['last_name'])
-    #         return Response(None, "Last Name Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def update_user_name(self, argument):
-    #     try:
-    #         self.user_controller.update_username(self.user.user_id, argument['user_name'])
-    #         return Response(None, "Username Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def update_email(self, argument):
-    #     try:
-    #         self.user_controller.update_email(self.user.user_id,
-    #                                           argument['email'])
-    #         return Response(None, "Email Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
+
     def update_password(self, argument):
         try:
             self.user_controller.update_password(self.user.user_id,
@@ -413,22 +372,6 @@ class Handler:
             return Response(None, "Password Updated Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
-
-    # def update_birth_date(self, argument):
-    #     try:
-    #         self.user_controller.update_birth_date(self.user.user_id,
-    #                                                argument['birth_date'])
-    #         return Response(None, "Birth Date Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def update_gender(self, argument):
-    #     try:
-    #         self.user_controller.gender(self.user.user_id,
-    #                                     argument['gender'])
-    #         return Response(None, "gender Updated Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
 
     # -------------------------------------------------GET------------------------------------------------------------------
 
@@ -454,20 +397,6 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    # def get_history_buy_offer(self, argument):
-    #     try:
-    #         offer = self.user_controller.get_history_buy_offer(argument['offer_id'])
-    #         return Response(vars(OfferService(offer)), "Got offer Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def get_history_sell_offer(self, argument):
-    #     try:
-    #         offer = self.user_controller(argument['offer_id'])
-    #         return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-
     def get_all_active_buy_offers(self, argument):
         lis = []
         try:
@@ -490,27 +419,6 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    # def get_active_buy_offer(self, argument):
-    #     try:
-    #         offer = self.user_controller.get_buy_offer(self.user.user_id, argument['offer_id'])
-    #         return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def get_active_sell_offer(self, argument):
-    #     try:
-    #         offer = self.user_controller.get_sell_offer(self.user.user_id, argument['offer_id'])
-    #         return Response(vars(OfferService(offer)), "Got Offer Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-    #
-    # def get_liked_offer(self, argument):
-    #     try:
-    #         offer = self.user_controller.get_liked_offer(self.user.user_id, argument['offer_id'])
-    #         return Response(vars(OfferService(offer)), "Update Sub-Category Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-
     def get_all_liked_offers(self, argument):
         lis = []
         try:
@@ -519,58 +427,6 @@ class Handler:
                 temp = vars(OfferService(offer))
                 lis.append(temp)
             return Response(lis, "All Liked Offers", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    # --------------------------------------------------categoryController-------------------------------------------------------
-
-    # -----------------------------------------------------ADD-------------------------------------------------------------------
-
-    def add_category(self, argument):
-        try:
-            self.category_controller.add_category(argument['name'])
-            return Response(None, "Category Added Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def add_sub_category(self, argument):
-        try:
-            self.category_controller.add_sub_category(argument['name'], argument['category_name'])
-            return Response(None, "Sub-Category Added Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def add_photo(self, argument):
-        pass
-
-    def add_to_hot_deals(self, argument):
-        response = self.category_controller.add_to_hot_deals(argument['offer_id'])
-        return response
-
-    # ------------------------------------------------REMOVE------------------------------------------------------------
-
-    def remove_category(self, argument):
-        try:
-            self.category_controller.remove_category(argument['category_name'])
-            return Response(None, "Category Removed Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def remove_sub_category(self, argument):
-        try:
-            self.category_controller.remove_category(argument['sub_category_name'],
-                                                     argument['category_name'])
-            return Response(None, "Sub-Category Removed Successfully", True)
-        except Exception as e:
-            return Response(None, str(e), False)
-
-    def remove_photo(self, argument):
-        pass
-
-    def remove_from_hot_deals(self, argument):
-        try:
-            self.category_controller.remove_from_hot_deals(argument['offer_id'])
-            return Response(None, "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -708,17 +564,6 @@ class Handler:
         except Exception as e:
             return Response(None, str(e), False)
 
-    # def get_offers_by_status(self, argument):
-    #     to_return = []
-    #     try:
-    #         offers_list = self.category_controller.get_offers_by_status(argument['status'])
-    #         for offer in offers_list:
-    #             temp = vars(OfferService(offer))
-    #             to_return.append(temp)
-    #         return Response(to_return, "Offers Lists Received Successfully", True)
-    #     except Exception as e:
-    #         return Response(None, str(e), False)
-
     def get_hot_deals(self, argument):
         to_return = []
         try:
@@ -802,8 +647,6 @@ class Handler:
         func = self.switcher.get(int(req), "nada")
         ans = func(argument)
         print(ans.res)
-
-
         return ans
 
     def exit(self):
@@ -816,6 +659,8 @@ class Handler:
             ans[step['step_number']] = Step(int(step['limit']), int(step['price']), 0)
         return ans
 
+    # ADMIN
+
     def confirm_add_active_sell_offer(self, argument):
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
@@ -827,3 +672,49 @@ class Handler:
     def confirm_remove_active_sell_offer(self, argument):
         offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
         self.user_controller.remove_active_sale_offer(offer)
+
+    def add_category(self, argument):
+        try:
+            self.category_controller.add_category(argument['name'])
+            return Response(None, "Category Added Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def add_sub_category(self, argument):
+        try:
+            self.category_controller.add_sub_category(argument['name'], argument['category_name'])
+            return Response(None, "Sub-Category Added Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def add_photo(self, argument):
+        pass
+
+    def add_to_hot_deals(self, argument):
+        response = self.category_controller.add_to_hot_deals(argument['offer_id'])
+        return response
+
+    def remove_category(self, argument):
+        try:
+            self.category_controller.remove_category(argument['category_name'])
+            return Response(None, "Category Removed Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def remove_sub_category(self, argument):
+        try:
+            self.category_controller.remove_category(argument['sub_category_name'],
+                                                     argument['category_name'])
+            return Response(None, "Sub-Category Removed Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def remove_photo(self, argument):
+        pass
+
+    def remove_from_hot_deals(self, argument):
+        try:
+            self.category_controller.remove_from_hot_deals(argument['offer_id'])
+            return Response(None, "Offer Removed Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)

@@ -26,21 +26,20 @@ from Utils.CheckValidity import CheckValidity
 class Category_box(BoxLayout):
     pass
 
+
 class ACCOUNTScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'account_screen'
         super(ACCOUNTScreen, self).__init__(**kwargs)
 
 
-
 class Account_box(BoxLayout):
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         super(Account_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
         self.dialog = None
-
 
     def active_offers(self):
         ans = App.get_running_app().controller.get_all_active_buy_offers()
@@ -57,13 +56,14 @@ class Account_box(BoxLayout):
 
 class Sub_Category_box(BoxLayout):
     pass
+
+
 class BoxiLayout(BoxLayout):
     drop_down = ObjectProperty()
 
-
     def __init__(self, **kwargs):
         super(BoxiLayout, self).__init__(**kwargs)
-        self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
+        self.flag = 1  # 1 - update personal details   2 - add address details   3- add payment method
         self.gender = 0
         self.controller = App.get_running_app().controller
         Clock.schedule_once(self.insert_color, 0)
@@ -72,14 +72,14 @@ class BoxiLayout(BoxLayout):
 
         self.dialog = None
 
-    def update_rect(self,instance, value):
+    def update_rect(self, instance, value):
         self.rect.pos = self.pos
         self.rect.size = self.size
 
         # listen to size and position changes
 
-
         # self.insert_offers()
+
     def insert_color(self, num):
         with self.canvas.before:
             Color(251, 255, 230)
@@ -105,9 +105,8 @@ class BoxiLayout(BoxLayout):
     def init_fields(self):
         controller = App.get_running_app().controller
         self.user = controller.user_service
-        if(self.user is not None):
+        if (self.user is not None):
             if controller.guest is True:
-
                 return
             if (self.user.first_name is None):
                 self.ids.first_name.text = ""
@@ -117,10 +116,10 @@ class BoxiLayout(BoxLayout):
                 self.ids.last_name.text = ""
             else:
                 self.ids.last_name.text = self.user.last_name
-            if (self.user.user_name is None):
-                self.ids.user_name.text = ""
+            if (self.user.phone is None):
+                self.ids.phone.text = ""
             else:
-                self.ids.user_name.text = self.user.user_name
+                self.ids.phone.text = self.user.phone
             if (self.user.email is None):
                 self.ids.email.text = ""
             else:
@@ -131,13 +130,12 @@ class BoxiLayout(BoxLayout):
             else:
                 self.ids.gender.text = self.user.gender
 
-
             if (self.user.birth_date is None):
                 self.ids.birth_date.text = ""
             else:
                 self.ids.birth_date.text = self.user.birth_date
 
-            #-----------------------------------------------------------------------------------------------------------
+            # -----------------------------------------------------------------------------------------------------------
 
             if (self.user.city is None):
                 self.ids.city.text = ""
@@ -159,39 +157,37 @@ class BoxiLayout(BoxLayout):
             else:
                 self.ids.floor.text = str(self.user.floor)
 
-
             # if (self.user.apartment_number is None):
             #     self.ids.apt_number.text = ""
             # else:
             #     self.ids.apt_number.text = str(self.user.apartment_number)
 
+            # -----------------------------------------------------------------------------------------------------------
 
-            #-----------------------------------------------------------------------------------------------------------
-
-            if (self.user.credit_card_number is None):
-                self.ids.credit_card_number.text = ""
-            else:
-                self.ids.credit_card_number.text = str(self.user.credit_card_number)
-
-            if (self.user.credit_card_exp_date is None):
-                self.ids.exp_date.text = ""
-            else:
-                self.ids.exp_date.text = self.user.credit_card_exp_date
-
-            if (self.user.cvv is None):
-                self.ids.cvv.text = ""
-            else:
-                self.ids.cvv.text = str(self.user.cvv)
-
-            if (self.user.card_type is None):
-                self.ids.card_type.text = ""
-            else:
-                self.ids.card_type.text = self.user.card_type
-
-            if (self.user.id_number is None):
-                self.ids.id_number.text = ""
-            else:
-                self.ids.id_number.text = str(self.user.id_number)
+            # if (self.user.credit_card_number is None):
+            #     self.ids.credit_card_number.text = ""
+            # else:
+            #     self.ids.credit_card_number.text = str(self.user.credit_card_number)
+            #
+            # if (self.user.credit_card_exp_date is None):
+            #     self.ids.exp_date.text = ""
+            # else:
+            #     self.ids.exp_date.text = self.user.credit_card_exp_date
+            #
+            # if (self.user.cvv is None):
+            #     self.ids.cvv.text = ""
+            # else:
+            #     self.ids.cvv.text = str(self.user.cvv)
+            #
+            # if (self.user.card_type is None):
+            #     self.ids.card_type.text = ""
+            # else:
+            #     self.ids.card_type.text = self.user.card_type
+            #
+            # if (self.user.id_number is None):
+            #     self.ids.id_number.text = ""
+            # else:
+            #     self.ids.id_number.text = str(self.user.id_number)
 
     def personal(self):
         first_name = self.ids.first_name.text
@@ -220,11 +216,10 @@ class BoxiLayout(BoxLayout):
             self.init_fields()
         return ans
 
-
     def clear_personal(self):
-        self.ids.first_name.text=""
-        self.ids.last_name.text=""
-        self.ids.email.text=""
+        self.ids.first_name.text = ""
+        self.ids.last_name.text = ""
+        self.ids.email.text = ""
 
     def address(self):
         city = self.ids.city.text
@@ -253,17 +248,16 @@ class BoxiLayout(BoxLayout):
     def check_empty(self, to_check, obj):
         if to_check == '':
             Utils.pop(self, f'the {obj} is not valid', 'alert')
-            #toast('the apt is not valid')
+            # toast('the apt is not valid')
             return False
         return True
 
     def clear_address(self):
-        self.ids.city.text=""
-        self.ids.street.text=""
-        self.ids.zip_code.text=""
-        self.ids.floor.text=""
-        self.ids.apt_number.text=""
-
+        self.ids.city.text = ""
+        self.ids.street.text = ""
+        self.ids.zip_code.text = ""
+        self.ids.floor.text = ""
+        self.ids.apt_number.text = ""
 
     def payment(self):
         credit_card_number = self.ids.credit_card_number.text
@@ -291,12 +285,11 @@ class BoxiLayout(BoxLayout):
         return ans
 
     def clear_payment(self):
-        self.ids.credit_card_number.text=""
-        self.ids.exp_date.text=""
-        self.ids.cvv.text=""
-        self.ids.card_type.text=""
-        self.ids.id_number.text=""
-
+        self.ids.credit_card_number.text = ""
+        self.ids.exp_date.text = ""
+        self.ids.cvv.text = ""
+        self.ids.card_type.text = ""
+        self.ids.id_number.text = ""
 
     def show_date_picker(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
@@ -307,11 +300,9 @@ class BoxiLayout(BoxLayout):
     def on_save(self, instance, value, date_range):
         self.ids.birth_date.text = str(value)
 
-
     # click Cancel
     def on_cancel(self, instance, value):
         pass
-
 
     def show_date_picker_exp_date(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
@@ -322,16 +313,14 @@ class BoxiLayout(BoxLayout):
     def on_save_exp_date(self, instance, value, date_range):
         self.ids.exp_date.text = str(value)
 
-
-
     def show_dropdown(self):
 
         menu_items = [
             {
                 "text": "male",
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x=1: self.menu_callback(x,"male"),
-            } ,
+                "on_release": lambda x=1: self.menu_callback(x, "male"),
+            },
             {
                 "text": "female",
                 "viewclass": "OneLineListItem",
@@ -350,16 +339,15 @@ class BoxiLayout(BoxLayout):
         self.ids.gender.text = gender_string
         self.drop_down.dismiss()
 
-
     def show_dropdown_address(self):
-        addresses={}
+        addresses = {}
         addresses = self.get_address_list()
-        #addresses = self.get_countries_cities_dict()
+        # addresses = self.get_countries_cities_dict()
         menu_items = []
         for address in addresses:
             menu_items.append(
                 {"text": address,
-                 'font':'Arial',
+                 'font': 'Arial',
                  "viewclass": "OneLineListItem",
                  "on_release": lambda x=addresses[address], y=address: self.show_dropdown_streets(x, y),
                  }
@@ -380,7 +368,7 @@ class BoxiLayout(BoxLayout):
                 {"text": street,
                  "viewclass": "OneLineListItem",
                  # here we have to open page or the offers of this sub categories ya sharmutut
-                 "on_release": lambda x=street, y=city: self.on_save_address(x, y) }
+                 "on_release": lambda x=street, y=city: self.on_save_address(x, y)}
             )
         self.drop_down_streets = MDDropdownMenu(
             caller=self.ids.drop_address,
@@ -398,13 +386,13 @@ class BoxiLayout(BoxLayout):
         self.drop_down_streets.dismiss()
 
     def get_address_list(self):
-        rows={}
+        rows = {}
         # with open('city-street.csv', 'rb') as csvfile:
         #     reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-            #-------------------------------------------------------
+        # -------------------------------------------------------
 
-        #with open('city-street.csv', 'r',encoding="utf8") as csv_file:
-        with open('worldcities.csv', 'r',encoding="utf8") as csv_file:
+        # with open('city-street.csv', 'r',encoding="utf8") as csv_file:
+        with open('worldcities.csv', 'r', encoding="utf8") as csv_file:
             csv_reader = csv.reader(csv_file)
             city_dictionary = {}
             country_dictionary = {}
@@ -431,8 +419,6 @@ class BoxiLayout(BoxLayout):
                     country_dictionary[country] = []
                     country_dictionary[country].append(city)
 
-
-
             return country_dictionary
 
     def get_countries_cities_dict(self):
@@ -449,28 +435,23 @@ class BoxiLayout(BoxLayout):
         return cities
 
     def show_dropdown_address_gov_il(self):
-        addresses={}
+        addresses = {}
         addresses = self.get_countries_cities_dict_gov_il()
         menu_items = []
         for address in addresses.keys():
-
-
             menu_items.append(
                 {
                     'text': f"[font=Arial]{address[::-1]}[/font]",
-                     'font_name':'Arimo',
-                     "viewclass": "OneLineListItem",
-                     "on_release": lambda x=addresses[address], y=address: self.show_dropdown_cities_gov_il(x, y),
+                    'font_name': 'Arimo',
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=addresses[address], y=address: self.show_dropdown_cities_gov_il(x, y),
                 }
             )
-
-
 
         self.drop_down_regoins_gov_il = MDDropdownMenu(
             caller=self.ids.drop_address,
             items=menu_items,
             width_mult=4,
-
 
         )
         self.drop_down_regoins_gov_il.open()
@@ -481,10 +462,10 @@ class BoxiLayout(BoxLayout):
         for city in cities.keys():
             menu_items.append(
                 {'text': f"[font=Arial]{city[::-1]}[/font]",
-                 "font_name":"Arial",
+                 "font_name": "Arial",
                  "viewclass": "OneLineListItem",
                  # here we have to open page or the offers of this sub categories ya sharmutut
-                 "on_release": lambda x=cities[city], y=city ,z=region: self.show_dropdown_streets_gov_il(x, y, z) }
+                 "on_release": lambda x=cities[city], y=city, z=region: self.show_dropdown_streets_gov_il(x, y, z)}
             )
             #
         self.drop_down_cities_gov_il = MDDropdownMenu(
@@ -500,10 +481,10 @@ class BoxiLayout(BoxLayout):
         for street in streets:
             menu_items.append(
 
-                {   'text': f"[font=Arial]{street[::-1]}[/font]",
+                {'text': f"[font=Arial]{street[::-1]}[/font]",
                  "viewclass": "OneLineListItem",
                  # here we have to open page or the offers of this sub categories ya sharmutut
-                 "on_release": lambda x=street, y=city, z=region: self.on_save_address_gov_il(x, y,z)}
+                 "on_release": lambda x=street, y=city, z=region: self.on_save_address_gov_il(x, y, z)}
             )
             # self.on_save_address(x, y)
         self.drop_down_streets_gov_il = MDDropdownMenu(
@@ -513,6 +494,7 @@ class BoxiLayout(BoxLayout):
         )
         self.drop_down_streets_gov_il.open()
         self.drop_down_cities_gov_il.dismiss()
+
     def on_save_address_gov_il(self, street, city, region):
         self.region = region
         self.city = city
@@ -522,10 +504,9 @@ class BoxiLayout(BoxLayout):
         self.ids.region.text = region[::-1]
         self.drop_down_streets_gov_il.dismiss()
 
-
     def get_countries_cities_dict_gov_il(self):
         address_dict = {}
-        res=requests.get(
+        res = requests.get(
             'https://data.gov.il/api/3/action/datastore_search?resource_id=1b14e41c-85b3-4c21-bdce-9fe48185ffca&limit=116621')
         data = json.loads(res.text)  # Here you have the data that you need
         for d in data['result']['records']:
@@ -539,15 +520,3 @@ class BoxiLayout(BoxLayout):
             address_dict[region][city].append(street)
 
         return address_dict
-
-
-
-
-
-
-
-
-
-
-
-

@@ -71,6 +71,7 @@ class Side_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Side_box, self).__init__(**kwargs)
         self.dialog = None
+
     #     self.bind(pos=self.update_rect, size=self.update_rect)
     #     self.rect = Rectangle(pos=self.pos, size=self.size)
     #
@@ -78,14 +79,18 @@ class Side_box(BoxLayout):
     #     self.rect.pos = self.pos
     #     self.rect.size = self.size
 
+    def get_user_name(self):
+        answer = App.get_running_app().controller.user_service.first_name
+        if answer is None:
+            return "guest"
+        return App.get_running_app().controller.user_service.first_name
 
     def move_to_account(self):
         a = App.get_running_app()
         b = a.controller
         if b.guest is True:
-
             Utils.pop(self, 'guest cant go to account window', 'alert')
-            #toast("guest cant go to account window")
+            # toast("guest cant go to account window")
             return
         App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
@@ -95,7 +100,7 @@ class Side_box(BoxLayout):
         b = a.controller
         if b.guest is True:
             Utils.pop(self, 'guest cant go to add offer window', 'alert')
-            #toast("guest cant go to add offer window")
+            # toast("guest cant go to add offer window")
             return
         App.get_running_app().root.current = 'add_offer_screen'
 
@@ -104,7 +109,6 @@ class Side_box(BoxLayout):
         b = a.controller
         if b.guest is True:
             Utils.pop(self, 'guest cant go to contact us window', 'alert')
-            #toast("guest cant go to contact us window")
             return
         App.get_running_app().root.current = 'contact_us_screen'
 
@@ -229,11 +233,14 @@ class Side_box(BoxLayout):
         )
         self.drop_down.open()
 
+
 class Category_box(BoxLayout):
     pass
 
+
 class Sub_Category_box(BoxLayout):
     pass
+
 
 class Menu_box(BoxLayout):
     def __init__(self, **kwargs):
@@ -262,10 +269,10 @@ class TestApp(MDApp):
         super(TestApp, self).__init__()
         self.controller = controller
 
+
     def on_start(self):
         b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.get_hot_deals())
-
 
     def on_stop(self):
         print('fuck we stoped')
@@ -290,3 +297,10 @@ class TestApp(MDApp):
         else:
             self.controller.guest_register()
             self.controller.guest_login(self.controller.user_service.user_id)
+        if self.controller.user_service is None:
+            print("login failed")
+            f = open('hello.json', 'r+')
+            f.truncate(0)
+            self.check_connection()
+
+

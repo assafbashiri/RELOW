@@ -20,7 +20,7 @@ class CategoryController:
     def getInstance():
         """ Static access method. """
         if CategoryController.__instance == None:
-            CategoryController
+            CategoryController()
         return CategoryController.__instance
 
     def __init__(self, conn):
@@ -148,10 +148,7 @@ class CategoryController:
         offer.confirm = True
         offer_update = self.offerDAO.update(OfferDTO(offer))
         return offer
-
-
     # ------------------------------------------------update -----------------------------------------------------
-
     # check input validity in client layer
     # no return, throw exceptions
     def update_category_name(self, category_name, new_category_name):
@@ -175,7 +172,6 @@ class CategoryController:
     def update_step_for_offer(self, offer_id,step_number, quantity, price):
         offer_to_update = self.get_offer_by_offer_id(offer_id)
         offer_to_update.set_steps(step_number, quantity, price)
-
     # --------------------------------------------getters-------------------------------------------------
 
     # return regular list, throw exceptions
@@ -253,7 +249,6 @@ class CategoryController:
     #     self.offerDAO.update(OfferDTO(offer_to_move))
     #     return offer_to_move
     #
-
 
     def update_sub_category_for_offer(self, offer_id, new_category_name, new_sub_category_name):
         offer_to_move = self.get_offer_by_offer_id(offer_id)
@@ -344,7 +339,9 @@ class CategoryController:
             if o[8] == 1:
                 hot = True
 
-            offer = Offer(o[0], o[1], all_products_dictionary[o[0]], o[6], o[7], OfferStatus(o[4]), all_steps_dictionary[o[0]], o[2],
+            status = self.build_status(o[4])
+
+            offer = Offer(o[0], o[1], all_products_dictionary[o[0]], o[6], o[7], status, all_steps_dictionary[o[0]], o[2],
                           o[3], current_buyers, total_products,hot, True)
 
             history_offers_to_return[o[0]] = offer
@@ -401,7 +398,6 @@ class CategoryController:
                 return True
         return False
 
-
     # check !!!!
     def get_sub_category_by_name(self, sub_category_name):
         for catID in self.category_dictionary.keys():
@@ -420,7 +416,19 @@ class CategoryController:
         categories = self.category_dictionary.values()
         for cat in categories:
             ans.append(cat)
-
         return ans
+
+    def build_status(self, status_string):
+        if status_string == "ACTIVE":
+            return 1
+        if status_string == "DONE":
+            return 2
+        if status_string == "CANCELED_BY_SELLER":
+            return 3
+        if status_string == "CANCELED_BY_BUYER":
+            return 4
+        if status_string == "EXPIRED_ZERO_BUYERS":
+            return 5
+
 
 

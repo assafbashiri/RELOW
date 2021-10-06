@@ -1,4 +1,3 @@
-
 class StepService:
     def __init__(self, business_step, step_number):
         self.buyers_amount = business_step.get_buyers_amount()

@@ -218,6 +218,5 @@ class Search_box(BoxLayout):
 class Sub_Category_box(BoxLayout):
     pass
 
-
 class Category_box(BoxLayout):
     pass

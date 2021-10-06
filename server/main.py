@@ -25,15 +25,6 @@ class Struct(object):
     def __init__(self, **entries):
         self._dict_.update(entries)
 
-class point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-
-
-    
-
 if __name__ == '__main__':
     conn = sqlite3.connect('database.db', check_same_thread=False)
     # conn.text_factory = bytes
@@ -42,32 +33,16 @@ if __name__ == '__main__':
     # repository.delete_all_db()
     u = UserController(conn)
     c = CategoryController(conn)
-    # c.add_category("a")
-    # c.add_category("b")
-    # c.add_category("c")
-    # c.add_category("d")
-    # c.add_category("e")
-    # c.add_sub_category("aa", "a")
-    # c.add_sub_category('bb', 'b')
-    # c.add_sub_category('cc', 'c')
-    # c.add_sub_category('dd', 'd')
-    # c.add_sub_category('ee', 'e')
-    print("%")
-
     offers, history_offers = c.load()
     u.load_users(offers, history_offers)
-    # u.usersDictionary[4].log_in()
-    # u.add_like_offer(4, offers[1])
-    x=5
-    # x=5
+    print("server loaded users and categories")
+
     # # ------- check --------------
-    # -----------------------------------
     # step1 = Step(50, 20)
     # step2 = Step(100, 15)
     # step3 = Step(150, 10)
     # steps = {1: step1, 2: step2, 3: step3}
     #
-    # print("doneeeeeeeeeeeeeeeeeeeeeeeeeee")
     # date = datetime.datetime(1996, 12, 15)
     #
     #

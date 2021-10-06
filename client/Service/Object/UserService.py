@@ -2,13 +2,13 @@ from Service.Object.OfferService import OfferService
 from Response import Response
 class UserService():
     # CLIENT
-    def __init__(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender, city, street, apt, zip, floor,
+    def __init__(self, user_id, first_name, last_name, phone, email, password, birth_date, gender, city, street, apt, zip, floor,
                  id_number, credit_card_number, credit_exp, cvv, card_type,
                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
         self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
-        self.user_name = user_name
+        self.phone = phone
         self.email = email
         self.password = password
         self.birth_date = birth_date
@@ -69,8 +69,8 @@ class UserService():
     def get_last_name(self):
         return self.last_name
 
-    def get_user_name(self):
-        return self.user_name
+    def get_phone(self):
+        return self.phone
 
     def get_email(self):
         return self.email

@@ -8,3 +8,5 @@ class OfferStatus(Enum):
     CANCELED_BY_SELLER = 3
     CANCELED_BY_BUYER = 4
     EXPIRED_ZERO_BUYERS = 5
+
+

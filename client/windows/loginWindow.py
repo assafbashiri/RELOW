@@ -41,7 +41,7 @@ class Login_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def clear_register(self):
-        self.ids.user_name.text=""
+        self.ids.phone.text=""
         self.ids.first_name.text=""
         self.ids.last_name.text=""
         self.ids.email.text=""
@@ -61,10 +61,10 @@ class Login_box(BoxLayout):
                 Utils.pop(self, 'you need to logout first', 'alert')
                 #toast('you need to logout first')
                 return
-        user_name = self.ids.user_name.text
-        user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)
+        phone = self.ids.phone.text
+        phone_bool  = CheckValidity.checkValidityPhone(self, phone)
 
-        if not user_name_bool:
+        if not phone_bool:
             return
 
 
@@ -91,7 +91,7 @@ class Login_box(BoxLayout):
         birth_date_str = self.ids.birth_date.text
         birth_date = Utils.string_to_datetime_without_hour(self, birth_date_str)
         gender = self.gender
-        ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,
+        ans = App.get_running_app().controller.register(first_name, last_name, phone, email, password, birth_date,
                                                         gender)
         if ans.res is True:
             self.parent.parent.back_to_main()

@@ -417,6 +417,7 @@ class choose_photo_layout(MDBoxLayout):
         self.carousel = None
         self.i = 0
         self.photo_list = {}
+        self.dialog = None
 
 
     def remove_photo(self):

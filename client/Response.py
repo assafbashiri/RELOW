@@ -17,8 +17,8 @@ class Response:
     def set_data(self, data):
         self.data = data
 
-    def set_response(self,res):
+    def set_response(self, res):
         self.res = res
 
-    def set_message(self,message):
+    def set_message(self, message):
         self.message = message
