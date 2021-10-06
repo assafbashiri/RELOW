@@ -12,14 +12,11 @@ class OfferDAO:
         self._conn.commit()
         colors = self.build_string_from_list(productDTO.colors)
         sizes = self.build_string_from_list(productDTO.sizes)
-
         photos_to_write = []
         for i in range(0,len(productDTO.photos)):
             photos_to_write.append(productDTO.photos[i])
         for i in range(len(productDTO.photos),10):
             photos_to_write.append(None)
-
-
         self._conn.execute(
             """INSERT INTO products (offer_id,name, company, colors, sizes, description,photo1,photo2,photo3,photo4,photo5, photo6,photo7,photo8,photo9,photo10) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             [productDTO.offer_id, productDTO.name, productDTO.company, colors, sizes,productDTO.description,photos_to_write[0],photos_to_write[1],photos_to_write[2],photos_to_write[3],
@@ -86,53 +83,6 @@ class OfferDAO:
                            [offer_id, user_id])
         self._conn.commit()
 
-    # def update_end_date(self, offer_id, new_end_date):
-    #     self._conn.execute("""UPDATE active_offers set end_date = ? WHERE offer_id = ?""",
-    #                        [new_end_date, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_start_date(self, offer_id, new_start_date):
-    #     self._conn.execute("""UPDATE active_offers set start_date = ? WHERE offer_id = ?""",
-    #                        [new_start_date, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_step(self, offer_id, step):
-    #     self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
-    #                        [step, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_step(self, offer_id, step):
-    #     self._conn.execute("""UPDATE active_offers set current_step = ? WHERE offer_id = ?""",
-    #                        [step, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_product_name(self, offer_id, name):
-    #     self._conn.execute("""UPDATE products set name = ? WHERE offer_id = ?""",
-    #                        [name, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_product_company(self, offer_id, company):
-    #     self._conn.execute("""UPDATE products set company = ? WHERE offer_id = ?""",
-    #                        [company, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_product_colors(self, offer_id, colors1):
-    #     colors = self.build_string_from_list(colors1)
-    #     self._conn.execute("""UPDATE products set colors = ? WHERE offer_id = ?""",
-    #                        [colors, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_product_sizes(self, offer_id, sizes1):
-    #     sizes = self.build_string_from_list(sizes1)
-    #     self._conn.execute("""UPDATE products set sizes = ? WHERE offer_id = ?""",
-    #                        [sizes, offer_id])
-    #     self._conn.commit()
-    #
-    # def update_product_description(self, offer_id, description):
-    #     self._conn.execute("""UPDATE products set description = ? WHERE offer_id = ?""",
-    #                        [description, offer_id])
-    #     self._conn.commit()
-
     def insert_to_history_buyers(self, user_id, offer_id, status, step):
         self._conn.execute(
             """INSERT INTO history_buyers (user_id,offer_id,status,step) VALUES (?,?,?,?)""",
@@ -186,16 +136,11 @@ class OfferDAO:
         output = this.fetchone()[0]
         if output is None:
             output = 0
-
         return output + 1
 
     def load_all_products(self):
         this = self._conn.cursor()
-        m= this.execute("SELECT * FROM  products")
-        # for x in m:
-        #     rec = x[6]
-        # with open("a.jpg","wb") as f:
-        #     f.write(rec)
+        this.execute("SELECT * FROM  products")
         return this.fetchall()
 
     def build_string_from_list(self, list):

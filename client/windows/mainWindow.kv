@@ -6,10 +6,11 @@
 <Menu_box>
     id: Menu_box
     orientation: "horizontal"
-    Offers_Screen:
-        id: recycle1
     Side_box:
         id: side_box
+    Offers_Screen:
+        id: recycle1
+
 <Side_box>
     id: side_box
     size_hint_x: .2
@@ -23,6 +24,18 @@
         Rectangle:
             pos: self.pos
             size: self.size
+
+    MDLabel:
+        size_hint_y: .5
+        pos_hint_x: 1
+        id: logo
+        text: "        SHARE IT"
+
+    MDLabel:
+        size_hint_y: .5
+        pos_hint_x: 1
+        id: hello
+        text: "        Hello, "+root.get_user_name()
 
     Button:
         size_hint_y: .2

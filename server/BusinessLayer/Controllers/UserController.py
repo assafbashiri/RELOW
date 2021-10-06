@@ -57,56 +57,48 @@ class UserController:
         user = User(self.user_id, None, None, None, None, None, None, Gender.male)
         userDTO = UserDTO(user)
         self.usersDictionary[user.user_id] = user
-        # user.log_in()  # check this line
         self.users_dao.insert_guest(userDTO)
         self.user_id += 1
         return user
 
     def guest_login(self, guest_id):
         guest = self.usersDictionary[guest_id]
-        # guest.log_in()
-        # self.users_dao.log_in(guest_id)
         return {'user': guest}
 
     def delete_guest(self, guest_id):
         self.usersDictionary.pop(guest_id)
         self.users_dao.delete_guest(guest_id)
 
-    def merge_register(self, user_id, first_name, last_name, user_name, email, password, birth_date, gender):
+    def merge_register(self, user_id, first_name, last_name, phone, email, password, birth_date, gender):
         if gender not in Gender._value2member_map_:
             raise Exception("bad gender")
         gender_to_add = Gender(gender)
-        self.check.check_register(email, user_name, self.usersDictionary)
+        self.check.check_register(email, phone, self.usersDictionary)
         liked_offers = self.usersDictionary[user_id].liked_offers
-        # liked_offers = self.usersDictionary[user_id].get_liked_offers()
-        user = User(user_id, first_name, last_name, user_name, email, password, birth_date, gender_to_add)
+        user = User(user_id, first_name, last_name, phone, email, password, birth_date, gender_to_add)
         user.set_liked_offers(liked_offers)
         userDTO = UserDTO(user)
         self.usersDictionary[user_id] = user
         self.users_dao.update(userDTO)
         self.user_id += 1
-        # self.log_in(user_name, password)
-
         msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
         message = """\
         Subject: welcome to share-it
 
         """ + msg
         self.emailHandler.sendemail(email, message)
-
         return user
 
-    def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
+    def register(self, first_name, last_name, phone, email, password, birth_date, gender):
         if gender not in Gender._value2member_map_:
             raise Exception("bad gender")
         gender_to_add = Gender(gender)
-        self.check.check_register(email, user_name, self.usersDictionary)
-        user = User(self.user_id, first_name, last_name, user_name, email, password, birth_date, gender_to_add)
+        self.check.check_register(email, phone, self.usersDictionary)
+        user = User(self.user_id, first_name, last_name, phone, email, password, birth_date, gender_to_add)
         userDTO = UserDTO(user)
         self.usersDictionary[user.user_id] = user
         self.users_dao.insert(userDTO)
         self.user_id += 1
-#        self.log_in(user_name, password)
         # send email
         msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
         message = """\
@@ -126,7 +118,7 @@ class UserController:
     def complete_register(self, user_id):
         self.usersDictionary[user_id].active = True
         self.users_dao.complete_register(user_id)
-        self.log_in(self.usersDictionary[user_id].user_name, self.usersDictionary[user_id].password)
+        self.log_in(self.usersDictionary[user_id].email, self.usersDictionary[user_id].password)
 
     def log_in(self, email, password):
         user = self.get_user_by_email(email)
@@ -174,7 +166,6 @@ class UserController:
         self.users_dao.update(UserDTO(user_to_add))
         return user_to_add
 
-
     def update_first_name(self, user_id, new_first_name):
         if new_first_name == "":
             return
@@ -191,14 +182,14 @@ class UserController:
             user.set_last_name(new_last_name)
             self.users_dao.update(UserDTO(user))
 
-    def update_user_name(self, user_id, username):
+    def update_phone(self, user_id, phone):
         user = self.check_user_state(user_id)
-        user.set_user_name(username)
+        user.set_phone(phone)
         self.users_dao.update(UserDTO(user))
 
     def update_password(self, user_id, old_password, new_password):
         user = self.check_user_state(user_id)
-        if not old_password == self.get_password_by_user_name(user.user_name):
+        if not old_password == self.get_password_by_email(user.email):
             raise Exception("incorrect old password")
         user.set_password(new_password)
         self.users_dao.update(UserDTO(user))
@@ -212,7 +203,6 @@ class UserController:
             self.users_dao.update(UserDTO(user))
 
     def update_birth_date(self, user_id, new_birthdate):
-
         user = self.check_user_state(user_id)
         date = datetime.strptime(new_birthdate, "%Y-%m-%d")
         user.set_date_of_birth(date)
@@ -273,7 +263,7 @@ class UserController:
         user.set_id(new_id)
         self.users_dao.update(UserDTO(user))
 
-        # -------------------------------- update offers
+    # -------------------------------- update offers
 
     def update_end_date(self, user_id, offer_id, new_end_date):
         offer = self.check_offer_state(user_id, offer_id)
@@ -308,14 +298,15 @@ class UserController:
 
     def update_product_size(self, user_id, offer_id, size):
         offer = self.check_offer_state(user_id, offer_id)
-
         offer.product.set_size(size)
         self.offers_dao.update(OfferDTO(offer))
+
     def update_product_sizes(self, user_id, offer_id, sizes):
         offer = self.check_offer_state(user_id, offer_id)
         sizes_list = offer.product.build_list_from_string(sizes)
         offer.product.set_sizes(sizes_list)
         self.offers_dao.update(OfferDTO(offer))
+
     def update_product_description(self, user_id, offer_id, description):
         offer = self.check_offer_state(user_id, offer_id)
         offer.product.set_description(description)
@@ -357,7 +348,6 @@ class UserController:
         """ + msg
         self.emailHandler.sendemail(buyer.get_email(), message)
 
-
     def add_like_offer(self, user_id, offer):
         user_temp = self.get_user_by_id(user_id)
         user_temp.add_like_offer(offer)
@@ -381,7 +371,7 @@ class UserController:
         offer.set_status(OfferStatus.CANCELED_BY_SELLER)
         for i in range(0, len(user_ids)):
             self.remove_active_buy_offer(user_ids[i], offer, offer.get_status())
-            # this function above update the DB
+        # this function above update the DB
         self.offers_dao.delete_active_offer(offer.offer_id)
         self.offers_dao.insert_to_history_offers(OfferDTO(offer))
 
@@ -479,31 +469,30 @@ class UserController:
 
     # -------------------------- private functions -------------------------------------------------------------
 
-    def exist_user_name1(self, user_name):
-        user_ids = self.usersDictionary.keys()
-        for curr_user_id in user_ids:
-            if user_name == self.usersDictionary.get(curr_user_id).user_name:
-                return True
-        return False
+    # def exist_user_name1(self, user_name):
+    #     user_ids = self.usersDictionary.keys()
+    #     for curr_user_id in user_ids:
+    #         if user_name == self.usersDictionary.get(curr_user_id).user_name:
+    #             return True
+    #     return False
 
     def exist_user_id(self, user_id):
         if user_id in self.usersDictionary.keys():
             return True
         return False
 
-    def get_password_by_user_name(self, user_name):
-        user_ids = self.usersDictionary.keys()
-        for curr_user_id in user_ids:
-            if user_name == self.usersDictionary[curr_user_id].user_name:
-                return self.usersDictionary[curr_user_id].password
-        return None
+    def get_password_by_email(self, email):
+        user = self.get_user_by_email(email)
+        if user is None:
+            return None
+        return user.password
 
-    def get_user_by_user_name(self, user_name):
-        user_ids = self.usersDictionary.keys()
-        for curr_user_id in user_ids:
-            if user_name == self.usersDictionary.get(curr_user_id).user_name:
-                return self.usersDictionary.get(curr_user_id)
-        return None
+    # def get_user_by_user_name(self, user_name):
+    #     user_ids = self.usersDictionary.keys()
+    #     for curr_user_id in user_ids:
+    #         if user_name == self.usersDictionary.get(curr_user_id).user_name:
+    #             return self.usersDictionary.get(curr_user_id)
+    #     return None
 
     def get_user_by_email(self, email):
         user_ids = self.usersDictionary.keys()
@@ -516,7 +505,7 @@ class UserController:
         user = self.get_user_by_email(email)
         if user is None:
             raise Exception("no such an email")
-        return  user.user_id
+        return user.user_id
 
     def get_user_by_id(self, user_id):
         return self.usersDictionary[user_id]
@@ -590,7 +579,7 @@ class UserController:
 
     def check_user_state(self, user_id):
         if not self.exist_user_id(user_id):
-            raise Exception("User Name Does Not Exist")
+            raise Exception("User Does Not Exist")
         user = self.get_user_by_id(user_id)
         if user.active == 0:
             raise Exception("user is not active")

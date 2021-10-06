@@ -14,7 +14,7 @@ class repository():
                 user_id INTEGER PRIMARY KEY UNIQUE,
                 first_name TEXT,
                 last_name TEXT,
-                user_name TEXT,
+                phone TEXT,
                 email TEXT,
                 password TEXT,
                 birth_date	DATETIME,

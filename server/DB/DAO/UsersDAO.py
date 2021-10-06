@@ -5,8 +5,8 @@ class UsersDAO:
 
     def insert_guest(self, userDTO):
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
-            [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
+            """INSERT INTO users_submission (user_id, first_name, last_name, phone, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
+            [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.phone, userDTO.email, userDTO.password,
              userDTO.birth_date, userDTO.gender.value, userDTO.active])
         self._conn.commit()
         print("in insert in UserDAO step 2")
@@ -33,8 +33,8 @@ class UsersDAO:
     def insert(self, userDTO):
         print("in insert in UserDAO step 1")
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, user_name, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
-            [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
+            """INSERT INTO users_submission (user_id, first_name, last_name, phone, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
+            [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.phone, userDTO.email, userDTO.password,
              userDTO.birth_date, userDTO.gender.value, userDTO.active])
         self._conn.commit()
         print("in insert in UserDAO step 2")
@@ -84,27 +84,27 @@ class UsersDAO:
         output = this.fetchall()
         return output
 
-    def add_address(self, user_id, city, street, zip_code, floor, apartment_number):
-        self.updateCity(user_id, city)
-        self.updateStreet(user_id, street)
-        self.updateZipcode(user_id, zip_code)
-        self.updateFloor(user_id, floor)
-        self.updateApartmentNumber(user_id, apartment_number)
-        # self._conn.execute(
-        # """INSERT INTO users_address (user_id, city, street, zip_code, floor, apt) VALUES (?,?,?,?,?,?)""",
-        # [user_id, city, street, zip_code, floor, apartmentNumber])
-        # self._conn.commit()
-
-    def add_payment_method(self, user_id, credit_card, exp_date, cvv, card_type, id):
-        self.updateCardNumber(user_id, credit_card)
-        self.updateExpireDate(user_id, exp_date)
-        self.updateCvv(user_id, cvv)
-        self.updateCard_type(user_id, card_type)
-        self.updateId(user_id, id)
-        # self._conn.execute(
-        # """UPDATE users_payment set card_number = ? ,expire_date = ? ,cvv = ? ,card_type = ? , id_number = ? WHERE user_id = ?""",
-        # [credit_card, exp_date, cvv, card_type, id, user_id])
-        # self._conn.commit()
+    # def add_address(self, user_id, city, street, zip_code, floor, apartment_number):
+    #     self.updateCity(user_id, city)
+    #     self.updateStreet(user_id, street)
+    #     self.updateZipcode(user_id, zip_code)
+    #     self.updateFloor(user_id, floor)
+    #     self.updateApartmentNumber(user_id, apartment_number)
+    #     # self._conn.execute(
+    #     # """INSERT INTO users_address (user_id, city, street, zip_code, floor, apt) VALUES (?,?,?,?,?,?)""",
+    #     # [user_id, city, street, zip_code, floor, apartmentNumber])
+    #     # self._conn.commit()
+    #
+    # def add_payment_method(self, user_id, credit_card, exp_date, cvv, card_type, id):
+    #     self.updateCardNumber(user_id, credit_card)
+    #     self.updateExpireDate(user_id, exp_date)
+    #     self.updateCvv(user_id, cvv)
+    #     self.updateCard_type(user_id, card_type)
+    #     self.updateId(user_id, id)
+    #     # self._conn.execute(
+    #     # """UPDATE users_payment set card_number = ? ,expire_date = ? ,cvv = ? ,card_type = ? , id_number = ? WHERE user_id = ?""",
+    #     # [credit_card, exp_date, cvv, card_type, id, user_id])
+    #     # self._conn.commit()
 
     # update users_submission
     def complete_register(self, user_id):
@@ -119,8 +119,8 @@ class UsersDAO:
 
     def update(self, userDTO):
         self._conn.execute(
-            """UPDATE users_submission SET first_name=?, last_name=?, user_name=?, email=?, password=?, birth_date=?, gender=?, active=? WHERE user_id=?""",
-            [userDTO.first_name, userDTO.last_name, userDTO.user_name, userDTO.email, userDTO.password,
+            """UPDATE users_submission SET first_name=?, last_name=?, phone=?, email=?, password=?, birth_date=?, gender=?, active=? WHERE user_id=?""",
+            [userDTO.first_name, userDTO.last_name, userDTO.phone, userDTO.email, userDTO.password,
              userDTO.birth_date, userDTO.gender.value, userDTO.active, userDTO.user_id])
         self._conn.commit()
 

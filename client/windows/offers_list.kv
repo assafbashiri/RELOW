@@ -3,9 +3,19 @@
 <RecycleViewRow>
     id: RecycleViewRow
     orientation: 'vertical'
-    Carousel2:
-        photos: self.parent.photo_lis
-        id: car
+    BoxLayout:
+        orientation: 'horizontal'
+        MDIconButton:
+            icon: "chevron-left"
+            pos_hint: {'top':.5}
+            on_press: root.move_left()
+        Carousel2:
+            photos: self.parent.parent.photo_lis
+            id: car
+        MDIconButton:
+            icon: "chevron-right"
+            pos_hint: {'top':.5}
+            on_press: root.move_right()
     MDFloatingActionButton:
         icon: "windows/images/more3.png"
         on_press: root.www(self.parent.offer, self.parent.photo_lis)

@@ -7,10 +7,7 @@
         Login_box:
         Side_box:
             id:side_box
-
-
 <Login_box>
-
     canvas.before:
         Color:
             rgba: 0, 0, 0, 1
@@ -31,15 +28,12 @@
                 id: register_label
                 text: "LOGIN"
 
-
-
             MDTextFieldRound:
                 write_tab: False
                 text : "tomnisim@gmail.com"
                 id:email
                 hint_text: "email"
                 icon_right: "account"
-
 
             MDTextFieldRound:
                 write_tab: False
@@ -49,11 +43,8 @@
                 icon_right: "eye-off"
                 password : True
 
-
-
         MDGridLayout:
             cols:3
-
             MDRoundFlatButton:
                 text:"LOGIN"
                 font_size: 12
@@ -63,11 +54,6 @@
                 text:"LOGOUT"
                 font_size: 12
                 on_press:self.parent.parent.parent.logout()
-
-            MDRoundFlatButton:
-                text:"clear_login"
-                font_size: 12
-                on_press:root.clear_login()
 
             MDRoundFlatButton:
                 text:"forgot password"

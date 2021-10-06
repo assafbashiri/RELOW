@@ -47,11 +47,11 @@ class checkValidity:
             raise Exception("Input date is not valid..")
 
 
-    def check_register(self, email, user_name, usersDictionary):
+    def check_register(self, email, phone, usersDictionary):
         for user_id in usersDictionary.keys():
             user = usersDictionary[user_id]
-            if user.get_user_name() == user_name:
-                raise Exception("user_name is already exist")
+            if user.get_phone() == phone:
+                raise Exception("phone is already exist")
         for user_id in usersDictionary.keys():
             user = usersDictionary[user_id]
             if user.get_email() == email:

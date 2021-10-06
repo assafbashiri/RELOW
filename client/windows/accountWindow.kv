@@ -10,13 +10,9 @@
     BoxiLayout:
         id: boxi
         BoxLayout:
-
         BoxLayout:
-
     Side_box:
         id: side_box
-
-
 
 <BoxiLayout>
     orientation: "vertical"
@@ -30,7 +26,6 @@
             id:first_name
             hint_text: "first name"
             icon_right: "account"
-
 
         TextInput:
             write_tab: False
@@ -47,8 +42,8 @@
 
         MDLabel:
             write_tab: False
-            text: "user name"
-            id:user_name
+            text: "phone"
+            id:phone
 
         MDLabel:
             write_tab: False
@@ -65,7 +60,6 @@
         id:GL
         size_hint: 1,9
         cols: 1
-
 
         MDDropDownItem:
             write_tab: False
@@ -97,7 +91,6 @@
             hint_text: "city"
             icon_right: "account"
 
-
         TextInput:
             write_tab: False
             font_name: "Arial"
@@ -113,7 +106,6 @@
             hint_text: "apt. number"
             icon_right: "account"
 
-
         TextInput:
             write_tab: False
             #text: "76470"
@@ -121,58 +113,12 @@
             hint_text: "zip code"
             icon_right: "account"
 
-
         TextInput:
             write_tab: False
             #text: "3"
             id:floor
             hint_text: "floor"
             icon_right: "account"
-
-
-    GridLayout:
-        size_hint: 1,6
-        cols: 1
-
-        TextInput:
-            write_tab: False
-            #text: "123456789"
-            id:credit_card_number
-            hint_text: "credit card number"
-            icon_right: "account"
-
-
-        TextInput:
-            write_tab: False
-            #text: "11/01/2021"
-            id:exp_date
-            hint_text: "credit card exp date"
-            icon_right: "account"
-            on_focus:self.parent.parent.show_date_picker_exp_date()
-
-        TextInput:
-            write_tab: False
-            #text: "40"
-            id:cvv
-            hint_text: "cvv"
-            icon_right: "account"
-
-
-        TextInput:
-            write_tab: False
-            #text: "76470"
-            id:card_type
-            hint_text: "card type"
-            icon_right: "account"
-
-
-        TextInput:
-            write_tab: False
-            #text: "3"
-            id:id_number
-            hint_text: "id number"
-            icon_right: "account"
-
 
     GridLayout:
         size_hint: 1,3
@@ -184,25 +130,10 @@
             on_press: root.personal()
 
         Button:
-            text: "address"
+            text: "add address"
             font_size: 8
             on_press: root.address()
-        Button:
-            text: "payment method"
-            font_size: 8
-            on_press: root.payment()
-        Button:
-            text:"clear_personal"
-            font_size: 12
-            on_press:root.clear_personal()
-        Button:
-            text:"clear_address"
-            font_size: 12
-            on_press:root.clear_address()
-        Button:
-            text:"clear_payment"
-            font_size: 12
-            on_press:root.clear_payment()
+
         Button:
             text:"change password"
             font_size: 12

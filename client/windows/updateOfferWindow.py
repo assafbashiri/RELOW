@@ -49,15 +49,11 @@ class UPDATEOFFERScreen(Screen):
 #---------------------------------------------------
     def update_offer(self, offer):
         print('TODOO')
-
         #self.init_text_fields_with_offer_details(offer)
         add_offer_box = self.ids.add_offer_box
         #add_offer_box.init_fields()
         add_offer_box.init_text_fields_with_offer_details(offer)
         add_offer_button= self.ids.add_offer_box.ids.add_offer_button
-
-
-        b=8
         #we recieved an offer and we need to insert our offer values to the fileds in this window
         # we need to change the button from add offer to update offer and at the end to change it back
 
@@ -88,13 +84,11 @@ class Update_offer_box(BoxLayout):
 
         self.color_mainbutton = Button(text='colors')
         self.color_mainbutton.bind(on_release=self.color_dropdown.open)
-
         self.size_list = []
         self.size_dropdown = DropDown()
         #btn.bind(on_release=lambda btn: self.remove_size(btn))
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_press = self.size_dropdown.open)
-
         self.chosen_cat_name = 'fix this name'
 
 

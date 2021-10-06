@@ -6,7 +6,7 @@ class UserDTO:
         self.user_id = user.get_user_id()
         self.first_name = user.get_first_name()
         self.last_name = user.get_last_name()
-        self.user_name = user.get_user_name()
+        self.phone = user.get_phone()
         self.email = user.get_email()
         self.password = user.get_password()
         self.birth_date = user.get_birth_date()

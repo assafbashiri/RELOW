@@ -55,12 +55,12 @@ class BoxiLayout1(BoxLayout):
         self.gender = 0
         self.controller = App.get_running_app().controller
         self.label = MDLabel(text="")
+        self.dialog = None
 
 
     def send(self):
         if self.controller.guest is True:
             Utils.pop(self, 'have to log in or register to contact us', 'alert')
-            #toast("have to log in or register to contact us")
             return
 
         subject = self.ids.subject.text
@@ -68,19 +68,14 @@ class BoxiLayout1(BoxLayout):
         self.label.text = ""
         if subject == "":
             Utils.pop(self, 'please write a subject', 'alert')
-            #toast("please write a subject ")
             return
         if description == "":
             Utils.pop(self, 'please write a description', 'alert')
-            #toast("please write a description")
             return
 
         ans = App.get_running_app().controller.contact_us(subject, description)
         if ans.res is True:
-            Utils.pop(self, 'thank you for contact us, we will answer you soon via your mail', 'succes')
-            #toast("thank you for contact us, we will answer you soon via your mail")
+            Utils.pop(self, 'thank you for contact us, we will answer you soon via your mail', 'success')
             self.ids.subject.text = ""
             self.ids.description.text = ""
             App.get_running_app().root.current = 'menu_screen'
-
-
