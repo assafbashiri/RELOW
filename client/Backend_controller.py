@@ -720,7 +720,7 @@ class Backend_controller:
         birth_date =  data['birth_date']
         length= len(data['birth_date'])-1
         birth =  birth_date[1:length]
-        user_temp = UserService(data['user_id'], data['first_name'], data['last_name'], data['user_name'], data['email'],
+        user_temp = UserService(data['user_id'], data['first_name'], data['last_name'], data['phone'], data['email'],
                                 data['password'], birth, data['gender'], data['city'],
                                 data['street'], data['apartment_number'], data['zip_code'], data['floor'],
                                 data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
