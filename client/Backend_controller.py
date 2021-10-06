@@ -108,7 +108,8 @@ class Backend_controller:
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
                            username = ans.data['user_name'],
-                           password = ans.data['password'])
+                           password = ans.data['password'],
+                           email = ans.data['email'])
             # have to delete guest from store
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
@@ -662,9 +663,9 @@ class Backend_controller:
         print(ans.message)
         return ans
 
-    def complete_register(self, code):
-        complegte_register_req = {'op': 81, 'code': int(code)}
-        self.req_answers.add_request(complegte_register_req)
+    def complete_register(self, code, email):
+        complete_register_req = {'op': 81, 'code': int(code), 'email':email}
+        self.req_answers.add_request(complete_register_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
         return ans

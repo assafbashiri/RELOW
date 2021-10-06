@@ -11,7 +11,8 @@ class CONFIRMATIONScreen(Screen):
         super(CONFIRMATIONScreen, self).__init__(**kwargs)
 
     def complete_register(self):
-        email = self.manager.screens[8].ids.obj.ids.log.children[1].ids.email.text
+        a = App.get_running_app()
+        email = App.get_running_app().controller.user_service.email
         code = self.ids.code.text
         if code == '':
             Utils.pop(self, 'you need to insert code', 'alert')
