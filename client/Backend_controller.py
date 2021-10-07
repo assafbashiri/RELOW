@@ -24,6 +24,7 @@ class Backend_controller:
         self.hot_deals = self.get_hot_deals()
         self.categories = None
         self.guest = False
+        self.seller = False
         self.insert_offers()
         self.store = store
         self.init_categories()
@@ -60,8 +61,9 @@ class Backend_controller:
         print(ans.message)
         if ans.res is True:
             self.store.put("user_guest", user_id = ans.data['user_id'])
-            self.user_service = UserService(ans.data['user_id'], None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
+            self.user_service = UserService(ans.data['user_id'], None, None,None,None,None,None,None,None,False,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
             self.guest = True
+            self.seller = False
 
 
             # we removed the user_info dict, and we add element to user_guest insted- coplete tommorow
@@ -73,17 +75,18 @@ class Backend_controller:
         print(ans.message)
         if ans.res is True:
             user = self.store.get('user_guest')
-            self.user_service = UserService(guest_id, None, None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
+            self.user_service = UserService(guest_id, None, None,None,None,None,None,None,False,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
             self.guest = True
+            self.seller = False
             self.store.put('user_guest', user_id= guest_id)
 
-    def register(self, first_name, last_name, user_name, email, password, birth_date, gender):
+    def register(self, first_name, last_name, phone, email, password, birth_date, gender):
         store = JsonStore('hello.json')
         if store.exists('user_guest'):
             user = store.get('user_guest')
             register_req = {
-                'op': 80, 'user_id': user['user_id'], 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
-                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender
+                'op': 80, 'user_id': user['user_id'], 'first_name': first_name, 'last_name': last_name, 'phone': phone,
+                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller':False
             }
         #     active = self.store['user']['user_info']['active']
         #     if active is True:
@@ -93,8 +96,8 @@ class Backend_controller:
         # encode the request for Server-Language
         else:
             register_req = {
-                'op': 1, 'first_name': first_name, 'last_name': last_name, 'user_name': user_name,
-                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender
+                'op': 1, 'first_name': first_name, 'last_name': last_name, 'phone': phone,
+                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller':False
         }
         # adding to the req_answers, and the Main-Thread should send them to the server
         self.req_answers.add_request(register_req)
@@ -104,10 +107,11 @@ class Backend_controller:
         print(ans.message)
         if ans.res is True:
             self.guest = False
+            self.seller = False
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
-                           username = ans.data['user_name'],
+                           phone = ans.data['phone'],
                            password = ans.data['password'],
                            email = ans.data['email'])
             # have to delete guest from store
@@ -133,9 +137,9 @@ class Backend_controller:
     def register_unregister_json(self, flag):
         pass
 
-    def login_from_exist_user(self, user_name, password):
+    def login_from_exist_user(self, email, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 3, 'email': user_name, 'password': password}
+        login_req = {'op': 3, 'email': email, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -148,11 +152,12 @@ class Backend_controller:
                            password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
             self.guest = False
+            self.seller = self.user_service.seller
         return ans
 
-    def login(self, user_name, password):
+    def login(self, email, password):
         store = JsonStore('hello.json')
-        login_req = {'op': 82, 'user_name': user_name, 'password': password, 'guest_id': self.user_service.user_id}
+        login_req = {'op': 82, 'email': email, 'password': password, 'guest_id': self.user_service.user_id}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -161,7 +166,7 @@ class Backend_controller:
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id=ans.data['user_id'],
-                           username=ans.data['user_name'],
+                           phone=ans.data['phone'],
                            password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
             self.guest = False
@@ -670,6 +675,13 @@ class Backend_controller:
         print(ans.message)
         return ans
 
+    def become_a_seller(self,email):
+        complete_register_req = {'op': 100, 'email':email}
+        self.req_answers.add_request(complete_register_req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        return ans
+
     def get_offers_by_product_company(self, company):
         offers = []
         req = {'op': 99, 'company': company}
@@ -717,11 +729,11 @@ class Backend_controller:
         return offer_temp
 
     def build_user(self, data):
-        birth_date =  data['birth_date']
+        birth_date = data['birth_date']
         length= len(data['birth_date'])-1
         birth =  birth_date[1:length]
         user_temp = UserService(data['user_id'], data['first_name'], data['last_name'], data['phone'], data['email'],
-                                data['password'], birth, data['gender'], data['city'],
+                                data['password'], birth, data['gender'], data['seller'], data['city'],
                                 data['street'], data['apartment_number'], data['zip_code'], data['floor'],
                                 data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
                                 data['card_type'],
@@ -731,3 +743,5 @@ class Backend_controller:
 
     def get_user_service(self):
         return self.user_service
+
+

@@ -12,6 +12,7 @@ class UserDTO:
         self.birth_date = user.get_birth_date()
         self.gender = user.get_gender()
         self.active = user.get_active()
+        self.seller = user.get_seller()
 
         # user address
         self.city = user.get_city()

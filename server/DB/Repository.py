@@ -19,7 +19,8 @@ class repository():
                 password TEXT,
                 birth_date	DATETIME,
                 gender	TEXT,
-                active BOOLEAN NOT NULL
+                active BOOLEAN NOT NULL,
+                seller BOOLEAN NOT NULL
             );
 
             CREATE TABLE IF NOT EXISTS users_extra_details (

@@ -8,6 +8,7 @@ class UserService():
     def __init__(self, business_user):
         self.user_id = business_user.user_id
         self.active = business_user.get_active()
+        self.seller = business_user.get_seller()
         # CheckValidity.checkValidityName(first_name)
         # CheckValidity.date.today() - self.birth_date.checkValidityName(last_name)
         # CheckValidity.checkValidityEmail(email)

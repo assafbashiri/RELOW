@@ -5,9 +5,9 @@ class UsersDAO:
 
     def insert_guest(self, userDTO):
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, phone, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
+            """INSERT INTO users_submission (user_id, first_name, last_name, phone, email, password, birth_date, gender, active,seller) VALUES (?,?,?,?,?,?,?,?,?,?)""",
             [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.phone, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value, userDTO.active])
+             userDTO.birth_date, userDTO.gender.value, userDTO.active, False])
         self._conn.commit()
         print("in insert in UserDAO step 2")
 
@@ -112,6 +112,11 @@ class UsersDAO:
                            [True, user_id])
         self._conn.commit()
 
+    def become_a_seller(self, user_id):
+        self._conn.execute("""UPDATE users_submission set seller = ? WHERE user_id = ?""",
+                           [True, user_id])
+        self._conn.commit()
+
     def unregister(self, user_id):
         self._conn.execute("""UPDATE users_submission set active = ? WHERE user_id = ?""",
                            [False, user_id])
@@ -119,9 +124,9 @@ class UsersDAO:
 
     def update(self, userDTO):
         self._conn.execute(
-            """UPDATE users_submission SET first_name=?, last_name=?, phone=?, email=?, password=?, birth_date=?, gender=?, active=? WHERE user_id=?""",
+            """UPDATE users_submission SET first_name=?, last_name=?, phone=?, email=?, password=?, birth_date=?, gender=?, active=?, seller=? WHERE user_id=?""",
             [userDTO.first_name, userDTO.last_name, userDTO.phone, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value, userDTO.active, userDTO.user_id])
+             userDTO.birth_date, userDTO.gender.value, userDTO.active, userDTO.seller, userDTO.user_id])
         self._conn.commit()
 
         self._conn.execute(

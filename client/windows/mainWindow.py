@@ -40,6 +40,7 @@ from windows.my_offersWindow import MY_OFFERS_Screen
 from windows.contactWindow import CONTACTScreen
 from windows.confirmationWindow import CONFIRMATIONScreen
 from windows.changePasswordWindow import PasswordScreen
+from windows.sellerWindow import SellerScreen
 
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen
@@ -85,6 +86,13 @@ class Side_box(BoxLayout):
             return "guest"
         return App.get_running_app().controller.user_service.first_name
 
+    def is_seller(self):
+        seller = App.get_running_app().controller.user_service.seller
+        if seller == 0:
+            return 'BECOME A SELLER'
+        else:
+            return 'ADD OFFER'
+
     def move_to_account(self):
         a = App.get_running_app()
         b = a.controller
@@ -102,7 +110,12 @@ class Side_box(BoxLayout):
             Utils.pop(self, 'guest cant go to add offer window', 'alert')
             # toast("guest cant go to add offer window")
             return
-        App.get_running_app().root.current = 'add_offer_screen'
+        if b.seller == 0:
+            App.get_running_app().root.current = 'seller_screen'
+        else:
+            App.get_running_app().root.current = 'add_offer_screen'
+
+
 
     def move_to_contact_us(self):
         a = App.get_running_app()

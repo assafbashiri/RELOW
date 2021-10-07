@@ -54,7 +54,7 @@ class UserController:
         return self
 
     def guest_register(self):
-        user = User(self.user_id, None, None, None, None, None, None, Gender.male)
+        user = User(self.user_id, None, None, None, None, None, None, Gender.male, False)
         userDTO = UserDTO(user)
         self.usersDictionary[user.user_id] = user
         self.users_dao.insert_guest(userDTO)
@@ -75,7 +75,7 @@ class UserController:
         gender_to_add = Gender(gender)
         self.check.check_register(email, phone, self.usersDictionary)
         liked_offers = self.usersDictionary[user_id].liked_offers
-        user = User(user_id, first_name, last_name, phone, email, password, birth_date, gender_to_add)
+        user = User(user_id, first_name, last_name, phone, email, password, birth_date, gender_to_add, False)
         user.set_liked_offers(liked_offers)
         userDTO = UserDTO(user)
         self.usersDictionary[user_id] = user
@@ -94,7 +94,7 @@ class UserController:
             raise Exception("bad gender")
         gender_to_add = Gender(gender)
         self.check.check_register(email, phone, self.usersDictionary)
-        user = User(self.user_id, first_name, last_name, phone, email, password, birth_date, gender_to_add)
+        user = User(self.user_id, first_name, last_name, phone, email, password, birth_date, gender_to_add, False)
         userDTO = UserDTO(user)
         self.usersDictionary[user.user_id] = user
         self.users_dao.insert(userDTO)
@@ -119,6 +119,10 @@ class UserController:
         self.usersDictionary[user_id].active = True
         self.users_dao.complete_register(user_id)
         self.log_in(self.usersDictionary[user_id].email, self.usersDictionary[user_id].password)
+
+    def become_a_seller(self, user_id):
+        self.usersDictionary[user_id].seller = True
+        self.users_dao.become_a_seller(user_id)
 
     def log_in(self, email, password):
         user = self.get_user_by_email(email)
@@ -528,7 +532,7 @@ class UserController:
             if user[6] is not None:
                 date = datetime.strptime(user[6], "%Y-%m-%d %H:%M:%S")
             gender_to_add = Gender(int(user[7]))
-            user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], date, gender_to_add)
+            user_temp = User(user[0], user[1], user[2], user[3], user[4], user[5], date, gender_to_add,user[9])
             user_temp.active = user[8]
             self.usersDictionary[user[0]] = user_temp
 

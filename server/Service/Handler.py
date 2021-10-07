@@ -95,7 +95,8 @@ class Handler:
                          99: self.get_offers_by_product_company,
                          500: self.confirm_add_active_sell_offer,
                          501: self.confirm_remove_active_sell_offer,
-                         502: self.get_offers_to_confirm}
+                         502: self.get_offers_to_confirm,
+                         100: self.become_a_seller}
 
 
 
@@ -617,6 +618,15 @@ class Handler:
                 return Response(None, str(e), False)
         else:
             return Response(None, 'the code is incorrect', False)
+
+    def become_a_seller(self, argument):
+        email = argument['email']
+        user_id = self.user_controller.get_user_id_by_email(email)
+        try:
+            self.user_controller.become_a_seller(user_id)
+            return Response(None, 'you are a seller', True)
+        except Exception as e:
+            return Response(None, str(e), False)
 
     def get_offers_by_product_company(self, argument):
         to_return = []

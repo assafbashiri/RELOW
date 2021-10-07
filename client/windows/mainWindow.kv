@@ -65,8 +65,9 @@
             root.parent.parent.manager.current = 'connect_screen'
 
     Button:
+        id : add_offer
         size_hint_y: .2
-        text: "ADD OFFER"
+        text: root.is_seller()
         on_press:
             root.move_to_add_offer()
 

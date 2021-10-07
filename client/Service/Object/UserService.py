@@ -2,7 +2,7 @@ from Service.Object.OfferService import OfferService
 from Response import Response
 class UserService():
     # CLIENT
-    def __init__(self, user_id, first_name, last_name, phone, email, password, birth_date, gender, city, street, apt, zip, floor,
+    def __init__(self, user_id, first_name, last_name, phone, email, password, birth_date, gender, seller, city, street, apt, zip, floor,
                  id_number, credit_card_number, credit_exp, cvv, card_type,
                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
         self.user_id = user_id
@@ -17,6 +17,8 @@ class UserService():
             self.gender = None
         else:
             self.gender = gender[7:len(gender)]
+
+        self.seller = seller
 
         # user address
         self.city = city

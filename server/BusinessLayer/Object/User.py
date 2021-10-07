@@ -7,8 +7,9 @@ from BusinessLayer.Utils import CheckValidity
 
 
 class User():
-    def __init__(self, next_user_id, first_name, last_name, phone, email, password, birth_date, gender):
+    def __init__(self, next_user_id, first_name, last_name, phone, email, password, birth_date, gender,seller):
         # ---------- user submission
+        self.seller = seller
         self.active = False
         self.user_id = next_user_id
         self.first_name = first_name
@@ -159,6 +160,9 @@ class User():
 
     def get_active(self):
         return self.active
+
+    def get_seller(self):
+        return self.seller
 
     def get_first_name(self):
         return self.first_name

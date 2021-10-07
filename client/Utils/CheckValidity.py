@@ -35,7 +35,7 @@ class CheckValidity:
             res = "phone Must contain 10 digits"
             Utils.pop(self, res, 'alert')
             return False
-        for i in range(0, 11):
+        for i in range(0, 10):
             if not phone[i].isdigit():
                 res = "phone contatins only digits"
                 Utils.pop(self, res, 'alert')
@@ -51,32 +51,32 @@ class CheckValidity:
             return  True
 
 
-    def checkValidityUserName(self, user_name):
-        if len(user_name)<4:
-            res = "User Name Must contain at least 4 letters"
-            Utils.pop(self, res, 'alert')
-            #toast(res)
-            return False
-        if len(user_name)>20:
-            res = "User Name Must contain maximum of 20 letters"
-            Utils.pop(self, res, 'alert')
-            #toast(res)
-            return False
-        if not user_name[0].isalpha():
-            res = "User Name Should Start With letter"
-            Utils.pop(self, res, 'alert')
-            #toast(res)
-            return False
-        if ' ' in user_name:
-            res = "User Name Shouldnt contain any spaces"
-            Utils.pop(self, res, 'alert')
-            #toast(res)
-            return False
-        else:
-            res = "Good User Name"
-            # Utils.pop(self, res, 'succes')
-            #toast(res)
-            return  True
+    # def checkValidityUserName(self, user_name):
+    #     if len(user_name)<4:
+    #         res = "User Name Must contain at least 4 letters"
+    #         Utils.pop(self, res, 'alert')
+    #         #toast(res)
+    #         return False
+    #     if len(user_name)>20:
+    #         res = "User Name Must contain maximum of 20 letters"
+    #         Utils.pop(self, res, 'alert')
+    #         #toast(res)
+    #         return False
+    #     if not user_name[0].isalpha():
+    #         res = "User Name Should Start With letter"
+    #         Utils.pop(self, res, 'alert')
+    #         #toast(res)
+    #         return False
+    #     if ' ' in user_name:
+    #         res = "User Name Shouldnt contain any spaces"
+    #         Utils.pop(self, res, 'alert')
+    #         #toast(res)
+    #         return False
+    #     else:
+    #         res = "Good User Name"
+    #         # Utils.pop(self, res, 'succes')
+    #         #toast(res)
+    #         return  True
 
 
     def checkValidityEmail(self, email):
