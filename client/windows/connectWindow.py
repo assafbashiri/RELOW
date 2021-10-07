@@ -48,7 +48,7 @@ class Connect_box(BoxLayout):
 
 
     def clear_register(self):
-        self.ids.user_name.text=""
+        self.ids.phone.text=""
         self.ids.first_name.text=""
         self.ids.last_name.text=""
         self.ids.email.text=""
@@ -68,10 +68,10 @@ class Connect_box(BoxLayout):
                 Utils.pop(self, 'you need to logout first', 'alert')
                 #toast('you need to logout first')
                 return
-        user_name = self.ids.user_name.text
-        user_name_bool  = CheckValidity.checkValidityUserName(self, user_name)
+        phone = self.ids.phone.text
+        phone_bool = CheckValidity.checkValidityPhone(self, phone)
 
-        if not user_name_bool:
+        if not phone_bool:
             return
 
 
@@ -98,7 +98,7 @@ class Connect_box(BoxLayout):
         birth_date_str = self.ids.birth_date.text
         birth_date = Utils.string_to_datetime_without_hour(self, birth_date_str)
         gender = self.gender
-        ans = App.get_running_app().controller.register(first_name, last_name, user_name, email, password, birth_date,
+        ans = App.get_running_app().controller.register(first_name, last_name, phone, email, password, birth_date,
                                                         gender)
         if ans.res is True:
             self.parent.parent.back_to_main()
@@ -149,16 +149,16 @@ class Connect_box(BoxLayout):
         self.drop_down.dismiss()
 
     def login(self):
-        username = self.ids.user_name.text
+        email = self.ids.email.text
         password = self.ids.password.text
-        ans = App.get_running_app().controller.login(username, password)
+        ans = App.get_running_app().controller.login(email, password)
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.back_to_main()
 
 
     def clear_login(self):
-        self.ids.log_in_username.text=""
+        self.ids.email.text=""
         self.ids.log_in_password.text=""
 
     def logout(self):
@@ -169,126 +169,3 @@ class Connect_box(BoxLayout):
         if ans.res is True:
             self.parent.parent.back_to_main()
 
-
-
-
-
-    # orientation: "horizontal"
-    # BoxLayout:
-    #     orientation: "vertical"
-    #     padding:20
-    #     spacing:20
-    #     MDGridLayout:
-    #         cols: 1
-    #         spacing:5
-    #         adaptive_height: True
-    #         #adaptive_width: True
-    #         #daptive_size: True
-    #         MDLabel:
-    #             id: register_label
-    #             text: "Register"
-    #
-    #         MDTextFieldRound:
-    #             text : "tom"
-    #             id:first_name
-    #             hint_text: "first name"
-    #             icon_right: "account"
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "nisim"
-    #             id:last_name
-    #             hint_text: "last name"
-    #             icon_right: "account"
-    #
-    #         MDTextFieldRound:
-    #             text : "tomnis1234"
-    #             id:user_name
-    #             hint_text: "username"
-    #             icon_right: "account"
-    #
-    #
-    #         MDTextFieldRound:
-    #             id:email
-    #             hint_text: "email"
-    #             icon_right: "account"
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "12345678Tn"
-    #             id:password
-    #             hint_text: "password"
-    #             icon_right: "eye-off"
-    #             password : True
-    #
-    #
-    #         MDTextFieldRound:
-    #             text : "2022-11-11"
-    #             id:birth_date
-    #             hint_text: "birth date"
-    #             icon_right: "account"
-    #             on_focus:root.show_date_picker()
-    #
-    #
-    #
-    #         MDDropDownItem:
-    #             id: drop
-    #             pos_hint: {'center_x': .5, 'center_y': .5}
-    #             text: 'gender'
-    #             on_release: root.show_dropdown()
-    #
-    #     MDGridLayout:
-    #         cols:3
-    #
-    #         MDRoundFlatButton:
-    #             text:"Register"
-    #             font_size: 12
-    #             on_press:root.register()
-    #
-    #         MDRoundFlatButton:
-    #             text:"Unregister"
-    #             font_size: 12
-    #             on_press:root.unregister()
-    #
-    #         MDRoundFlatButton:
-    #             text:"clear_register"
-    #             font_size: 12
-    #             on_press:root.clear_register()
-    #
-    #
-    #
-        # MDGridLayout:
-        #     cols: 1
-        #     MDLabel:
-        #         id: login_label
-        #         text: "LOGIN"
-        #
-        #     MDTextFieldRound:
-        #         text:'tomnis'
-        #         id:log_in_username
-        #         hint_text: "user name"
-        #         icon_right: "account"
-        #
-        #
-        #     MDTextFieldRound:
-        #         text:'123'
-        #         id:log_in_password
-        #         hint_text: "password"
-        #         icon_right: "account"
-        # MDGridLayout:
-        #     cols:3
-        #
-        #     MDRoundFlatButton:
-        #         text:"Login"
-        #         font_size: 12
-        #         on_press:root.login()
-        #
-        #     MDRoundFlatButton:
-        #         text:"Logout"
-        #         font_size: 12
-        #         on_press:root.logout()
-        #
-        #     MDRoundFlatButton:
-        #         text:"clear_login"
-        #         font_size: 12
-        #         on_press:root.clear_login()
