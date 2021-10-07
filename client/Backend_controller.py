@@ -1,5 +1,6 @@
 import pickle
 
+from kivy.app import App
 from kivy.storage.jsonstore import JsonStore
 
 from twisted.internet import reactor
@@ -24,7 +25,7 @@ class Backend_controller:
         self.hot_deals = self.get_hot_deals()
         self.categories = None
         self.guest = False
-        self.seller = False
+        self.seller = None
         self.insert_offers()
         self.store = store
         self.init_categories()
@@ -108,10 +109,13 @@ class Backend_controller:
         if ans.res is True:
             self.guest = False
             self.seller = False
+            if self.seller == 0:
+                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'BECOME A SELLER'
+            else:
+                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
-                           phone = ans.data['phone'],
                            password = ans.data['password'],
                            email = ans.data['email'])
             # have to delete guest from store
@@ -153,6 +157,11 @@ class Backend_controller:
             self.user_service = self.build_user(ans.data)
             self.guest = False
             self.seller = self.user_service.seller
+            if App.get_running_app().root is not None:
+                if self.seller == 0:
+                    App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'BECOME A SELLER'
+                else:
+                    App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
         return ans
 
     def login(self, email, password):
@@ -166,10 +175,15 @@ class Backend_controller:
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id=ans.data['user_id'],
-                           phone=ans.data['phone'],
+                           email=ans.data['email'],
                            password=ans.data['password'])
             self.user_service = self.build_user(ans.data)
             self.guest = False
+            self.seller = self.user_service.seller
+            if self.seller == 0:
+                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'BECOME A SELLER'
+            else:
+                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
         return ans
 
     def logout(self):
