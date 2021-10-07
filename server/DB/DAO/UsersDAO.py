@@ -33,9 +33,9 @@ class UsersDAO:
     def insert(self, userDTO):
         print("in insert in UserDAO step 1")
         self._conn.execute(
-            """INSERT INTO users_submission (user_id, first_name, last_name, phone, email, password, birth_date, gender, active) VALUES (?,?,?,?,?,?,?,?,?)""",
+            """INSERT INTO users_submission (user_id, first_name, last_name, phone, email, password, birth_date, gender, active,seller) VALUES (?,?,?,?,?,?,?,?,?,?)""",
             [userDTO.user_id, userDTO.first_name, userDTO.last_name, userDTO.phone, userDTO.email, userDTO.password,
-             userDTO.birth_date, userDTO.gender.value, userDTO.active])
+             userDTO.birth_date, userDTO.gender.value, userDTO.active, userDTO.seller])
         self._conn.commit()
         print("in insert in UserDAO step 2")
 
