@@ -80,11 +80,15 @@ class Side_box(BoxLayout):
     #     self.rect.pos = self.pos
     #     self.rect.size = self.size
 
+    def show_user_name(self, name):
+        self.ids.hello.text = name
+
     def get_user_name(self):
         answer = App.get_running_app().controller.user_service.first_name
         if answer is None:
-            return "guest"
-        return App.get_running_app().controller.user_service.first_name
+            return "        Hello, "+"guest"
+        return "        Hello, "+App.get_running_app().controller.user_service.first_name
+
 
     def is_seller(self):
         seller = App.get_running_app().controller.user_service.seller

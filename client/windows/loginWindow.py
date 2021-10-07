@@ -151,6 +151,11 @@ class Login_box(BoxLayout):
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.parent.back_to_main()
+            if App.get_running_app().root is not None:
+                answer = App.get_running_app().controller.user_service.first_name
+                if answer is None:
+                    App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text =  "        Hello, " + "guest"
+                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text =  "        Hello, " + App.get_running_app().controller.user_service.first_name
 
     def clear_login(self):
         self.ids.email.text=""
@@ -161,6 +166,11 @@ class Login_box(BoxLayout):
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.parent.back_to_main()
+            if App.get_running_app().root is not None:
+                answer = App.get_running_app().controller.user_service.first_name
+                if answer is None:
+                    App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text =  "        Hello, " + "guest"
+                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text =  "        Hello, " + App.get_running_app().controller.user_service.first_name
 
     def forgot_password(self):
         email = self.ids.email.text
