@@ -389,11 +389,11 @@ class UserController:
         self.offers_dao.insert_to_history_buyers(user_id, offer.get_offer_id(), status, offer.get_current_step())
         self.update_curr_step(offer)
 
-    def update_active_buy_offer(self, user_id, offer, quantity, step):
+    def update_active_buy_offer(self, user_id, offer, quantity, step, color, size, address):
         self.check_user_state(user_id)
-        if not offer.update_active_buy_offer(user_id, quantity, step):
+        if not offer.update_active_buy_offer(user_id, quantity, step,color,size,address):
             raise Exception("User is not a buyer in this offer")
-        self.offers_dao.update_active_buy_offer(user_id, offer.offer_id, quantity, step)
+        self.offers_dao.update_active_buy_offer(user_id, offer.offer_id, quantity, step, color, size, address)
         self.update_curr_step(offer)
 
     def get_active_buy_offers(self, user_id):

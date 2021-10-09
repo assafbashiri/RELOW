@@ -35,7 +35,9 @@ class Echo(Protocol):
             print("[RECEIVE] " + "  number    " + str(self.counter) + "     size:   " + str(sys.getsizeof(data)))
             self.data += data
             try:  # check if all the data arived
+                print('try')
                 ans = pickle.loads(self.data)
+
             except Exception as e:
                 self.counter += 1
                 return

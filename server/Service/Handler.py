@@ -96,7 +96,8 @@ class Handler:
                          500: self.confirm_add_active_sell_offer,
                          501: self.confirm_remove_active_sell_offer,
                          502: self.get_offers_to_confirm,
-                         100: self.become_a_seller}
+                         100: self.become_a_seller,
+                         101:self.update_active_buy_offer}
 
 
 
@@ -204,6 +205,20 @@ class Handler:
             self.user_controller.add_active_buy_offer(self.user.user_id, offer, argument['quantity'], argument['step'],
                                                       argument['color'], argument['size'], argument['address'])
             return Response(OfferService(offer), "Joined To Offer Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def update_active_buy_offer(self, argument):
+        try:
+            offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
+            self.user_controller.update_active_buy_offer(self.user.user_id,
+                                                         offer,
+                                                         argument['quantity'],
+                                                         argument['step'],
+                                                         argument['color'],
+                                                         argument['size'],
+                                                         argument['address'])
+            return Response(OfferService(offer), "Offer update Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -728,3 +743,7 @@ class Handler:
             return Response(None, "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
+
+
+
+

@@ -116,7 +116,6 @@ class repository():
             CREATE TABLE IF NOT EXISTS active_buyers (
                 offer_id INTEGER NOT NULL,
                 user_id INTEGER NOT NULL,
-                quantity INTEGER NOT NULL,
                 step INTEGER NOT NULL,
                 color TEXT,
                 size TEXT,

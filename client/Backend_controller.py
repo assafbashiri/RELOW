@@ -5,6 +5,7 @@ from kivy.storage.jsonstore import JsonStore
 
 from twisted.internet import reactor
 
+
 from kivymd.toast import toast
 
 from Service.Object.OfferService import OfferService
@@ -323,6 +324,19 @@ class Backend_controller:
                 toast(address.message)
                 return address
         add_active_buy_offer_req = {'op': 23,
+                                    'offer_id': offer_id,
+                                    'quantity': quantity,
+                                    'step': step,
+                                    'color': color,
+                                    'size': size,
+                                    'address':address}
+        self.req_answers.add_request(add_active_buy_offer_req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        return ans
+
+    def update_active_buy_offer(self, offer_id, quantity, step, color, size, address):
+        add_active_buy_offer_req = {'op': 101,
                                     'offer_id': offer_id,
                                     'quantity': quantity,
                                     'step': step,

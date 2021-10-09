@@ -117,10 +117,10 @@ class Offer:
     def get_hot_deals(self):
         return self.hot_deals
 
-    def update_active_buy_offer(self, user_id, quantity, step):
+    def update_active_buy_offer(self, user_id, quantity, step, color, size, address):
         if user_id not in self.current_buyers.keys():
             return False
-        purchase = Purchase(quantity, step, user_id)
+        purchase = Purchase(quantity, step, user_id, color, size, address)
         self.current_buyers[user_id] = purchase
         return True
 

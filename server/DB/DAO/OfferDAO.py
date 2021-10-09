@@ -95,9 +95,9 @@ class OfferDAO:
              offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
              offer_dto.hot_deals])
 
-    def update_active_buy_offer(self, user_id, offer_id, quantity, step):
-        self._conn.execute("""UPDATE active_buyers set quantity = ?, step =? WHERE offer_id = ? AND user_id = ?""",
-                           [quantity, step, offer_id, user_id])
+    def update_active_buy_offer(self, user_id, offer_id, quantity, step, color,size,address):
+        self._conn.execute("""UPDATE active_buyers set quantity = ?, step =?, color=?, size=?, address=? WHERE offer_id = ? AND user_id = ?""",
+                           [quantity, step, color, size, address, offer_id, user_id])
         self._conn.commit()
 
     def load_all_offers(self):

@@ -22,3 +22,6 @@ class Purchase:
 
     def get_size(self):
         return self.size
+
+    def get_address(self):
+        return self.address
