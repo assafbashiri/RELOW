@@ -379,15 +379,17 @@ class UserController:
         self.offers_dao.delete_active_offer(offer.offer_id)
         self.offers_dao.insert_to_history_offers(OfferDTO(offer))
 
-    def remove_active_buy_offer(self, user_id, offer, status):
+    def remove_active_buy_offer(self, user_id, offer_id):
         user = self.check_user_state(user_id)
+        offer = user.get_active_buy_offer(offer_id)
         if not offer.remove_buyer(user_id):
             raise Exception("buyer not in the offer's buyers'")
         if not user.move_to_history_buyer(offer):
             raise Exception("offer didnt exist in user's active buy offers")
         self.offers_dao.delete_buy_offer(user_id, offer.get_offer_id())
-        self.offers_dao.insert_to_history_buyers(user_id, offer.get_offer_id(), status, offer.get_current_step())
+        self.offers_dao.insert_to_history_buyers(user_id, offer_id, offer.get_status(), offer.get_current_step())
         self.update_curr_step(offer)
+        return offer
 
     def update_active_buy_offer(self, user_id, offer, quantity, step, color, size, address):
         self.check_user_state(user_id)

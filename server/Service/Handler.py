@@ -299,8 +299,8 @@ class Handler:
 
     def remove_active_buy_offer(self, argument):
         try:
-            self.user_controller.remove_active_buy_offer(self.user.user_id, argument['offer_id'])
-            return Response(None, "Offer Removed Successfully", True)
+            to_return = self.user_controller.remove_active_buy_offer(self.user.user_id, argument['offer_id'])
+            return Response(OfferService(to_return), "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

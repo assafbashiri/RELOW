@@ -128,8 +128,8 @@ class User():
     # try catch
 
     def add_to_history_buyer(self, offer_to_add):
-        if offer_to_add.offer_id in self.history_buy_offers:
-            raise Exception("Offer Already Exist In History Buyer")
+        # if offer_to_add.offer_id in self.history_buy_offers:
+        #     raise Exception("Offer Already Exist In History Buyer")  #why we need this?
         self.history_buy_offers[offer_to_add.offer_id] = offer_to_add
 
     def add_to_history_seller(self, offer_to_add):
