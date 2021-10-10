@@ -106,9 +106,6 @@ class Carousel2(Carousel):
     def __init__(self,**kwargs):
         super(Carousel2, self).__init__(**kwargs)
 
-
-
-
     def insert(self,  photos):
         for photo in photos:
             if photo is not None:
