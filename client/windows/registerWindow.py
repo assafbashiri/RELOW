@@ -1,10 +1,15 @@
 from datetime import datetime
+
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivymd.uix.picker import MDDatePicker
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.toast import toast
+from kivymd.uix.textfield import MDTextField
+
 from Utils.CheckValidity import CheckValidity
 from Utils.Utils import Utils
 from windows.SideBar import SideBar
@@ -162,5 +167,28 @@ class Register_box(BoxLayout):
         # after logout back to the main menu
         if ans.res is True:
             self.parent.parent.back_to_main()
+
+class buyer_terms(Popup):
+    def __init__(self, **kwargs):
+        super(buyer_terms, self).__init__(**kwargs)
+        self.box = BoxLayout(orientation='vertical')
+        self.address = MDTextField(hint_text='ADDRESS')
+        self.box.add_widget(self.address)
+        self.insert = Button(text="INSERT")
+        self.insert.bind(on_press=lambda x:self.insert_add())
+        self.box.add_widget(self.insert)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x:self.out())
+        self.box.add_widget(self.back)
+        self.add_widget(self.box)
+
+    def out(self):
+        self.dismiss()
+
+    def insert_add(self):
+        self.parent.children[1].new_address = self.address.text
+        self.parent.children[1].other_address.text = self.address.text
+        self.parent.children[1].change = True
+        self.dismiss()
 
 

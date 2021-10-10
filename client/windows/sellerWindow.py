@@ -1,6 +1,8 @@
 from tkinter import Button
 
 from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivymd.toast import toast
 from kivymd.uix.textfield import MDTextField
@@ -57,5 +59,28 @@ class SellerScreen(Screen):
         App.get_running_app().root.current = 'menu_screen'
         a = App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
         b = 5
+
+class seller_terms(Popup):
+    def __init__(self, **kwargs):
+        super(seller_terms, self).__init__(**kwargs)
+        self.box = BoxLayout(orientation='vertical')
+        self.address = MDTextField(hint_text='ADDRESS')
+        self.box.add_widget(self.address)
+        self.insert = Button(text="INSERT")
+        self.insert.bind(on_press=lambda x:self.insert_add())
+        self.box.add_widget(self.insert)
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x:self.out())
+        self.box.add_widget(self.back)
+        self.add_widget(self.box)
+
+    def out(self):
+        self.dismiss()
+
+    def insert_add(self):
+        self.parent.children[1].new_address = self.address.text
+        self.parent.children[1].other_address.text = self.address.text
+        self.parent.children[1].change = True
+        self.dismiss()
 
 
