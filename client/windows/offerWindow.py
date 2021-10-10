@@ -18,7 +18,6 @@ from kivymd.uix.progressbar import MDProgressBar
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextField, MDTextFieldRound
-
 # from Backend_controller import Backend_controller
 from Service.Object.OfferService import OfferService
 
@@ -58,10 +57,7 @@ class OfferWindow(Popup):
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
         self.carousel = Carousel(size_hint_y=6)
-        # for photo in photo_lis:
-        #     self.carousel.add_widget(photo)
-        image = AsyncImage(source="windows/images/a.png")
-        self.carousel.add_widget(image)
+        self.insert_photos(self.carousel, photo_lis)
         self.box.add_widget(self.carousel)
         self.slider = MDSlider()
         self.slider.min = 0
@@ -139,22 +135,7 @@ class OfferWindow(Popup):
         self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
         self.carousel = Carousel(size_hint_y=6)
-        # for photo in photo_lis:
-        #     self.carousel.add_widget(photo)
-        for photo in photo_lis:
-            if photo is not None:
-                image = photo
-                # f = open("img.jpg", 'rb')
-                #
-                # binary_data = f.read()  # image opened in binary mode
-
-                data = io.BytesIO(image)
-                data.seek(0)
-                img = CoreImage(data, ext="png").texture
-
-                new_img = Image()
-                new_img.texture = img
-                self.carousel.add_widget(new_img)
+        self.insert_photos(self.carousel, photo_lis)
         self.box.add_widget(self.carousel)
         self.slider = MDSlider()
         self.slider.min = 0
@@ -242,8 +223,9 @@ class OfferWindow(Popup):
         self.carousel = Carousel(size_hint_y=6)
         # for photo in photo_lis:
         #     self.carousel.add_widget(photo)
-        image = AsyncImage(source="windows/images/a.png")
-        self.carousel.add_widget(image)
+        #image = AsyncImage(source="windows/images/a.png")
+        #self.carousel.add_widget(image)
+        self.insert_photos(self.carousel, photo_lis)
         self.box.add_widget(self.carousel)
         self.slider = MDSlider()
         self.slider.min = 0
@@ -333,8 +315,9 @@ class OfferWindow(Popup):
         self.carousel = Carousel(size_hint_y=6)
         # for photo in photo_lis:
         #     self.carousel.add_widget(photo)
-        image = AsyncImage(source="windows/images/a.png")
-        self.carousel.add_widget(image)
+        #- image = AsyncImage(source="windows/images/a.png")
+        # self.carousel.add_widget(image)
+        self.insert_photos(self.carousel, photo_lis)
         self.box.add_widget(self.carousel)
         self.slider = MDSlider()
         self.slider.min = 0
@@ -484,6 +467,9 @@ class OfferWindow(Popup):
                                                                            self.num_of_quantity]: self.save_size_first(a, instance))
 
     def remove_item(self):
+        if self.num_of_quantity == 1:
+            Utils.pop(self, '1 item is the minimal', 'alert')
+            return
         for child in self.color_size.children[:2]:
             self.color_size.remove_widget(child)
         if self.color_dropdown:
@@ -499,6 +485,9 @@ class OfferWindow(Popup):
             a = 8
 
     def add_item(self):
+        if self.num_of_quantity == 3:
+            Utils.pop(self, '1 item is the max', 'alert')
+            return
         self.num_of_quantity += 1
 
         #self.color_size = BoxLayout(orientation='horizontal')
@@ -589,6 +578,8 @@ class OfferWindow(Popup):
                         self.dismiss()
                         return
                 step -= 1
+                if step == 0:
+                    toast("you nקed to choose step ")
 
     def update_purchase(self):
         sizez = ",".join(self.chosen_sizes.values())
@@ -680,6 +671,19 @@ class OfferWindow(Popup):
             dict[i] = val
             i +=1
         return dict
+
+    def insert_photos(self, car, photos):
+        for photo in photos:
+            if photo is not None:
+                image = photo
+                data = io.BytesIO(image)
+                data.seek(0)
+                img = CoreImage(data, ext="png").texture
+
+                new_img = Image()
+                new_img.texture = img
+                new_img.allow_stretch = True
+                car.add_widget(new_img)
 
 class Add_address(Popup):
     def __init__(self, **kwargs):

@@ -36,7 +36,6 @@ class Echo(Protocol):
             self.data += data
             try:  # check if all the data arived
                 ans = pickle.loads(self.data)
-
             except Exception as e:
                 self.counter += 1
                 return
