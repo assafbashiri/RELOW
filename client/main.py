@@ -96,6 +96,8 @@ if __name__ == '__main__':
     Builder.load_file('windows/confirmationWindow.kv')
     Builder.load_file('windows/contactWindow.kv')
     Builder.load_file('windows/sellerWindow.kv')
+    Builder.load_file('windows/paymentWindow.kv')
+    Builder.load_file('windows/termsWindow.kv')
     req_answers = Req_Answers()
     t1 = threading.Thread(target=lambda: net(req_answers))
     t1.start()

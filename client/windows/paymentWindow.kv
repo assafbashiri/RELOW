@@ -1,0 +1,19 @@
+<PAYMENTScreen>
+    id: payment
+    name: 'payment_screen'
+    BoxLayout:
+        id: pay
+        MDTextFieldRound:
+            write_tab: False
+            id:code
+            hint_text: "payment method"
+
+        MDRoundFlatButton:
+            text:"OK"
+            font_size: 12
+            on_press: root.pay()
+
+        MDRoundFlatButton:
+            text:"Back"
+            font_size: 12
+            on_press: root.back()

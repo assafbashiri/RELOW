@@ -41,7 +41,8 @@ from windows.contactWindow import CONTACTScreen
 from windows.confirmationWindow import CONFIRMATIONScreen
 from windows.changePasswordWindow import PasswordScreen
 from windows.sellerWindow import SellerScreen
-
+from windows.paymentWindow import PAYMENTScreen
+from windows.termsWindow import TERMSScreen
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen
 
@@ -129,126 +130,42 @@ class Side_box(BoxLayout):
             return
         App.get_running_app().root.current = 'contact_us_screen'
 
-    def open_to_do_list(self):
-        menu_items = [
-            {
-                "text": "pdf summery of offer",
-                "viewclass": "OneLineListItem",
+    def logout(self):
+        ans = App.get_running_app().controller.logout()
+        # after logout back to the main menu
+        if ans.res is True:
+            self.parent.parent.parent.back_to_main()
+            if App.get_running_app().root is not None:
+                self.update_hello_name("        Hello, " + "guest")
 
-            },
-            {
-                "text": "addresses drop dowm",
-                "viewclass": "OneLineListItem",
+    def update_hello_name(self, msg):
+        # menu screen 0
+        App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text = msg
+        # connect screen 1
+        App.get_running_app().root.screens[1].children[0].ids.side_box.ids.hello.text = msg
+        # account screen 2
+        App.get_running_app().root.screens[2].children[0].ids.side_box.ids.hello.text = msg
+        # search screen 3
+        App.get_running_app().root.screens[3].children[0].ids.side_box.ids.hello.text = msg
+        # add offer screen 4
+        App.get_running_app().root.screens[4].children[0].ids.side_box.ids.hello.text = msg
+        # my offers screen 5
+        App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
+        # update offers screen 6
+        App.get_running_app().root.screens[6].children[0].ids.side_box.ids.hello.text = msg
+        # register screen 7
+        App.get_running_app().root.screens[7].ids.side_box.ids.hello.text = msg
+        # login screen 8
+        App.get_running_app().root.screens[8].ids.side_box.ids.hello.text = msg
+        # # contact screen 9
+        # App.get_running_app().root.screens[9].children[0].ids.side_box.ids.hello.text = msg
+        # # confirmation screen 10
+        # z = App.get_running_app().root.screens[10].children[0].ids.side_box.ids.hello.text = msg
+        # # password screen 11
+        # z = App.get_running_app().root.screens[11].children[0].ids.side_box.ids.hello.text = msg
+        # seller screen 12
+        App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
 
-            },
-            {
-                "text": "fix user controller load offers from history bug",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "add platform for get payment details",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "change al toast to pop up",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "fix login faild = user service is None bug",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "find and fix Side Bar bug",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "add to check validty func to be used in add/update offer that make sure size does not contain letters etc.",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "check how geast and user create together in the json",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "check validity of end date",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "Join Offer Bugds - check validity empty fields",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "Join Offer- choose step - opposite",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "Join Offer- set address city/street confuse",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "Join Offer- build address remove the address response",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "as a buyer - the update take to update offer instead of to update purchase",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "my active buy offer - have to show the purchase details",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "add phone number to the user",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "instead of quantity  - choose color and size for each product ( like the steps )",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "account window - deal with the fields of the ",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "end of the join - move to window that recieve payment method ",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "confirm is 2 in the db ",
-                "viewclass": "OneLineListItem",
-
-            },
-            {
-                "text": "get all expired= cant <= between str and datetime ",
-                "viewclass": "OneLineListItem",
-
-            },
-
-        ]
-        self.drop_down = MDDropdownMenu(
-            caller=self.ids.TO_DO_LIST,
-            items=menu_items,
-            width_mult=13,
-        )
-        self.drop_down.open()
 
 
 class Category_box(BoxLayout):
