@@ -64,7 +64,7 @@ class MY_OFFERS_Screen(Screen):
         # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.offres_box.ids.offi.add_widget(self.of)
+            self.ids.offers_box.ids.offi.add_widget(self.of)
 
     def history_sell(self):
         self.ids.offers_box.ids.offi.remove_widget(self.lab)
@@ -76,7 +76,7 @@ class MY_OFFERS_Screen(Screen):
         # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.offres_box.ids.offi.add_widget(self.of)
+            self.ids.offers_box.ids.offi.add_widget(self.of)
 
 class Offers_box(BoxLayout):
     def __init__(self, **kwargs):
