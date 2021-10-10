@@ -85,11 +85,17 @@
             root.move_to_contact_us()
 
     Button:
-        id:TO_DO_LIST
         size_hint_y: .2
-        text: "TO DO LIST"
+        text: "Terms"
         on_press:
-            root.open_to_do_list()
+            root.parent.parent.manager.current = 'terms_screen'
+
+    Button:
+        id: logout
+        size_hint_y: .2
+        text: "LOGOUT"
+        on_press:
+            root.logout()
     Label:
         size_hint_y: 6
         text: ''

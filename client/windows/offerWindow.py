@@ -1,4 +1,7 @@
+import csv
 import io
+import pandas as pd
+from kivy.uix.gridlayout import GridLayout
 from Utils.Utils import Utils
 from kivy.app import App
 from kivy.uix.image import Image, CoreImage
@@ -20,6 +23,9 @@ from kivymd.uix.slider import MDSlider
 from kivymd.uix.textfield import MDTextField, MDTextFieldRound
 # from Backend_controller import Backend_controller
 from Service.Object.OfferService import OfferService
+
+from client.windows.paymentWindow import PAYMENTScreen
+
 
 class Struct(object):
     def __init__(self, **entries):
@@ -340,7 +346,10 @@ class OfferWindow(Popup):
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            self.price_per_step.add_widget(MDCheckbox(group="price", size_hint_x=.1))
+            x = MDCheckbox(group="price", size_hint_x=.1)
+            x.bind(active=self.set_total_price)
+            self.price_per_step.add_widget(x)
+
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
 
         self.box.add_widget(self.price_per_step)
@@ -367,6 +376,12 @@ class OfferWindow(Popup):
         self.color_dropdown = {}
 
         self.size_dropdown = {}
+
+        self.curr_price = MDLabel(text="price : 0")
+        self.box.add_widget(self.curr_price)
+
+
+
         self.add_item()
 
         self.join_offer = BoxLayout(orientation='horizontal')
@@ -378,6 +393,7 @@ class OfferWindow(Popup):
         self.remove = Button(text="less item")
         self.remove.bind(on_press=lambda x: self.remove_item())
         self.box.add_widget(self.remove)
+
 
         self.join = Button(text="JOIN")
         self.join.bind(on_press=lambda x: self.join_())
@@ -409,6 +425,15 @@ class OfferWindow(Popup):
         self.size_dropdown[num_of_quantity].dismiss()
         self.chosen_sizes[num_of_quantity] = text
 
+    def set_total_price(self, a, b):
+        step_id = self.get_step()
+        if step_id == -1:
+            total_price = 0
+        else:
+            step = self.offer.steps[step_id]
+            price_per_step = step.get_price()
+            total_price = self.num_of_quantity * price_per_step
+        self.curr_price.text = "price : " + str(total_price)
 
     def register(self):
         self.dismiss()
@@ -526,60 +551,50 @@ class OfferWindow(Popup):
                                                                            self.num_of_quantity]: self.save_size_first(a, instance))
 
 
-
+        self.set_total_price(None,None)
         #self.color_size.add_widget(self.size_mainbutton[self.num_of_quantity])
         #self.size_dropdown.bind(on_select=lambda instance, x: setattr(self.size_mainbutton[self.num_of_quantity], 'text', x))
 
     def open_drop(self, a, num_of_quantity):
         self.color_dropdown[num_of_quantity].open
 
-    def join_(self):
+    def get_step(self):
         step = len(self.offer.steps)
         for checkbox in self.price_per_step.children:
             if type(checkbox) is MDCheckbox:
                 if checkbox.active:
-                    offer_id = self.offer_id
-                    quantity = self.num_of_quantity
-                    # check Validity Quantity Per Step
-                    if quantity > self.offer.steps[step].limit - self.offer.steps[step].buyers_amount:
-                        toast("there is not enough items for this step")
-                        return
-                        # loop for all the selected colors & sizes
-                    colors = ""
-                    sizes = ""
-                    j =0
-                    for i in range(1, self.num_of_quantity+1):
-                        # check validity colors and sizes
-                        if self.color_mainbutton[i].text == "" or self.size_mainbutton[i].text == "":
-                            toast("you have to choose color & size for item number "+str(i))
-                            return
-                        colors = colors+self.color_mainbutton[i].text+','
-                        sizes = sizes+self.size_mainbutton[i].text+','
-                        j = i
-                    if self.color_mainbutton[j].text == "" or self.size_mainbutton[j].text == "":
-                        toast("you have to choose color & size for item number " + str(j))
-                        return
-                    # colors = colors + self.color_mainbutton[i].text
-                    # sizes = sizes + self.size_mainbutton[i].text
-                    ans = App.get_running_app().controller.add_active_buy_offer(offer_id, int(quantity), step, colors,
-                                                                                sizes, self.new_address)
-                    if ans.res is True:
-                        self.user.get_active_buy_offers().append(self.offer)
-                        self.offer = ans.data
-                        data = App.get_running_app().root.current_screen.ids.menu_box.children[1].data
-                        for object in data:
-                            offer = object['offer']
-                            if offer[0].offer_id == self.offer_id:
-                                a = ans.data.current_buyers
-                                to_return = {}
-                                for buyer in ans.data.current_buyers:
-                                    to_return[buyer['buyer_id']] = Struct(**buyer)
-                                offer[0].current_buyers = to_return
-                        self.dismiss()
-                        return
+                    return step
                 step -= 1
-                if step == 0:
-                    toast("you nקed to choose step ")
+        return -1
+
+    def join_(self):
+        # check buying details
+        step = self.get_step()
+        if step == -1:
+            toast("you need to choose step ")
+            return
+        offer_id = self.offer_id
+        quantity = self.num_of_quantity
+        # check Validity Quantity Per Step
+        if quantity > self.offer.steps[step].limit - self.offer.steps[step].buyers_amount:
+            toast("there is not enough items for this step")
+            return
+            # loop for all the selected colors & sizes
+        colors = ""
+        sizes = ""
+        for i in range(1, self.num_of_quantity+1):
+            # check validity colors and sizes
+            if self.color_mainbutton[i].text == "colors" or self.size_mainbutton[i].text == "sizes":
+                toast("you have to choose color & size for item number "+str(i))
+                return
+            colors = colors+self.color_mainbutton[i].text+','
+            sizes = sizes+self.size_mainbutton[i].text+','
+
+
+        # move to payment screen
+        self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, self.new_address, self.user,
+                                           self.offer).open()
+
 
     def update_purchase(self):
         sizez = ",".join(self.chosen_sizes.values())
@@ -588,30 +603,31 @@ class OfferWindow(Popup):
         print(type(str(self.chosen_sizes.values())))
         step = len(self.offer.steps)
         # self.controller.remove_active_buy_offer(self.offer_id)
-        for checkbox in self.price_per_step.children:
-            if type(checkbox) is MDCheckbox:
-                if checkbox.active:
-                    offer_id = self.offer_id
-                    quantity = self.num_of_quantity
-                    ans = self.controller.update_active_buy_offer(self.offer_id, quantity, step, colorz, sizez, self.purchase.address)
-                    if ans.res is True:
-                        for item in self.user.active_buy_offers:
-                            if item.offer_id == self.offer_id:
-                                self.user.active_buy_offers.remove(item)
-                        self.user.get_active_buy_offers().append(self.offer)
-                        self.offer = ans.data
-                        data = App.get_running_app().root.current_screen.ids.menu_box.children[1].data
-                        for object in data:
-                            offer = object['offer']
-                            if offer[0].offer_id == self.offer_id:
-                                a = ans.data.current_buyers
-                                to_return = {}
-                                for buyer in ans.data.current_buyers:
-                                    to_return[buyer['buyer_id']] = Struct(**buyer)
-                                offer[0].current_buyers = to_return
-                        self.dismiss()
-                        return
-                step -= 1
+        step = self.get_step()
+        if step == -1:
+            toast("you need to choose step ")
+            return
+        offer_id = self.offer_id
+        quantity = self.num_of_quantity
+        ans = self.controller.update_active_buy_offer(self.offer_id, quantity, step, colorz, sizez, self.purchase.address)
+        if ans.res is True:
+            for item in self.user.active_buy_offers:
+                if item.offer_id == self.offer_id:
+                    self.user.active_buy_offers.remove(item)
+            self.user.get_active_buy_offers().append(self.offer)
+            self.offer = ans.data
+            data = App.get_running_app().root.current_screen.ids.menu_box.children[1].data
+            for object in data:
+                offer = object['offer']
+                if offer[0].offer_id == self.offer_id:
+                    a = ans.data.current_buyers
+                    to_return = {}
+                    for buyer in ans.data.current_buyers:
+                        to_return[buyer['buyer_id']] = Struct(**buyer)
+                    offer[0].current_buyers = to_return
+            self.dismiss()
+            return
+
 
     def cancel_purchase(self):
         ans = self.controller.remove_active_buy_offer(self.offer_id)
@@ -633,6 +649,7 @@ class OfferWindow(Popup):
                     offer[0].current_buyers = to_return
             # self.user.active_buy_offers.remove(ans.data)
         self.dismiss()
+
     def remove_offer(self):
         self.dismiss()
         ans = self.controller.remove_active_sell_offer(self.offer_id)
@@ -647,6 +664,7 @@ class OfferWindow(Popup):
         f = App.get_running_app().root.screens[6]
         c = self.offer
         f = App.get_running_app().root.screens[6].update_offer(self.offer)
+
     def add_address(self):
         if hasattr(self, 'm'):
             self.m =Add_address(title = 'address', size_hint=(None,None), size = (400,400))
@@ -654,6 +672,7 @@ class OfferWindow(Popup):
         else:
             self.m = Add_address(title='address', size_hint=(None, None), size=(400, 400))
             self.m.open()
+
     def split_list(self, lis):
         x = lis.split(',')
         return x[:-1]
@@ -662,7 +681,7 @@ class OfferWindow(Popup):
         to_return = str.split(',')
         if to_return[-1] == '':
             to_return = to_return[:-1]
-        return  to_return
+        return to_return
 
     def list_to_dict(self,lis):
         i = 1
@@ -691,13 +710,23 @@ class Add_address(Popup):
         self.box = BoxLayout(orientation='vertical')
         self.address = MDTextField(hint_text='ADDRESS')
         self.box.add_widget(self.address)
+        self.box = GridLayout(cols=3)
+        self.city = MDTextField(hint_text='city')
+        self.street = MDTextField(hint_text='street')
+        self.building = MDTextField(hint_text='building')
+        self.apartment = MDTextField(hint_text='apartment')
+        self.box.add_widget(self.city)
+        self.box.add_widget(self.street)
+        self.box.add_widget(self.building)
+        self.box.add_widget(self.apartment)
         self.insert = Button(text="INSERT")
         self.insert.bind(on_press=lambda x:self.insert_add())
         self.box.add_widget(self.insert)
-        self.back = Button(text="BACK")
-        self.back.bind(on_press=lambda x:self.out())
-        self.box.add_widget(self.back)
-        self.add_widget(self.box)
+        self.cities = []
+        self.streets = []
+        self.buildings = []
+        self.apartment = []
+        self.insert_reader()
 
     def out(self):
         self.dismiss()

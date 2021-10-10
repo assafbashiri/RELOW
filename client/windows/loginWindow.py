@@ -173,13 +173,7 @@ class Login_box(BoxLayout):
         self.ids.email.text = ""
         self.ids.password.text = ""
 
-    def logout(self):
-        ans = App.get_running_app().controller.logout()
-        # after logout back to the main menu
-        if ans.res is True:
-            self.parent.parent.parent.back_to_main()
-            if App.get_running_app().root is not None:
-                self.update_hello_name("        Hello, " + "guest")
+
 
     def forgot_password(self):
         email = self.ids.email.text
