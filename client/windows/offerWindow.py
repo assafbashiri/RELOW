@@ -24,7 +24,7 @@ from kivymd.uix.textfield import MDTextField, MDTextFieldRound
 # from Backend_controller import Backend_controller
 from Service.Object.OfferService import OfferService
 
-from client.windows.paymentWindow import PAYMENTScreen
+from windows.paymentWindow import PAYMENTScreen
 
 
 class Struct(object):
@@ -594,6 +594,7 @@ class OfferWindow(Popup):
         # move to payment screen
         self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, self.new_address, self.user,
                                            self.offer).open()
+        self.dismiss()
 
 
     def update_purchase(self):
@@ -710,23 +711,13 @@ class Add_address(Popup):
         self.box = BoxLayout(orientation='vertical')
         self.address = MDTextField(hint_text='ADDRESS')
         self.box.add_widget(self.address)
-        self.box = GridLayout(cols=3)
-        self.city = MDTextField(hint_text='city')
-        self.street = MDTextField(hint_text='street')
-        self.building = MDTextField(hint_text='building')
-        self.apartment = MDTextField(hint_text='apartment')
-        self.box.add_widget(self.city)
-        self.box.add_widget(self.street)
-        self.box.add_widget(self.building)
-        self.box.add_widget(self.apartment)
         self.insert = Button(text="INSERT")
         self.insert.bind(on_press=lambda x:self.insert_add())
         self.box.add_widget(self.insert)
-        self.cities = []
-        self.streets = []
-        self.buildings = []
-        self.apartment = []
-        self.insert_reader()
+        self.back = Button(text="BACK")
+        self.back.bind(on_press=lambda x:self.out())
+        self.box.add_widget(self.back)
+        self.add_widget(self.box)
 
     def out(self):
         self.dismiss()
