@@ -45,6 +45,9 @@ class Register_box(BoxLayout):
     def change_to_cat(self):
         SideBar.change_to_cat(self)
 
+    def back(self):
+        App.get_running_app().root.current ="menu_screen"
+
     def clear_register(self):
         self.ids.phone.text=""
         self.ids.first_name.text=""

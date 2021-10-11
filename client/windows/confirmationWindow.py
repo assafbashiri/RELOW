@@ -39,7 +39,8 @@ class CONFIRMATIONScreen(Screen):
         # add offer screen 4
         App.get_running_app().root.screens[4].children[0].ids.side_box.ids.hello.text = msg
         # my offers screen 5
-        App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
+        # App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
+
         # update offers screen 6
         App.get_running_app().root.screens[6].children[0].ids.side_box.ids.hello.text = msg
         # register screen 7

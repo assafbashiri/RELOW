@@ -59,6 +59,40 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
+    def move_to_contact_us(self):
+        controller = App.get_running_app().controller
+        if controller.guest is True:
+            Utils.pop(self, 'guest cant go to contact us window', 'alert')
+            return
+        App.get_running_app().root.current = 'contact_us_screen'
+
+    def move_to_add_offer(self):
+        controller = App.get_running_app().controller
+        if controller.guest is True:
+            Utils.pop(self, 'guest cant go to add offer window', 'alert')
+            # toast("guest cant go to add offer window")
+            return
+        if controller.seller == 0:
+            App.get_running_app().root.current = 'seller_screen'
+        else:
+            App.get_running_app().root.current = 'add_offer_screen'
+
+    def move_to_account(self):
+        controller = App.get_running_app().controller
+        if controller.guest is True:
+            Utils.pop(self, 'guest cant go to account window', 'alert')
+            # toast("guest cant go to account window")
+            return
+        App.get_running_app().root.current = 'account_screen'
+        App.get_running_app().root.ids.account.ids.account_box.init_fields()
+
+    def is_seller(self):
+        seller = App.get_running_app().controller.user_service.seller
+        if seller == 0:
+            return 'BECOME A SELLER'
+        else:
+            return 'ADD OFFER'
+
 
 class Manager(ScreenManager):
     # def __init__(self, **kwargs):
@@ -90,47 +124,10 @@ class Side_box(BoxLayout):
             return "        Hello, "+"guest"
         return "        Hello, "+App.get_running_app().controller.user_service.first_name
 
-
-    def is_seller(self):
-        seller = App.get_running_app().controller.user_service.seller
-        if seller == 0:
-            return 'BECOME A SELLER'
-        else:
-            return 'ADD OFFER'
-
-    def move_to_account(self):
-        a = App.get_running_app()
-        b = a.controller
-        if b.guest is True:
-            Utils.pop(self, 'guest cant go to account window', 'alert')
-            # toast("guest cant go to account window")
-            return
-        App.get_running_app().root.current = 'account_screen'
-        App.get_running_app().root.ids.account.ids.account_box.ids.boxi.init_fields()
-
-    def move_to_add_offer(self):
-        a = App.get_running_app()
-        b = a.controller
-        if b.guest is True:
-            Utils.pop(self, 'guest cant go to add offer window', 'alert')
-            # toast("guest cant go to add offer window")
-            return
-        if b.seller == 0:
-            App.get_running_app().root.current = 'seller_screen'
-        else:
-            App.get_running_app().root.current = 'add_offer_screen'
-
-
-
-    def move_to_contact_us(self):
-        a = App.get_running_app()
-        b = a.controller
-        if b.guest is True:
-            Utils.pop(self, 'guest cant go to contact us window', 'alert')
-            return
-        App.get_running_app().root.current = 'contact_us_screen'
-
     def logout(self):
+        if App.get_running_app().controller.guest is True:
+            Utils.pop(self, "guest cant logout", "alert")
+            return
         ans = App.get_running_app().controller.logout()
         # after logout back to the main menu
         if ans.res is True:
@@ -150,13 +147,13 @@ class Side_box(BoxLayout):
         # add offer screen 4
         App.get_running_app().root.screens[4].children[0].ids.side_box.ids.hello.text = msg
         # my offers screen 5
-        App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
+#        App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
         # update offers screen 6
         App.get_running_app().root.screens[6].children[0].ids.side_box.ids.hello.text = msg
         # register screen 7
-        App.get_running_app().root.screens[7].ids.side_box.ids.hello.text = msg
+#        App.get_running_app().root.screens[7].ids.side_box.ids.hello.text = msg
         # login screen 8
-        App.get_running_app().root.screens[8].ids.side_box.ids.hello.text = msg
+ #       App.get_running_app().root.screens[8].ids.side_box.ids.hello.text = msg
         # # contact screen 9
         # App.get_running_app().root.screens[9].children[0].ids.side_box.ids.hello.text = msg
         # # confirmation screen 10
@@ -164,7 +161,7 @@ class Side_box(BoxLayout):
         # # password screen 11
         # z = App.get_running_app().root.screens[11].children[0].ids.side_box.ids.hello.text = msg
         # seller screen 12
-        App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
+  #      App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
 
 
 

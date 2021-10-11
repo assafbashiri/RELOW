@@ -5,57 +5,71 @@
         id: offers_box
 
 <Offers_box>
-    id: offers_box
+    orientation: 'vertical'
     BoxLayout:
         orientation: 'vertical'
-        id: offi
-        canvas.before:
-            Color:
-                rgba: 0, 0, 0, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        size_hint: 1,0.22
+        MDIconButton:
+            icon: "windows/images/back_btn.png"
+            on_press:root.back()
+        MDLabel:
+            pos_hint: {'top':1}
+            id : my_offers_label
+            text : " My Offers"
+            font_size: 32
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1,0.05
+        id: buttons
         MDGridLayout:
             id: bolbol
             cols:5
-            size_hint_y: .1
+            size_hint_y: 5
+            BoxLayout:
+                spacing: 2
+                Button:
+                    pos_hint: {'top':1}
+                    id: active_buy
+                    text:"my active buy offers"
+                    background_color: (0,0,0,0.11)
+                    color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                    on_press:root.parent.active_buy()
+                Button:
+                    pos_hint: {'top':1}
+                    id: active_sell
+                    text:"my active sell offers"
+                    background_color: (0,0,0,0.11)
+                    color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                    on_press:root.parent.active_sell()
 
-            MDRoundFlatButton:
-                id: active_buy
-                text:"my active buy offers"
-                font_size: 12
-                on_press:root.parent.active_buy()
+                Button:
+                    id: liked
+                    pos_hint: {'top':1}
+                    text:"my liked offers"
+                    background_color: (0,0,0,0.11)
+                    color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                    on_press:root.parent.like_offers()
 
-            MDRoundFlatButton:
-                id: active_sell
-                text:"my active sell offers"
-                font_size: 12
-                on_press:root.parent.active_sell()
+                Button:
+                    id: history_buy
+                    pos_hint: {'top':1}
+                    text:"my history buy offers"
+                    background_color: (0,0,0,0.11)
+                    color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                    on_press:root.parent.history_buy()
 
-            MDRoundFlatButton:
-                id: liked
-                text:"my liked offers"
-                font_size: 12
-                on_press:root.parent.like_offers()
+                Button:
+                    id: history_sell
+                    pos_hint: {'top':1}
+                    text:"my history sell offers"
+                    background_color: (0,0,0,0.11)
+                    color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                    on_press:root.parent.history_sell()
 
-            MDRoundFlatButton:
-                id: history_buy
-                text:"my history buy offers"
-                font_size: 12
-                on_press:root.parent.history_buy()
-
-            MDRoundFlatButton:
-                id: history_sell
-                text:"my history sell offers"
-                font_size: 12
-                on_press:root.parent.history_sell()
-
-
-
-    Side_box:
-        id: side_box
-
-
+    BoxLayout:
+        orientation: 'vertical'
+        id: offi
+        size_hint: 1,0.75
 
 
 <Carousel1>:

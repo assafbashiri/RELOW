@@ -5,65 +5,83 @@
         id: register_box
         orientation: "horizontal"
         Register_box:
-        Side_box:
-            id:side_box
+
 
 <Register_box>
-    canvas.before:
-        Color:
-            rgba: 0, 0, 0, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
     BoxLayout:
         orientation : "vertical"
         padding : 20
-        spacing : 20
+        spacing : 30
         MDGridLayout:
             cols : 1
-            spacing :5
+            spacing :14
             adaptive_height : True
             #adaptive_width : True
             #daptive_size : True
+            MDIconButton:
+                icon: "windows/images/back_btn.png"
+                on_press:root.back()
             MDLabel :
                 id : register_label
                 text : "Register"
-
+                font_size: 32
+            MDLabel :
+                text : " "
+                font_size: 16
+            MDLabel:
+                id : first_name_label
+                text : "First Name"
+                font_size: 16
             MDTextFieldRound:
-                write_tab : False
                 id : first_name
-                hint_text : "first name"
-                icon_right : "account"
-
+                normal_color: 0,0,0,0
+                color_active: 1,1,1,0
+                write_tab: False
+                multiline: False
+            MDLabel :
+                id : last_name_label
+                text : "Last Name"
 
             MDTextFieldRound:
-                write_tab: False
                 id:last_name
-                hint_text : "last name"
-                icon_right: "account"
-
-            MDTextFieldRound:
+                normal_color: 0,0,0,0
+                color_active: 1,1,1,0
                 write_tab: False
-                hint_text : "phone"
+                multiline: False
+
+            MDLabel:
+                id : phone_label
+                text : "Phone"
+            MDTextFieldRound:
                 id:phone
-                icon_right: "account"
-
-
-            MDTextFieldRound:
+                normal_color: 0,0,0,0
+                color_active: 1,1,1,0
                 write_tab: False
-                id:email
-                hint_text: "email"
-                icon_right: "account"
+                multiline: False
 
-
+            MDLabel:
+                id : email_label
+                text : "Email"
             MDTextFieldRound:
-                write_tab : False
-                hint_text : "password"
+                id:email
+                normal_color: 0,0,0,0
+                color_active: 1,1,1,0
+                write_tab: False
+                multiline: False
+
+            MDLabel :
+                id : password_label
+                text : "Password"
+            MDTextFieldRound:
                 id : password
-                icon_right : "eye-off"
+                normal_color: 0,0,0,0
+                color_active: 1,1,1,0
+                write_tab: False
+                multiline: False
                 password : True
-
-
+            MDLabel :
+                id : birth_date_label
+                text : "Birth date"
             MDTextFieldRound:
                 write_tab: False
                 text : "2022-11-11"
@@ -72,32 +90,39 @@
                 icon_right: "account"
                 on_focus:root.show_date_picker()
 
-
-
             MDDropDownItem:
                 write_tab: False
                 canvas.before:
                     Color:
-                        rgba: 0/256, 165/256, 255/256, .69
+                        rgba: 0/256, 0/256, 0/256, 0
                     Rectangle:
                         pos: self.pos
                         size: self.size
                 id: drop
                 pos_hint: {'center_x': .5, 'center_y': .5}
-                text: 'gender'
+                text: 'Gender'
                 on_release: root.show_dropdown()
 
         MDGridLayout:
-            cols:3
+            id: complete
+            cols:2
 
-            MDRoundFlatButton:
-                text:"Register"
-                font_size: 12
+            Button:
+                text: " Sign Up"
+                font_size: 30
+                size_hint: .2,.2
+                background_color: (0,0,0,0)
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: (24/255,211/255,199/255,1)
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
                 on_press:root.register()
-
-            MDRoundFlatButton:
-                text:"Unregister"
-                font_size: 12
-                on_press:root.unregister()
+            #Button:
+                #background_normal: "windows/images/sign_up_btn.png"
+                #background_down: "windows/images/sign_up_btn.png"
+                #on_press:root.unregister()
 
 

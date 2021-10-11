@@ -79,3 +79,6 @@ class BoxiLayout1(BoxLayout):
             self.ids.subject.text = ""
             self.ids.description.text = ""
             App.get_running_app().root.current = 'menu_screen'
+
+    def back(self):
+        App.get_running_app().root.current ="menu_screen"
