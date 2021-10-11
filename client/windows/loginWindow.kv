@@ -5,52 +5,142 @@
         id: log
         orientation: "horizontal"
         Login_box:
-        Side_box:
-            id:side_box
+        #Side_box:
+            #id:side_box
 <Login_box>
-    canvas.before:
-        Color:
-            rgba: 0, 0, 0, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
+
     BoxLayout:
+        id: login_cover_box
         orientation: "vertical"
-        padding:20
-        spacing:20
-        MDGridLayout:
-            cols: 1
-            spacing:5
-            adaptive_height: True
-            #adaptive_width: True
-            #daptive_size: True
+
+        BoxLayout:
+            id: logo_box
+            orientation: 'vertical'
+            size_hint_y: 1.5
+            # THE LOGO COMES HERE
+
+        BoxLayout:
+            id: title_name
+            orientation: 'vertical'
+            size_hint_y: .3
+
             MDLabel:
                 id: register_label
                 text: "LOGIN"
+                font: 'siofia pro'
+                font_size: 45
 
-            MDTextFieldRound:
-                write_tab: False
+        BoxLayout:
+            id: email_box
+            orientation: 'vertical'
+            size_hint: 1,.7
+            padding: ['20dp','30dp', '20dp' , '0dp']
+
+
+
+            MDLabel:
+                id: email_label
+                text: "EMAIL"
+                font: 'sofia pro bold'
+                font_size:20
+
+
+            TextInput:
                 id:email
-                hint_text: "email"
-                icon_right: "account"
-
-            MDTextFieldRound:
+                #background_color: (0,0,0,0) if self.focus else (0,0,0,0) #(24/255,211/255,199/255,1)
+                #pos_hint: {"center_x": .7}
+                normal_color: 100,0,0,0
+                color_active: 100,100,1,0
+                size_hint_y: 1.6
                 write_tab: False
-                id:password
-                hint_text: "password"
-                icon_right: "eye-off"
-                password : True
+                multiline: False
 
-        MDGridLayout:
-            cols:3
-            MDRoundFlatButton:
-                text:"LOGIN"
-                font_size: 12
+
+        BoxLayout:
+            id: passsword_box
+            orientation: 'vertical'
+            size_hint: 1,.7
+            padding: ['20dp','30dp', '20dp' , '0dp']
+
+
+
+            MDLabel:
+                id: password_label
+                text: "PASSWORD"
+                font: 'sofia pro bold'
+                font_size:20
+
+
+            TextInput:
+                id:password
+                normal_color: 100,0,0,0
+                color_active: 100,100,1,0
+                size_hint_y: 1.6
+                write_tab: False
+                multiline: False
+                password: True
+
+
+        BoxLayout:
+            id: forgot_box
+            size_hint: .4,.2
+            pos_hint:{'right':1}
+
+            Button:
+                id: forgot_btn
+                text: " Forgot Password?"
+                #color: 0,0,0,1
+                font_size: 30
+                size_hint_x: .25
+                pos_hint: {"top":1}
+                color: (0,0,0,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                background_color: (0,0,0,0)
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y : .5
+
+            Button:
+                id: login_btn
+                text: " Login"
+                font_size: 30
+                size_hint: .5,.2
+                background_color: (0,0,0,0)
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: (24/255,211/255,199/255,1)
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
                 on_press:root.login()
 
-            MDRoundFlatButton:
-                text:"forgot password"
-                font_size: 12
-                on_press:root.forgot_password()
+        BoxLayout:
+            id: move_to_reg_box
+            orientation: 'horizontal'
+            size_hint: .5,.7
+            padding: ['50dp','30dp', '30dp' , '50dp']
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            MDLabel:
+                id: new_user_lbl
+                text: "New User?"
+                pos_hint: {'x':.5}
+                size_hint: .3,.5
+                halign: 'right'
+                valign: "middle"
+            Button:
+                id: new_account_btn
+                text:"create New Account"
+                text_size: self.size
+                size_hint: .3,.5
+                halign: 'left'
+                valign: 'center'
+                color: (0,0,0,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                background_color: (0,0,0,0)
+
+
+
+
 
 
