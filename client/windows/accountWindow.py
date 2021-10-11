@@ -26,6 +26,9 @@ from Utils.CheckValidity import CheckValidity
 class Category_box(BoxLayout):
     pass
 
+class Struct(object):
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
 
 class ACCOUNTScreen(Screen):
     def __init__(self, **kwargs):
@@ -37,21 +40,224 @@ class Account_box(BoxLayout):
 
     def __init__(self, **kwargs):
         super(Account_box, self).__init__(**kwargs)
-        self.cat = Category_box()
-        self.sub_cat = Sub_Category_box()
-        self.dialog = None
+        self.personal_box = Personal_box()
+        self.address_box = Address_box()
+        self.password_box = Password_box()
+
+
+        Clock.schedule_once(self.helper,4)
+        # self.add_widget(self.current_box, len(self.children))
+        # self.cat = Category_box()
+        # self.sub_cat = Sub_Category_box()
+        # self.dialog = None
+    def helper(self, num):
+        self.ids.choose_box.add_widget(self.personal_box)
+
+    def change_to_address(self):
+        self.ids.choose_box.remove_widget(self.personal_box)
+        self.ids.choose_box.remove_widget(self.address_box)
+        self.ids.choose_box.remove_widget(self.password_box)
+        self.ids.choose_box.add_widget(self.address_box)
+    def change_to_personal(self):
+        self.ids.choose_box.remove_widget(self.personal_box)
+        self.ids.choose_box.remove_widget(self.address_box)
+        self.ids.choose_box.remove_widget(self.password_box)
+        self.ids.choose_box.add_widget(self.personal_box)
+    def change_to_update_password(self):
+        self.ids.choose_box.remove_widget(self.password_box)
+        self.ids.choose_box.remove_widget(self.address_box)
+        self.ids.choose_box.remove_widget(self.personal_box)
+        self.ids.choose_box.add_widget(self.password_box)
+
+    def init_fields(self):
+        self.personal_box.init_fields()
+        self.address_box.init_fields()
+
+    def back(self):
+        App.get_running_app().root.current = "menu_screen"
+
 
     def active_offers(self):
         ans = App.get_running_app().controller.get_all_active_buy_offers()
         self.act_buy_offers = Offers_Screen()
         self.act_buy_offers.insert_offers(list=ans)
         self.ids.boxi.add_widget(self.act_buy_offers)
-
     def exit(self):
         App.get_running_app().controller.exit()
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
+
+class Personal_box(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(Personal_box, self).__init__(**kwargs)
+        self.controller = App.get_running_app().controller
+        self.user = self.controller.user_service
+
+    def personal(self):
+        first_name = self.ids.first_name_input.text
+        last_name = self.ids.last_name_input.text
+        email = self.ids.email_input.text
+        #gender = self.ids.
+
+        if first_name != "":
+            ans = CheckValidity.checkValidityName(self, first_name)
+            if ans is False:
+                return
+
+        if last_name != "":
+            ans = CheckValidity.checkValidityName(self, last_name)
+            if ans is False:
+                return
+
+        if email != "":
+            ans = CheckValidity.checkValidityEmail(self, email)
+            if ans is False:
+                return
+
+        ans = App.get_running_app().controller.update(first_name, last_name, email)
+        if ans.res is True:
+            self.user = Struct(**ans.data)
+            # update the json------------------------------------------------
+            #self.parent.parent.manager.back_to_main()
+            self.init_fields()
+        return ans
+
+    def clear_personal(self):
+        self.ids.first_name.text = ""
+        self.ids.last_name.text = ""
+        self.ids.email.text = ""
+
+    def init_fields(self):
+        if (self.user is not None):
+            if self.controller.guest is True:
+                return
+            if (self.user.first_name is None):
+                self.ids.first_name_input.text = ""
+            else:
+                self.ids.first_name_input.text = self.user.first_name
+            if (self.user.last_name is None):
+                self.ids.last_name.text = ""
+            else:
+                self.ids.last_name_input.text = self.user.last_name
+            if (self.user.phone is None):
+                self.ids.phone.text = ""
+            else:
+                self.ids.phone_input.text = self.user.phone
+            if (self.user.email is None):
+                self.ids.email.text = ""
+            else:
+                self.ids.email_input.text = self.user.email
+
+            if (self.user.gender is None):
+                self.ids.gender.text = ""
+            else:
+                if self.user.gender =='male':
+                    self.ids.male.active = True
+                else:
+                    self.ids.female.active = True
+
+            if (self.user.birth_date is None):
+                self.ids.birth_date.text = ""
+            else:
+                self.ids.birth_date_input.text = self.user.birth_date
+
+class Password_box(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(Password_box, self).__init__(**kwargs)
+        controller = App.get_running_app().controller
+        self.user = controller.user_service
+
+    def change_password(self):
+        old_password = self.ids.old_password.text
+        new_password1 = self.ids.new_password1.text
+        new_password2 = self.ids.new_password2.text
+        if old_password == "":
+            Utils.pop(self, 'please enter old password', 'alert')
+            return
+        if new_password1 == "":
+            Utils.pop(self, 'please enter new password', 'alert')
+            return
+        if new_password2 == "":
+            Utils.pop(self, 'please enter new password again', 'alert')
+            return
+        if not new_password1 == new_password2:
+            Utils.pop(self, 'your new password is not match', 'alert')
+            return
+        if not CheckValidity.checkValidityPassword(self, new_password1):
+            return
+        ans = App.get_running_app().controller.update_password(old_password, new_password1)
+        if ans.res is True:
+            Utils.pop(self, 'your password has been successfully changed', 'success')
+            self.back_to_account_window()
+        else:
+            Utils.pop(self, ans.message, 'alert')
+
+class Address_box(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(Address_box, self).__init__(**kwargs)
+        controller = App.get_running_app().controller
+        self.user = controller.user_service
+    def address(self):
+        city = self.ids.city_input.text
+        if not self.check_empty(city, 'city'):
+            return
+
+        street = self.ids.street_input.text
+        if not self.check_empty(street, 'street'):
+            return
+        zip_code = self.ids.zip_code_input.text
+        if not self.check_empty(zip_code, 'zip_code'):
+            return
+        # floor = self.ids.floor_input.text
+        # if not self.check_empty(floor, 'floor'):
+        #     return
+        apt = self.ids.apt_number_input.text
+        if not self.check_empty(apt, 'apt'):
+            return
+        ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
+        if ans.res is True:
+            # update the json------------------------------------------------
+            self.parent.parent.manager.back_to_main()
+            self.init_fields()
+        return ans
+
+    def init_fields(self):
+        if (self.user.city is None):
+            self.ids.city_input.text = ""
+        else:
+            self.ids.city_input.text = self.user.city
+
+        if (self.user.street is None):
+            self.ids.street_input.text = ""
+        else:
+            self.ids.street_input.text = self.user.street
+
+        if (self.user.zip_code is None):
+            self.ids.zip_code_input.text = ""
+        else:
+            self.ids.zip_code_input.text = str(self.user.zip_code)
+
+        # if (self.user.floor is None):
+        #     self.ids.floor.text = ""
+
+    def clear_address(self):
+        self.ids.city.text = ""
+        self.ids.street.text = ""
+        self.ids.zip_code.text = ""
+        self.ids.floor.text = ""
+        self.ids.apt_number.text = ""
+
+    def check_empty(self, to_check, obj):
+        if to_check == '':
+            Utils.pop(self, f'the {obj} is not valid', 'alert')
+            # toast('the apt is not valid')
+            return False
+        return True
+
 
 
 class Sub_Category_box(BoxLayout):
@@ -188,76 +394,6 @@ class BoxiLayout(BoxLayout):
             #     self.ids.id_number.text = ""
             # else:
             #     self.ids.id_number.text = str(self.user.id_number)
-
-    def personal(self):
-        first_name = self.ids.first_name.text
-        last_name = self.ids.last_name.text
-        email = self.ids.email.text
-
-        if first_name != "":
-            ans = CheckValidity.checkValidityName(self, first_name)
-            if ans is False:
-                return
-
-        if last_name != "":
-            ans = CheckValidity.checkValidityName(self, last_name)
-            if ans is False:
-                return
-
-        if email != "":
-            ans = CheckValidity.checkValidityEmail(self, email)
-            if ans is False:
-                return
-
-        ans = App.get_running_app().controller.update(first_name, last_name, email)
-        if ans.res is True:
-            # update the json------------------------------------------------
-            self.parent.parent.manager.back_to_main()
-            self.init_fields()
-        return ans
-
-    def clear_personal(self):
-        self.ids.first_name.text = ""
-        self.ids.last_name.text = ""
-        self.ids.email.text = ""
-
-    def address(self):
-        city = self.ids.city.text
-        if not self.check_empty(city, 'city'):
-            return
-
-        street = self.ids.street.text
-        if not self.check_empty(street, 'street'):
-            return
-        zip_code = self.ids.zip_code.text
-        if not self.check_empty(zip_code, 'zip_code'):
-            return
-        floor = self.ids.floor.text
-        if not self.check_empty(floor, 'floor'):
-            return
-        apt = self.ids.apt_number.text
-        if not self.check_empty(apt, 'apt'):
-            return
-        ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
-        if ans.res is True:
-            # update the json------------------------------------------------
-            self.parent.parent.manager.back_to_main()
-            self.init_fields()
-        return ans
-
-    def check_empty(self, to_check, obj):
-        if to_check == '':
-            Utils.pop(self, f'the {obj} is not valid', 'alert')
-            # toast('the apt is not valid')
-            return False
-        return True
-
-    def clear_address(self):
-        self.ids.city.text = ""
-        self.ids.street.text = ""
-        self.ids.zip_code.text = ""
-        self.ids.floor.text = ""
-        self.ids.apt_number.text = ""
 
     def payment(self):
         credit_card_number = self.ids.credit_card_number.text
