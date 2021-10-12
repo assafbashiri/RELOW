@@ -217,8 +217,9 @@ class Backend_controller:
         return ans
 
 
-    def update(self, first_name, last_name, email):
-        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email}
+    def update(self, first_name, last_name, email, phone_number, birth_date, gender):
+        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email, 'phone_number':phone_number,
+                      'birth_date':birth_date, 'gender':gender}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
         if len(ans.message) == 0:

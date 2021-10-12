@@ -72,173 +72,217 @@
     id:personal_box
     orientation: "vertical"
     size_hint: 1,1.2
-    pos_hint:{'center_y':0.9}
+    pos_hint:{'center_y':0.4}
+    ScrollView:
+        do_scroll_y:True
+        GridLayout:
+            cols:1
+            size_hint_y: 3.5
+            height: self.minimum_height
+            GridLayout:
+                cols:1
+                size_hint_y: None
+                height: self.minimum_height
+                id: first_name_box
+                #orientation: 'vertical'
+                size_hint: 1,1.2
+                padding: ['20dp','30dp', '20dp' , '0dp']
 
-    BoxLayout:
-        id: first_name_box
-        orientation: 'vertical'
-        size_hint: 1,1.2
-        padding: ['20dp','30dp', '20dp' , '0dp']
+                MDLabel:
+                    id: first_name_label
+                    text: "First Name"
+                    font: 'sofia pro bold'
+                    font_size:15
 
-        MDLabel:
-            id: first_name_label
-            text: "First Name"
-            font: 'sofia pro bold'
-            font_size:15
-
-        TextInput:
-            id: first_name_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: 1.9
-            write_tab: False
-            multiline: False
+                TextInput:
+                    id: first_name_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
 
 
-    BoxLayout:
-        id: last_name_box
-        orientation: 'vertical'
-        size_hint: 1,1.2
-        padding: ['20dp','30dp', '20dp' , '0dp']
+            GridLayout:
+                cols:1
+                id: last_name_box
+                #orientation: 'vertical'
+                size_hint: 1,1.2
+                padding: ['20dp','30dp', '20dp' , '0dp']
 
-        MDLabel:
-            id: last_name_label
-            text: "Last Name"
-            font: 'sofia pro bold'
-            font_size:15
+                MDLabel:
+                    id: last_name_label
+                    text: "Last Name"
+                    font: 'sofia pro bold'
+                    font_size:15
 
-        TextInput:
-            id:last_name_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: 1.9
-            write_tab: False
-            multiline: False
+                TextInput:
+                    id:last_name_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
 
-    BoxLayout:
-        id: email_box
-        orientation: 'vertical'
-        size_hint: 1,1.2
-        padding: ['20dp','30dp', '20dp' , '0dp']
-        MDLabel:
-            id: email_label
-            text: "Email"
-            font: 'sofia pro bold'
-            font_size:15
+            GridLayout:
+                cols:1
+                id: email_box
+                #orientation: 'vertical'
+                size_hint: 1,1.2
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                MDLabel:
+                    id: email_label
+                    text: "Email"
+                    font: 'sofia pro bold'
+                    font_size:15
 
-        TextInput:
-            id:email_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: 1.9
-            write_tab: False
-            multiline: False
+                TextInput:
+                    id:email_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
 
-    BoxLayout:
-        id: phone_box
-        orientation: 'vertical'
-        size_hint: 1,1.2
-        padding: ['20dp','30dp', '20dp' , '0dp']
+            GridLayout:
+                cols:1
+                id: phone_box
+                #orientation: 'vertical'
+                size_hint: 1,1.2
+                padding: ['20dp','30dp', '20dp' , '0dp']
 
-        MDLabel:
-            id: phone_label
-            text: "Phone Number"
-            font: 'sofia pro bold'
-            font_size:14
+                MDLabel:
+                    id: phone_label
+                    text: "Phone Number"
+                    font: 'sofia pro bold'
+                    font_size:14
 
-        TextInput:
-            id:phone_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: 1.9
-            write_tab: False
-            multiline: False
+                TextInput:
+                    id:phone_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
 
-    BoxLayout:
-        id: birth_date_box
-        orientation: 'vertical'
-        size_hint: 1,1.2
-        padding: ['20dp','30dp', '20dp' , '0dp']
+            GridLayout:
+                cols:4
+                id: birth_date_box
+                #orientation: 'horizontal'
+                size_hint: .6,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
 
-        MDLabel:
-            id: birth_date_label
-            text: "Birth Date"
-            font: 'sofia pro bold'
-            font_size:15
+                MDLabel:
+                    id: birth_date_label
+                    text: "Birth Date"
+                    font: 'sofia pro bold'
+                    font_size:20
 
-        TextInput:
-            id:birth_date_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: 1.9
-            write_tab: False
-            multiline: False
-            on_focus: root.show_date_picker()
+                MDDropDownItem:
+                    id:year_input
+                    pos_hint: {'center_x': .1, 'center_y': .5}
+                    text: 'Year'
+                    font_name: "Arial"
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    write_tab: False
+                    multiline: False
+                    on_release: root.show_dropdown_year()
+                MDDropDownItem:
+                    id:month_input
+                    pos_hint: {'center_x': .1, 'center_y': .5}
+                    text: 'Month'
+                    font_name: "Arial"
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    write_tab: False
+                    multiline: False
+                    on_release: root.show_dropdown_month()
+                MDDropDownItem:
+                    id:day_input
+                    pos_hint: {'center_x': .1, 'center_y': .5}
+                    text: 'Day'
+                    font_name: "Arial"
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    write_tab: False
+                    multiline: False
+                    on_release: root.show_dropdown_day()
+            GridLayout:
+                cols:3
 
-    BoxLayout:
-        id: male_female
-        orientation: 'horizontal'
-        size_hint: .2,.2
-        canvas:
-            Color:
-                rgba: (.5,.5,.5,.5) # DarkOliveGreen
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        pos_hint:{'center_x':.26, 'center_y':.5}
-        padding: ['20dp','30dp', '20dp' , '0dp']
-        MDLabel:
-            id: gender_label
-            text: "Male"
-            font: 'sofia pro bold'
-            font_size:10
-        MDLabel:
-            id: gender_label
-            text: "Female"
-            font: 'sofia pro bold'
-            font_size:10
-    BoxLayout:
-        id: gender_cover
-        orientation: 'vertical'
-        size_hint: .2,.9
-        padding: ['20dp','30dp', '20dp' , '0dp']
-        MDLabel:
-            id: gender_label
-            text: "Gender"
-            font: 'sofia pro bold'
-            font_size:20
-        BoxLayout:
-            id: gender_box
-            size: .1,.2
-            pos_hint:{'center_x':1.4, 'center_y':1.7}
-            orientation: 'horizontal'
-            #padding: ['20dp','30dp', '20dp' , '0dp']
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                id: Gender_box
+                #orientation: 'horizontal'
+                size_hint: 0.6,1.6
+                MDLabel:
+                    id: gender_label
+                    text: "Gender"
+                    font: 'sofia pro bold'
+                    font_size:20
 
-            CheckBox:
-                id: male
-                text: "Male"
-                group:1
-            CheckBox:
-                id: female
-                text: 'Female'
-                group:1
-    BoxLayout:
-        id: update_box
-        orientation: 'vertical'
-        padding: ['100dp','30dp', '100dp' , '10dp']
-        Button:
-            id: login_btn
-            text: "Update"
-            font_size: 30
-            background_color: (0,0,0,0)
-            background_normal: ''
-            canvas.before:
-                Color:
-                    rgba: (24/255,211/255,199/255,1)
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-            on_press: root.personal()
+
+
+                GridLayout:
+                    cols:1
+                    id: gender_male_box
+                    size: .5,.1
+                    pos_hint:{'center_x':.3, 'center_y':0.5}
+                    #orientation: 'vertical'
+
+
+                    MDIconButton:
+                        icon: "windows/images/male-user-icon.png"
+                        id: male_photo
+                        #text: "Male"
+                        #font: 'sofia pro bold'
+                        #font_size:10
+                    MDIconButton:
+                        id: female_photo
+                        icon: "windows/images/female-user-icon.png"
+                        #text: "Female"
+                        #font: 'sofia pro bold'
+                        #font_size:10
+
+                GridLayout:
+                    cols:1
+                    id: gender_female_box
+                    size: .5,0.9
+                    pos_hint:{'center_x':0.9, 'center_y':0.5}
+                    #orientation: 'vertical'
+                    CheckBox:
+                        id: male
+                        text: "Male"
+                        group:1
+                        on_active: root.save_gender(self, self.active, 'male')
+                    CheckBox:
+                        id: female
+                        text: 'Female'
+                        group:1
+
+                GridLayout:
+                    #size:.5,.5
+                    size_hint:.7,.5
+                    pos_hint:{'center_x':.5, 'center_y':.5}
+                    cols:1
+                    id: update_box
+                    #orientation: 'vertical'
+                    #padding: ['100dp','30dp', '100dp' , '10dp']
+                    Button:
+                        size:0.2,0.2
+                        id: login_btn
+                        text: "Update"
+                        font_size: 30
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                        on_press: root.personal()
+
 
 
 <Address_box>:
@@ -254,9 +298,10 @@
         font_name: "Arial"
         on_release: root.show_dropdown_address_gov_il()
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: region_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -274,9 +319,10 @@
             write_tab: False
             multiline: False
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: city_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -294,9 +340,10 @@
             write_tab: False
             multiline: False
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: street_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -314,9 +361,10 @@
             write_tab: False
             multiline: False
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: building_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -334,9 +382,10 @@
             write_tab: False
             multiline: False
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: apt_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -354,9 +403,10 @@
             write_tab: False
             multiline: False
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: zip_code_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -373,9 +423,10 @@
             size_hint_y: 1.6
             write_tab: False
             multiline: False
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: update_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         padding: ['100dp','30dp', '100dp' , '10dp']
         Button:
             id: login_btn
@@ -396,9 +447,10 @@
     orientation: "vertical"
     size_hint: 1,1
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: first_name_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -417,9 +469,10 @@
             multiline: False
 
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: last_name_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -437,9 +490,10 @@
             write_tab: False
             multiline: False
 
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: email_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
@@ -456,9 +510,10 @@
             size_hint_y: 1.6
             write_tab: False
             multiline: False
-    BoxLayout:
+    GridLayout:
+        cols:1
         id: update_box
-        orientation: 'vertical'
+        #orientation: 'vertical'
         padding: ['100dp','30dp', '100dp' , '10dp']
         Button:
             id: login_btn

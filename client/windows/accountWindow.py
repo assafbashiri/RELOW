@@ -17,6 +17,11 @@ from kivymd.toast import toast
 import csv
 import requests
 import json
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
+from kivy.app import runTouchApp
 
 from windows.offers_list import Offers_Screen
 
@@ -92,13 +97,21 @@ class Personal_box(BoxLayout):
         super(Personal_box, self).__init__(**kwargs)
         self.controller = App.get_running_app().controller
         self.user = self.controller.user_service
+        self.gender = ''
+
+
 
     def personal(self):
         first_name = self.ids.first_name_input.text
         last_name = self.ids.last_name_input.text
         email = self.ids.email_input.text
-        #gender = self.ids.
-
+        phone_number = self.ids.phone_input.text
+        year = self.ids.year_input.text
+        month = self.ids.month_input.text
+        day = self.ids.day_input.text
+        date_str=''
+        if year!='' and month != '' and day!='':
+            date_str = f'{year}-{month}-{day}'
         if first_name != "":
             ans = CheckValidity.checkValidityName(self, first_name)
             if ans is False:
@@ -113,8 +126,19 @@ class Personal_box(BoxLayout):
             ans = CheckValidity.checkValidityEmail(self, email)
             if ans is False:
                 return
+        if phone_number != "":
+            ans = CheckValidity.checkValidityPhone(self, phone_number)
+            if ans is False:
+                return
 
-        ans = App.get_running_app().controller.update(first_name, last_name, email)
+        #---------------------------------------------haveee toooo checkkk birthdateeee----------------------
+        # if date_str != "":
+        #     ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
+        #     if ans is False:
+        #         return
+
+
+        ans = App.get_running_app().controller.update(first_name, last_name, email, phone_number, date_str, self.gender)
         if ans.res is True:
             self.user = Struct(**ans.data)
             # update the json------------------------------------------------
@@ -157,10 +181,83 @@ class Personal_box(BoxLayout):
                     self.ids.female.active = True
 
             if (self.user.birth_date is None):
-                self.ids.birth_date.text = ""
+                self.ids.year_input.text = ""
+                self.ids.month_input.text = ""
+                self.ids.day_input.text = ""
             else:
-                self.ids.birth_date_input.text = self.user.birth_date
+                date=self.user.birth_date
+                if ' ' in date:
+                    date , e= date.split(' ')
+                year,month,day = date.split('-')
+                self.ids.year_input.text = year
+                self.ids.month_input.text = month
+                self.ids.day_input.text = day
+    def show_dropdown_year(self):
+        menu_items = []
+        for year in range(2021, 1900, -1):
+            menu_items.append(
+                {
+                    'text': str(year),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(year): self.save_year(x),
+                }
+            )
 
+        self.drop_down_years = MDDropdownMenu(
+            caller=self.ids.year_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_years.open()
+    def save_year(self, year):
+        self.ids.year_input.text = year
+        self.drop_down_years.dismiss()
+
+    def show_dropdown_month(self):
+        menu_items = []
+        for month in range(12, 1, -1):
+            menu_items.append(
+                {
+                    'text': str(month),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(month): self.save_month(x),
+                }
+            )
+
+        self.drop_down_months = MDDropdownMenu(
+            caller=self.ids.month_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_months.open()
+    def save_month(self, month):
+        self.ids.month_input.text = month
+        self.drop_down_months.dismiss()
+
+    def show_dropdown_day(self):
+        menu_items = []
+        for day in range(31, 1, -1):
+            menu_items.append(
+                {
+                    'text': str(day),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(day): self.save_day(x),
+                }
+            )
+
+        self.drop_down_days = MDDropdownMenu(
+            caller=self.ids.day_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+
+        self.drop_down_days.open()
+    def save_day(self, day):
+        self.ids.day_input.text = day
+        self.drop_down_days.dismiss()
 
     def show_date_picker(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
@@ -174,6 +271,11 @@ class Personal_box(BoxLayout):
     # click Cancel
     def on_cancel(self, instance, value):
         pass
+    def save_gender(self, instance, value, text):
+        if (value):
+            self.gender = 'male'
+        else:
+            self.gender = 'female'
 class Password_box(BoxLayout):
 
     def __init__(self, **kwargs):

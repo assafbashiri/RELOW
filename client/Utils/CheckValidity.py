@@ -126,11 +126,14 @@ class CheckValidity:
 
     # check if this function is important due to date picker
     def checkValidityDateOfBirth(self, date):
-        day, month, year = date.split('-')
+        if ' ' in date:
+            date, e = date.split(' ')
+        year, month, day = date.split('-')
         isValidDate = True
         try:
-            datetime.datetime(int(year), int(month), int(day))
-        except ValueError:
+            x=datetime.datetime(int(year), int(month), int(day))
+            a=6
+        except Exception as e:
             isValidDate = False
         if not isValidDate:
             raise Exception("Input date is not valid..")
