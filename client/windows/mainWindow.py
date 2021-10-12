@@ -45,6 +45,7 @@ from windows.paymentWindow import PAYMENTScreen
 from windows.termsWindow import TERMSScreen
 from windows.SideBar import SideBar
 from windows.updateOfferWindow import UPDATEOFFERScreen
+from windows.offerWindow import OfferScreen
 
 from Utils.Utils import Utils
 

@@ -14,7 +14,7 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
-from windows.offerWindow import OfferWindow
+from windows.offerWindow import OfferScreen
 
 
 class Offers_Screen(RecycleView):
@@ -83,12 +83,13 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
 
 
     def www(self,offer, photo_list):
+        # dic = {'offer'=offer, 'photo_list'=:hoto_list}
         if hasattr(self, 'm'):
-            self.m = OfferWindow(offer, photo_list)
-            self.m.open()
+            self.m = App.get_running_app().root.screens[14].init_offer(offer,photo_list)
+            App.get_running_app().root.current = 'offer_screen'
         else:
-            self.m = OfferWindow(offer, photo_list)
-            self.m.open()
+            self.m = App.get_running_app().root.screens[14].init_offer(offer,photo_list)
+            App.get_running_app().root.current = 'offer_screen'
 
     def move_right(self):
         self.ids.car.load_next(mode='next')
