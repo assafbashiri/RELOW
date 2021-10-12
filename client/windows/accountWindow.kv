@@ -19,9 +19,12 @@
 
     BoxLayout:
         id: title_box
-        size_hint: .45,.2
+        size_hint: .95,.1
         MDLabel:
-            pos_hint: {'top':1}
+            pos_hint: {'y': 0.4}
+            #pos_hint: {'top':1, 'center':0.7}
+            halign:'center'
+            pos_hint_x: None
             size_hint: .5,.5
             id : contact_us_label
             text : "My Account"
@@ -68,25 +71,26 @@
 <Personal_box>:
     id:personal_box
     orientation: "vertical"
-    size_hint: 1,1
+    size_hint: 1,1.2
+    pos_hint:{'center_y':0.9}
 
     BoxLayout:
         id: first_name_box
         orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1.2
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: first_name_label
             text: "First Name"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:15
 
         TextInput:
             id: first_name_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 1.9
             write_tab: False
             multiline: False
 
@@ -94,93 +98,119 @@
     BoxLayout:
         id: last_name_box
         orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1.2
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: last_name_label
             text: "Last Name"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:15
 
         TextInput:
             id:last_name_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 1.9
             write_tab: False
             multiline: False
 
     BoxLayout:
         id: email_box
         orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1.2
         padding: ['20dp','30dp', '20dp' , '0dp']
         MDLabel:
             id: email_label
             text: "Email"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:15
 
         TextInput:
             id:email_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 1.9
             write_tab: False
             multiline: False
 
     BoxLayout:
         id: phone_box
         orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1.2
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: phone_label
             text: "Phone Number"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:14
 
         TextInput:
             id:phone_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 1.9
             write_tab: False
             multiline: False
 
     BoxLayout:
         id: birth_date_box
         orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1.2
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: birth_date_label
             text: "Birth Date"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:15
 
         TextInput:
             id:birth_date_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 1.9
             write_tab: False
             multiline: False
+            on_focus: root.show_date_picker()
+
+    BoxLayout:
+        id: male_female
+        orientation: 'horizontal'
+        size_hint: .2,.2
+        canvas:
+            Color:
+                rgba: (.5,.5,.5,.5) # DarkOliveGreen
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        pos_hint:{'center_x':.26, 'center_y':.5}
+        padding: ['20dp','30dp', '20dp' , '0dp']
+        MDLabel:
+            id: gender_label
+            text: "Male"
+            font: 'sofia pro bold'
+            font_size:10
+        MDLabel:
+            id: gender_label
+            text: "Female"
+            font: 'sofia pro bold'
+            font_size:10
     BoxLayout:
         id: gender_cover
         orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: .2,.9
         padding: ['20dp','30dp', '20dp' , '0dp']
         MDLabel:
-            id: birth_date_label
+            id: gender_label
             text: "Gender"
             font: 'sofia pro bold'
             font_size:20
         BoxLayout:
             id: gender_box
+            size: .1,.2
+            pos_hint:{'center_x':1.4, 'center_y':1.7}
             orientation: 'horizontal'
             #padding: ['20dp','30dp', '20dp' , '0dp']
 

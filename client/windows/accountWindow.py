@@ -53,20 +53,18 @@ class Account_box(BoxLayout):
     def helper(self, num):
         self.ids.choose_box.add_widget(self.personal_box)
 
-    def change_to_address(self):
+    def remove_widgets(self):
         self.ids.choose_box.remove_widget(self.personal_box)
         self.ids.choose_box.remove_widget(self.address_box)
         self.ids.choose_box.remove_widget(self.password_box)
+    def change_to_address(self):
+        self.remove_widgets()
         self.ids.choose_box.add_widget(self.address_box)
     def change_to_personal(self):
-        self.ids.choose_box.remove_widget(self.personal_box)
-        self.ids.choose_box.remove_widget(self.address_box)
-        self.ids.choose_box.remove_widget(self.password_box)
+        self.remove_widgets()
         self.ids.choose_box.add_widget(self.personal_box)
     def change_to_update_password(self):
-        self.ids.choose_box.remove_widget(self.password_box)
-        self.ids.choose_box.remove_widget(self.address_box)
-        self.ids.choose_box.remove_widget(self.personal_box)
+        self.remove_widgets()
         self.ids.choose_box.add_widget(self.password_box)
 
     def init_fields(self):
@@ -163,6 +161,19 @@ class Personal_box(BoxLayout):
             else:
                 self.ids.birth_date_input.text = self.user.birth_date
 
+
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(year=1996, month=12, day=15)
+        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+        date_dialog.open()
+
+    # click OK
+    def on_save(self, instance, value, date_range):
+        self.ids.birth_date_input.text = str(value)
+
+    # click Cancel
+    def on_cancel(self, instance, value):
+        pass
 class Password_box(BoxLayout):
 
     def __init__(self, **kwargs):
@@ -427,18 +438,7 @@ class BoxiLayout(BoxLayout):
         self.ids.card_type.text = ""
         self.ids.id_number.text = ""
 
-    def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
-        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-        date_dialog.open()
 
-    # click OK
-    def on_save(self, instance, value, date_range):
-        self.ids.birth_date.text = str(value)
-
-    # click Cancel
-    def on_cancel(self, instance, value):
-        pass
 
     def show_date_picker_exp_date(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)
