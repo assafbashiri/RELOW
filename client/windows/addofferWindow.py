@@ -103,11 +103,11 @@ class Add_offer_box(BoxLayout):
         self.dialog=None
         colors = ['green','black', 'blue', 'white']
         for color in colors:
-            btn = Button(text=' % s' % color, size_hint=(None, None), height=40)
+            btn = MyButton(text=' % s' % color)
             btn.bind(on_release=lambda btn: self.add_color(btn))
             self.color_dropdown.add_widget(btn)
-        self.color_mainbutton = Button(text='colors')
-        self.color_mainbutton.bind(on_release=self.color_dropdown.open)
+        self.color_mainbutton = MyButton(text='colors')
+        self.color_mainbutton.bind(on_press=lambda x:self.color_dropdown.open())
 
         self.size_list = []
         self.size_dropdown = DropDown()
@@ -115,14 +115,15 @@ class Add_offer_box(BoxLayout):
         self.size_mainbutton = Button(text='sizes')
         self.size_mainbutton.bind(on_press = self.size_dropdown.open)
         Clock.schedule_once(self.add_color_start, 0)
-        Clock.schedule_once(self.add_size_start, 0)
+        #Clock.schedule_once(self.add_size_start, 0)
 
 
-
+    def back(self):
+        App.get_running_app().root.current = "menu_screen"
 
 
     def add_color_start(self,  num):
-        self.ids.colors.add_widget(self.color_mainbutton)
+        self.ids.color_box.add_widget(self.color_mainbutton)
         # self.ids.colors.remove_widget(self.ids.color)
 
     def add_size_start(self, num):
@@ -490,3 +491,9 @@ dropdown = CustomDropDown()
 mainbutton = Button(text='Hello', size_hint=(None, None))
 mainbutton.bind(on_release=dropdown.open)
 dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
+
+class MyButton(Button):
+    def __init__(self, **kwargs):
+        super(MyButton, self).__init__(**kwargs)
+        self.text = kwargs['text']
+

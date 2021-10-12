@@ -3,181 +3,209 @@
     name: 'add_offer_screen'
     Add_offer_box:
         id: add_offer_box
+    Down_menu:
+        id: down_menu
 
 
 <Add_offer_box>
-    #orientation: "horizontal"
+    orientation: "vertical"
     id: add_offer_box
-    #pos_hint: {'center_x': .5, 'center_y': .5}
-    BoxLayout_helper:
-        id: package
-        orientation: "vertical"
-        canvas.before:
-            Color:
-                rgba: 0/256, 165/256, 255/256, .69
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        MDBoxLayout:
-            id:content
-            orientation: "vertical"
-
-
-
-            MDDropDownItem:
-                write_tab: False
-                canvas.before:
+    BoxLayout:
+        id: back_box
+        size_hint: .07,.1
+        MDIconButton:
+            icon: "windows/images/back_btn.png"
+            on_press:root.back()
+            pos_hint: { 'center_y': .5}
+    BoxLayout:
+        id: title_box
+        size_hint: .45,.2
+        MDLabel:
+            pos_hint: {'top':1}
+            size_hint: .5,.5
+            id : add_offer_label
+            text : "Add Offer"
+            font_size: 32
+    ScrollView:
+        id: scrollview
+        size_hint: 1,3
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            canvas:
+                Color:
+                    rgba: (1, 0, 0, .5) # DarkOliveGreen
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            GridLayout:
+                id: product_name_box
+                cols:1
+                size_hint_y: None
+                height: self.minimum_height
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                canvas:
                     Color:
-                        rgba: 0/256, 165/256, 255/256, .69
+                        rgba: (0, 1, 0, .5) # DarkOliveGreen
                     Rectangle:
-                        pos: self.pos
                         size: self.size
-                id: drop_category
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                text: 'category'
-                on_release: root.show_dropdown_category()
+                        pos: self.pos
+                MDLabel:
+                    id: product_name_label
+                    size_hint: None, None
+                    width: 350
+                    height: 90
+                    text: "Product Name"
+                    font: 'sofia pro bold'
+                    font_size:20
 
 
-            MDTextFieldRound:
-                write_tab: False
-                id:product_name
-                text:'productname'
-                hint_text: "product name"
+                TextInput:
+                    id: product_name_input
+                    size_hint: None, None
+                    width: 350
+                    height: 50
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    #size_hint_y: 1.6
+                    write_tab: False
+                    multiline: False
 
-            MDTextFieldRound:
-                write_tab: False
-                id:company
-                text:'comapny'
-                hint_text: "company name"
+            GridLayout:
+                id: company_name_box
+                cols:1
+                size_hint_y: None
+                height: self.minimum_height
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                canvas:
+                    Color:
+                        rgba: (0,0,1,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                MDLabel:
+                    id: company_name_label
+                    size_hint: None, None
+                    width: 350
+                    height: 90
+                    text: "Company Name"
+                    font: 'sofia pro bold'
+                    font_size:20
 
-            MDTextFieldRound:
-                write_tab: False
-                id:description
-                text:'description'
-                hint_text: "description"
+                TextInput:
+                    id: company_name_input
+                    size_hint: None, None
+                    width: 350
+                    height: 50
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    #size_hint_y: 1.6
+                    write_tab: False
+                    multiline: False
 
-            MDTextFieldRound:
-                write_tab: False
-                text : "11-11-2022"
-                id:end_date
-                hint_text: "end date"
-                on_focus:root.show_date_picker()
+            GridLayout:
+                id: description_box
+                cols:1
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                size_hint_y: None
+                height: self.minimum_height
+                canvas:
+                    Color:
+                        rgba: (0,1,1,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                MDLabel:
+                    id: description_label
+                    size_hint: None, None
+                    width: 350
+                    height: 90
+                    text: "Description"
+                    font: 'sofia pro bold'
+                    font_size:20
 
-            BoxLayout:
-                orientation: 'horizontal'
-                id:colors
-                size_hint_y: .2
+                TextInput:
+                    id: description_input
+                    size_hint: None, None
+                    width: 350
+                    height: 50
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    #size_hint_y: 1.6
+                    write_tab: False
+                    multiline: False
 
-                #Button:
-                   # id:color
-                    #text: 'add color'
-                    #on_press: root.add_color_start()
+            GridLayout:
+                id: color_box
+                cols:1
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                size_hint_y: None
+                height: self.minimum_height
+                canvas:
+                    Color:
+                        rgba: (1,1,1,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                MDLabel:
+                    id: color_label
+                    size_hint: None, None
+                    width: 350
+                    height: 90
+                    text: "Colors"
+                    font: 'sofia pro bold'
+                    font_size:20
 
-            MDBoxLayout:
-                orientation: 'horizontal'
+            GridLayout:
                 id: size_box
-                size_hint_y: .2
-
-                #Button:
-                   # id: add_size
-                   # text: 'add size'
-                   # on_press: root.add_size_start()
-
-
-            MDRoundFlatButton:
-                text:"ADD STEP"
-                font_size: 12
-                on_press: root.add_step()
-
-            MDGridLayout:
-                cols: 3
-                id: stepi
+                cols:1
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                size_hint_y: None
+                height: self.minimum_height
+                canvas:
+                    Color:
+                        rgba: (.5,.5,.5,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
                 MDLabel:
-                    id: steps_label1
-                    text: "step 1"
+                    id: size_label
+                    size_hint: None, None
+                    width: 350
+                    height: 90
+                    text: "Sizes"
+                    font: 'sofia pro bold'
+                    font_size:20
 
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'10'
-                    id:limit1
-                    hint_text: "limit"
-                    icon_right: "account"
-                    size_hint_x:None
-                    width:200
-
-
-
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'1000'
-                    id:price1
-                    hint_text: "price"
-                    icon_right: "account"
-
+            GridLayout:
+                id: step_box
+                cols:1
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                size_hint_y: None
+                height: self.minimum_height
+                canvas:
+                    Color:
+                        rgba: (.2,.2,.2,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
                 MDLabel:
-                    id: steps_label2
-                    text: "step 2"
+                    id: step_label
+                    size_hint: None, None
+                    width: 350
+                    height: 90
+                    text: "Sizes"
+                    font: 'sofia pro bold'
+                    font_size:20
 
 
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'30'
-                    id:limit2
-                    hint_text: "limit"
-                    icon_right: "account"
-                    size_hint_x:None
-                    width:200
-
-
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'800'
-                    id:price2
-                    hint_text: "price"
-                    icon_right: "account"
-
-                MDLabel:
-                    id: steps_label3
-                    text: "step 3"
-
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'50'
-                    id:limit3
-                    hint_text: "limit"
-                    icon_right: "account"
-                    size_hint_x:None
-                    width:200
-
-
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'500'
-                    id:price3
-                    hint_text: "price"
-                    icon_right: "account"
-
-            MDRoundFlatButton:
-                text:"ADD PHOTO"
-                font_size: 12
-                on_press: root.ids.choose.file_manager_open()
-
-            choose_photo_layout:
-                id: choose
-                size_hint_y: .2
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                #orientation: "vertical"
-
-            MDRoundFlatButton:
-                text:"REMOVE PHOTO"
-                font_size: 12
-                on_press: root.ids.choose.remove_photo()
-
-            MDRoundFlatButton:
-                id: add_offer_button
-                text:"ADD OFFER"
-                font_size: 12
-                on_press: root.add_offer()
-
-    Side_box:
-        id:side_box
+<MyButton>:
+    #id: address_btn
+    text:"new btn"
+    #pos_hint: {'top':1}
+    #color: 0,0,0,0.65
+    #size_hint_y: .1
+    background_color: (0,0,0,0.11)
+    color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+    #on_press: root.change_to_address()
