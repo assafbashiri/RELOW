@@ -31,7 +31,7 @@ class PAYMENTScreen(Popup):
             if ans.res is True:
                 self.user.get_active_buy_offers().append(self.offer)
                 self.offer = ans.data
-                data = App.get_running_app().root.current_screen.ids.menu_box.children[1].data
+                data = App.get_running_app().root.current_screen.ids.Main_page_box.children[1].data
                 for object in data:
                     offer = object['offer']
                     if offer[0].offer_id == self.offer_id:

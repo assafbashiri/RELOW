@@ -11,7 +11,7 @@ from kivymd.toast import toast
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 from Service.Object.CategoryService import CategoryService
-from windows.mainWindow import Menu_box
+from windows.mainWindow import Main_page_box
 from windows.offers_list import Offers_Screen
 
 from Response import Response
@@ -34,7 +34,7 @@ class Backend_controller:
     def insert_offers(self):
         pass
         # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
-        # Menu_box.insert_offers(self= Menu_box)
+        # Main_page_box.insert_offers(self= Main_page_box)
     def get_categories(self):
         return self.categories
 
@@ -111,9 +111,9 @@ class Backend_controller:
             self.guest = False
             self.seller = False
             if self.seller == 0:
-                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'BECOME A SELLER'
+                App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'BECOME A SELLER'
             else:
-                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
+                App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'ADD OFFER'
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
             self.store.put("user", user_id= ans.data['user_id'],
@@ -160,9 +160,9 @@ class Backend_controller:
             self.seller = self.user_service.seller
             if App.get_running_app().root is not None:
                 if self.seller == 0:
-                    App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'BECOME A SELLER'
+                    App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'BECOME A SELLER'
                 else:
-                    App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
+                    App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'ADD OFFER'
         return ans
 
     def login(self, email, password):
@@ -182,9 +182,9 @@ class Backend_controller:
             self.guest = False
             self.seller = self.user_service.seller
             if self.seller == 0:
-                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'BECOME A SELLER'
+                App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'BECOME A SELLER'
             else:
-                App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
+                App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'ADD OFFER'
         return ans
 
     def logout(self):

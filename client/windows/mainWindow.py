@@ -59,6 +59,108 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
+
+class Manager(ScreenManager):
+    # def __init__(self, **kwargs):
+    #     self.name = 'home'
+    #     super(Manager, self).__init__(**kwargs)
+    #     self.add_widget(ADDOFFERScreen)
+    def back_to_main(self):
+        self.current = "menu_screen"
+
+
+class Side_box(BoxLayout):
+    def __init__(self, **kwargs):
+        super(Side_box, self).__init__(**kwargs)
+        self.dialog = None
+
+    def login_or_connect(self):
+        # for the btn text
+        controller = App.get_running_app().controller
+        if controller.guest is True:
+            return "CONNECT"
+        else:
+            return "LOGOUT"
+
+    def logout_connect(self):
+        # apply the method for the btn
+        controller = App.get_running_app().controller
+        if controller.guest is True:
+            self.connect()
+        else:
+            self.logout()
+
+
+    def show_user_name(self, name):
+        self.ids.hello.text = name
+
+    def get_user_name(self):
+        answer = App.get_running_app().controller.user_service.first_name
+        if answer is None:
+            return "        Hello, "+"guest"
+        return "        Hello, "+App.get_running_app().controller.user_service.first_name
+
+    def connect(self):
+        App.get_running_app().root.current = 'connect_screen'
+
+    def logout(self):
+        if App.get_running_app().controller.guest is True:
+            Utils.pop(self, "guest cant logout", "alert")
+            return
+        ans = App.get_running_app().controller.logout()
+        # after logout back to the main menu
+        if ans.res is True:
+            App.get_running_app().root.current = "menu_screen"
+            if App.get_running_app().root is not None:
+                self.update_hello_name("        Hello, " + "guest")
+                self.update_connect_logout_btn_text("CONNECT")
+
+    def update_connect_logout_btn_text(self, text):
+        self.ids.logout_register.text = text
+
+    def update_hello_name(self, msg):
+        self.ids.hello.text = msg
+#         # menu screen 0
+#         App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text = msg
+#         # connect screen 1
+#         App.get_running_app().root.screens[1].children[0].ids.side_box.ids.hello.text = msg
+#         # account screen 2
+#         App.get_running_app().root.screens[2].children[0].ids.side_box.ids.hello.text = msg
+#         # search screen 3
+#         App.get_running_app().root.screens[3].children[0].ids.side_box.ids.hello.text = msg
+#         # add offer screen 4
+#         App.get_running_app().root.screens[4].children[0].ids.side_box.ids.hello.text = msg
+#         # my offers screen 5
+# #        App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
+#         # update offers screen 6
+#         App.get_running_app().root.screens[6].children[0].ids.side_box.ids.hello.text = msg
+#         # register screen 7
+# #        App.get_running_app().root.screens[7].ids.side_box.ids.hello.text = msg
+#         # login screen 8
+#  #       App.get_running_app().root.screens[8].ids.side_box.ids.hello.text = msg
+#         # # contact screen 9
+#         # App.get_running_app().root.screens[9].children[0].ids.side_box.ids.hello.text = msg
+#         # # confirmation screen 10
+#         # z = App.get_running_app().root.screens[10].children[0].ids.side_box.ids.hello.text = msg
+#         # # password screen 11
+#         # z = App.get_running_app().root.screens[11].children[0].ids.side_box.ids.hello.text = msg
+#         # seller screen 12
+#   #      App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
+
+
+
+class Category_box(BoxLayout):
+    pass
+
+
+class Sub_Category_box(BoxLayout):
+    pass
+
+
+class Down_menu(BoxLayout):
+    def __init__(self, **kwargs):
+        super(Down_menu, self).__init__(**kwargs)
+
     def move_to_contact_us(self):
         controller = App.get_running_app().controller
         if controller.guest is True:
@@ -77,6 +179,10 @@ class MENUScreen(Screen):
         else:
             App.get_running_app().root.current = 'add_offer_screen'
 
+    def move_to_my_offers(self):
+        print("heyy")
+        App.get_running_app().root.current = 'my_offers_screen'
+
     def move_to_account(self):
         controller = App.get_running_app().controller
         if controller.guest is True:
@@ -93,89 +199,9 @@ class MENUScreen(Screen):
         else:
             return 'ADD OFFER'
 
-
-class Manager(ScreenManager):
-    # def __init__(self, **kwargs):
-    #     self.name = 'home'
-    #     super(Manager, self).__init__(**kwargs)
-    #     self.add_widget(ADDOFFERScreen)
-    def back_to_main(self):
-        self.current = "menu_screen"
-
-
-class Side_box(BoxLayout):
+class Main_page_box(BoxLayout):
     def __init__(self, **kwargs):
-        super(Side_box, self).__init__(**kwargs)
-        self.dialog = None
-
-    #     self.bind(pos=self.update_rect, size=self.update_rect)
-    #     self.rect = Rectangle(pos=self.pos, size=self.size)
-    #
-    # def update_rect(self, instance, value):
-    #     self.rect.pos = self.pos
-    #     self.rect.size = self.size
-
-    def show_user_name(self, name):
-        self.ids.hello.text = name
-
-    def get_user_name(self):
-        answer = App.get_running_app().controller.user_service.first_name
-        if answer is None:
-            return "        Hello, "+"guest"
-        return "        Hello, "+App.get_running_app().controller.user_service.first_name
-
-    def logout(self):
-        if App.get_running_app().controller.guest is True:
-            Utils.pop(self, "guest cant logout", "alert")
-            return
-        ans = App.get_running_app().controller.logout()
-        # after logout back to the main menu
-        if ans.res is True:
-            self.parent.parent.parent.back_to_main()
-            if App.get_running_app().root is not None:
-                self.update_hello_name("        Hello, " + "guest")
-
-    def update_hello_name(self, msg):
-        # menu screen 0
-        App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.hello.text = msg
-        # connect screen 1
-        App.get_running_app().root.screens[1].children[0].ids.side_box.ids.hello.text = msg
-        # account screen 2
-        App.get_running_app().root.screens[2].children[0].ids.side_box.ids.hello.text = msg
-        # search screen 3
-        App.get_running_app().root.screens[3].children[0].ids.side_box.ids.hello.text = msg
-        # add offer screen 4
-        App.get_running_app().root.screens[4].children[0].ids.side_box.ids.hello.text = msg
-        # my offers screen 5
-#        App.get_running_app().root.screens[5].children[0].ids.side_box.ids.hello.text = msg
-        # update offers screen 6
-        App.get_running_app().root.screens[6].children[0].ids.side_box.ids.hello.text = msg
-        # register screen 7
-#        App.get_running_app().root.screens[7].ids.side_box.ids.hello.text = msg
-        # login screen 8
- #       App.get_running_app().root.screens[8].ids.side_box.ids.hello.text = msg
-        # # contact screen 9
-        # App.get_running_app().root.screens[9].children[0].ids.side_box.ids.hello.text = msg
-        # # confirmation screen 10
-        # z = App.get_running_app().root.screens[10].children[0].ids.side_box.ids.hello.text = msg
-        # # password screen 11
-        # z = App.get_running_app().root.screens[11].children[0].ids.side_box.ids.hello.text = msg
-        # seller screen 12
-  #      App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
-
-
-
-class Category_box(BoxLayout):
-    pass
-
-
-class Sub_Category_box(BoxLayout):
-    pass
-
-
-class Menu_box(BoxLayout):
-    def __init__(self, **kwargs):
-        super(Menu_box, self).__init__(**kwargs)
+        super(Main_page_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
 
@@ -202,7 +228,7 @@ class TestApp(MDApp):
 
 
     def on_start(self):
-        b = self.root.current_screen.ids.menu_box.ids.recycle1.insert_offers(
+        b = self.root.current_screen.ids.Main_page_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.get_hot_deals())
 
     def on_stop(self):

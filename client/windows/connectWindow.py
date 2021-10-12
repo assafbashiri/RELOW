@@ -148,24 +148,5 @@ class Connect_box(BoxLayout):
         self.ids.drop.text = gender_string
         self.drop_down.dismiss()
 
-    def login(self):
-        email = self.ids.email.text
-        password = self.ids.password.text
-        ans = App.get_running_app().controller.login(email, password)
-        # after logout back to the main menu
-        if ans.res is True:
-            self.parent.parent.back_to_main()
 
-
-    def clear_login(self):
-        self.ids.email.text=""
-        self.ids.log_in_password.text=""
-
-    def logout(self):
-
-        ans = App.get_running_app().controller.logout()
-
-        # after logout back to the main menu
-        if ans.res is True:
-            self.parent.parent.back_to_main()
 

@@ -4,61 +4,62 @@
     name: 'menu_screen'
     Side_box:
         id: side_box
-    Menu_box:
-        id: menu_box
-    BoxLayout:
-        canvas.before:
-            Color:
-                rgba: (255/255,255/255,255/255,1)
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-        padding: [50,10,50,10]
-        size_hint: 1,0.1
-        id: after
-        MDIconButton:
-            text: "ACCOUNT"
-            icon: "windows/images/account1.png"
-            on_press:
-                root.move_to_account();
-        MDLabel:
-            text: ""
-            size_hint_x: 0.5
-        MDIconButton:
-            text: "SEARCH"
-            icon: "windows/images/search1.png"
-            on_press:
-                root.parent.current = 'search_screen'
-        MDLabel:
-            text: ""
-            size_hint_x: 0.5
-        MDIconButton:
-            text: "MY OFFERS"
-            icon: "windows/images/my_offers_icon.png"
-            on_press:
-                root.parent.current = 'my_offers_screen'
-        MDLabel:
-            text: ""
-            size_hint_x: 0.5
+    Main_page_box:
+        id: Main_page_box
+    Down_menu:
+        id: down_menu
 
-        MDIconButton:
-            text: "CONTACT US"
-            icon: "windows/images/contactus1.png"
-            on_press:
-                root.move_to_contact_us()
-        MDLabel:
-            text: ""
-            size_hint_x: 0.5
+<Down_menu>
+    canvas.before:
+        Color:
+            rgba: (255/255,255/255,255/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+    padding: [50,10,50,10]
+    size_hint: 1,0.1
+    id: after
+    MDIconButton:
+        text: "ACCOUNT"
+        icon: "windows/images/account1.png"
+        on_press:
+            root.move_to_account();
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+#    MDIconButton:
+#        text: "SEARCH"
+#        icon: "windows/images/search1.png"
+#        on_press:
+#            root.move_to_search();
+#            root.parent.current = 'search_screen'
 
-        MDIconButton:
-            id : add_offer
-            text: root.is_seller()
-            icon: "windows/images/addoffer1.png"
-            on_press:
-                root.move_to_add_offer()
-<Menu_box>
+    MDIconButton:
+        text: "MY OFFERS"
+        icon: "windows/images/my_offers_icon.png"
+        on_press:
+            root.move_to_my_offers();
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+
+    MDIconButton:
+        text: "CONTACT US"
+        icon: "windows/images/contactus1.png"
+        on_press:
+            root.move_to_contact_us()
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+
+    MDIconButton:
+        id : add_offer
+        icon: "windows/images/addoffer1.png"
+        on_press:
+            root.move_to_add_offer()
+<Main_page_box>
     size_hint: 1,0.79
-    id: Menu_box
+    id: Main_page_box
     orientation: "horizontal"
     BoxLayout:
         spacing:2
@@ -116,23 +117,28 @@
             size_hint_x: 0.15
             text: root.get_user_name()
 
-        Button:
-            id: logout/register
-            text: "CONNECT"
-            size_hint_x: 0.1
-            background_color: (0,0,0,0)
-            color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-            on_press:
-                root.parent.parent.current = 'connect_screen'
 
         Button:
-            id: logout
-            text: "LOGOUT"
+            id: logout_register
+            text: root.login_or_connect()
             size_hint_x: 0.1
             background_color: (0,0,0,0)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
             on_press:
-                root.logout()
+                root.logout_connect()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         Button:
             text: "Terms"
@@ -140,7 +146,7 @@
             background_color: (0,0,0,0)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
             on_press:
-                root.parent.parent.manager.current = 'terms_screen'
+                root.parent.parent.current = 'terms_screen'
 
     BoxLayout:
         orientation: 'horizontal'

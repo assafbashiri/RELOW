@@ -57,7 +57,7 @@ class SellerScreen(Screen):
 
     def back_to_main(self):
         App.get_running_app().root.current = 'menu_screen'
-        a = App.get_running_app().root.screens[0].ids.menu_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
+        a = App.get_running_app().root.screens[0].ids.Main_page_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
         b = 5
 
 class seller_terms(Popup):
