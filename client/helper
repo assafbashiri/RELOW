@@ -147,3 +147,61 @@ GridLayout:
                 text:"ADD OFFER"
                 font_size: 12
                 on_press: root.add_offer()
+
+
+
+GridLayout:
+                    id: first_step_box
+                    size_hint_y: None
+                    height: self.minimum_height
+                    cols: 1
+                    MyStepLabel:
+                        text:'Step '+root.get_step()
+                    GridLayout:
+                        id: first_step_content_box
+                        cols:2
+                        size_hint_y: None
+                        height: self.minimum_height
+                        MyStepLabel:
+                            id: minimum
+                            text: "min friends"
+                        MyStepInput:
+                            id: min_input
+                        MyStepLabel:
+                            id: maximum
+                            text: 'max friends'
+                        MyStepInput:
+                            id:max_input
+                        MyStepLabel:
+                            id: price
+                            text: "price"
+                        MyStepInput:
+                            id:price_input
+                GridLayout:
+                    id: second_step_box
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    MyStepLabel:
+                        text:'Step '+root.get_step()
+                    GridLayout:
+                        id: second_step_content_box
+                        cols:2
+                        size_hint_y: None
+                        height: self.minimum_height
+                        MyStepLabel:
+                            id: minimum
+                            text: "min friends"
+                        MyStepInput:
+                            id: min_input
+                        MyStepLabel:
+                            id: maximum
+                            text: 'max friends'
+                        MyStepInput:
+                            id:max_input
+                        MyStepLabel:
+                            id: price
+                            text: "price"
+                        MyStepInput:
+                            id:price_input
