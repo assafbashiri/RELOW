@@ -98,6 +98,7 @@ if __name__ == '__main__':
     Builder.load_file('windows/sellerWindow.kv')
     Builder.load_file('windows/paymentWindow.kv')
     Builder.load_file('windows/termsWindow.kv')
+    Builder.load_file('windows/offerWindow.kv')
     req_answers = Req_Answers()
     t1 = threading.Thread(target=lambda: net(req_answers))
     t1.start()

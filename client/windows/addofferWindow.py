@@ -6,6 +6,7 @@ from kivy.uix.button import Button
 from kivy.uix.carousel import Carousel
 from kivy.uix.colorpicker import ColorPicker
 from kivy.uix.dropdown import DropDown
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
@@ -88,34 +89,62 @@ class Add_offer_box(BoxLayout):
         super(Add_offer_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
-        # self.choose = Color_choose()
-        # self.color_box = BoxLayout(orientation= 'horizontal')
-        # self.add_widget(self.color_box)
         self.chosen_cat_name = None
         self.sub_cat12 = None
-        self.gender = 0
-        self.num_of_added_step = 0
+        self.dialog = None
+        self.step = 0
+
         self.next_step = []
         self.price = []
         self.limit = []
         self.color_list = []
+        self.size_list = []
+
+#------------------------COLOR DROPDOWN---------------------------#
+
         self.color_dropdown = DropDown()
-        self.dialog=None
         colors = ['green','black', 'blue', 'white']
         for color in colors:
             btn = MyButton(text=' % s' % color)
             btn.bind(on_release=lambda btn: self.add_color(btn))
             self.color_dropdown.add_widget(btn)
         self.color_mainbutton = MyButton(text='colors')
-        self.color_mainbutton.bind(on_press=lambda x:self.color_dropdown.open())
+        self.color_mainbutton.bind(on_press=lambda x:self.color_dropdown.open(x))
 
-        self.size_list = []
+# ------------------------SIZE NUM DROPDOWN---------------------------#
+
+        size_num = ['1', '2', '3', '4']
+        self.size_num_dropdown = DropDown()
+        for size in size_num:
+            btn = MyButton(text=' % s' % size)
+            btn.bind(on_release=lambda btn: self.add_size_num(btn))
+            self.size_num_dropdown.add_widget(btn)
+        self.size_num_mainbutton = MyButton(text='sizes')
+        self.size_num_mainbutton.bind(on_press=self.size_num_dropdown.open)
+
+# ------------------------SIZE KIND DROPDOWN---------------------------#
+
+        size_kind = ['inch', 'cm', 'kg', 'pond']
+        self.size_kind_dropdown = DropDown()
+        for size_kind in size_kind:
+            btn = MyButton(text=' % s' % size_kind)
+            btn.bind(on_release=lambda btn: self.add_size_kind(btn))
+            self.size_kind_dropdown.add_widget(btn)
+        self.size_kind_mainbutton = MyButton(text='size kind')
+        self.size_kind_mainbutton.bind(on_press = self.size_kind_dropdown.open)
+
+# ------------------------SIZE RES DROPDOWN---------------------------#
+
         self.size_dropdown = DropDown()
-        btn.bind(on_release=lambda btn: self.remove_size(btn))
-        self.size_mainbutton = Button(text='sizes')
-        self.size_mainbutton.bind(on_press = self.size_dropdown.open)
+        self.size_mainbutton = MyButton(text='My Sizes')
+        self.size_mainbutton.bind(on_press=self.size_dropdown.open)
+
+        self.add_size = MyButton(text='Add')
+        self.add_size.bind(on_press=lambda tex: self.add_size_(tex))
+
+# ---------------------------------------------------#
         Clock.schedule_once(self.add_color_start, 0)
-        #Clock.schedule_once(self.add_size_start, 0)
+        Clock.schedule_once(self.add_size_start, 0)
 
 
     def back(self):
@@ -124,23 +153,31 @@ class Add_offer_box(BoxLayout):
 
     def add_color_start(self,  num):
         self.ids.color_box.add_widget(self.color_mainbutton)
-        # self.ids.colors.remove_widget(self.ids.color)
 
     def add_size_start(self, num):
-        self.size_input = TextInput(hint_text= "choose size")
-        self.ids['sizes'] = self.size_input
-        self.ids.size_box.add_widget(self.size_input)
-        self.insert_size = Button(text='add size')
-        self.insert_size.bind(on_press=lambda tex: self.add_size_(tex))
+        self.ids.size_drop_box.add_widget(self.size_num_mainbutton)
+        self.ids['size_num'] = self.size_num_mainbutton
+        self.ids.size_drop_box.add_widget(self.size_kind_mainbutton)
+        self.ids['size_kind'] = self.size_kind_mainbutton
+        self.ids.size_drop_box.add_widget(self.add_size)
+        self.ids['add_size'] = self.add_size
+        self.ids.size_drop_box.add_widget(self.size_mainbutton)
+        self.ids['my_sizes'] = self.size_mainbutton
+
+        # self.size_input = TextInput(hint_text= "choose size")
+        # self.ids['sizes'] = self.size_input
+        # self.ids.size_box.add_widget(self.size_input)
+
+
         # self.ids.size_box.remove_widget(self.ids.add_size)
-        self.ids.size_box.add_widget(self.insert_size)
-        self.ids.size_box.add_widget(self.size_mainbutton)
+        # self.ids.size_box.add_widget(self.insert_size)
+        # self.ids.size_box.add_widget(self.size_num_mainbutton)
         # self.ids.add_size.bind(on_press= lambda tex: self.add_size_(tex))
 
     def add_size_(self, instance):
         # self.size_dropdown.dismiss()
-        text = self.ids.sizes.text
-        btn = Button(text='%s' % text, size_hint=(None, None), height=40)
+        text = self.ids.size_num.text+' '+self.ids.size_kind.text
+        btn = MyButton(text='%s' % text, size_hint=(None, None), height=40)
         btn.bind(on_release=lambda btn: self.remove_size(btn))
 
         if text not in self.size_list:
@@ -166,20 +203,26 @@ class Add_offer_box(BoxLayout):
         else:
             self.color_list.append(instance.text)
             instance.background_color =(.34, 1, 1, 1)
-
+    def get_step(self):
+        self.step+=1
+        return self.step
     def add_step(self):
-        self.num_of_added_step = self.num_of_added_step + 1
-        num_of_step = self.num_of_added_step + 3
-        help = str(num_of_step)
-        temp1 = MDLabel(text="step " + help)
-        temp2 = MDTextField(hint_text= "limit")
-        temp3 = MDTextField(hint_text= "price")
-        self.next_step.append(temp1)
-        self.ids.stepi.add_widget(MDLabel(text="step " + help))
-        self.limit.append(temp2)
-        self.ids.stepi.add_widget(temp2)
-        self.price.append(temp3)
-        self.ids.stepi.add_widget(temp3)
+        self.step += 1
+        # num_of_step = self.num_of_added_step + 3
+        # help = str(num_of_step)
+        # temp1 = MDLabel(text="step " + help)
+        # temp2 = MDTextField(hint_text= "limit")
+        # temp3 = MDTextField(hint_text= "price")
+        # self.next_step.append(temp1)
+        # self.ids.stepi.add_widget(MDLabel(text="step " + help))
+        # self.limit.append(temp2)
+        # self.ids.stepi.add_widget(temp2)
+        # self.price.append(temp3)
+        # self.ids.stepi.add_widget(temp3)
+        self.step_to_add = StepLayout()
+        #self.ids[self.step] = step_to_add
+        self.ids.steps_box.add_widget(self.step_to_add, len(self.ids.steps_box.children)-1)
+        self.ids.cover.size_hint_y +=.33
 
     def add_offer(self):
         list = [v for k,v in self.ids.choose.photo_list.items()]
@@ -493,7 +536,46 @@ mainbutton.bind(on_release=dropdown.open)
 dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
 
 class MyButton(Button):
+    pass
+
+class MyStepInput(TextInput):
+    pass
+
+class MyStepLabel(MDLabel):
+    pass
+
+class StepLayout(GridLayout):
     def __init__(self, **kwargs):
-        super(MyButton, self).__init__(**kwargs)
-        self.text = kwargs['text']
+        super(StepLayout, self).__init__(**kwargs)
+    def get_step(self):
+        return self.parent.parent.parent.parent.get_step()
+# <StepLayout>:
+#     cols: 1
+#     id: self.get_step()
+#     size_hint_y: None
+#     height: self.minimum_height
+#     MyStepLabel:
+#         text:'Step '+self.parent.get_step()
+#     GridLayout:
+#         cols:2
+#         MyStepLabel:
+#             id: minimum
+#             text: "min friends"
+#         MyStepInput:
+#             id: min_input
+#         MyStepLabel:
+#             id: maximum
+#             text: 'max friends'
+#         MyStepInput:
+#             id:max_input
+#         MyStepLabel:
+#             id: price
+#             text: "price"
+#         MyStepInput:
+#             id:price_input
+class StepLayoutStart(GridLayout):
+    def __init__(self, **kwargs):
+        super(StepLayoutStart, self).__init__(**kwargs)
+    def get_step(self):
+        return self.parent.parent.parent.parent.get_step()
 

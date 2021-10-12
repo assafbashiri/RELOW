@@ -6,6 +6,12 @@
 <Connect_box>
     padding: [275,25,0,10]
     id: words
+    canvas.before:
+        Color:
+            rgba: (24/255,211/255,199/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
     size_hint: 1,1
     pos_hint_y: {'top':1}
     orientation: 'vertical'
@@ -24,19 +30,18 @@
         id: buttons
         size_hint: 1,0.4
         orientation: 'vertical'
-        background_color: (24/255,211/255,199/255,1)
         Button:
             size_hint: 0.5,0.1
             text: "REGISTER"
             pos_hint: {'top':8}
-            background_color: (0,0,0,0.11)
+            background_color: (255/255,255/255,255/255,0.8)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
             on_press: root.register_new()
         Button:
             size_hint: 0.5,0.1
             text: "LOGIN"
             pos_hint: {'top':1}
-            background_color: (0,0,0,0.11)
+            background_color: (255/255,255/255,255/255,0.8)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
             on_press: root.login_new()
     BoxLayout:
