@@ -15,21 +15,25 @@
         MDIconButton:
             icon: "windows/images/back_btn.png"
             on_press:root.back()
-            pos_hint: { 'center_y': .5}
+            #pos_hint: { 'center_y': .5}
 
     BoxLayout:
         id: title_box
         size_hint: .95,.1
         MDLabel:
-            pos_hint: {'y': 0.4}
-            #pos_hint: {'top':1, 'center':0.7}
-            halign:'center'
+
             pos_hint_x: None
+            pos_hint: {'center_x': 0.5}
             size_hint: .5,.5
             id : contact_us_label
             text : "My Account"
             font_size: 32
 
+    ##############empty grid to make space between the "my account"label and the 3 horizontal buttons
+
+    GridLayout:
+        cols:1
+        size_hint:.1,.1
     BoxLayout:
         id: choose_box
         orientation: 'horizontal'
@@ -66,26 +70,32 @@
         id: choose_box
         orientation: 'horizontal'
         size_hint: 1,.9
-
+########################################################################################################################################################################
 
 <Personal_box>:
     id:personal_box
     orientation: "vertical"
-    size_hint: 1,1.2
-    pos_hint:{'center_y':0.4}
+    size_hint: .5,.8
+    pos_hint:{'center_y':.5}
+
     ScrollView:
         do_scroll_y:True
+
         GridLayout:
             cols:1
-            size_hint_y: 3.5
+
+            size_hint_y: 3.0
             height: self.minimum_height
+            pos_hint:{'center_y':.1}
+            ############## grid of first name label and his text input
+
             GridLayout:
                 cols:1
                 size_hint_y: None
                 height: self.minimum_height
                 id: first_name_box
                 #orientation: 'vertical'
-                size_hint: 1,1.2
+                size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
 
                 MDLabel:
@@ -95,19 +105,21 @@
                     font_size:15
 
                 TextInput:
+
+
                     id: first_name_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
+
                     size_hint_y: .5
                     write_tab: False
                     multiline: False
 
+            ############## grid of last name label and his text input
 
             GridLayout:
                 cols:1
                 id: last_name_box
                 #orientation: 'vertical'
-                size_hint: 1,1.2
+                size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
 
                 MDLabel:
@@ -124,11 +136,13 @@
                     write_tab: False
                     multiline: False
 
+            ############## grid of email label and his text input
+
             GridLayout:
                 cols:1
                 id: email_box
                 #orientation: 'vertical'
-                size_hint: 1,1.2
+                size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
                 MDLabel:
                     id: email_label
@@ -144,11 +158,13 @@
                     write_tab: False
                     multiline: False
 
+            ############## grid of phone label and his text input
+
             GridLayout:
                 cols:1
                 id: phone_box
                 #orientation: 'vertical'
-                size_hint: 1,1.2
+                size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
 
                 MDLabel:
@@ -165,11 +181,12 @@
                     write_tab: False
                     multiline: False
 
+            ############## grid of birth date label and his text input
+
             GridLayout:
-                cols:4
+                cols:1
                 id: birth_date_box
-                #orientation: 'horizontal'
-                size_hint: .6,.6
+                size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
 
                 MDLabel:
@@ -178,43 +195,56 @@
                     font: 'sofia pro bold'
                     font_size:20
 
-                MDDropDownItem:
-                    id:year_input
-                    pos_hint: {'center_x': .1, 'center_y': .5}
-                    text: 'Year'
-                    font_name: "Arial"
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    multiline: False
-                    on_release: root.show_dropdown_year()
-                MDDropDownItem:
-                    id:month_input
-                    pos_hint: {'center_x': .1, 'center_y': .5}
-                    text: 'Month'
-                    font_name: "Arial"
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    multiline: False
-                    on_release: root.show_dropdown_month()
-                MDDropDownItem:
-                    id:day_input
-                    pos_hint: {'center_x': .1, 'center_y': .5}
-                    text: 'Day'
-                    font_name: "Arial"
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    multiline: False
-                    on_release: root.show_dropdown_day()
+                #grid layout of year, month, day
+
+                GridLayout:
+                    cols:3
+
+                    pos_hint:{'center_x':.1, 'center_y':.5}
+                    MDDropDownItem:
+                        id:year_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Year'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_year()
+                    MDDropDownItem:
+                        id:month_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Month'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_month()
+                    MDDropDownItem:
+                        id:day_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Day'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_day()
+
+
+            ############## grid of gender label and his text input
+
             GridLayout:
-                cols:3
+                cols:1
+                size_hint: 0.6,.6
+                #size:.5,.6
+
 
                 padding: ['20dp','30dp', '20dp' , '0dp']
                 id: Gender_box
                 #orientation: 'horizontal'
-                size_hint: 0.6,1.6
+
                 MDLabel:
                     id: gender_label
                     text: "Gender"
@@ -222,66 +252,93 @@
                     font_size:20
 
 
-
                 GridLayout:
-                    cols:1
-                    id: gender_male_box
-                    size: .5,.1
-                    pos_hint:{'center_x':.3, 'center_y':0.5}
-                    #orientation: 'vertical'
+                    cols:15
+                    size_hint: .2,.5
 
-
-                    MDIconButton:
-                        icon: "windows/images/male-user-icon.png"
-                        id: male_photo
-                        #text: "Male"
-                        #font: 'sofia pro bold'
-                        #font_size:10
-                    MDIconButton:
-                        id: female_photo
-                        icon: "windows/images/female-user-icon.png"
-                        #text: "Female"
-                        #font: 'sofia pro bold'
-                        #font_size:10
-
-                GridLayout:
-                    cols:1
-                    id: gender_female_box
-                    size: .5,0.9
-                    pos_hint:{'center_x':0.9, 'center_y':0.5}
-                    #orientation: 'vertical'
                     CheckBox:
                         id: male
                         text: "Male"
                         group:1
                         on_active: root.save_gender(self, self.active, 'male')
+
+                    MDLabel:
+                        id: male_label
+                        text: "Male"
+                    #MDIconButton:
+                        font_size:15
+                     #   icon: "windows/images/male-user-icon.png"
+                      #  id: male_photo
+
+
                     CheckBox:
                         id: female
                         text: 'Female'
                         group:1
 
-                GridLayout:
-                    #size:.5,.5
-                    size_hint:.7,.5
-                    pos_hint:{'center_x':.5, 'center_y':.5}
-                    cols:1
-                    id: update_box
-                    #orientation: 'vertical'
-                    #padding: ['100dp','30dp', '100dp' , '10dp']
-                    Button:
-                        size:0.2,0.2
-                        id: login_btn
-                        text: "Update"
-                        font_size: 30
-                        background_color: (0,0,0,0)
-                        background_normal: ''
-                        canvas.before:
-                            Color:
-                                rgba: (24/255,211/255,199/255,1)
-                            RoundedRectangle:
-                                size: self.size
-                                pos: self.pos
-                        on_press: root.personal()
+                    MDLabel:
+                        id: male_label
+                        text: "Female"
+                        font_size:15
+                    #MDIconButton:
+                     #   id: female_photo
+                      #  icon: "windows/images/female-user-icon.png"
+
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+                    GridLayout:
+                        cols:1
+
+
+
+            ######################empty grid layout to make space
+
+            GridLayout:
+                cols:3
+                size:.1,.1
+                size_hint:.1,.1
+
+            ############## grid of update button
+
+            GridLayout:
+                size:.5,.7
+                size_hint: .5,.5
+                pos_hint:{'center_x':.1, 'center_y':.1}
+                cols:1
+                id: update_box
+                #padding: ['100dp','30dp', '100dp' , '10dp']
+                Button:
+                    size:0.2,0.2
+                    id: login_btn
+                    text: "Update"
+                    font_size: 30
+                    background_color: (0,0,0,0)
+                    background_normal: ''
+                    canvas.before:
+                        Color:
+                            rgba: (24/255,211/255,199/255,1)
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                    on_press: root.personal()
 
 
 
@@ -528,6 +585,7 @@
                     size: self.size
                     pos: self.pos
             on_press:root.change_password()
+
 
 
 
