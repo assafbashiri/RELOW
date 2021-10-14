@@ -12,7 +12,13 @@ class Utils:
     def string_to_datetime_with_hour(self, str_date):
         return datetime.strptime(str_date, '%d/%m/%y %H:%M:%S')
     def string_to_datetime_without_hour(self, str_date):
-        return datetime.strptime(str_date, "%Y-%m-%d")
+        date_to_return=None
+        try:
+            date_to_return =  datetime.strptime(str_date, "%Y-%m-%d")
+        except Exception as e:
+            print("bad date - Utils 'string_to_datetime_without_hour'")
+        return date_to_return
+        a=5
     def compare_dates(self, end_date1, end_date2):
         a=0
 
