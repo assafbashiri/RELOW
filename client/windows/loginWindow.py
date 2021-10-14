@@ -160,6 +160,7 @@ class Login_box(BoxLayout):
                 else:
                     self.update_hello_name("        Hello, " + App.get_running_app().controller.user_service.first_name)
                     self.update_connect_logout_btn_text("LOGOUT")
+                App.get_running_app().root.screens[0].ids.side_box.close_offers_windows()
 
 
         else:

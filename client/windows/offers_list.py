@@ -83,13 +83,18 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
 
 
     def www(self,offer, photo_list):
-        # dic = {'offer'=offer, 'photo_list'=:hoto_list}
-        if hasattr(self, 'm'):
-            self.m = App.get_running_app().root.screens[14].init_offer(offer,photo_list)
-            App.get_running_app().root.current = 'offer_screen'
-        else:
-            self.m = App.get_running_app().root.screens[14].init_offer(offer,photo_list)
-            App.get_running_app().root.current = 'offer_screen'
+        offer_id = offer[0].offer_id
+        screens_len = len(App.get_running_app().root.screens)
+        screens = App.get_running_app().root.screens
+        screen_name = 'offer_screen'+str(offer_id)
+        for screen in screens:
+            if screen.name == screen_name:
+                App.get_running_app().root.current = screen_name
+                return
+        screens.append(OfferScreen())
+        screens[screens_len].init_offer(offer, photo_list)
+        App.get_running_app().root.current = screen_name
+
 
     def move_right(self):
         self.ids.car.load_next(mode='next')
