@@ -31,17 +31,18 @@ class PAYMENTScreen(Popup):
             if ans.res is True:
                 self.user.get_active_buy_offers().append(self.offer)
                 self.offer = ans.data
-                data = App.get_running_app().root.current_screen.ids.Main_page_box.children[1].data
-                for object in data:
-                    offer = object['offer']
-                    if offer[0].offer_id == self.offer_id:
-                        a = ans.data.current_buyers
-                        to_return = {}
-                        for buyer in ans.data.current_buyers:
-                            to_return[buyer['buyer_id']] = Struct(**buyer)
-                        offer[0].current_buyers = to_return
+                # data = App.get_running_app().root.ids.Main_page_box.children[1].data
+                # for object in data:
+                #     offer = object['offer']
+                #     if offer[0].offer_id == self.offer_id:
+                #         a = ans.data.current_buyers
+                #         to_return = {}
+                #         for buyer in ans.data.current_buyers:
+                #             to_return[buyer['buyer_id']] = Struct(**buyer)
+                #         offer[0].current_buyers = to_return
                 Utils.pop(self, "payment done", "success")
                 self.dismiss()
+                self.close_offers_windows()
             if ans.res is False:
                 # have to cancel the payment
                 pass
@@ -50,3 +51,12 @@ class PAYMENTScreen(Popup):
 
     def back(self):
         self.dismiss()
+
+    def close_offers_windows(self):
+        screens = App.get_running_app().root.screens
+        screen_name = 'offer_screen'
+        counter = 0
+        for screen in screens:
+            if screen_name in screen.name and len(screen_name) != len(screen.name):
+                screens.pop(counter)
+            counter = counter + 1

@@ -188,6 +188,7 @@ class Backend_controller:
         return ans
 
     def logout(self):
+        store = JsonStore('hello.json')
         logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()
@@ -195,6 +196,8 @@ class Backend_controller:
         if ans.res is True:
             self.user_service = None
             self.guest = True
+            if store.exists('user'):
+                self.store.delete('user')
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
@@ -225,9 +228,8 @@ class Backend_controller:
         if len(ans.message) == 0:
             print("User Details Updated Succesfully")
         else:
-            print(ans.message)
-        for ex in ans.message:
-            toast(ex)
+            for ex in ans.message:
+                Utils.pop(self,ex, "Alert")
         changed_user = ans.data
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
