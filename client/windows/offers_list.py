@@ -93,15 +93,10 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
 
     def move_right(self):
         self.ids.car.load_next(mode='next')
-        # if self.ids.car.next_slide is not None:
-        #     self.ids.car.current_slide = self.ids.car.next_slide
-        # self.current_slide
-        # self.next_slide
-        # self.previous_slide
+
     def move_left(self):
         self.ids.car.load_previous()
-        # if self.ids.car.previous_slide is not None:
-        #     self.ids.car.current_slide = self.ids.car.previous_slide
+
 
 class Carousel2(Carousel):
     def __init__(self,**kwargs):
