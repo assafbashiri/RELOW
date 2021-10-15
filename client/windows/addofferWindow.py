@@ -268,7 +268,7 @@ class Add_offer_box(BoxLayout):
         if self.num_of_added_step > 0:
             for i in range(0, self.num_of_added_step):
                 steps.append(vars(StepService(0, self.price[i].text, i+4, self.limit[i].text)))
-        ans = App.get_running_app().controller.add_active_sell_offer(name, company, colors, sizes, description, list, category_name,
+        ans = App.get_running_app().controller.add_offer(name, company, colors, sizes, description, list, category_name,
                               sub_category_name, steps, end_date)
 
         #toast(ans.message)

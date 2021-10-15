@@ -60,6 +60,12 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
+    def search_by_name(self):
+        search_word = self.children[2].children[0].children[1].text
+        App.get_running_app().root.screens[3].ids.search_box.ids.name.text = search_word
+        App.get_running_app().root.screens[3].search_by_name()
+        App.get_running_app().root.current = 'search_screen'
+
 
 class Manager(ScreenManager):
     # def __init__(self, **kwargs):
