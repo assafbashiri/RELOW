@@ -7,6 +7,7 @@ from kivy.event import EventDispatcher
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
+from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
@@ -247,6 +248,7 @@ class TestApp(MDApp):
             print("login failed")
             f = open('hello.json', 'r+')
             f.truncate(0)
+            self.controller.store = JsonStore('hello.json')
             self.check_connection()
 
 
