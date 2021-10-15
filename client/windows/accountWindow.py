@@ -97,7 +97,8 @@ class Personal_box(BoxLayout):
         super(Personal_box, self).__init__(**kwargs)
         self.controller = App.get_running_app().controller
         self.user = self.controller.user_service
-        self.gender = ''
+        self.area = '052'
+
 
 
 
@@ -130,7 +131,9 @@ class Personal_box(BoxLayout):
             ans = CheckValidity.checkValidityPhone(self, phone_number)
             if ans is False:
                 return
-
+        if self.gender == 0:
+            Utils.pop(self, "Please Choose Gender", "alert")
+            return
         #---------------------------------------------haveee toooo checkkk birthdateeee----------------------
         # if date_str != "":
         #     ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
@@ -160,20 +163,23 @@ class Personal_box(BoxLayout):
             else:
                 self.ids.first_name_input.text = self.user.first_name
             if (self.user.last_name is None):
-                self.ids.last_name.text = ""
+                self.ids.last_name_input.text = ""
             else:
                 self.ids.last_name_input.text = self.user.last_name
             if (self.user.phone is None):
-                self.ids.phone.text = ""
+                self.ids.phone_input.text = ""
             else:
-                self.ids.phone_input.text = self.user.phone
+                phone_with_area=self.user.phone
+                self.ids.phone_input.text = phone_with_area[3:len(phone_with_area)]
             if (self.user.email is None):
-                self.ids.email.text = ""
+                self.ids.email_input.text = ""
             else:
                 self.ids.email_input.text = self.user.email
 
-            if (self.user.gender is None):
-                self.ids.gender.text = ""
+            if (self.user.gender ==1):
+                self.gender = 1
+            elif self.user.gender == 2:
+                self.gender = 2
             else:
                 if self.user.gender =='male':
                     self.ids.male.active = True
@@ -192,6 +198,7 @@ class Personal_box(BoxLayout):
                 self.ids.year_input.text = year
                 self.ids.month_input.text = month
                 self.ids.day_input.text = day
+            self.gender=self.user.gender
     def show_dropdown_year(self):
         menu_items = []
         for year in range(2021, 1900, -1):
@@ -258,24 +265,48 @@ class Personal_box(BoxLayout):
     def save_day(self, day):
         self.ids.day_input.text = day
         self.drop_down_days.dismiss()
+    def show_dropdown_area(self):
+        menu_items = []
+        areas = ['050','052','054','055','057','058']
+        for area in areas:
+            menu_items.append(
+                {
+                    'text': area,
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=area: self.save_area(x),
+                }
+            )
 
-    def show_date_picker(self):
-        date_dialog = MDDatePicker(year=1996, month=12, day=15)
-        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-        date_dialog.open()
+        self.drop_down_areas = MDDropdownMenu(
+            caller=self.ids.area_input,
+            items=menu_items,
+            width_mult=4,
 
-    # click OK
-    def on_save(self, instance, value, date_range):
-        self.ids.birth_date_input.text = str(value)
+        )
+
+        self.drop_down_areas.open()
+    def save_area(self, area):
+        self.ids.area_input.text = area
+        self.area=area
+        self.drop_down_areas.dismiss()
 
     # click Cancel
     def on_cancel(self, instance, value):
         pass
-    def save_gender(self, instance, value, text):
+    def save_male(self, instance, value):
         if (value):
-            self.gender = 'male'
+            #male
+            self.gender = 1
         else:
-            self.gender = 'female'
+            #female
+            self.gender = 2
+    def save_female(self, instance, value):
+        if (value):
+            #male
+            self.gender = 2
+        else:
+            #female
+            self.gender = 1
 class Password_box(BoxLayout):
 
     def __init__(self, **kwargs):
@@ -383,7 +414,6 @@ class BoxiLayout(BoxLayout):
     def __init__(self, **kwargs):
         super(BoxiLayout, self).__init__(**kwargs)
         self.flag = 1  # 1 - update personal details   2 - add address details   3- add payment method
-        self.gender = 0
         self.controller = App.get_running_app().controller
         Clock.schedule_once(self.insert_color, 0)
         self.bind(pos=self.update_rect, size=self.update_rect)
@@ -443,12 +473,12 @@ class BoxiLayout(BoxLayout):
                 self.ids.email.text = ""
             else:
                 self.ids.email.text = self.user.email
-
+            #change gender initiallization
             if (self.user.gender is None):
                 self.ids.gender.text = ""
             else:
                 self.ids.gender.text = self.user.gender
-
+            # change gender initiallization
             if (self.user.birth_date is None):
                 self.ids.birth_date.text = ""
             else:

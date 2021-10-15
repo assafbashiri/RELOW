@@ -205,3 +205,51 @@ GridLayout:
                             text: "price"
                         MyStepInput:
                             id:price_input
+
+
+GridLayout:
+                id: steps_box
+                cols:1
+                size: (root.width , root.height)
+                size: (root.width , 350)
+                size_hint_x: None
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 30
+                row_force_default_height: True
+                canvas:
+                    Color:
+                        rgba: (.2,.2,.7,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                MyStepLabel:
+                    id: step_label
+                    text: "Steps"
+                    font: 'sofia pro bold'
+                    font_size:20
+                StepLayoutStart:
+                    id: first_step_box
+                StepLayoutStart:
+                    id: second_step_box
+                StepLayoutStart:
+                    id: third_step_box
+                GridLayout:
+                    cols:1
+                    size: (root.width , 100)
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: 100
+                    row_force_default_height: True
+                    MyButton:
+                        id: add_step
+                        text: 'add step'
+                        on_press: root.add_step()
+                    MyButton:
+                        id: remove_step
+                        text: 'remove step'
+                        on_press: root.remove_step()
+
+----------------------------------------------------------------------------------------------------
+

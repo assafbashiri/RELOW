@@ -141,7 +141,6 @@
             GridLayout:
                 cols:1
                 id: email_box
-                #orientation: 'vertical'
                 size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
                 MDLabel:
@@ -166,20 +165,40 @@
                 #orientation: 'vertical'
                 size_hint: .5,.6
                 padding: ['20dp','30dp', '20dp' , '0dp']
+                GridLayout:
+                    cols:1
+                    MDLabel:
+                        id: phone_label
+                        text: "Phone Number"
+                        font: 'sofia pro bold'
+                        font_size:14
+                    GridLayout:
+                        cols:1
+                        size_hint_y:2
+                    GridLayout:
+                        cols:3
+                        MDDropDownItem:
+                            id:area_input
+                            pos_hint: {'center_x': .1, 'center_y': .5}
+                            text: '052'
+                            font_name: "Arial"
+                            normal_color: 100,0,0,0
+                            color_active: 100,100,1,0
+                            write_tab: False
+                            multiline: False
+                            on_release: root.show_dropdown_area()
 
-                MDLabel:
-                    id: phone_label
-                    text: "Phone Number"
-                    font: 'sofia pro bold'
-                    font_size:14
+                        TextInput:
+                            id:phone_input
+                            normal_color: 100,0,0,0
+                            color_active: 100,100,1,0
+                            size_hint:.1,.1
+                            write_tab: False
+                            multiline: False
+                        GridLayout:
+                            cols:1
+                            size_hint_x:.9
 
-                TextInput:
-                    id:phone_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .5
-                    write_tab: False
-                    multiline: False
 
             ############## grid of birth date label and his text input
 
@@ -260,7 +279,7 @@
                         id: male
                         text: "Male"
                         group:1
-                        on_active: root.save_gender(self, self.active, 'male')
+                        on_active: root.save_male(self, self.active)
 
                     MDLabel:
                         id: male_label
@@ -275,6 +294,7 @@
                         id: female
                         text: 'Female'
                         group:1
+                        on_active:root.save_female(self, self.active)
 
                     MDLabel:
                         id: male_label
@@ -286,48 +306,28 @@
 
                     GridLayout:
                         cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
-                    GridLayout:
-                        cols:1
+                        size_hint_x:10
 
 
 
-            ######################empty grid layout to make space
 
-            GridLayout:
-                cols:3
-                size:.1,.1
-                size_hint:.1,.1
 
             ############## grid of update button
-
             GridLayout:
-                size:.5,.7
+                cols:1
+                size_hint_y:.5
+            GridLayout:
                 size_hint: .5,.5
                 pos_hint:{'center_x':.1, 'center_y':.1}
-                cols:1
+                cols:3
                 id: update_box
                 #padding: ['100dp','30dp', '100dp' , '10dp']
+                GridLayout:
+                    cols:1
+                    size_hint_x:.01
                 Button:
-                    size:0.2,0.2
-                    id: login_btn
+                    size_hint :0.3,3
+                    id: sign_up_btn
                     text: "Update"
                     font_size: 30
                     background_color: (0,0,0,0)
@@ -339,6 +339,10 @@
                             size: self.size
                             pos: self.pos
                     on_press: root.personal()
+                GridLayout:
+                    cols:1
+                    size_hint_x:.01
+
 
 
 

@@ -32,6 +32,7 @@ class Sub_Category_box(BoxLayout):
 
 class Login_box(BoxLayout):
 
+
     def exit(self):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
@@ -217,4 +218,5 @@ class Login_box(BoxLayout):
         # # z = App.get_running_app().root.screens[11].children[0].ids.side_box.ids.hello.text = msg
         # # seller screen 12
         # App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
-
+    def back_to_menu(self):
+        App.get_running_app().root.current = 'menu_screen'

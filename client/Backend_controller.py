@@ -228,9 +228,8 @@ class Backend_controller:
         if len(ans.message) == 0:
             print("User Details Updated Succesfully")
         else:
-            print(ans.message)
-        for ex in ans.message:
-            toast(ex)
+            for ex in ans.message:
+                Utils.pop(self,ex, "Alert")
         changed_user = ans.data
         if ans.res is True:
             self.user_service = self.build_user(ans.data)

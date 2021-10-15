@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.graphics import Rectangle, Color
+from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.carousel import Carousel
@@ -12,6 +13,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -39,7 +41,7 @@ from Utils.Utils import Utils
 from Service.Object.OfferService import OfferService
 from Service.Object.ProductService import ProductService
 from kivymd.uix.picker import MDDatePicker
-
+from kivymd.uix.menu import MDDropdownMenu
 
 from Service.Object.StepService import StepService
 
@@ -100,16 +102,19 @@ class Add_offer_box(BoxLayout):
         self.color_list = []
         self.size_list = []
 
+
+        #for photos
+        self.carousel = None
+        self.i = 0
+        self.photo_list = {}
+        self.dialog = None
+
 #------------------------COLOR DROPDOWN---------------------------#
 
-        self.color_dropdown = DropDown()
-        colors = ['green','black', 'blue', 'white']
-        for color in colors:
-            btn = MyButton(text=' % s' % color)
-            btn.bind(on_release=lambda btn: self.add_color(btn))
-            self.color_dropdown.add_widget(btn)
+        self.color_dropdown = MDDropdownMenu()
         self.color_mainbutton = MyButton(text='colors')
-        self.color_mainbutton.bind(on_press=lambda x:self.color_dropdown.open(x))
+        self.ids['color_mainbutton'] =self.color_mainbutton
+        self.color_mainbutton.bind(on_press=lambda x:self.show_dropdown_colors())
 
 # ------------------------SIZE NUM DROPDOWN---------------------------#
 
@@ -120,7 +125,7 @@ class Add_offer_box(BoxLayout):
             btn.bind(on_release=lambda btn: self.add_size_num(btn))
             self.size_num_dropdown.add_widget(btn)
         self.size_num_mainbutton = MyButton(text='sizes')
-        self.size_num_mainbutton.bind(on_press=self.size_num_dropdown.open)
+        self.size_num_mainbutton.bind(on_press=lambda x :self.size_num_dropdown.open(x))
 
 # ------------------------SIZE KIND DROPDOWN---------------------------#
 
@@ -130,23 +135,48 @@ class Add_offer_box(BoxLayout):
             btn = MyButton(text=' % s' % size_kind)
             btn.bind(on_release=lambda btn: self.add_size_kind(btn))
             self.size_kind_dropdown.add_widget(btn)
-        self.size_kind_mainbutton = MyButton(text='size kind')
-        self.size_kind_mainbutton.bind(on_press = self.size_kind_dropdown.open)
+        self.size_kind_mainbutton = Button(text='size kind')
+        self.size_kind_mainbutton.bind(on_press =lambda x : self.size_kind_dropdown.open(x))
 
 # ------------------------SIZE RES DROPDOWN---------------------------#
 
         self.size_dropdown = DropDown()
-        self.size_mainbutton = MyButton(text='My Sizes')
+        self.size_mainbutton = Button(text='My Sizes')
         self.size_mainbutton.bind(on_press=self.size_dropdown.open)
-
-        self.add_size = MyButton(text='Add')
+        self.add_size = Button(text='Add')
         self.add_size.bind(on_press=lambda tex: self.add_size_(tex))
 
 # ---------------------------------------------------#
         Clock.schedule_once(self.add_color_start, 0)
         Clock.schedule_once(self.add_size_start, 0)
 
+    def show_dropdown_colors(self):
+        menu_items = []
+        colors = ['green', 'black', 'blue', 'white']
+        for color in colors:
+            menu_items.append(
+                {
+                    'text': color,
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=color: self.save_color(x),
+                }
+            )
 
+        self.drop_down_colors = MDDropdownMenu(
+            caller=self.color_mainbutton,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_colors.open()
+
+    def save_color(self, color):
+        self.color_list.append(color)
+        # self.drop_down_colors.dismiss()
+
+    def tr(self,x):
+        self.color_dropdown.open()
+        a =5
     def back(self):
         App.get_running_app().root.current = "menu_screen"
 
@@ -203,29 +233,37 @@ class Add_offer_box(BoxLayout):
         else:
             self.color_list.append(instance.text)
             instance.background_color =(.34, 1, 1, 1)
-    def get_step(self):
+    def get_step(self): #only for the kivy- dont use it!!!!
         self.step+=1
         return self.step
     def add_step(self):
+        if self.step == 4:
+            Utils.pop(self, f'4 steps is the maximum steps for offer', 'alert')
+            return
+        self.ids.steps_box.size_hint_y += .3
+        self.ids.cover.size_hint_y += .3
         self.step += 1
-        # num_of_step = self.num_of_added_step + 3
-        # help = str(num_of_step)
-        # temp1 = MDLabel(text="step " + help)
-        # temp2 = MDTextField(hint_text= "limit")
-        # temp3 = MDTextField(hint_text= "price")
-        # self.next_step.append(temp1)
-        # self.ids.stepi.add_widget(MDLabel(text="step " + help))
-        # self.limit.append(temp2)
-        # self.ids.stepi.add_widget(temp2)
-        # self.price.append(temp3)
-        # self.ids.stepi.add_widget(temp3)
-        self.step_to_add = StepLayout()
-        #self.ids[self.step] = step_to_add
-        self.ids.steps_box.add_widget(self.step_to_add, len(self.ids.steps_box.children)-1)
-        self.ids.cover.size_hint_y +=.33
+        self.step_to_add = StepLayout(str(self.step))
+        self.ids[str(self.step)] = self.step_to_add
+        self.ids.steps_box.add_widget(self.step_to_add, 1)
+        #self.ids.add_step.size_hint_y += .5
+        #self.ids.cover.size_hint_y +=.33 #increment the scrollview
+
+    def remove_step(self):
+        if self.step == 2:
+            Utils.pop(self, f'2 steps is the minimum for offer', 'alert')
+            return
+        a = len(self.ids.steps_box.children)
+        self.ids.steps_box.remove_widget(self.ids.steps_box.children[1])
+        self.ids.steps_box.size_hint_y -= .3
+        self.ids.cover.size_hint_y -= .4
+        self.step -=1
+
+
+
 
     def add_offer(self):
-        list = [v for k,v in self.ids.choose.photo_list.items()]
+        list = [v for k,v in self.photo_list.items()]
         # list = self.ids.choose.photo_list.values() #convert dict to list
         if not self.check_steps_validity():
             return
@@ -284,7 +322,7 @@ class Add_offer_box(BoxLayout):
 
 
     def check_steps_validity(self):
-        step1limit = int(self.ids.limit1.text)
+        step1limit = int(self.ids['1'].ids.max_input.text)
         step2limit = int(self.ids.limit2.text)
         step3limit = int(self.ids.limit3.text)
         step1price = int(self.ids.price1.text)
@@ -451,19 +489,6 @@ class Add_offer_box(BoxLayout):
     def exit(self):
         App.get_running_app().controller.exit()
 
-
-class Sub_Category_box(BoxLayout):
-    pass
-
-class choose_photo_layout(MDBoxLayout):
-    def __init__(self, **kwargs):
-        super(choose_photo_layout, self).__init__(**kwargs)
-        self.carousel = None
-        self.i = 0
-        self.photo_list = {}
-        self.dialog = None
-
-
     def remove_photo(self):
         if self.i == 0:
             return
@@ -472,8 +497,17 @@ class choose_photo_layout(MDBoxLayout):
         self.carousel.remove_widget(self.carousel.current_slide)
         self.i -=1
         if self.i == 0:
-            self.remove_widget(self.carousel)
-            self.size_hint_y = 0.2
+            self.ids.choose1.size_hint_y -= .5
+            self.ids.cover.size_hint_y -= .4
+            self.ids.photo_title.size_hint_y += .09
+            self.ids.choose.remove_widget(self.carousel)
+            self.ids.choose.remove_widget(self.righttt)
+            self.ids.choose.remove_widget(self.left)
+    def move_right(self):
+        self.carousel.load_next(mode='next')
+
+    def move_left(self):
+        self.carousel.load_previous()
 
     def file_manager_open(self):
         path = '/'  # path to the directory that will be opened in the file manager
@@ -491,17 +525,30 @@ class choose_photo_layout(MDBoxLayout):
         :param path: path to the selected directory or file;
         '''
         print('path      '+path)
-        self.size_hint_y = 1.5
+        #self.size_hint_y = 1.5
         im = Image(source = path)
         if self.i == 0:
-            self.carousel = Carousel()
-            self.add_widget(self.carousel)
+            self.left = Left()
+            self.left.bind(on_press=lambda x:self.move_left())
+            self.carousel = Car()
+            self.righttt = Right()
+            self.righttt.bind(on_press=lambda x: self.move_right())
+            self.ids.choose.add_widget(self.left,1)
+            self.ids.choose.add_widget(self.carousel,1)
+            self.ids.choose.add_widget(self.righttt, 1)
+            self.ids.choose1.size_hint_y += .4
+            self.ids.cover.size_hint_y += .3
+            self.ids.photo_title.size_hint_y -= .07
+            self.height = '350dp'
         self.carousel.add_widget(im,self.i)
+        #self.size_hint_y += .5
         with open(path, "rb") as image:
             f = image.read()
             # image.close()
         self.photo_list[im] = f
         self.i+=1
+        #self.size_hint_y+= 10
+        #self.bind(minimum_height = self.setter('height'))
         self.manager.exit_manager()
         Utils.pop(self, 'picture add succesfully', 'succes')
         #toast("picture add succesfully")
@@ -527,6 +574,10 @@ class choose_photo_layout(MDBoxLayout):
             pass
 
 
+class Sub_Category_box(BoxLayout):
+    pass
+
+
 class CustomDropDown(DropDown):
     pass
 
@@ -545,37 +596,26 @@ class MyStepLabel(MDLabel):
     pass
 
 class StepLayout(GridLayout):
-    def __init__(self, **kwargs):
+    step = StringProperty()
+    def __init__(self,step, **kwargs):
         super(StepLayout, self).__init__(**kwargs)
+        self.step = step
     def get_step(self):
-        return self.parent.parent.parent.parent.get_step()
-# <StepLayout>:
-#     cols: 1
-#     id: self.get_step()
-#     size_hint_y: None
-#     height: self.minimum_height
-#     MyStepLabel:
-#         text:'Step '+self.parent.get_step()
-#     GridLayout:
-#         cols:2
-#         MyStepLabel:
-#             id: minimum
-#             text: "min friends"
-#         MyStepInput:
-#             id: min_input
-#         MyStepLabel:
-#             id: maximum
-#             text: 'max friends'
-#         MyStepInput:
-#             id:max_input
-#         MyStepLabel:
-#             id: price
-#             text: "price"
-#         MyStepInput:
-#             id:price_input
+        return self.step
+
 class StepLayoutStart(GridLayout):
-    def __init__(self, **kwargs):
+    def __init__(self,**kwargs):
         super(StepLayoutStart, self).__init__(**kwargs)
+
     def get_step(self):
         return self.parent.parent.parent.parent.get_step()
 
+
+class Right(MDIconButton):
+    pass
+
+class Left(MDIconButton):
+    pass
+
+class Car(Carousel):
+    pass
