@@ -107,33 +107,89 @@
 
             GridLayout:
                 id: color_box
-                cols:1
+                rows: 2
                 padding: [0,5,0,5]
                 spacing: 10
                 size_hint: 1, .1
                 MDLabel:
                     id: color_label
-                    size_hint: 1 , .4
+                    size_hint: 1 , .1
                     text: "Colors"
                     font_size:20
+                ScrollView:
+                    id: scrollview_colors
+                    do_scroll_y: False
+                    do_scroll_x: True
+                    size_hint: 1 , 1
+                    GridLayout:
+                        id: color_grid
+                        size_hint: 1.5,1
+                        cols:10
+
+
+
 
 
             GridLayout:
                 id: size_box
                 cols:1
+                rows: 2
                 padding: [0,5,0,5]
                 spacing: 10
-                size_hint: 1, .1
+                size_hint: .5, .05
                 MDLabel:
                     id: size_label
                     text: "Sizes"
                     size_hint: 1 , .4
-                    font: 'sofia pro bold'
                     font_size:20
                 GridLayout:
                     id:size_drop_box
-                    cols:4
-                    ssize_hint: 1 , 1
+                    cols:5
+                    rows:1
+                    size_hint: .5 , .8
+                    TextInput:
+                        id:size_num_input
+                        size_hint: 1, .7
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text_hint: 'Size Number'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        #on_release: root.show_dropdown_size_num()
+                    MDDropDownItem:
+                        id:size_type_input
+                        size_hint: 1,.7
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Size Type'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_size_type()
+                    Button:
+                        id: add_size
+                        size_hint: 1, .7
+                        text: "Add"
+                        on_press: root.add_size_()
+                    MDDropDownItem:
+                        id:size_out
+                        size_hint: 1,.7
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'My Sizes'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_size()
+                    Button:
+                        id: add_size
+                        size_hint: 1, .7
+                        text: "Remove"
+                        on_press: root.remove_size()
 
             GridLayout:
                 id: steps_box
@@ -167,6 +223,59 @@
                         text: 'remove step'
                         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
                         on_press: root.remove_step()
+            GridLayout:
+                id:end_date_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1 , .1
+                pos_hint:{'center_x':.1, 'center_y':.5}
+                canvas:
+                    Color:
+                        rgba: (.5,.5,.5,.5) # DarkOliveGreen
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                GridLayout:
+                    cols:2
+                    size_hint: 1, .03
+                    MDLabel:
+                        id: step_label
+                        text: "End Date"
+                        size_hint: 1 , 1
+                        font_size:20
+                GridLayout:
+                    cols:3
+                    MDDropDownItem:
+                        id:year_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Year'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_year()
+                    MDDropDownItem:
+                        id:month_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Month'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_month()
+                    MDDropDownItem:
+                        id:day_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Day'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_day()
 
             GridLayout:
                 id: choose1
@@ -317,3 +426,11 @@
     pos_hint: {'top': .5}
 <Car>:
     text:'6'
+
+<Btn>:
+    background_color: 0,0,0,0  # the last zero is the critical on, make invisible
+    canvas.before:
+        Ellipse:
+            pos: self.pos
+            size: self.size
+            #radius: [50,]

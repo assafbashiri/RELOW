@@ -147,8 +147,8 @@ class Add_offer_box(BoxLayout):
         self.add_size.bind(on_press=lambda tex: self.add_size_(tex))
 
 # ---------------------------------------------------#
-        Clock.schedule_once(self.add_color_start, 0)
-        Clock.schedule_once(self.add_size_start, 0)
+        Clock.schedule_once(self.init_colors, 0)
+        #Clock.schedule_once(self.add_size_start, 0)
 
     def show_dropdown_colors(self):
         menu_items = []
@@ -185,12 +185,12 @@ class Add_offer_box(BoxLayout):
         self.ids.color_box.add_widget(self.color_mainbutton)
 
     def add_size_start(self, num):
-        self.ids.size_drop_box.add_widget(self.size_num_mainbutton)
-        self.ids['size_num'] = self.size_num_mainbutton
-        self.ids.size_drop_box.add_widget(self.size_kind_mainbutton)
-        self.ids['size_kind'] = self.size_kind_mainbutton
-        self.ids.size_drop_box.add_widget(self.add_size)
-        self.ids['add_size'] = self.add_size
+        #self.ids.size_drop_box.add_widget(self.size_num_mainbutton)
+        #self.ids['size_num'] = self.size_num_mainbutton
+        #self.ids.size_drop_box.add_widget(self.size_kind_mainbutton)
+        #self.ids['size_kind'] = self.size_kind_mainbutton
+        #self.ids.size_drop_box.add_widget(self.add_size)
+        #self.ids['add_size'] = self.add_size
         self.ids.size_drop_box.add_widget(self.size_mainbutton)
         self.ids['my_sizes'] = self.size_mainbutton
 
@@ -204,15 +204,16 @@ class Add_offer_box(BoxLayout):
         # self.ids.size_box.add_widget(self.size_num_mainbutton)
         # self.ids.add_size.bind(on_press= lambda tex: self.add_size_(tex))
 
-    def add_size_(self, instance):
+    def add_size_(self):
         # self.size_dropdown.dismiss()
-        text = self.ids.size_num.text+' '+self.ids.size_kind.text
-        btn = MyButton(text='%s' % text, size_hint=(None, None), height=40)
-        btn.bind(on_release=lambda btn: self.remove_size(btn))
-
+        text = self.ids.size_num_input.text+' '+self.ids.size_type_input.text
         if text not in self.size_list:
             self.size_list.append(text)
-            self.size_dropdown.add_widget(btn)
+        # self.show_dropdown_size()
+        #self.drop_down_size.menu_items.append(text)
+
+
+            #self.size_dropdown.add_widget(btn)
         #self.size_dropdown.open(self.ids.sizes)
         # if instance.text in self.size_list:
         #     instance.background_color = (1, 1, 1, 1)
@@ -222,9 +223,51 @@ class Add_offer_box(BoxLayout):
         #     self.size_dropdown.add_widget(instance)
         #     instance.background_color = (.34, 1, 1, 1)
 
-    def remove_size(self, btn):
-        self.size_dropdown.remove_widget(btn)
+    def remove_size(self):
+        if len(self.size_list) == 0:
+            return
+        # self.size_dropdown.remove_widget(btn)
 #        self.size_list.remove(btn.text)
+        size = self.ids.size_out.text
+        self.size_list.remove(size)
+
+        if len(self.size_list) == 0:
+            self.ids.size_out.text = 'My Sizes'
+        else:
+            self.ids.size_out.text = self.size_list[0]
+
+
+    def init_colors(self, num):
+        colors = ['red', 'black','blue', 'yellow','white']
+        colors_counter = 0
+        for color in colors:
+            ip = "windows/images/colors/un_" + color + ".png"
+            btn = MDIconButton(icon=ip)
+            btn.text = color
+            btn.bind(on_press=lambda instance=1,color_name=color: self.chose_color(
+                instance, color_name))
+            self.ids.color_grid.add_widget(btn)
+            colors_counter = colors_counter + 1
+
+    def chose_color(self, btn, text):
+        if text in self.color_list:
+            self.color_list.remove(text)
+            btn.icon ="windows/images/colors/un_" + text + ".png"
+        # change color of all the other button to the regular color
+        # change color of the selected button
+        else:
+            btn.icon = "windows/images/colors/" + text + ".png"
+        # chosen colors for add offer
+            self.color_list.append(text)
+
+
+    def get_btn_color(self, btn):
+        str = btn.icon
+        ans = str[22:len(str)-4]
+        if ans[0:3] =="un_":
+            ans = ans[3:len(ans)]
+        return ans
+
 
     def add_color(self, instance):
         if instance.text in self.color_list:
@@ -420,6 +463,158 @@ class Add_offer_box(BoxLayout):
         date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
         date_dialog.open()
 
+#------------------------------DROPDOWN----------------------------------
+    def show_dropdown_size_num(self):
+        menu_items = []
+        for number in range(0, 100, 1):
+            menu_items.append(
+                {
+                    'text': str(number),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(number): self.save_size_num(x),
+                }
+            )
+            menu_items.append(
+                {
+                    'text': str(number+.5),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(number+.5): self.save_size_num(x),
+                }
+            )
+
+        self.drop_down_size_num = MDDropdownMenu(
+            caller=self.ids.size_num_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+
+        self.drop_down_size_num.open()
+    def save_size_num(self, number):
+        self.ids.size_num_input.text = number
+        self.drop_down_size_num.dismiss()
+
+#----------------------------------------------------------------------------------------------------
+
+    def show_dropdown_size(self):
+        menu_items = []
+        for size in self.size_list:
+            menu_items.append(
+                {
+                    'text': str(size),
+                    "viewclass": "OneLineListItem",
+                    "on_release":lambda x=str(size): self.save_size(x),
+                }
+            )
+
+        self.drop_down_size = MDDropdownMenu(
+            caller=self.ids.size_out,
+            items=menu_items,
+            width_mult=4,
+
+
+        )
+
+        self.drop_down_size.open()
+    def save_size(self, size):
+        self.ids.size_out.text = size
+        self.drop_down_size.dismiss()
+
+#----------------------------------------------------------------------------------------------------
+    def show_dropdown_size_type(self):
+        menu_items = []
+        for type in ['cm', 'm', 'kg', 'g']:
+            menu_items.append(
+                {
+                    'text': type,
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=type: self.save_size_type(x),
+                }
+            )
+
+        self.drop_down_size_type = MDDropdownMenu(
+            caller=self.ids.size_type_input,
+            items=menu_items,
+            # width_mult=4,
+            size_hint=(1, 1),
+        )
+
+        self.drop_down_size_type.open()
+    def save_size_type(self, type):
+        self.ids.size_type_input.text = type
+        self.drop_down_size_type.dismiss()
+
+#----------------------------------------------------------------------------------------------------
+
+    def show_dropdown_year(self):
+        menu_items = []
+        for year in range(2021, 1900, -1):
+            menu_items.append(
+                {
+                    'text': str(year),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(year): self.save_year(x),
+                }
+            )
+
+        self.drop_down_years = MDDropdownMenu(
+            caller=self.ids.year_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_years.open()
+    def save_year(self, year):
+        self.ids.year_input.text = year
+        self.drop_down_years.dismiss()
+
+    def show_dropdown_month(self):
+        menu_items = []
+        for month in range(12, 1, -1):
+            menu_items.append(
+                {
+                    'text': str(month),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(month): self.save_month(x),
+                }
+            )
+
+        self.drop_down_months = MDDropdownMenu(
+            caller=self.ids.month_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_months.open()
+    def save_month(self, month):
+        self.ids.month_input.text = month
+        self.drop_down_months.dismiss()
+
+#----------------------------------------------------------------------------------------------------
+
+    def show_dropdown_day(self):
+        menu_items = []
+        for day in range(31, 1, -1):
+            menu_items.append(
+                {
+                    'text': str(day),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(day): self.save_day(x),
+                }
+            )
+
+        self.drop_down_days = MDDropdownMenu(
+            caller=self.ids.day_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+
+        self.drop_down_days.open()
+    def save_day(self, day):
+        self.ids.day_input.text = day
+        self.drop_down_days.dismiss()
+
     def show_dropdown_category(self):
         categories = App.get_running_app().controller.get_categories()
         menu_items=[]
@@ -489,6 +684,8 @@ class Add_offer_box(BoxLayout):
     def exit(self):
         App.get_running_app().controller.exit()
 
+#------------------------------------------PHOTOS-------------------------------------------------
+
     def remove_photo(self):
         if self.i == 0:
             return
@@ -497,8 +694,8 @@ class Add_offer_box(BoxLayout):
         self.carousel.remove_widget(self.carousel.current_slide)
         self.i -=1
         if self.i == 0:
-            self.ids.choose1.size_hint_y -= .5
-            self.ids.cover.size_hint_y -= .4
+            self.ids.choose1.size_hint_y -= .4
+            self.ids.cover.size_hint_y -= .3
             self.ids.photo_title.size_hint_y += .09
             self.ids.choose.remove_widget(self.carousel)
             self.ids.choose.remove_widget(self.righttt)
@@ -618,4 +815,7 @@ class Left(MDIconButton):
     pass
 
 class Car(Carousel):
+    pass
+
+class Btn(Button):
     pass
