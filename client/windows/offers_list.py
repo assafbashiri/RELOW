@@ -62,7 +62,7 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
     steps = ListProperty()
     current_buyers = NumericProperty()
     offer_id = NumericProperty()
-    offer = ListProperty()
+    offer = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(RecycleViewRow, self).__init__(**kwargs)
@@ -82,15 +82,18 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
         print('bolo')
 
 
-    def www(self,offer, photo_list):
-        offer_id = offer[0].offer_id
+    def www(self,offer_list, photo_list):
+        offer = offer_list[0]
+        offer_id = offer.offer_id
         screens_len = len(App.get_running_app().root.screens)
         screens = App.get_running_app().root.screens
         screen_name = 'offer_screen'+str(offer_id)
+        # check if there is a screen for this offer
         for screen in screens:
             if screen.name == screen_name:
                 App.get_running_app().root.current = screen_name
                 return
+        # open new screen for this offer
         screens.append(OfferScreen())
         screens[screens_len].init_offer(offer, photo_list)
         App.get_running_app().root.current = screen_name

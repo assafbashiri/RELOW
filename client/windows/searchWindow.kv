@@ -3,12 +3,17 @@
     name:'search_screen'
     Search_box:
         id: search_box
+    Side_box:
+        id: side_box
+    Down_menu:
+        id: down_menu
 
 <Search_box>
+    padding: [0,120,0,0]
     BoxLayout:
         canvas.before:
             Color:
-                rgba: 0, 0, 0, 1
+                rgba: 1, 1, 1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -75,8 +80,7 @@
 
 
 
-    Side_box:
-        id: side_box
+
 
 
 

@@ -141,7 +141,7 @@ class Personal_box(BoxLayout):
         #         return
 
 
-        ans = App.get_running_app().controller.update(first_name, last_name, email, phone_number, date_str, self.gender)
+        ans = App.get_running_app().controller.update_user_details(first_name, last_name, email, phone_number, date_str, self.gender)
         if ans.res is True:
             self.user = Struct(**ans.data)
             # update the json------------------------------------------------

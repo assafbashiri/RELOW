@@ -11,7 +11,7 @@ from kivymd.toast import toast
 from Service.Object.OfferService import OfferService
 from Service.Object.UserService import UserService
 from Service.Object.CategoryService import CategoryService
-from windows.mainWindow import Main_page_box
+from windows.mainWindow import Main_page_box, Struct
 from windows.offers_list import Offers_Screen
 
 from Response import Response
@@ -68,7 +68,7 @@ class Backend_controller:
             self.seller = False
 
 
-            # we removed the user_info dict, and we add element to user_guest insted- coplete tommorow
+        # we removed the user_info dict, and we add element to user_guest insted- coplete tommorow
 
     def guest_login(self, guest_id):
         req = {'op': 79, 'guest_id': guest_id}
@@ -220,7 +220,7 @@ class Backend_controller:
         return ans
 
 
-    def update(self, first_name, last_name, email, phone_number, birth_date, gender):
+    def update_user_details(self, first_name, last_name, email, phone_number, birth_date, gender):
         update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email, 'phone_number':phone_number,
                       'birth_date':birth_date, 'gender':gender}
         self.req_answers.add_request(update_req)
@@ -320,45 +320,65 @@ class Backend_controller:
             self.user_service.liked_offers.remove(offer_id)
         return ans
 
-    def add_active_buy_offer(self, offer_id, quantity, step, color, size, address):
+    def add_purchase(self, offer_id, quantity, step, color, size, address, user):
         if address is None:
             address = self.user_service.get_address()
             if address.res is False:
                 toast(address.message)
                 return address
-        add_active_buy_offer_req = {'op': 23,
+        req = {'op': 23,
                                     'offer_id': offer_id,
                                     'quantity': quantity,
                                     'step': step,
                                     'color': color,
                                     'size': size,
                                     'address':address}
-        self.req_answers.add_request(add_active_buy_offer_req)
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            offer = self.build_offer(ans.data)
+            user.get_active_buy_offers().append(offer)
+            return offer
         print(ans.message)
-        return ans
+        return False
 
-    def update_active_buy_offer(self, offer_id, quantity, step, color, size, address):
-        add_active_buy_offer_req = {'op': 101,
+    def update_purchase(self, offer_id, quantity, step, color, size, address, user):
+        req = {'op': 101,
                                     'offer_id': offer_id,
                                     'quantity': quantity,
                                     'step': step,
                                     'color': color,
                                     'size': size,
                                     'address':address}
-        self.req_answers.add_request(add_active_buy_offer_req)
+        self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        print(ans.message)
-        return ans
+        updated_offer = self.build_offer(ans.data)
+        if ans.res is True:
+            z = App.get_running_app().root.screens[0].ids.Main_page_box.children[0].children[0]
+            z.refresh_from_data()
+            user.active_buy_offers[offer_id] = updated_offer
+            for object in z.data:
+                offer = object['offer']
+                if offer[0].offer_id == offer_id:
+                    curr_buyers = updated_offer.current_buyers
+                    offer[0].current_buyers = curr_buyers
 
-    def remove_active_buy_offer(self, offer_id):
+            return updated_offer
+        return False
+
+    def cancel_purchase(self, offer_id, user):
         remove_act_buy_offer_req = {'op': 28, 'offer_id': offer_id}
         self.req_answers.add_request(remove_act_buy_offer_req)
         ans = self.req_answers.get_answer()
-        print(ans.message)
-        return ans
+        if ans.res is True:
+            for offer in user.active_buy_offers:
+                if offer.offer_id == offer_id:
+                    offer.current_buyers.pop(user.user_id)
+                    user.active_buy_offers.remove(offer)
+                    return offer
+        return False
 
-    def add_active_sell_offer(self, name, company, colors, sizes, description, photos, category_name,
+    def add_offer(self, name, company, colors, sizes, description, photos, category_name,
                               sub_category_name, steps, end_date):
         add_active_sell_offer_req = {'op': 24, 'name': name, 'company': company, 'colors': colors,
                                      'sizes': sizes, 'description': description, 'photos': photos,
@@ -369,16 +389,11 @@ class Backend_controller:
         print(ans.message)
         return ans
 
-    def update_purchase(self, offer_id, quantity, step, color, size):
-        req = {'op': 37, 'offer_id': offer_id, 'quantity': quantity, 'step': step, 'color': color, 'size': size}
-        self.req_answers.add_request(req)
-        ans = self.req_answers.get_answer()
-        print(ans.message)
-        return ans
+
 
     # ----- seller methods ---------------------------------
 
-    def remove_active_sell_offer(self, offer_id):
+    def remove_offer(self, offer_id):
         remove_act_sell_offer_req = {'op': 27, 'offer_id': offer_id}
         self.req_answers.add_request(remove_act_sell_offer_req)
         ans = self.req_answers.get_answer()
@@ -756,7 +771,7 @@ class Backend_controller:
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
                                   x['status'],
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
-                                  x['current_buyers'], x['category_name'], x['sub_category_name'])
+                                  x['current_buyers'])
         return offer_temp
 
     def build_user(self, data):
