@@ -243,10 +243,13 @@
                     cols:5
                     size_hint: .2,.5
 
-                    CheckBox:
+                    MDCheckbox:
                         id: male
                         text: "Male"
                         group:1
+                        #thumb_color:(24/255,211/255,199/255,1)
+                        #selected_color:(24/255,211/255,199/255,1)
+                        #disabled_color:(24/255,211/255,199/255,1)
                         on_active: root.save_male(self, self.active)
 
                     MDLabel:
@@ -258,10 +261,13 @@
                       #  id: male_photo
 
 
-                    CheckBox:
+                    MDCheckbox:
                         id: female
-                        text: 'Female'
+                        text: "Female"
                         group:1
+                        #thumb_color:(24/255,211/255,199/255,1)
+                        #selected_color:(24/255,211/255,199/255,1)
+                        #disabled_color:(24/255,211/255,199/255,1)
                         on_active: root.save_female(self, self.active)
 
                     MDLabel:

@@ -80,6 +80,7 @@ class Account_box(BoxLayout):
         App.get_running_app().root.current = "menu_screen"
 
 
+
     def active_offers(self):
         ans = App.get_running_app().controller.get_all_active_buy_offers()
         self.act_buy_offers = Offers_Screen()
@@ -314,10 +315,11 @@ class Password_box(BoxLayout):
         controller = App.get_running_app().controller
         self.user = controller.user_service
 
+
     def change_password(self):
-        old_password = self.ids.old_password.text
-        new_password1 = self.ids.new_password1.text
-        new_password2 = self.ids.new_password2.text
+        old_password = self.ids.old_password_input.text
+        new_password1 = self.ids.new_password_input.text
+        new_password2 = self.ids.new_password_verification_input.text
         if old_password == "":
             Utils.pop(self, 'please enter old password', 'alert')
             return
@@ -338,6 +340,9 @@ class Password_box(BoxLayout):
             self.back_to_account_window()
         else:
             Utils.pop(self, ans.message, 'alert')
+    def back_to_account_window(self):
+        App.get_running_app().root.current = 'account_screen'
+        #App.get_running_app().root.prev = 'menu_screen'
 
 class Address_box(BoxLayout):
 
