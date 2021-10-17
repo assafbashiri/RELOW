@@ -35,9 +35,15 @@ class SEARCHScreen(Screen):
         self.dialog = None
 
     def search_by_name(self):
+        prod_name = self.ids.side_box.children[0].children[1].text
+        # have to set the search box in the main window
+        App.get_running_app().root.screens[0].ids.side_box.children[0].children[1].text = prod_name
+        self.search_by_prod_name(prod_name)
+
+
+    def search_by_prod_name(self, prod_name):
         self.ids.search_box.ids.helper.remove_widget(self.lab)
         self.ids.search_box.ids.helper.remove_widget(self.of)
-        prod_name = self.ids.search_box.ids.name.text
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
         # bad search
         if len(ans) == 0:
