@@ -229,6 +229,8 @@ class Add_offer_box(BoxLayout):
         # self.size_dropdown.remove_widget(btn)
 #        self.size_list.remove(btn.text)
         size = self.ids.size_out.text
+        if size == 'My Sizes':
+            return
         self.size_list.remove(size)
 
         if len(self.size_list) == 0:
@@ -308,6 +310,13 @@ class Add_offer_box(BoxLayout):
     def add_offer(self):
         list = [v for k,v in self.photo_list.items()]
         # list = self.ids.choose.photo_list.values() #convert dict to list
+        name = self.ids.product_name_input.text
+        category_name = self.chosen_cat_name
+        sub_category_name = self.sub_cat12
+        company = self.ids.company_name_input.text
+        description = self.ids.description_input.text
+        sizes = self.build_string_from_list(self.size_list)
+        colors = self.build_string_from_list(self.color_list)
         if not self.check_steps_validity():
             return
         if self.size_list == []:
@@ -322,33 +331,24 @@ class Add_offer_box(BoxLayout):
             Utils.pop(self, f'have to chose sub category', 'alert')
             #toast("have to chose sub category")
             return
-        if self.ids.end_date.text == "":
+        end_date = self.ids.day_input.text+'/'+self.ids.month_input.text+'/'+self.ids.year_input.text
+        if end_date == "":
             Utils.pop(self, f'have to chose end date', 'alert')
             #toast("have to chose end date")
             return
-        if not CheckValidity.checkValidityName(self,self.ids.product_name.text):
+        if not CheckValidity.checkValidityName(self,name):
             return
-        if not CheckValidity.checkValidityName(self,self.ids.company.text):
+        if not CheckValidity.checkValidityName(self,company):
             return
-        if not CheckValidity.checkEndDate(self, self.ids.end_date.text):
-             return
-        name = self.ids.product_name.text
-        category_name = self.chosen_cat_name
-        sub_category_name = self.sub_cat12
-        company = self.ids.company.text
-        description = self.ids.description.text
-        sizes = self.build_string_from_list(self.size_list)
-        colors = self.build_string_from_list(self.color_list)
-        end_date = self.ids.end_date.text
+        # if not CheckValidity.checkEndDate(self, end_date):
+        #      return
         end_date = '2021-12-15'
-        step1 = StepService(0, self.ids.price1.text, 1, self.ids.limit1.text)
-        step2 = StepService(0, self.ids.price2.text, 2, self.ids.limit2.text)
-        step3 = StepService(0, self.ids.price3.text, 3, self.ids.limit3.text)
-        # more Steps - optional, CHECK INPUT
-        steps = [vars(step1), vars(step2),vars(step3)]
-        if self.num_of_added_step > 0:
-            for i in range(0, self.num_of_added_step):
-                steps.append(vars(StepService(0, self.price[i].text, i+4, self.limit[i].text)))
+        steps = []
+        for i in range(1, self.step):
+            price = self.ids[str(i)].ids.price_input.text
+            limit = self.ids[str(i)].ids.max_input.text
+            step = StepService(0, price, i, limit)
+            steps.append(vars(step))
         ans = App.get_running_app().controller.add_offer(name, company, colors, sizes, description, list, category_name,
                               sub_category_name, steps, end_date)
 
@@ -365,46 +365,17 @@ class Add_offer_box(BoxLayout):
 
 
     def check_steps_validity(self):
-        step1limit = int(self.ids['1'].ids.max_input.text)
-        step2limit = int(self.ids.limit2.text)
-        step3limit = int(self.ids.limit3.text)
-        step1price = int(self.ids.price1.text)
-        step2price = int(self.ids.price2.text)
-        step3price = int(self.ids.price3.text)
+        for i in range(1,self.step):
 
-        #limits
-        flag = self.check_limits(step1limit, step2limit)
-        if not flag:
-            return False
-        flag = self.check_limits(step2limit, step3limit)
-        if not flag:
-            return False
-
-        # prices
-        flag = self.check_prices(step1price, step2price)
-        if not flag:
-            return False
-        flag = self.check_prices(step2price, step3price)
-        if not flag:
-            return False
-
-        #check between the third step and the first added step
-        if len(self.limit)>0:
-            flag = self.check_limits(step3limit, int(self.limit[0].text))
+            step_prev = self.ids[str(i)]
+            step_next = self.ids[str(i+1)]
+            flag = self.check_limits(int(step_prev.ids.max_input.text),
+                                     int(step_next.ids.max_input.text))
             if not flag:
                 return False
-            flag = self.check_prices(step3price, int(self.price[0].text))
-            if not flag:
-                return False
+            flag = self.check_prices(int(step_prev.ids.price_input.text),
+                                     int(step_next.ids.price_input.text))
 
-
-        for i in range(0, len(self.limit)-1):
-            flag = self.check_limits(int(self.limit[i].text),int(self.limit[i+1].text))
-            if not flag:
-                return False
-
-        for i in range(0, len(self.price)-1):
-            flag = self.check_prices(int(self.price[i].text),int(self.price[i+1].text) )
             if not flag:
                 return False
 
@@ -435,25 +406,42 @@ class Add_offer_box(BoxLayout):
         return True
 
     def clear_fields(self):
-        self.ids.product_name.text = ""
-        self.ids.company.text = ""
-        self.ids.description.text = ""
-        self.ids.end_date.text = ""
-        #self.ids.end_date.text = ""
-        #self.ids.size_box.text = ""
-        self.size_input.text = ""
-        self.ids.limit1.text = ""
-        self.ids.limit2.text = ""
-        self.ids.limit3.text = ""
-        self.ids.price1.text = ""
-        self.ids.price2.text = ""
-        self.ids.price3.text = ""
-        self.ids.drop_category.text='Category'
-        for limit in self.limit:
-            limit.text = ""
-        for price in self.price:
-            price.text = ""
+        self.ids.product_name_input.text = ""
+        self.ids.company_name_input.text = ""
+        self.ids.description_input.text = ""
+        self.ids.year_input.text = "Year"
+        self.ids.month_input.text = "Month"
+        self.ids.day_input.text = "Day"
+        # self.ids.size_input.text = ""
+        for i in range(1, self.step+1):
+            self.clear_step(i)
+        self.clear_colors()
+        self.color_list = []
+        self.size_list = []
+        self.ids.size_num_input.text = ''
+        self.ids.size_type_input.text = 'Size Type'
+        self.ids.size_out.text = 'My Sizes'
+        self.size_list = []
+        # self.ids.limit1.text = ""
+        # self.ids.limit2.text = ""
+        # self.ids.limit3.text = ""
+        # self.ids.price1.text = ""
+        # self.ids.price2.text = ""
+        # self.ids.price3.text = ""
+        # self.ids.drop_category.text='Category'
+        # for limit in self.limit:
+        #     limit.text = ""
+        # for price in self.price:
+        #     price.text = ""
+    def clear_step(self, num):
+        self.ids[str(num)].ids.min_input.text = ''
+        self.ids[str(num)].ids.max_input.text = ''
+        self.ids[str(num)].ids.price_input.text = ''
 
+    def clear_colors(self):
+        for child in self.ids.color_grid.children:
+            if 'un_' not in child.icon:
+                child.icon = child.icon[:22] + 'un_' + child.icon[22:]
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)

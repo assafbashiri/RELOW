@@ -46,7 +46,19 @@
             id: cover
             cols: 1
             padding: [25,0,25,0]
-            size_hint_y: 2
+            size_hint_y: 2.25
+            GridLayout:
+                id: category_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1, .07
+                MDDropDownItem:
+                    write_tab: False
+                    id: drop_category
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: 'category'
+                    on_release: root.show_dropdown_category()
             GridLayout:
                 id: product_name_box
                 cols:1
@@ -133,10 +145,9 @@
             GridLayout:
                 id: size_box
                 cols:1
-                rows: 2
-                padding: [0,5,0,5]
+                padding: [0,5,50,5]
                 spacing: 10
-                size_hint: .5, .05
+                size_hint: 1, .1
                 MDLabel:
                     id: size_label
                     text: "Sizes"
@@ -146,10 +157,10 @@
                     id:size_drop_box
                     cols:5
                     rows:1
-                    size_hint: .5 , .8
+                    size_hint: 1 , .8
                     TextInput:
                         id:size_num_input
-                        size_hint: 1, .7
+                        size_hint: .5, .7
                         pos_hint: {'center_x': .1, 'center_y': .5}
                         text_hint: 'Size Number'
                         font_name: "Arial"
@@ -160,7 +171,7 @@
                         #on_release: root.show_dropdown_size_num()
                     MDDropDownItem:
                         id:size_type_input
-                        size_hint: 1,.7
+                        size_hint: .5,.7
                         pos_hint: {'center_x': .1, 'center_y': .5}
                         text: 'Size Type'
                         font_name: "Arial"
@@ -171,12 +182,12 @@
                         on_release: root.show_dropdown_size_type()
                     Button:
                         id: add_size
-                        size_hint: 1, .7
+                        size_hint: .5, .7
                         text: "Add"
                         on_press: root.add_size_()
                     MDDropDownItem:
                         id:size_out
-                        size_hint: 1,.7
+                        size_hint: .5,.7
                         pos_hint: {'center_x': .1, 'center_y': .5}
                         text: 'My Sizes'
                         font_name: "Arial"
@@ -187,7 +198,7 @@
                         on_release: root.show_dropdown_size()
                     Button:
                         id: add_size
-                        size_hint: 1, .7
+                        size_hint: .5, .7
                         text: "Remove"
                         on_press: root.remove_size()
 
@@ -371,6 +382,8 @@
         TextInput:
             id: min_input
             size_hint: .7 , .8
+            write_tab: False
+            multiline: False
         MDLabel:
             id: maximum
             size_hint: 1 , .8
@@ -378,6 +391,8 @@
         TextInput:
             id:max_input
             size_hint: .7 , .8
+            write_tab: False
+            multiline: False
         MDLabel:
             id: price
             size_hint: 1 , .8
@@ -385,6 +400,8 @@
         TextInput:
             id:price_input
             size_hint: .7 , .8
+            write_tab: False
+            multiline: False
 
 <StepLayout>:
     cols: 1
@@ -404,6 +421,8 @@
         TextInput:
             id: min_input
             size_hint: .7 , .8
+            write_tab: False
+            multiline: False
         MDLabel:
             id: maximum
             size_hint: 1 , .8
@@ -411,6 +430,8 @@
         TextInput:
             id:max_input
             size_hint: .7 , .8
+            write_tab: False
+            multiline: False
         MDLabel:
             id: price
             size_hint: 1 , .8
@@ -418,6 +439,8 @@
         TextInput:
             id:price_input
             size_hint: .7 , .8
+            write_tab: False
+            multiline: False
 <Right>:
     icon: 'chevron-right'
     pos_hint: {'top': .5}
