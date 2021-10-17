@@ -82,19 +82,19 @@ class Side_box(BoxLayout):
         super(Side_box, self).__init__(**kwargs)
         self.dialog = None
 
-        self.id = 'side_box'
-        self.size_hint_y = 0.2
-        self.size_hint_x = 0.55
-        self.spacing = 10
-        self.orientation = 'vertical'
-        self.pos_hint = {'top':1}
-
-        box1 = BoxLayout(orientation='horizontal')
-        self.add_widget(box1)
-        icon1 = MDIconButton(orientation= 'horizontal')
-        icon1.icon = "windows/images/main2.png"
-        icon1.on_press(self.back_to_main())
-        box1.add_widget(icon1)
+        # self.id = 'side_box'
+        # self.size_hint_y = 0.2
+        # self.size_hint_x = 0.55
+        # self.spacing = 10
+        # self.orientation = 'vertical'
+        # self.pos_hint = {'top':1}
+        #
+        # box1 = BoxLayout(orientation='horizontal')
+        # self.add_widget(box1)
+        # icon1 = MDIconButton(orientation= 'horizontal')
+        # icon1.icon = "windows/images/main2.png"
+        # icon1.on_press(self.back_to_main())
+        # box1.add_widget(icon1)
 
 #
 #
