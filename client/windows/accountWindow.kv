@@ -104,12 +104,10 @@
                     font: 'sofia pro bold'
                     font_size:15
 
+
                 TextInput:
-
-
                     id: first_name_input
-
-                    size_hint_y: .5
+                    size_hint_y: .4
                     write_tab: False
                     multiline: False
 
@@ -132,9 +130,10 @@
                     id:last_name_input
                     normal_color: 100,0,0,0
                     color_active: 100,100,1,0
-                    size_hint_y: .5
+                    size_hint_y: .4
                     write_tab: False
                     multiline: False
+
 
             ############## grid of email label and his text input
 
@@ -153,7 +152,7 @@
                     id:email_input
                     normal_color: 100,0,0,0
                     color_active: 100,100,1,0
-                    size_hint_y: .5
+                    size_hint_y: .4
                     write_tab: False
                     multiline: False
 
@@ -192,9 +191,10 @@
                             id:phone_input
                             normal_color: 100,0,0,0
                             color_active: 100,100,1,0
-                            size_hint:.1,.1
+                            size_hint:.1,.4
                             write_tab: False
                             multiline: False
+                            max_text_length: 7
                         GridLayout:
                             cols:1
                             size_hint_x:.9
@@ -275,10 +275,13 @@
                     cols:15
                     size_hint: .2,.5
 
-                    CheckBox:
+                    MDCheckbox:
                         id: male
                         text: "Male"
                         group:1
+                        #thumb_color:(24/255,211/255,199/255,1)
+                        #selected_color:(24/255,211/255,199/255,1)
+                        #disabled_color:(24/255,211/255,199/255,1)
                         on_active: root.save_male(self, self.active)
 
                     MDLabel:
@@ -290,11 +293,14 @@
                       #  id: male_photo
 
 
-                    CheckBox:
+                    MDCheckbox:
                         id: female
-                        text: 'Female'
+                        text: "Female"
                         group:1
-                        on_active:root.save_female(self, self.active)
+                        #thumb_color:(24/255,211/255,199/255,1)
+                        #selected_color:(24/255,211/255,199/255,1)
+                        #disabled_color:(24/255,211/255,199/255,1)
+                        on_active: root.save_female(self, self.active)
 
                     MDLabel:
                         id: male_label
@@ -510,19 +516,19 @@
 
     GridLayout:
         cols:1
-        id: first_name_box
+        id: old_password_box
         #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
-            id: first_name_label
-            text: "First Name"
+            id: old_password_label
+            text: "Old Password"
             font: 'sofia pro bold'
             font_size:20
 
         TextInput:
-            id: first_name_input
+            id: old_password_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
             size_hint_y: 1.6
@@ -532,19 +538,18 @@
 
     GridLayout:
         cols:1
-        id: last_name_box
-        #orientation: 'vertical'
+        id: new_password_box
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
-            id: last_name_label
-            text: "Last Name"
+            id: new_password_label
+            text: "New Password"
             font: 'sofia pro bold'
             font_size:20
 
         TextInput:
-            id:last_name_input
+            id:new_password_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
             size_hint_y: 1.6
@@ -553,24 +558,25 @@
 
     GridLayout:
         cols:1
-        id: email_box
+        id: new_password_verification_box
         #orientation: 'vertical'
         size_hint: 1,.7
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
-            id: email_label
-            text: "Email"
+            id: new_password_verification_label
+            text: "New Password Verification"
             font: 'sofia pro bold'
             font_size:20
 
         TextInput:
-            id:email_input
+            id:new_password_verification_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
             size_hint_y: 1.6
             write_tab: False
             multiline: False
+
     GridLayout:
         cols:1
         id: update_box
@@ -578,7 +584,7 @@
         padding: ['100dp','30dp', '100dp' , '10dp']
         Button:
             id: login_btn
-            text: "Update"
+            text: "Change Password"
             font_size: 30
             background_color: (0,0,0,0)
             background_normal: ''
@@ -589,13 +595,6 @@
                     size: self.size
                     pos: self.pos
             on_press:root.change_password()
-
-
-
-
-
-
-
 
 
 
