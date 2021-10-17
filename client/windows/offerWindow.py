@@ -39,9 +39,10 @@ class OfferScreen(Screen):
         self.name = "offer_screen"
 
     def init_offer(self, offer, photo_lis):
-        self.name = self.name + str(offer[0].offer_id)
+        self.photo_lis = photo_lis
+        self.name = self.name + str(offer.offer_id)
         self.controller = App.get_running_app().controller
-        self.offer = offer[0]  # Offer Service
+        self.offer = offer  # Offer Service
         self.offer_id = self.offer.offer_id
         self.color = 0
         self.num_of_quantity = 0
@@ -238,21 +239,21 @@ class OfferScreen(Screen):
     def show_as_buyer(self, photo_lis):
         print('as a buyer')
         purchases = self.offer.get_current_buyers()
-        purchase = None
         for purch in purchases:
             p = purchases[purch]
             if p.buyer_id == self.user.user_id:
                 self.purchase = p
                 break
-        self.title = self.offer.product.name
         self.box = BoxLayout(orientation='vertical')
-        self.carousel = Carousel(size_hint_y=6)
-        # for photo in photo_lis:
-        #     self.carousel.add_widget(photo)
-        # image = AsyncImage(source="windows/images/a.png")
-        # self.carousel.add_widget(image)
+        # back button
+        self.back = MDIconButton(icon="windows/images/back_btn.png")
+        self.back.bind(on_press=lambda x: self.out())
+        self.box.add_widget(self.back)
+        # photo list
+        self.carousel = Carousel(size_hint_y=1)
         self.insert_photos(self.carousel, photo_lis)
         self.box.add_widget(self.carousel)
+        # steps
         self.slider = MDSlider()
         self.slider.min = 0
         self.slider.max = 150
@@ -282,57 +283,80 @@ class OfferScreen(Screen):
 
         self.box.add_widget(self.price_per_step)
 
-        self.name1 = Label(text=self.offer.product.name)
-        self.box.add_widget(self.name1)
-        self.company = Label(text=self.offer.product.company)
-        self.box.add_widget(self.company)
-        self.description = Label(text=self.offer.product.description)
-        self.box.add_widget(self.description)
-
+        # labels box
+        self.labels_icons = BoxLayout(orientation='horizontal')
+        self.labels_icons.size_hint_y = 0.5
+        self.labels_box = BoxLayout(orientation='vertical')
+        self.name1 = MDLabel(text=" " + self.offer.product.name)
+        self.name1.bold = True
+        self.name1.font_size = 22.0
+        self.name1.color = (0, 0, 0, 1)
+        self.labels_box.add_widget(self.name1)
+        self.company = MDLabel(text="  " + self.offer.product.company)
+        self.company.color = (0, 0, 0, 0.27)
+        self.labels_box.add_widget(self.company)
+        self.description = MDLabel(text="  " + self.offer.product.description)
+        self.description.color = (0, 0, 0, 0.27)
+        self.labels_box.add_widget(self.description)
+        self.labels_icons.add_widget(self.labels_box)
         self.color_size = BoxLayout(orientation='horizontal')
+        self.box.add_widget(self.color_size)
+        # icons box
+        self.icons_box = BoxLayout(orientation='horizontal')
+        self.another_item = MDIconButton(icon="windows/images/add.png")
+        self.another_item.bind(on_press=lambda x: print(self.add_item()))
+        self.icons_box.add_widget(self.another_item)
+        self.remove = MDIconButton(icon="windows/images/minus.png")
+        self.remove.bind(on_press=lambda x: self.remove_item())
+        self.icons_box.add_widget(self.remove)
+        if self.user.is_a_liker(self.offer_id):
+            self.like = MDIconButton(icon="windows/images/unlike.png")
+        else:
+            self.like = MDIconButton(icon="windows/images/like.png")
+        self.like.bind(on_press=lambda x: self.like_unlike())
+        self.icons_box.add_widget(self.like)
+        self.icons_box.padding = [250, 0, 0, 0]
+        self.labels_icons.add_widget(self.icons_box)
+        self.box.add_widget(self.labels_icons)
+
+        # price
+        self.curr_price = MDLabel(text="price")
+        self.curr_price.size_hint_y = 0.2
+        self.box.add_widget(self.curr_price)
+
+        # colors and sizes
+        self.color_size = BoxLayout(orientation='vertical')
         self.box.add_widget(self.color_size)
 
         size_lis = self.split_str(self.purchase.size)
         color_lis = self.split_str(self.purchase.color)
-        self.color_mainbutton = {}
-        self.size_mainbutton = {}
-        self.chosen_colors = self.list_to_dict(color_lis)
-        self.chosen_sizes = self.list_to_dict(size_lis)
 
-        for i in range(1, len(color_lis) + 1):
-            self.chosen_colors[i] = color_lis[i - 1]
-            self.chosen_sizes[i] = size_lis[i - 1]
-        self.color_dropdown = {}
-        self.size_dropdown = {}
-        self.another_item = Button(text="another item")
-        self.another_item.bind(on_press=lambda x: self.add_item())
-        self.box.add_widget(self.another_item)
-        self.remove = Button(text="less item")
-        self.remove.bind(on_press=lambda x: self.remove_item())
-        self.box.add_widget(self.remove)
+        self.chosen_colors = {}
+        self.chosen_sizes = {}
+
+
         quan = self.purchase.quantity
         for i in range(0, quan):
-            self.add_item_for_update(color_lis[i], size_lis[i])
+            self.add_item_for_update(color_lis[i], size_lis[i], i+1)
 
-        self.join_offer = BoxLayout(orientation='horizontal')
-        self.unjoin = Button(text="CANCEL")
-        self.unjoin.bind(on_press=lambda x: self.cancel_purchase())
+
+
+
+        # cancel & update buttons
+        self.cancel_update = BoxLayout(orientation='vertical')
+        self.cancel_update.size_hint_y = 0.4
+        # update button
         self.update = Button(text="UPDATE")
+        self.update.size_hint_y = 0.2
+        self.update.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
         self.update.bind(on_press=lambda x: self.update_purchase())
-        self.join_offer.add_widget(self.unjoin)
-        self.join_offer.add_widget(self.update)
-        self.box.add_widget(self.join_offer)
+        # cancel button
+        self.cancel = Button(text='CANCEL')
+        self.cancel.bind(on_press=lambda x: self.cancel_purchase())
 
-        self.back = Button(text="BACK")
-        self.back.bind(on_press=lambda x: self.out())
-        self.box.add_widget(self.back)
-
-        if self.user.is_a_liker(self.offer_id):
-            self.like = Button(text="UNLIKE")
-        else:
-            self.like = Button(text="LIKE")
-        self.like.bind(on_press=lambda x: self.like_unlike())
-        self.box.add_widget(self.like)
+        self.cancel_update.add_widget(self.cancel)
+        self.cancel_update.add_widget(self.update)
+        self.box.add_widget(self.cancel_update)
         self.add_widget(self.box)
 
     def show_as_viewer(self, photo_lis):
@@ -466,6 +490,7 @@ class OfferScreen(Screen):
         btn.icon = "windows/images/colors/" + text + ".png"
         # chosen colors for add offer
         self.chosen_colors[num_of_quantity] = text
+        x = 5
 
     def chose_size(self, btn, text, num_of_quantity, size_num):
         # change color of all the other button to the regular button color
@@ -589,140 +614,56 @@ class OfferScreen(Screen):
         # self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, self.new_address, self.user,
         #                                    self.offer).open()
         self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, "new address s", self.user,
-                                           self.offer).open()
+                                           self.offer, self.name, self.photo_lis).open()
 
-    # end as a viewer
+    # as a buyer
 
-    def register(self):
-        self.dismiss()
-        a = App.get_running_app()
-        a.root.current = 'connect_screen'
-        Utils.pop("you need to register first", 'alert')
-
-    def out(self):
-        App.get_running_app().root.current = 'menu_screen'
-
-    def dismiss(self):
-        Popup.dismiss(self)
-
-    def like_unlike(self):
-        if self.user.is_a_liker(self.offer_id):
-            self.controller.remove_liked_offer(self.offer_id)
-            self.like.icon="windows/images/like.png"
-
-        else:
-            self.controller.add_liked_offer(self.offer_id)
-            self.like.icon="windows/images/unlike.png"
-
-    def add_item_for_update(self, colorz, sizez):
-        self.num_of_quantity += 1
-
-        # self.color_size = BoxLayout(orientation='horizontal')
-        # self.box.add_widget(self.color_size)
-
-        self.color_dropdown[self.num_of_quantity] = DropDown()
-        colors = self.offer.product.colors
-        for color in colors:
-            btn = Button(text='%s' % color, size_hint=(None, None))
-            btn.bind(on_release=lambda btn=self.num_of_quantity, color_chosen=btn.text,
-                                       quant=self.num_of_quantity: self.save_color_first(btn, color_chosen, quant))
-            self.color_dropdown[self.num_of_quantity].add_widget(btn)
-        self.color_mainbutton[self.num_of_quantity] = Button(text=colorz)
-        self.color_mainbutton[self.num_of_quantity].bind(on_release=self.color_dropdown[self.num_of_quantity].open)
-
-        self.color_size.add_widget(self.color_mainbutton[self.num_of_quantity])
-        self.color_dropdown[self.num_of_quantity].bind(on_select=lambda a=self.num_of_quantity,
-                                                                        instance=self.color_mainbutton[
-                                                                            self.num_of_quantity]: self.save_color_first(
-            a, instance))
-
-        # ------------------------------------------size-----------------
-
-        self.size_dropdown[self.num_of_quantity] = DropDown()
-        sizes = self.offer.product.sizes
-        for size in sizes:
-            btn = Button(text='%s' % size, size_hint=(None, None))
-            btn.bind(on_release=lambda btn=self.num_of_quantity, size_chosen=btn.text,
-                                       quant=self.num_of_quantity: self.save_size_first(btn, size_chosen, quant))
-            self.size_dropdown[self.num_of_quantity].add_widget(btn)
-        self.size_mainbutton[self.num_of_quantity] = Button(text=sizez)
-        self.size_mainbutton[self.num_of_quantity].bind(on_release=self.size_dropdown[self.num_of_quantity].open)
-
-        self.color_size.add_widget(self.size_mainbutton[self.num_of_quantity])
-        self.size_dropdown[self.num_of_quantity].bind(on_select=lambda a=self.num_of_quantity,
-                                                                       instance=self.size_mainbutton[
-                                                                           self.num_of_quantity]: self.save_size_first(
-            a, instance))
-
-    def open_drop(self, a, num_of_quantity):
-        self.color_dropdown[num_of_quantity].open
-
-    def get_step(self):
-        step = len(self.offer.steps)
-        for checkbox in self.price_per_step.children:
-            if type(checkbox) is MDCheckbox:
-                if checkbox.active:
-                    return step
-                step -= 1
-        return -1
+    def add_item_for_update(self, color, size, item_count):
+        self.add_item()
+        len_of_colors = len(self.offer.product.colors)
+        len_of_sizes = len(self.offer.product.sizes)
+        for i in range(0, len_of_colors):
+            if self.get_btn_color(self.color_size.children[item_count-1].children[1].children[i]) == color:
+                color_btn = self.color_size.children[item_count-1].children[1].children[i]
+        for i in range(0, len_of_sizes):
+            if self.color_size.children[item_count-1].children[0].children[i].text == size:
+                size_btn = self.color_size.children[item_count-1].children[0].children[i]
+        self.chose_color(color_btn, color, item_count, 0)
+        self.chose_size(size_btn, size, item_count, 0)
 
     def update_purchase(self):
         sizez = ",".join(self.chosen_sizes.values())
         colorz = ",".join(self.chosen_colors.values())
         print(str(self.chosen_sizes.values()))
         print(type(str(self.chosen_sizes.values())))
-        step = len(self.offer.steps)
-        # self.controller.remove_active_buy_offer(self.offer_id)
         step = self.get_step()
         if step == -1:
-            toast("you need to choose step ")
+            toast("you need to choose step")
             return
-        offer_id = self.offer_id
-        quantity = self.num_of_quantity
-        ans = self.controller.update_active_buy_offer(self.offer_id, quantity, step, colorz, sizez,
-                                                      self.purchase.address)
-        if ans.res is True:
-            for item in self.user.active_buy_offers:
-                if item.offer_id == self.offer_id:
-                    self.user.active_buy_offers.remove(item)
-            self.user.get_active_buy_offers().append(self.offer)
-            self.offer = ans.data
-            data = App.get_running_app().root.current_screen.ids.Main_page_box.children[1].data
-            for object in data:
-                offer = object['offer']
-                if offer[0].offer_id == self.offer_id:
-                    a = ans.data.current_buyers
-                    to_return = {}
-                    for buyer in ans.data.current_buyers:
-                        to_return[buyer['buyer_id']] = Struct(**buyer)
-                    offer[0].current_buyers = to_return
-            self.dismiss()
-            return
+        ans = self.controller.update_purchase(self.offer_id, self.num_of_quantity, step, colorz, sizez,
+                                                      self.purchase.address, self.user)
+        if ans != False:
+            self.remove_widget(self.box)
+            Utils.pop(self, 'your purchase has been changed', 'change')
+            self.init_offer(ans, self.photo_lis)
+        else:
+            Utils.pop(self, 'error, please try again', 'error')
 
     def cancel_purchase(self):
-        ans = self.controller.remove_active_buy_offer(self.offer_id)
-        if ans.res is True:
-            # self.user.get_active_buy_offers().append(self.offer)
-            cc = self.user.get_active_buy_offers()
-            self.offer = ans.data
-            for offerz in self.user.active_buy_offers:
-                if offerz.offer_id == self.offer_id:
-                    self.user.active_buy_offers.remove(offerz)
-            data = App.get_running_app().root.current_screen.ids.Main_page_box.children[1].data
-            for object in data:
-                offer = object['offer']
-                if offer[0].offer_id == self.offer_id:
-                    a = ans.data.current_buyers
-                    to_return = {}
-                    for buyer in ans.data.current_buyers:
-                        to_return[buyer['buyer_id']] = Struct(**buyer)
-                    offer[0].current_buyers = to_return
-            # self.user.active_buy_offers.remove(ans.data)
-        self.dismiss()
+        ans = self.controller.cancel_purchase(self.offer_id, self.user)
+        if ans != False:
+            self.remove_widget(self.box)
+            Utils.pop(self, 'your purchase has been canceled', 'cancel')
+            # have to close the screen and open a new one - as a viewer, with the offer without this buyer
+            self.init_offer(ans, self.photo_lis)
+        else:
+            Utils.pop(self, 'error, please try again', 'error')
+
+    # as a seller
 
     def remove_offer(self):
         self.dismiss()
-        ans = self.controller.remove_active_sell_offer(self.offer_id)
+        ans = self.controller.remove_offer(self.offer_id)
         if ans.res is True:
             pass
 
@@ -734,6 +675,27 @@ class OfferScreen(Screen):
         f = App.get_running_app().root.screens[6]
         c = self.offer
         f = App.get_running_app().root.screens[6].update_offer(self.offer)
+
+    def out(self):
+        App.get_running_app().root.current = 'menu_screen'
+
+    def like_unlike(self):
+        if self.user.is_a_liker(self.offer_id):
+            self.controller.remove_liked_offer(self.offer_id)
+            self.like.icon="windows/images/like.png"
+
+        else:
+            self.controller.add_liked_offer(self.offer_id)
+            self.like.icon="windows/images/unlike.png"
+
+    def get_step(self):
+        step = len(self.offer.steps)
+        for checkbox in self.price_per_step.children:
+            if type(checkbox) is MDCheckbox:
+                if checkbox.active:
+                    return step
+                step -= 1
+        return -1
 
     def split_list(self, lis):
         x = lis.split(',')

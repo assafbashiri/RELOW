@@ -7,6 +7,7 @@ from kivy.event import EventDispatcher
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
+from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
@@ -59,6 +60,12 @@ class MENUScreen(Screen):
     def __init__(self, **kwargs):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
+
+    def search_by_name(self):
+        search_word = self.children[2].children[0].children[1].text
+        App.get_running_app().root.screens[3].ids.search_box.ids.name.text = search_word
+        App.get_running_app().root.screens[3].search_by_name()
+        App.get_running_app().root.current = 'search_screen'
 
 
 class Manager(ScreenManager):
@@ -241,6 +248,7 @@ class TestApp(MDApp):
             print("login failed")
             f = open('hello.json', 'r+')
             f.truncate(0)
+            self.controller.store = JsonStore('hello.json')
             self.check_connection()
 
 

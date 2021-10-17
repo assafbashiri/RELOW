@@ -1,8 +1,14 @@
 <TERMSScreen>
     id: terms
     name: 'terms_screen'
+    orientation: "horizontal"
+    Side_box:
+        id: side_box
     Terms_box:
         id:terms_box
+    Down_menu:
+        id: down_menu
+
 
 
 <Terms_box>
@@ -10,7 +16,8 @@
     orientation: "horizontal"
     BoxLayout:
         orientation: 'vertical'
-        Label:
+        padding: [10,50,0,0]
+        MDLabel:
             id: terms_label
             text: "here comes the terms"
         CheckBox:
@@ -18,5 +25,3 @@
         Button:
             id: agree
             text: 'agree'
-    Side_box:
-        id: side_box
