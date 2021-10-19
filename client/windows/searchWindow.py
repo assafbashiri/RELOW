@@ -27,76 +27,55 @@ class SEARCHScreen(Screen):
         self.name = 'search_screen'
         super(SEARCHScreen, self).__init__(**kwargs)
         self.mes = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        self.of = Offers_Screen(size_hint_y= 2)
+        self.of = Offers_Screen(size_hint_y= 0.4)
         self.first_time_bad_search = True
-        self.first_time_good_search = True
         self.lab = MDLabel(text="")
+        self.lab.size_hint_y = 0.4
         self.category_name= None
         self.dialog = None
 
     def search_by_name(self):
-        prod_name = self.ids.side_box.children[0].children[1].text
-        # have to set the search box in the main window
-        App.get_running_app().root.screens[0].ids.side_box.children[0].children[1].text = prod_name
-        self.search_by_prod_name(prod_name)
-
-
-    def search_by_prod_name(self, prod_name):
-        self.ids.search_box.ids.helper.remove_widget(self.lab)
-        self.ids.search_box.ids.helper.remove_widget(self.of)
+        if self.first_time_bad_search:
+            tempi = self.ids.search_box.ids.tempi
+            self.ids.search_box.remove_widget(tempi)
+        self.ids.search_box.remove_widget(self.lab)
+        self.ids.search_box.remove_widget(self.of)
+        prod_name = self.ids.search_box.ids.name.text
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
         # bad search
         if len(ans) == 0:
             self.of.insert_offers(list=[])
-            # if self.first_time_bad_search is True:
-            self.lab.text = "cant find offer"
-            # self.mes.add_widget(self.lab)
-            self.ids.search_box.ids.helper.add_widget(self.lab)
-                # self.first_time_bad_search = False
-            # else:
-            #     self.lab.text = "cant find offer.."
+            self.lab.text = "   We are sorry, we cant find offers for you"
+            self.ids.search_box.add_widget(self.lab)
         # good search
         else:
-            # if self.first_time_bad_search is False:
-
-            # if self.first_time_good_search is True:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.ids.helper.add_widget(self.of)
-            # self.first_time_good_search = False
-            # else:
-            #     self.of.insert_offers(list=ans)
+            self.ids.search_box.add_widget(self.of)
+        self.first_time_bad_search = False
 
     def search_by_company(self):
-        self.ids.search_box.ids.helper.remove_widget(self.lab)
-        self.ids.search_box.ids.helper.remove_widget(self.of)
+        if self.first_time_bad_search:
+            tempi = self.ids.search_box.ids.tempi
+            self.ids.search_box.remove_widget(tempi)
+        self.ids.search_box.remove_widget(self.lab)
+        self.ids.search_box.remove_widget(self.of)
         prod_company = self.ids.search_box.ids.company.text
         ans = App.get_running_app().controller.get_offers_by_product_company(prod_company)
         # bad search
         if len(ans) == 0:
             self.of.insert_offers(list=[])
-            # if self.first_time_bad_search is True:
-            self.lab.text = "cant find offer"
-            # self.mes.add_widget(self.lab)
-            self.ids.search_box.ids.helper.add_widget(self.lab)
-            # self.first_time_bad_search = False
-            # else:
-            #     self.lab.text = "cant find offer.."
-        # good search
+            self.lab.text = "   We are sorry, we cant find offers for you"
+            self.ids.search_box.add_widget(self.lab)
+            # good search
         else:
-            # if self.first_time_bad_search is False:
-
-            # if self.first_time_good_search is True:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.ids.helper.add_widget(self.of)
-            # self.first_time_good_search = False
-            # else:
-            #     self.of.insert_offers(list=ans)
+            self.ids.search_box.add_widget(self.of)
+        self.first_time_bad_search = False
 
     def search_by_sub_category(self):
         self.ids.search_box.ids.helper.remove_widget(self.lab)
         self.ids.search_box.ids.helper.remove_widget(self.of)
         sub_cat_name = self.ids.search_box.ids.drop_sub_category.text
-        # cat_name = self.ids.category.text
         if self.category_name is None:
             Utils.pop(self, 'have to choose sub category', 'alert')
             return
@@ -104,24 +83,12 @@ class SEARCHScreen(Screen):
         ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
 
         if len(ans) == 0:
-            # self.of.insert_offers(list=[])
-            # if self.first_time_bad_search is True:
             self.lab.text = sub_cat_name+" has 0 offers"
-                # self.mes.add_widget(self.lab)
             self.ids.search_box.ids.helper.add_widget(self.lab)
-            # self.first_time_bad_search = False
-            # else:
-            #     self.lab.text = sub_cat_name+" has 0 offers.."
         # good search
         else:
-            # if self.first_time_bad_search is False:
-            #     self.lab.text = ""
-            # if self.first_time_good_search is True:
             self.of.insert_offers(list=ans)
             self.ids.search_box.ids.helper.add_widget(self.of)
-                # self.first_time_good_search = False
-            # else:
-            #     self.of.insert_offers(list=ans)
 
     def show_dropdown_search_by_category(self):
         categories = App.get_running_app().controller.get_categories()
@@ -192,24 +159,13 @@ class SEARCHScreen(Screen):
             return
         ans = App.get_running_app().controller.get_offers_by_category(cat_name)
         if len(ans) == 0:
-            # self.of.insert_offers(list=[])
-            # if self.first_time_bad_search is True:
             self.lab.text = cat_name+" has 0 offers"
-                # self.mes.add_widget(self.lab)
             self.ids.search_box.ids.helper.add_widget(self.of)
-            # self.first_time_bad_search = False
-            # else:
-            #     self.lab.text = cat_name+" has 0 offers.."
         # good search
         else:
-            # if self.first_time_bad_search is False:
-            #     self.lab.text = ""
-            # if self.first_time_good_search is True:
             self.of.insert_offers(list=ans)
             self.ids.search_box.ids.helper.add_widget(self.of)
-                # self.first_time_good_search = False
-            # else:
-            #     self.of.insert_offers(list=ans)
+
 
 class Search_box(BoxLayout):
     def __init__(self, **kwargs):
@@ -220,6 +176,9 @@ class Search_box(BoxLayout):
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
+
+    def back(self):
+        App.get_running_app().root.current = "menu_screen"
 
 class Sub_Category_box(BoxLayout):
     pass

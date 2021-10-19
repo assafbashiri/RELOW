@@ -62,12 +62,6 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
-    def search_by_name(self):
-        search_word = self.children[2].children[0].children[1].text
-        App.get_running_app().root.screens[3].ids.side_box.children[0].children[1].text = search_word
-        App.get_running_app().root.screens[3].search_by_prod_name(search_word)
-        App.get_running_app().root.current = 'search_screen'
-
 
 class Manager(ScreenManager):
     # def __init__(self, **kwargs):
@@ -81,57 +75,6 @@ class Side_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Side_box, self).__init__(**kwargs)
         self.dialog = None
-
-        # self.id = 'side_box'
-        # self.size_hint_y = 0.2
-        # self.size_hint_x = 0.55
-        # self.spacing = 10
-        # self.orientation = 'vertical'
-        # self.pos_hint = {'top':1}
-        #
-        # box1 = BoxLayout(orientation='horizontal')
-        # self.add_widget(box1)
-        # icon1 = MDIconButton(orientation= 'horizontal')
-        # icon1.icon = "windows/images/main2.png"
-        # icon1.on_press(self.back_to_main())
-        # box1.add_widget(icon1)
-
-#
-#
-# MDLabel:
-# id: hello
-# size_hint_x: 0.15
-# text: root.get_user_name()
-#
-# Button:
-# id: logout_register
-# text: root.login_or_connect()
-# size_hint_x: 0.1
-# background_color: (0, 0, 0, 0)
-# color: (0, 0, 0, 0.65) if self.state == 'normal' else (24 / 255, 211 / 255, 199 / 255, 1)
-# on_press:
-# root.logout_connect()
-#
-# Button:
-# text: "Terms"
-# size_hint_x: 0.1
-# background_color: (0, 0, 0, 0)
-# color: (0, 0, 0, 0.65) if self.state == 'normal' else (24 / 255, 211 / 255, 199 / 255, 1)
-# on_press:
-# root.parent.parent.current = 'terms_screen'
-#
-# BoxLayout:
-# orientation: 'horizontal'
-# spacing: 20
-# padding: [20, 25, 0, 10]
-# MDTextFieldRound:
-# id: name
-# hint_text: "search by name"
-# background_color: (0, 0, 0, 0)
-# MDIconButton:
-# id: search_by_name
-# icon: "windows/images/search1.png"
-# on_press: root.parent.search_by_name()
 
     def login_or_connect(self):
         # for the btn text
@@ -222,7 +165,6 @@ class Down_menu(BoxLayout):
             App.get_running_app().root.current = 'add_offer_screen'
 
     def move_to_my_offers(self):
-        print("heyy")
         App.get_running_app().root.current = 'my_offers_screen'
 
     def move_to_account(self):
@@ -240,6 +182,10 @@ class Down_menu(BoxLayout):
             return 'BECOME A SELLER'
         else:
             return 'ADD OFFER'
+
+    def move_to_search(self):
+        App.get_running_app().root.current = 'search_screen'
+
 
 class Main_page_box(BoxLayout):
     def __init__(self, **kwargs):
