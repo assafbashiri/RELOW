@@ -17,12 +17,6 @@
             icon: "windows/images/back_btn.png"
             on_press:root.back()
             pos_hint: { 'center_y': .5}
-            canvas:
-                Color:
-                    rgba: (0,0,.1,.11) # DarkOliveGreen
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
     BoxLayout:
         id: title_box
         size_hint: 1 , .2
@@ -32,12 +26,6 @@
             id : add_offer_label
             text : "Add Offer"
             font_size: 32
-            canvas:
-                Color:
-                    rgba: (0,.1,.1,.1)
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
     ScrollView:
         id: scrollview
         do_scroll_y: True
@@ -74,10 +62,19 @@
                 TextInput:
                     id: product_name_input
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
+                    #background_normal : ''
+                    #background_active: ''
+                    #background_color: 24/255,211/255,199/255,.2
                     write_tab: False
                     multiline: False
+                    canvas:
+                        Color:
+                            rgba: 24/255,211/255,199/255, .5
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                    background_color: 24/255,211/255,199/255, .5
+
 
             GridLayout:
                 id: company_name_box
@@ -161,13 +158,22 @@
                     TextInput:
                         id:size_num_input
                         size_hint: .5, .7
-                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        #pos_hint: {'center_x': .1, 'center_y': .5}
                         text_hint: 'Size Number'
-                        font_name: "Arial"
-                        normal_color: 100,0,0,0
+                        #font_name: "Arial"
+                        #text_color: 0,0,0,0
+                        #normal_color: 100,0,0,0
                         color_active: 100,100,1,0
+                        #text_color: 1,1,1,1
                         write_tab: False
                         multiline: False
+                        background_color: 1,1,1,0
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255, .5)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
                         #on_release: root.show_dropdown_size_num()
                     MDDropDownItem:
                         id:size_type_input
@@ -226,13 +232,28 @@
                         id: add_step
                         text: 'add step'
                         size_hint: 1 , 1
-                        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
                         on_press: root.add_step()
                     Button:
                         id: remove_step
                         size_hint: 1 , 1
                         text: 'remove step'
-                        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                        pos_hint: {'bottom':.5}
                         on_press: root.remove_step()
             GridLayout:
                 id:end_date_box
@@ -241,12 +262,6 @@
                 spacing: 10
                 size_hint: 1 , .1
                 pos_hint:{'center_x':.1, 'center_y':.5}
-                canvas:
-                    Color:
-                        rgba: (.5,.5,.5,.5) # DarkOliveGreen
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
                 GridLayout:
                     cols:2
                     size_hint: 1, .03
