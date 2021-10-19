@@ -201,12 +201,12 @@ class Backend_controller:
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
-    def update_offer(self, offer_id, category_name, sub_category_name, user_id, name, company, colors, sizes,
-                     description, steps, end_date):
+    def update_offer(self, offer_id, category_name, sub_category_name, name, company, colors, sizes,
+                     description, steps, end_date, photos):
         update_req = {'op': 15, 'offer_id': offer_id, 'category_name': category_name,
-                      'sub_category_name': sub_category_name, 'user_id': user_id, 'name': name,
+                      'sub_category_name': sub_category_name, 'user_id': self.user_service.user_id, 'name': name,
                       'company': company, 'colors': colors, 'sizes': sizes, 'description': description,
-                      'steps': steps, 'end_date': end_date}
+                      'steps': steps, 'end_date': end_date, 'photo_lis' :photos}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
 
