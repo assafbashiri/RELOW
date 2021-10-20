@@ -356,7 +356,11 @@ class Backend_controller:
         if ans.res is True:
             z = App.get_running_app().root.screens[0].ids.Main_page_box.children[0].children[0]
             z.refresh_from_data()
-            user.active_buy_offers[offer_id] = updated_offer
+            counter = 0
+            for offer in user.active_buy_offers:
+                if offer.offer_id == offer_id:
+                    user.active_buy_offers[counter] = updated_offer
+                counter = counter + 1
             for object in z.data:
                 offer = object['offer']
                 if offer[0].offer_id == offer_id:
