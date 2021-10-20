@@ -4,6 +4,8 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle
 from kivy.uix.button import Button
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image, CoreImage
 from kivy.properties import StringProperty, ListProperty, NumericProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -11,6 +13,7 @@ from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
@@ -18,7 +21,7 @@ from windows.offerWindow import OfferScreen
 from windows.updateOfferWindow import UPDATEOFFERScreen
 
 
-class Offers_Screen(RecycleView):
+class Offers_Screen(ScrollView):
     def __init__(self, **kwargs):
         super(Offers_Screen, self).__init__(**kwargs)
         a = App.get_running_app()
@@ -47,12 +50,17 @@ class Offers_Screen(RecycleView):
                 photo_lis.append(photo)
             offers_list.append({'offer': [offer],
                                 'photo_lis': photo_lis})
-        self.data = offers_list
+            offer_to_add = RecycleViewRow(offer, photo_lis)
+            self.ids.scroll_box.add_widget(offer_to_add)
+        # self.data = offers_list
         # need to add the photos here
+        Clock.schedule_once(self.bolo,0)
+    def bolo(self, num):
+        print('fuck')
 
 
 
-class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
+class RecycleViewRow(GridLayout):
     # caro = ObjectProperty()
     name = StringProperty()
     company = StringProperty()
@@ -65,26 +73,20 @@ class RecycleViewRow(RecycleDataViewBehavior,BoxLayout):
     offer_id = NumericProperty()
     offer = ObjectProperty()
 
-    def __init__(self, **kwargs):
+    def __init__(self,offer, photo_lis, **kwargs):
         super(RecycleViewRow, self).__init__(**kwargs)
-        Clock.schedule_once(self.insert, 0)
-    #     self.car = Carousel(direction='left', size_hint_y= 2)
-    #     # for photo in kwargs['photos']:
-    #     for photo in kwargs:
-    #         self.car.add_widget(photo)
-    #     self.add_widget(self.car)
-    #     self.more_details = Button(text="more details",size_hint_y=.5 ,on_press= lambda a:self.www())
-    #     self.more = Button(text="more", size_hint_y=.5 ,on_press= lambda a:self.insert())
-    #     self.add_widget(self.more_details)
-    #     self.add_widget(self.more)
+        # Clock.schedule_once(self.insert, 0)
+        self.offer = offer
+        self.photo_lis = photo_lis
+        self.insert()
 
-    def insert(self, num):
+
+    def insert(self):
         self.ids.car.insert(self.photo_lis)
-        print('bolo')
 
 
     def www(self,offer_list, photo_list):
-        offer = offer_list[0]
+        offer = self.offer
         offer_id = offer.offer_id
         screens_len = len(App.get_running_app().root.screens)
         screens = App.get_running_app().root.screens
