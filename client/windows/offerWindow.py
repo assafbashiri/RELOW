@@ -53,9 +53,9 @@ class OfferScreen(Screen):
 
         if self.controller.guest is True:
             self.show_as_guest(photo_lis)
-        elif self.offer.is_a_seller(self.user.user_id):
+        # elif self.offer.is_a_seller(self.user.user_id):
         #     self.show_as_seller(photo_lis)
-        # elif self.user.is_a_buyer(self.offer.offer_id):
+        elif self.user.is_a_buyer(self.offer.offer_id):
             self.show_as_buyer(photo_lis)
         else:
             self.show_as_viewer(photo_lis)
