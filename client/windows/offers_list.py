@@ -7,6 +7,7 @@ from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image, CoreImage
+from kivy.core.image import Image as imm
 from kivy.properties import StringProperty, ListProperty, NumericProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
@@ -17,6 +18,8 @@ from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.imagelist import SmartTileWithLabel
+from kivymd.uix.label import MDLabel
 from windows.offerWindow import OfferScreen
 from windows.updateOfferWindow import UPDATEOFFERScreen
 
@@ -60,32 +63,71 @@ class Offers_Screen(ScrollView):
 
 
 
-class RecycleViewRow(GridLayout):
+class RecycleViewRow(SmartTileWithLabel):
     # caro = ObjectProperty()
-    name = StringProperty()
-    company = StringProperty()
-    description = StringProperty()
-    product_size = StringProperty()
-    color = StringProperty()
-    photo_lis = ListProperty()
-    steps = ListProperty()
-    current_buyers = NumericProperty()
-    offer_id = NumericProperty()
-    offer = ObjectProperty()
+    # name = StringProperty()
+    # company = StringProperty()
+    # description = StringProperty()
+    # product_size = StringProperty()
+    # color = StringProperty()
+    # photo_lis = ListProperty()
+    # steps = ListProperty()
+    # current_buyers = NumericProperty()
+    # offer_id = NumericProperty()
+    # offer = ObjectProperty()
 
-    def __init__(self,offer, photo_lis, **kwargs):
+    def __init__(self,offer, photo_list, **kwargs):
         super(RecycleViewRow, self).__init__(**kwargs)
         # Clock.schedule_once(self.insert, 0)
         self.offer = offer
-        self.photo_lis = photo_lis
-        self.insert()
+        
+        self.photo_list = photo_list
+        self.overlap = False
+        self.always_release = False
+        self.text = self.offer.product.name + "\n"+ self.offer.product.description
+        self.box_color = (0, 0, 0, 0.2)
+        self.size_hint_y = 0.8
+        a = self.insert2(photo_list[0])
+        a.save('windows/images/test.png')
+        self.source = 'windows/images/test.png'
+        self.on_press= self.check
+        btn = MDIconButton()
+        btn.icon = "windows/images/like.png"
+        # self.add_widget(btn)
+        btn1 = Button(text = 'bolo')
+        btn1.size_hint = (.1,.1)
+        btn1.background_active = "windows/images/like.png"
+        # btn1.pos_hint = {'x':.8}
+        # btn1.icon = "windows/images/like.png"
+        # btn1.padding = [200,0,0,0]
+        # btn.padding = [450,100,0,0]
+        btn1.bind(on_press= lambda x:print('bolo'))
+        btn1.background_color = (0,0,0,0)
+        self.add_widget(btn1)
+        # self.add_widget(btn, 2)
+        self.lines = 2
 
+        # self.insert()
 
+    def check(self):
+        print('wow')
     def insert(self):
-        self.ids.car.insert(self.photo_lis)
+        self.ids.car.insert(self.photo_list)
+
+    def insert2(self,  photo):
+        if photo is not None:
+            image = photo
+            data = io.BytesIO(image)
+            data.seek(0)
+            img = CoreImage(data, ext="png").texture
+
+            new_img = imm(arg=img)
+            # new_img.texture = img
+            # new_img.allow_stretch = False
+            return new_img
 
 
-    def www(self,offer_list, photo_list):
+    def www(self):
         offer = self.offer
         offer_id = offer.offer_id
         screens_len = len(App.get_running_app().root.screens)
@@ -98,7 +140,7 @@ class RecycleViewRow(GridLayout):
                     App.get_running_app().root.current = screen_name
                     return
             screens.append(UPDATEOFFERScreen())
-            screens[screens_len].init_offer(offer, photo_list)
+            screens[screens_len].init_offer(offer, self.photo_list)
             App.get_running_app().root.current = screen_name
             #craete update_offer_screen
         else:
@@ -110,7 +152,7 @@ class RecycleViewRow(GridLayout):
                     return
             # open new screen for this offer
             screens.append(OfferScreen())
-            screens[screens_len].init_offer(offer, photo_list)
+            screens[screens_len].init_offer(offer, self.photo_list)
             App.get_running_app().root.current = screen_name
 
 
@@ -135,5 +177,7 @@ class Carousel2(Carousel):
 
                 new_img = Image()
                 new_img.texture = img
-                new_img.allow_stretch = True
+                new_img.allow_stretch = False
                 self.add_widget(new_img)
+
+

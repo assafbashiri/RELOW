@@ -2,26 +2,8 @@
 
 <RecycleViewRow>
     id: RecycleViewRow
-    cols:1
-    GridLayout:
-        cols:3
-        MDIconButton:
-            #size_hint:(.5, .25)
-            icon: "chevron-left"
-            pos_hint: {'top':.5}
-            on_press: root.move_left()
-        Carousel2:
-            size_hint_x : 5
-            #photos: self.parent.photo_lis
-            id: car
-        MDIconButton:
-            pos:(20, 20)
-            icon: "chevron-right"
-            pos_hint: {'top':.5}
-            on_press: root.move_right()
-    MDFloatingActionButton:
-        icon: "windows/images/more3.png"
-        on_press: root.www(self.parent.offer, self.parent.photo_lis)
+
+    on_press: root.www()
 
 
 <Offers_Screen>
