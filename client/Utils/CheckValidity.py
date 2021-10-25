@@ -145,16 +145,16 @@ class CheckValidity:
             raise Exception("Input date is not valid..")
 
     def checkEndDate(self, end_date):
-        year, month, day = end_date.split('-')
         isValidDate = True
         try:
+            year, month, day = end_date.split('-')
             a = datetime.datetime(int(year), int(month), int(day))
         except ValueError as v:
             isValidDate = False
         if not isValidDate:
             toast("Input date is not valid..")
             print("Input date is not valid..")
-            return
+            return False
         today = datetime.datetime.now()
         today_day = today.day.real
         today_month = today.month.real

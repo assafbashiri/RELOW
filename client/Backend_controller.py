@@ -744,6 +744,30 @@ class Backend_controller:
             print("bad search - offers_by_product_company")
         return offers
 
+    def get_offers_by_product_price(self, price):
+        offers = []
+        req = {'op': 97, 'price': price}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search - offers_by_product_price")
+        return offers
+
+    def get_offers_by_product_end_date(self, date):
+        offers = []
+        req = {'op': 98, 'end_date': date}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search - offers_by_product_end_date")
+        return offers
+
     def contact_us(self, subject, description):
         req = {'op': 94, 'subject': subject, 'description': description}
         self.req_answers.add_request(req)
