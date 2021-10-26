@@ -65,10 +65,6 @@ class MENUScreen(Screen):
         super(MENUScreen, self).__init__(**kwargs)
 
 
-
-
-
-
     def open_cat_drop(self):
         categories = self.get_all_categories()
         menu_items = []
@@ -245,7 +241,6 @@ class Down_menu(BoxLayout):
             App.get_running_app().root.current = 'add_offer_screen'
 
     def move_to_my_offers(self):
-        print("heyy")
         App.get_running_app().root.current = 'my_offers_screen'
 
     def move_to_account(self):
@@ -263,6 +258,10 @@ class Down_menu(BoxLayout):
             return 'BECOME A SELLER'
         else:
             return 'ADD OFFER'
+
+    def move_to_search(self):
+        App.get_running_app().root.current = 'search_screen'
+
 
 class Main_page_box(BoxLayout):
     def __init__(self, **kwargs):
@@ -287,7 +286,7 @@ class TestApp(MDApp):
 
     def on_start(self):
         b = self.root.current_screen.ids.Main_page_box.ids.recycle1.insert_offers(
-            list=App.get_running_app().controller.get_hot_deals())
+            list=App.get_running_app().controller.hot_deals)
 
     def on_stop(self):
         print('fuck we stoped')

@@ -34,6 +34,7 @@ class SubCategory:
         ans = []
         ans.extend(self.offers_dictionary.values())
         return ans
+
     def get_offers_by_product_name(self, product_name):
         ans = []
         for offer_id in self.offers_dictionary.keys():
@@ -47,6 +48,25 @@ class SubCategory:
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
             if curr_offer.get_product().get_company() == company_name:
+                ans.append(curr_offer)
+        return ans
+
+    def get_offers_by_price(self, price):
+        ans = []
+        for offer_id in self.offers_dictionary.keys():
+            curr_offer = self.offers_dictionary[offer_id]
+            curr_step = curr_offer.get_current_step()
+            curr_price = curr_offer.steps[curr_step].get_price()
+            if curr_price <= price:
+                ans.append(curr_offer)
+        return ans
+
+    def get_offers_by_end_date(self, end_date):
+        ans = []
+        for offer_id in self.offers_dictionary.keys():
+            curr_offer = self.offers_dictionary[offer_id]
+            # change to compare-to
+            if curr_offer.get_end_date() >= end_date:
                 ans.append(curr_offer)
         return ans
 

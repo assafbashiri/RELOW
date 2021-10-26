@@ -106,5 +106,5 @@ class Offers_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def back(self):
-        App.get_running_app().root.current ="menu_screen"
+        App.get_running_app().root.current = "menu_screen"
 

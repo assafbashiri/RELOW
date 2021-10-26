@@ -219,6 +219,25 @@ class CategoryController:
         return ans
 
     # return regular list, throw exceptions
+    def get_offers_by_price(self, price):
+        ans = []
+        for category_id in self.category_dictionary.keys():
+            category_offers = self.category_dictionary[category_id].get_offers_by_price(price)
+            if category_offers is not None:
+                ans.extend(category_offers)
+        return ans
+
+    # return regular list, throw exceptions
+    def get_offers_by_end_date(self, end_date):
+        ans = []
+        for category_id in self.category_dictionary.keys():
+            category_offers = self.category_dictionary[category_id].get_offers_by_end_date(end_date)
+            if category_offers is not None:
+                ans.extend(category_offers)
+        return ans
+
+
+    # return regular list, throw exceptions
     def get_offer_by_offer_id(self, offer_id):
         for category_id in self.category_dictionary.keys():
             offer_to_return = self.category_dictionary[category_id].get_offer_by_offer_id(offer_id)

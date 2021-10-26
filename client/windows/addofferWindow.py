@@ -50,7 +50,7 @@ from Utils.CheckValidity import CheckValidity
 
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):
-        self.name = 'home'
+        self.name = 'add_offer_screen'
 
         super(ADDOFFERScreen, self).__init__(**kwargs)
 #---------------------------------------------------
@@ -344,7 +344,7 @@ class Add_offer_box(BoxLayout):
         #      return
         end_date = '2021-12-15'
         steps = []
-        for i in range(1, self.step):
+        for i in range(1, self.step+1):
             price = self.ids[str(i)].ids.price_input.text
             limit = self.ids[str(i)].ids.max_input.text
             step = StepService(0, price, i, limit)

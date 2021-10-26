@@ -1,143 +1,344 @@
 <UPDATEOFFERScreen>
     id: update_offer
-    name: 'update_offer'
+    name: 'update_offer_screen'
     Update_offer_box:
-        id: add_offer_box
+        id: update_offer_box
+    #Down_menu:
+     #   id: down_menu
+
 
 <Update_offer_box>
-    #orientation: "horizontal"
-    id: add_offer_box
-    pos_hint: {'center_x': .5, 'center_y': .5}
-    MDBoxLayout:
-        id: package
-        orientation: "vertical"
-        MDBoxLayout:
-            id:content
-            orientation: "vertical"
-            MDDropDownItem:
-                write_tab: False
-                id: drop_category
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                text: 'category'
-                on_release: root.show_dropdown_category()
-            MDTextFieldRound:
-                write_tab: False
-                id:product_name
-                text:'product name'
-                hint_text: "product name"
-            MDTextFieldRound:
-                write_tab: False
-                id:company
-                text:'company'
-                hint_text: "company name"
-            MDTextFieldRound:
-                write_tab: False
-                id:description
-                text:'description'
-                hint_text: "description"
-            MDTextFieldRound:
-                write_tab: False
-                text : "11/11/22"
-                id:end_date
-                hint_text: "end date"
-                on_focus:root.show_date_picker()
-            BoxLayout:
-                orientation: 'horizontal'
-                id:colors
-                size_hint_y: .2
-                Button:
-                    id:color
-                    text: 'add color'
-                    on_press: root.add_color_start()
-            MDBoxLayout:
-                orientation: 'horizontal'
-                id: size_box
-                size_hint_y: .2
-                Button:
-                    id: add_size
-                    text: 'add size'
-                    on_press: root.add_size_start()
-            MDRoundFlatButton:
-                write_tab: False
-                text:"ADD STEP"
-                font_size: 12
-                on_press: root.add_step()
-            MDGridLayout:
-                cols: 3
-                id: stepi
-                MDLabel:
-                    id: steps_label1
-                    text: "step 1"
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'10'
-                    id:limit1
-                    hint_text: "limit"
-                    icon_right: "account"
-                    size_hint_x:None
-                    width:200
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'1000'
-                    id:price1
-                    hint_text: "price"
-                    icon_right: "account"
-                MDLabel:
-                    id: steps_label2
-                    text: "step 2"
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'30'
-                    id:limit2
-                    hint_text: "limit"
-                    icon_right: "account"
-                    size_hint_x:None
-                    width:200
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'800'
-                    id:price2
-                    hint_text: "price"
-                    icon_right: "account"
-                MDLabel:
-                    id: steps_label3
-                    text: "step 3"
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'50'
-                    id:limit3
-                    hint_text: "limit"
-                    icon_right: "account"
-                    size_hint_x:None
-                    width:200
-                MDTextFieldRound:
-                    write_tab: False
-                    text:'500'
-                    id:price3
-                    hint_text: "price"
-                    icon_right: "account"
-            MDRoundFlatButton:
-                write_tab: False
-                text:"ADD PHOTO"
-                font_size: 12
-                on_press: root.ids.choose.file_manager_open()
-            choose_photo_layout:
-                write_tab: False
-                id: choose
-                size_hint_y: .2
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                #orientation: "vertical"
-            MDRoundFlatButton:
-                write_tab: False
-                text:"REMOVE PHOTO"
-                font_size: 12
-                on_press: root.ids.choose.remove_photo()
-            MDRoundFlatButton:
-                write_tab: False
-                id: add_offer_button
-                text:"UPDATE OFFER"
-                font_size: 12
-                on_press: root.final_update_offer()
+    orientation: "vertical"
+    id: update_offer_box
+    BoxLayout:
+        id: back_box
+        size_hint: 1 , .05
+        MDIconButton:
+            icon: "windows/images/back_btn.png"
+            on_press:root.back()
+            pos_hint: { 'center_y': .5}
 
-    Side_box:
-        id:side_box
+    BoxLayout:
+        id: title_box
+        size_hint: 1 , .2
+        MDLabel:
+            pos_hint: {'top':1}
+            size_hint: 1 , 1
+            id : add_offer_label
+            text : "Add Offer"
+            font_size: 32
+
+    ScrollView:
+        id: scrollview
+        do_scroll_y: True
+        size_hint: 1 , 1
+        GridLayout:
+            id: cover
+            cols: 1
+            padding: [25,0,25,0]
+            size_hint_y: 2.25
+            GridLayout:
+                id: category_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1, .07
+                MDDropDownItem:
+                    write_tab: False
+                    id: drop_category
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: 'category'
+                    on_release: root.show_dropdown_category()
+            GridLayout:
+                id: product_name_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1, .07
+                MDLabel:
+                    id: product_name_label
+                    size_hint: 1 , .4
+                    text: "Product Name"
+                    font_size:20
+
+                TextInput:
+                    id: product_name_input
+                    size_hint: 1 , .6
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    write_tab: False
+                    multiline: False
+
+            GridLayout:
+                id: company_name_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1, .07
+                MDLabel:
+                    id: company_name_label
+                    text: "Company Name"
+                    size_hint: 1 , .4
+                    font_size:20
+                TextInput:
+                    id: company_name_input
+                    size_hint: 1 , .6
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    write_tab: False
+                    multiline: False
+
+            GridLayout:
+                id: description_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1 , .3
+                MDLabel:
+                    id: description_label
+                    size_hint: 1 , .1
+                    text: "Description"
+                    font: 'sofia pro bold'
+                    font_size:20
+                TextInput:
+                    id: description_input
+                    size_hint: 1 , .6
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    write_tab: False
+
+            GridLayout:
+                id: color_box
+                rows: 2
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1, .1
+                MDLabel:
+                    id: color_label
+                    size_hint: 1 , .1
+                    text: "Colors"
+                    font_size:20
+                ScrollView:
+                    id: scrollview_colors
+                    do_scroll_y: False
+                    do_scroll_x: True
+                    size_hint: 1 , 1
+                    GridLayout:
+                        id: color_grid
+                        size_hint: 1.5,1
+                        cols:10
+
+
+
+
+
+            GridLayout:
+                id: size_box
+                cols:1
+                padding: [0,5,50,5]
+                spacing: 10
+                size_hint: 1, .1
+                MDLabel:
+                    id: size_label
+                    text: "Sizes"
+                    size_hint: 1 , .4
+                    font_size:20
+                GridLayout:
+                    id:size_drop_box
+                    cols:5
+                    rows:1
+                    size_hint: 1 , .8
+                    TextInput:
+                        id:size_num_input
+                        size_hint: .5, .7
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text_hint: 'Size Number'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        #on_release: root.show_dropdown_size_num()
+                    MDDropDownItem:
+                        id:size_type_input
+                        size_hint: .5,.7
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Size Type'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_size_type()
+                    Button:
+                        id: add_size
+                        size_hint: .5, .7
+                        text: "Add"
+                        on_press: root.add_size_()
+                    MDDropDownItem:
+                        id:size_out
+                        size_hint: .5,.7
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'My Sizes'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_size()
+                    Button:
+                        id: add_size
+                        size_hint: .5, .7
+                        text: "Remove"
+                        on_press: root.remove_size()
+
+            GridLayout:
+                id: steps_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 2
+                size_hint: 1 , .6
+                MDLabel:
+                    id: step_label
+                    text: "Steps"
+                    size_hint: 1 , .1
+                    font_size:20
+                StepLayoutStart:
+                    id: 1
+                StepLayoutStart:
+                    id: 2
+                GridLayout:
+                    cols:2
+                    padding: [0,5,0,5]
+                    spacing: 10
+                    size_hint: 1 , .2
+                    Button:
+                        id: add_step
+                        text: 'add step'
+                        size_hint: 1 , 1
+                        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        on_press: root.add_step()
+                    Button:
+                        id: remove_step
+                        size_hint: 1 , 1
+                        text: 'remove step'
+                        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        on_press: root.remove_step()
+            GridLayout:
+                id:end_date_box
+                cols:1
+                padding: [0,5,0,5]
+                spacing: 10
+                size_hint: 1 , .1
+                pos_hint:{'center_x':.1, 'center_y':.5}
+
+                GridLayout:
+                    cols:2
+                    size_hint: 1, .03
+                    MDLabel:
+                        id: step_label
+                        text: "End Date"
+                        size_hint: 1 , 1
+                        font_size:20
+                GridLayout:
+                    cols:3
+                    MDDropDownItem:
+                        id:year_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Year'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_year()
+                    MDDropDownItem:
+                        id:month_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Month'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_month()
+                    MDDropDownItem:
+                        id:day_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Day'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_day()
+
+            GridLayout:
+                id: choose1
+                cols:1
+                size_hint: 1 , .1
+                GridLayout:
+                    id: photo_title
+                    cols:1
+                    size_hint: 1 , .1
+                    MDLabel:
+                        id: photos_label
+                        size_hint: 1 , .1
+                        text: "Choose Photos"
+                        font: 'sofia pro bold'
+                        font_size:20
+                GridLayout:
+                    id: choose
+                    cols:5
+                    size_hint: .25 , .15
+                    Button:
+                        size_hint: .2 , .25
+                        background_color: (0,0,0,0)
+                        color: (24/255,211/255,199/255,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        text:"+"
+                        font_size: 40
+                        on_press: root.file_manager_open()
+                    Button:
+                        size_hint: .2 , .25
+                        background_color: (0,0,0,0)
+                        color: (24/255,211/255,199/255,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        text:"-"
+                        font_size: 40
+                        on_press: root.remove_photo()
+
+            GridLayout:
+                cols:1
+                padding: [30,30,30,30]
+                spacing: 10
+                size_hint: 1 , .1
+                Button:
+                    id: update
+                    text: 'Update'
+                    size_hint: 1 , 1
+                    background_color: (0,0,0,0)
+                    background_normal: ''
+                    canvas.before:
+                        Color:
+                            rgba: (24/255,211/255,199/255,1)
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                    pos_hint: {'bottom':.5}
+                    on_press: root.update_offer()
+                Button:
+                    id: cancel
+                    text: 'Cancel'
+                    size_hint: 1 , 1
+                    background_color: (0,0,0,0)
+                    background_normal: ''
+                    canvas.before:
+                        Color:
+                            rgba: (24/255,211/255,199/255,1)
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                    pos_hint: {'bottom':.5}
+                    on_press: root.remove_offer()
+
+
+

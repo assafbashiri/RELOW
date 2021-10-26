@@ -2,32 +2,15 @@
 
 <RecycleViewRow>
     id: RecycleViewRow
-    orientation: 'vertical'
-    BoxLayout:
-        orientation: 'horizontal'
-        MDIconButton:
-            icon: "chevron-left"
-            pos_hint: {'top':.5}
-            on_press: root.move_left()
-        Carousel2:
-            photos: self.parent.parent.photo_lis
-            id: car
-        MDIconButton:
-            icon: "chevron-right"
-            pos_hint: {'top':.5}
-            on_press: root.move_right()
-    MDFloatingActionButton:
-        icon: "windows/images/more3.png"
-        on_press: root.www(self.parent.offer, self.parent.photo_lis)
+
+    on_press: root.www()
 
 
 <Offers_Screen>
-    viewclass: 'RecycleViewRow'
     background_color: (0,0,0,0)
-    RecycleBoxLayout:
-        default_size: None, dp(500)
-        default_size_hint: 1, None
-        size_hint_y: None
-        height: self.minimum_height
+    id:scrolls
+    BoxLayout:
+        id: scroll_box
+        size_hint: 1,1.5
         orientation: 'vertical'
         spacing:10

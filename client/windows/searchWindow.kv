@@ -1,72 +1,149 @@
 <SEARCHScreen>
     id: search
     name:'search_screen'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     Search_box:
         id: search_box
-    Side_box:
-        id: side_box
     Down_menu:
         id: down_menu
 
 <Search_box>
-    padding: [0,120,0,0]
+    orientation: 'vertical'
     BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1,0.1
+        MDIconButton:
+            icon: "windows/images/back_btn.png"
+            on_press:root.back()
+        MDLabel:
+            id : search_label
+            text : " Search"
+            font_size: 32
+
+    BoxLayout:
+        id: helper
+        size_hint: 1, 0.2
         canvas.before:
             Color:
                 rgba: 1, 1, 1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
-        id: helper
+        padding: [20,20,20,20]
         orientation: 'vertical'
-        MDGridLayout:
-            id:zibi
+        GridLayout:
+            id: gridi
+            size_hint: 1, 1
+            spacing: 5
             cols:2
-            MDTextFieldRound:
+            TextInput:
+                id:name
+                hint_text: "search by name"
+                normal_color: 100,0,0,0
+                color_active: 100,100,1,0
+                write_tab: False
+                multiline: False
+            Button:
+                id: search_by_name
+                text:"Search"
+                font_size: 12
+                size_hint_x: 0.1
+                on_press:root.parent.search_by_name()
+
+            TextInput:
                 id:company
                 hint_text: "search by company"
+                normal_color: 100,0,0,0
+                color_active: 100,100,1,0
+                size_hint_y: .1
+                write_tab: False
+                multiline: False
 
-            MDRoundFlatButton:
+            Button:
                 id: search_by_company
                 text:"Search"
                 font_size: 12
+                size_hint_x: 0.1
                 on_press:root.parent.search_by_company()
 
-            MDDropDownItem:
-                canvas.before:
-                    Color:
-                        rgba: 0/256, 165/256, 255/256, .69
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-                id: drop_category
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                text: "search by category"
-                on_release: root.parent.show_dropdown_search_by_category()
+            TextInput:
+                id:price
+                hint_text: "search by price"
+                normal_color: 100,0,0,0
+                color_active: 100,100,1,0
+                size_hint_y: .1
+                write_tab: False
+                multiline: False
 
-            MDRoundFlatButton:
-                id: search_by_category
+            Button:
+                id: search_by_price
                 text:"Search"
                 font_size: 12
-                on_press:root.parent.search_by_category()
+                size_hint_x: 0.1
+                on_press:root.parent.search_by_price()
 
-            MDDropDownItem:
-                canvas.before:
-                    Color:
-                        rgba: 0/256, 165/256, 255/256, .69
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-                id: drop_sub_category
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                text: "search by sub category"
-                on_release: root.parent.show_dropdown_category()
+            TextInput:
+                id:date
+                hint_text: "search by end date"
+                normal_color: 0,0,0,0
+                color_active: 0,0,0,0
+                size_hint_y: .1
+                write_tab: False
+                multiline: False
 
-            MDRoundFlatButton:
-                id: search_by_sub_category
+            Button:
+                id: search_by_date
                 text:"Search"
                 font_size: 12
-                on_press:root.parent.search_by_sub_category()
+                size_hint_x: 0.1
+                on_press:root.parent.search_by_end_date()
+    BoxLayout:
+        id: tempi
+        size_hint: 1,0.4
+        MDLabel:
+            id: before_search
+
+
+#            MDDropDownItem:
+#                canvas.before:
+#                    Color:
+#                        rgba: 0/256, 165/256, 255/256, .69
+#                    Rectangle:
+#                        pos: self.pos
+#                        size: self.size
+#                id: drop_category
+#                pos_hint: {'center_x': .5, 'center_y': .5}
+#                text: "search by category"
+#                on_release: root.parent.show_dropdown_search_by_category()
+
+#            MDRoundFlatButton:
+#                id: search_by_category
+#                text:"Search"
+#                font_size: 12
+#                on_press:root.parent.search_by_category()
+
+#            MDDropDownItem:
+#                canvas.before:
+#                    Color:
+#                        rgba: 0/256, 165/256, 255/256, .69
+#                    Rectangle:
+#                        pos: self.pos
+#                        size: self.size
+#                id: drop_sub_category
+#                pos_hint: {'center_x': .5, 'center_y': .5}
+#                text: "search by sub category"
+#                on_release: root.parent.show_dropdown_category()
+
+ #           MDRoundFlatButton:
+#                id: search_by_sub_category
+#                text:"Search"
+#                font_size: 12
+#                on_press:root.parent.search_by_sub_category()
 
 
 

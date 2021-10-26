@@ -32,9 +32,11 @@ from Utils.CheckValidity import CheckValidity
 class Category_box(BoxLayout):
     pass
 
+
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
+
 
 class ACCOUNTScreen(Screen):
     def __init__(self, **kwargs):
@@ -50,12 +52,12 @@ class Account_box(BoxLayout):
         self.address_box = Address_box()
         self.password_box = Password_box()
 
-
-        Clock.schedule_once(self.helper,4)
+        Clock.schedule_once(self.helper, 4)
         # self.add_widget(self.current_box, len(self.children))
         # self.cat = Category_box()
         # self.sub_cat = Sub_Category_box()
         # self.dialog = None
+
     def helper(self, num):
         self.ids.choose_box.add_widget(self.personal_box)
 
@@ -63,12 +65,15 @@ class Account_box(BoxLayout):
         self.ids.choose_box.remove_widget(self.personal_box)
         self.ids.choose_box.remove_widget(self.address_box)
         self.ids.choose_box.remove_widget(self.password_box)
+
     def change_to_address(self):
         self.remove_widgets()
         self.ids.choose_box.add_widget(self.address_box)
+
     def change_to_personal(self):
         self.remove_widgets()
         self.ids.choose_box.add_widget(self.personal_box)
+
     def change_to_update_password(self):
         self.remove_widgets()
         self.ids.choose_box.add_widget(self.password_box)
@@ -80,18 +85,18 @@ class Account_box(BoxLayout):
     def back(self):
         App.get_running_app().root.current = "menu_screen"
 
-
-
     def active_offers(self):
         ans = App.get_running_app().controller.get_all_active_buy_offers()
         self.act_buy_offers = Offers_Screen()
         self.act_buy_offers.insert_offers(list=ans)
         self.ids.boxi.add_widget(self.act_buy_offers)
+
     def exit(self):
         App.get_running_app().controller.exit()
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
+
 
 class Personal_box(BoxLayout):
 
@@ -101,9 +106,6 @@ class Personal_box(BoxLayout):
         self.user = self.controller.user_service
         self.area = '052'
 
-
-
-
     def personal(self):
         first_name = self.ids.first_name_input.text
         last_name = self.ids.last_name_input.text
@@ -112,8 +114,8 @@ class Personal_box(BoxLayout):
         year = self.ids.year_input.text
         month = self.ids.month_input.text
         day = self.ids.day_input.text
-        date_str=''
-        if year!='' and month != '' and day!='':
+        date_str = ''
+        if year != '' and month != '' and day != '':
             date_str = f'{year}-{month}-{day}'
         if first_name != "":
             ans = CheckValidity.checkValidityName(self, first_name)
@@ -136,18 +138,18 @@ class Personal_box(BoxLayout):
         if self.gender == 0:
             Utils.pop(self, "Please Choose Gender", "alert")
             return
-        #---------------------------------------------haveee toooo checkkk birthdateeee----------------------
+        # ---------------------------------------------haveee toooo checkkk birthdateeee----------------------
         # if date_str != "":
         #     ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
         #     if ans is False:
         #         return
 
-
-        ans = App.get_running_app().controller.update_user_details(first_name, last_name, email, phone_number, date_str, self.gender)
+        ans = App.get_running_app().controller.update_user_details(first_name, last_name, email, phone_number, date_str,
+                                                                   self.gender)
         if ans.res is True:
             self.user = Struct(**ans.data)
             # update the json------------------------------------------------
-            #self.parent.parent.manager.back_to_main()
+            # self.parent.parent.manager.back_to_main()
             self.init_fields()
         return ans
 
@@ -171,19 +173,20 @@ class Personal_box(BoxLayout):
             if (self.user.phone is None):
                 self.ids.phone_input.text = ""
             else:
-                phone_with_area=self.user.phone
+                phone_with_area = self.user.phone
                 self.ids.phone_input.text = phone_with_area[3:len(phone_with_area)]
+                self.ids.area_input.text = phone_with_area[0:3]
             if (self.user.email is None):
                 self.ids.email_input.text = ""
             else:
                 self.ids.email_input.text = self.user.email
 
-            if (self.user.gender ==1):
+            if (self.user.gender == 1):
                 self.gender = 1
             elif self.user.gender == 2:
                 self.gender = 2
             else:
-                if self.user.gender =='male':
+                if self.user.gender == 'male':
                     self.ids.male.active = True
                 else:
                     self.ids.female.active = True
@@ -193,14 +196,15 @@ class Personal_box(BoxLayout):
                 self.ids.month_input.text = ""
                 self.ids.day_input.text = ""
             else:
-                date=self.user.birth_date
+                date = self.user.birth_date
                 if ' ' in date:
-                    date , e= date.split(' ')
-                year,month,day = date.split('-')
+                    date, e = date.split(' ')
+                year, month, day = date.split('-')
                 self.ids.year_input.text = year
                 self.ids.month_input.text = month
                 self.ids.day_input.text = day
-            self.gender=self.user.gender
+            self.gender = self.user.gender
+
     def show_dropdown_year(self):
         menu_items = []
         for year in range(2021, 1900, -1):
@@ -219,6 +223,7 @@ class Personal_box(BoxLayout):
 
         )
         self.drop_down_years.open()
+
     def save_year(self, year):
         self.ids.year_input.text = year
         self.drop_down_years.dismiss()
@@ -241,6 +246,7 @@ class Personal_box(BoxLayout):
 
         )
         self.drop_down_months.open()
+
     def save_month(self, month):
         self.ids.month_input.text = month
         self.drop_down_months.dismiss()
@@ -264,12 +270,14 @@ class Personal_box(BoxLayout):
         )
 
         self.drop_down_days.open()
+
     def save_day(self, day):
         self.ids.day_input.text = day
         self.drop_down_days.dismiss()
+
     def show_dropdown_area(self):
         menu_items = []
-        areas = ['050','052','054','055','057','058']
+        areas = ['050', '052', '054', '055', '057', '058']
         for area in areas:
             menu_items.append(
                 {
@@ -287,35 +295,39 @@ class Personal_box(BoxLayout):
         )
 
         self.drop_down_areas.open()
+
     def save_area(self, area):
         self.ids.area_input.text = area
-        self.area=area
+        self.area = area
         self.drop_down_areas.dismiss()
 
     # click Cancel
     def on_cancel(self, instance, value):
         pass
+
     def save_male(self, instance, value):
         if (value):
-            #male
+            # male
             self.gender = 1
         else:
-            #female
+            # female
             self.gender = 2
+
     def save_female(self, instance, value):
         if (value):
-            #male
+            # male
             self.gender = 2
         else:
-            #female
+            # female
             self.gender = 1
+
+
 class Password_box(BoxLayout):
 
     def __init__(self, **kwargs):
         super(Password_box, self).__init__(**kwargs)
         controller = App.get_running_app().controller
         self.user = controller.user_service
-
 
     def change_password(self):
         old_password = self.ids.old_password_input.text
@@ -341,9 +353,11 @@ class Password_box(BoxLayout):
             self.back_to_account_window()
         else:
             Utils.pop(self, ans.message, 'alert')
+
     def back_to_account_window(self):
         App.get_running_app().root.current = 'account_screen'
-        #App.get_running_app().root.prev = 'menu_screen'
+        # App.get_running_app().root.prev = 'menu_screen'
+
 
 class Address_box(BoxLayout):
 
@@ -476,6 +490,7 @@ class Address_box(BoxLayout):
         result_details = res_details.json()
         self.chosen_city_lat = result_details['result']['geometry']['location']['lat']
         self.chosen_city_lng = result_details['result']['geometry']['location']['lng']
+
     def address(self):
         city = self.ids.city_input.text
         if not self.check_empty(city, 'city'):
@@ -532,7 +547,6 @@ class Address_box(BoxLayout):
             # toast('the apt is not valid')
             return False
         return True
-
 
 
 class Sub_Category_box(BoxLayout):
@@ -604,7 +618,7 @@ class BoxiLayout(BoxLayout):
                 self.ids.email.text = ""
             else:
                 self.ids.email.text = self.user.email
-            #change gender initiallization
+            # change gender initiallization
             if (self.user.gender is None):
                 self.ids.gender.text = ""
             else:
@@ -700,8 +714,6 @@ class BoxiLayout(BoxLayout):
         self.ids.cvv.text = ""
         self.ids.card_type.text = ""
         self.ids.id_number.text = ""
-
-
 
     def show_date_picker_exp_date(self):
         date_dialog = MDDatePicker(year=1996, month=12, day=15)

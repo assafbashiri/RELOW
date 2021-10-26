@@ -91,6 +91,8 @@ class Handler:
                          82: self.log_in_from_guest,
                          92: self.forgot_password,
                          94: self.contact_us,
+                         97: self.get_offers_by_product_price,
+                         98: self.get_offers_by_product_end_date,
                          99: self.get_offers_by_product_company,
                          500: self.confirm_add_active_sell_offer,
                          501: self.confirm_remove_active_sell_offer,
@@ -643,6 +645,30 @@ class Handler:
                 if offer.confirm:
                     to_return.append(temp)
             return Response(to_return, "Offers Lists (by product company) Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def get_offers_by_product_price(self, argument):
+        to_return = []
+        try:
+            offers_list = self.category_controller.get_offers_by_price(int(argument['price']))
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                if offer.confirm:
+                    to_return.append(temp)
+            return Response(to_return, "Offers Lists (by product price) Received Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def get_offers_by_product_end_date(self, argument):
+        to_return = []
+        try:
+            offers_list = self.category_controller.get_offers_by_end_date(argument['end_date'])
+            for offer in offers_list:
+                temp = vars(OfferService(offer))
+                if offer.confirm:
+                    to_return.append(temp)
+            return Response(to_return, "Offers Lists (by product end date) Received Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

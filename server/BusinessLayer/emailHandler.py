@@ -7,6 +7,7 @@ class emailHandler:
 
     def sendemail(self, receiver_email, message):
         port = 587  # For starttls
+        return False
         smtp_server = "smtp.gmail.com"
         sender_email = "shareit1256@gmail.com"
         password = "bolo1995"

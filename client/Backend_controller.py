@@ -201,12 +201,12 @@ class Backend_controller:
         return ans
 
     # ------------------- Account Window ---------------------------------------------------------------------
-    def update_offer(self, offer_id, category_name, sub_category_name, user_id, name, company, colors, sizes,
-                     description, steps, end_date):
+    def update_offer(self, offer_id, category_name, sub_category_name, name, company, colors, sizes,
+                     description, steps, end_date, photos):
         update_req = {'op': 15, 'offer_id': offer_id, 'category_name': category_name,
-                      'sub_category_name': sub_category_name, 'user_id': user_id, 'name': name,
+                      'sub_category_name': sub_category_name, 'user_id': self.user_service.user_id, 'name': name,
                       'company': company, 'colors': colors, 'sizes': sizes, 'description': description,
-                      'steps': steps, 'end_date': end_date}
+                      'steps': steps, 'end_date': end_date, 'photo_lis' :photos}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
 
@@ -356,7 +356,11 @@ class Backend_controller:
         if ans.res is True:
             z = App.get_running_app().root.screens[0].ids.Main_page_box.children[0].children[0]
             z.refresh_from_data()
-            user.active_buy_offers[offer_id] = updated_offer
+            counter = 0
+            for offer in user.active_buy_offers:
+                if offer.offer_id == offer_id:
+                    user.active_buy_offers[counter] = updated_offer
+                counter = counter + 1
             for object in z.data:
                 offer = object['offer']
                 if offer[0].offer_id == offer_id:
@@ -738,6 +742,30 @@ class Backend_controller:
             offers = self.build_offers_list(ans.data)
         else:
             print("bad search - offers_by_product_company")
+        return offers
+
+    def get_offers_by_product_price(self, price):
+        offers = []
+        req = {'op': 97, 'price': price}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search - offers_by_product_price")
+        return offers
+
+    def get_offers_by_product_end_date(self, date):
+        offers = []
+        req = {'op': 98, 'end_date': date}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        if ans.res is True:
+            offers = self.build_offers_list(ans.data)
+        else:
+            print("bad search - offers_by_product_end_date")
         return offers
 
     def contact_us(self, subject, description):

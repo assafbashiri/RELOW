@@ -5,8 +5,8 @@ from kivymd.toast import toast
 
 from Utils.Utils import Utils
 
-from client.Service.Object.OfferService import OfferService
-from client.Service.Object.PurchaseService import PurchaseService
+from Service.Object.OfferService import OfferService
+from Service.Object.PurchaseService import PurchaseService
 
 
 class Struct(object):
