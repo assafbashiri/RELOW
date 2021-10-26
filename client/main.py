@@ -2,6 +2,7 @@ import pickle
 import time
 import sys
 import threading
+from windows.test import test
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -82,6 +83,7 @@ def net(req):
 
 
 if __name__ == '__main__':
+    #test.get_address(None)
     Builder.load_file('windows/mainWindow.kv')
     Builder.load_file('windows/managerWindow.kv')
     Builder.load_file('windows/connectWindow.kv')

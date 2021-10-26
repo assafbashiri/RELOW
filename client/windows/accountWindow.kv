@@ -356,96 +356,82 @@
     id:address_box
     orientation: 'vertical'
     size_hint: 1,1
-    MDDropDownItem:
-        write_tab: False
 
-        id: drop_address
-        pos_hint: {'center_x': .5, 'center_y': .5}
-        text: 'pick address'
-        font_name: "Arial"
-        on_release: root.show_dropdown_address_gov_il()
-
-    GridLayout:
-        cols:1
-        id: region_box
-        #orientation: 'vertical'
-        size_hint: 1,.7
-        padding: ['20dp','30dp', '20dp' , '0dp']
-
-        MDLabel:
-            id: region_label
-            text: "Region"
-            font: 'sofia pro bold'
-            font_size:20
-
-        TextInput:
-            id:region_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: 1.6
-            write_tab: False
-            multiline: False
 
     GridLayout:
         cols:1
         id: city_box
-        #orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: city_label
             text: "City"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:15
+
+        GridLayout:
+            cols:1
+            size_hint_y:.5
 
         TextInput:
             id:city_input
+            hint_text:'city'
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 4
+            font_name:'Arial'
             write_tab: False
             multiline: False
+            on_text:root.drop_cities_authocomplete(self.text)
 
     GridLayout:
         cols:1
         id: street_box
         #orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: street_label
             text: "Street"
             font: 'sofia pro bold'
-            font_size:20
+            font_size:15
+        GridLayout:
+            cols:1
+            size_hint_y:.5
 
         TextInput:
             id: street_input
+            hint_text:'street'
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 4
             write_tab: False
             multiline: False
+            font_name:'Arial'
+            on_text:root.drop_streets_authocomplete(self.text)
 
     GridLayout:
         cols:1
         id: building_box
         #orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: building_label
             text: "Building"
             font: 'sofia pro bold'
-            font_size:20
-
+            font_size:15
+        GridLayout:
+            cols:1
+            size_hint_y:.5
         TextInput:
             id: building_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 4
             write_tab: False
             multiline: False
 
@@ -453,20 +439,22 @@
         cols:1
         id: apt_box
         #orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: apt_label
             text: "Apartment No."
             font: 'sofia pro bold'
-            font_size:20
-
+            font_size:15
+        GridLayout:
+            cols:1
+            size_hint_y:.5
         TextInput:
             id: apt_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 4
             write_tab: False
             multiline: False
 
@@ -474,20 +462,22 @@
         cols:1
         id: zip_code_box
         #orientation: 'vertical'
-        size_hint: 1,.7
+        size_hint: 1,1
         padding: ['20dp','30dp', '20dp' , '0dp']
 
         MDLabel:
             id: zip_code_label
             text: "Zip-Code"
             font: 'sofia pro bold'
-            font_size:20
-
+            font_size:15
+        GridLayout:
+            cols:1
+            size_hint_y:.2
         TextInput:
             id: zip_code_input
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: 1.6
+            size_hint_y: 4
             write_tab: False
             multiline: False
     GridLayout:

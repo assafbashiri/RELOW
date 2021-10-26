@@ -485,9 +485,9 @@ class OfferScreen(Screen):
         # change color of all the other button to the regular color
         y = btn.parent
         for ch in y.children:
-            ch.icon = "windows/images/colors/un_" + self.get_btn_color(ch) + ".png"
+            ch.icon = f'windows/images/colors/un_{self.get_btn_color(ch)}.png'
         # change color of the selected button
-        btn.icon = "windows/images/colors/" + text + ".png"
+        btn.icon = f'windows/images/colors{str(text)}.png'
         # chosen colors for add offer
         self.chosen_colors[num_of_quantity] = text
         x = 5

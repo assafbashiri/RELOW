@@ -1,4 +1,5 @@
 from Utils.Utils import Utils
+from urllib.parse import urlencode
 from kivy.core.text import LabelBase
 from kivy.app import App
 from kivy.clock import Clock
@@ -350,6 +351,131 @@ class Address_box(BoxLayout):
         super(Address_box, self).__init__(**kwargs)
         controller = App.get_running_app().controller
         self.user = controller.user_service
+        self.chosen_city_lat = 0
+        self.chosen_city_lng = 0
+    def drop_authocomplete(self):
+        menu_items = []
+        input = self.ids.drop_address_authocomplete.text
+        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
+        params = {
+            'input': input,
+            'key': api_key,
+
+        }
+        params_encoded = urlencode(params)
+        url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?{params_encoded}&components=country:isr'
+        res = requests.get(url)
+        result = res.json()
+        addresses = result['predictions']
+        for address in addresses:
+            menu_items.append(
+                {"text": address['description'],
+                 'font': 'Arial',
+                 "viewclass": "OneLineListItem",
+                 "on_release": lambda x=address['description'], y=address: self.show_dropdown_streets(x, y),
+                 }
+            )
+
+        self.drop_down_authocomplete = MDDropdownMenu(
+            caller=self.ids.drop_address_authocomplete,
+            items=menu_items,
+            width_mult=4,
+        )
+        self.drop_down_authocomplete.open()
+
+    def drop_cities_authocomplete(self, text):
+        menu_items = []
+        #input = self.ids.city_input.text
+        input = text
+        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
+        params = {
+            'input': input,
+            'key': api_key,
+        }
+        params_encoded = urlencode(params)
+        url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?{params_encoded}&components=country:isr&types=(cities)'#&language=iw'
+        res = requests.get(url)
+        result = res.json()
+        addresses = result['predictions']
+        for address in addresses:
+
+            menu_items.append(
+
+                {"text":f"[font=Arial]{address['description']}[/font]" ,
+                 'font': 'Arial',
+                 "viewclass": "OneLineListItem",
+                 "on_release": lambda x=address['description'], y=address['place_id']: self.save_city(x, y),
+                 }
+            )
+
+        self.drop_down_cities_authocomplete = MDDropdownMenu(
+            caller=self.ids.city_input,
+            items=menu_items,
+            width_mult=10,
+        )
+        self.drop_down_cities_authocomplete.open()
+    def save_city(self, chosen_city, place_id):
+        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
+        self.get_lat_lng(api_key, place_id)
+        self.chosen_city, self.chosen_country = chosen_city.split(',')
+        self.drop_down_cities_authocomplete.dismiss()
+        self.ids.city_input.text = chosen_city
+        self.drop_down_cities_authocomplete.dismiss()
+        #self.ids.city_input.on_text= self.do_nothing()
+
+    def drop_streets_authocomplete(self, text):
+
+        menu_items = []
+        if self.ids.city_input.text =='':
+            self.chosen_city_lat=0
+            self.chosen_city_lng=0
+        input = text
+        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
+        params = {
+            'input': input,
+            'key': api_key,
+        }
+        params_encoded = urlencode(params)
+        if (self.chosen_city_lng == 0 or self.chosen_city_lat == 0):
+            url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?{params_encoded}&components=country:isr&types=address&radius=500'
+        else:
+            url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?{params_encoded}&components=country:isr&types=address&location={self.chosen_city_lat}%2C{self.chosen_city_lng}&radius=500'
+        res = requests.get(url)
+        result = res.json()
+        addresses = result['predictions']
+        for address in addresses:
+            menu_items.append(
+                {"text":f"[font=Arial]{address['description']}[/font]",
+                 'font': 'Arial',
+                 "viewclass": "OneLineListItem",
+                 "on_release": lambda x=address['description']: self.save_street(x),
+                 }
+            )
+
+        self.drop_down_streets_authocomplete = MDDropdownMenu(
+            caller=self.ids.street_input,
+            items=menu_items,
+            width_mult=10,
+        )
+        self.drop_down_streets_authocomplete.open()
+    def save_street(self, chosen_street):
+        self.drop_down_streets_authocomplete.dismiss()
+        self.ids.street_input.text = chosen_street
+        self.drop_down_streets_authocomplete.dismiss()
+        #self.ids.city_input.on_text= self.do_nothing()
+    def do_nothing(self):
+        pass
+    def get_lat_lng(self, api_key, place_id):
+        params_details = {
+            'place_id': place_id,
+            'key': api_key,
+        }
+        params_encoded_details = urlencode(params_details)
+        url_place_details = f'https://maps.googleapis.com/maps/api/place/details/json?{params_encoded_details}'
+        res_details = requests.get(url_place_details)
+        result_details = res_details.json()
+        self.chosen_city_lat = result_details['result']['geometry']['location']['lat']
+        self.chosen_city_lng = result_details['result']['geometry']['location']['lng']
     def address(self):
         city = self.ids.city_input.text
         if not self.check_empty(city, 'city'):
@@ -612,6 +738,7 @@ class BoxiLayout(BoxLayout):
         self.ids.gender.text = gender_string
         self.drop_down.dismiss()
 
+
     def show_dropdown_address(self):
         addresses = {}
         addresses = self.get_address_list()
@@ -793,3 +920,28 @@ class BoxiLayout(BoxLayout):
             address_dict[region][city].append(street)
 
         return address_dict
+
+
+
+
+#region box
+# GridLayout:
+#         cols:1
+#         id: region_box
+#         #orientation: 'vertical'
+#         size_hint: 1,.7
+#         padding: ['20dp','30dp', '20dp' , '0dp']
+#
+#         MDLabel:
+#             id: region_label
+#             text: "Region"
+#             font: 'sofia pro bold'
+#             font_size:20
+#
+#         TextInput:
+#             id:region_input
+#             normal_color: 100,0,0,0
+#             color_active: 100,100,1,0
+#             size_hint_y: 1.6
+#             write_tab: False
+#             multiline: False
