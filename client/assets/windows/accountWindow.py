@@ -486,23 +486,29 @@ class Address_box(BoxLayout):
         city = self.ids.city_input.text
         if not self.check_empty(city, 'city'):
             return
-
         street = self.ids.street_input.text
         if not self.check_empty(street, 'street'):
             return
         zip_code = self.ids.zip_code_input.text
         if not self.check_empty(zip_code, 'zip_code'):
             return
-        # floor = self.ids.floor_input.text
-        # if not self.check_empty(floor, 'floor'):
-        #     return
-        apt = self.ids.apt_number_input.text
+        if not CheckValidity.contains_only_digits(self,zip_code, 'zip_code'):
+            return
+        building = self.ids.building_input.text
+        if not CheckValidity.contains_only_digits(self,building, 'building'):
+            return
+        if not self.check_empty(building, 'building'):
+            return
+        apt = self.ids.apt_input.text
+        if not CheckValidity.contains_only_digits(self, apt, 'apt'):
+            return
         if not self.check_empty(apt, 'apt'):
             return
-        ans = App.get_running_app().controller.add_address_details(city, street, zip_code, floor, apt)
+
+        ans = App.get_running_app().controller.add_address_details(city, street, zip_code, building, apt)
         if ans.res is True:
             # update the json------------------------------------------------
-            self.parent.parent.manager.back_to_main()
+            App.get_running_app().root.back_to_main()
             self.init_fields()
         return ans
 
@@ -511,9 +517,11 @@ class Address_box(BoxLayout):
             self.ids.city_input.text = ""
         else:
             self.ids.city_input.text = self.user.city
+            self.drop_down_cities_authocomplete.dismiss()
 
         if (self.user.street is None):
             self.ids.street_input.text = ""
+            #self.drop_down_streets_authocomplete.dismiss()
         else:
             self.ids.street_input.text = self.user.street
 
@@ -522,8 +530,15 @@ class Address_box(BoxLayout):
         else:
             self.ids.zip_code_input.text = str(self.user.zip_code)
 
-        # if (self.user.floor is None):
-        #     self.ids.floor.text = ""
+        if (self.user.floor is None):
+            self.ids.building_input.text = ""
+        else:
+            self.ids.building_input.text = str(self.user.floor)
+
+        if (self.user.apartment_number is None):
+            self.ids.apt_input.text = ""
+        else:
+            self.ids.apt_input.text = str(self.user.apartment_number)
 
     def clear_address(self):
         self.ids.city.text = ""

@@ -33,7 +33,7 @@ class SEARCHScreen(Screen):
         # bad search
         if len(ans) == 0:
             self.of.insert_offers(list=[])
-            self.lab.text = "   We are sorry, we cant find offers for you"
+            self.lab.text = "We are sorry, we cant find offers for you"
             self.ids.search_box.add_widget(self.lab)
         # good search
         else:
@@ -90,6 +90,9 @@ class SEARCHScreen(Screen):
         self.ids.search_box.remove_widget(self.of)
         prod_date = self.ids.search_box.ids.date.text
         if not CheckValidity.checkEndDate(self, prod_date):
+            self.of.insert_offers(list=[])
+            self.lab.text = "   We are sorry, invalid end date"
+            self.ids.search_box.add_widget(self.lab)
             return
         ans = App.get_running_app().controller.get_offers_by_product_end_date(prod_date)
         # bad search
@@ -103,23 +106,47 @@ class SEARCHScreen(Screen):
             self.ids.search_box.add_widget(self.of)
         self.first_time_bad_search = False
 
-    def search_by_sub_category(self):
-        self.ids.search_box.ids.helper.remove_widget(self.lab)
-        self.ids.search_box.ids.helper.remove_widget(self.of)
-        sub_cat_name = self.ids.search_box.ids.drop_sub_category.text
-        if self.category_name is None:
-            Utils.pop(self, 'have to choose sub category', 'alert')
-            return
-        cat_name = self.category_name
-        ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name, sub_cat_name)
-
+    def search_by_sub_category(self, cat_name, sub_cat_name):
+        if self.first_time_bad_search:
+            tempi = self.ids.search_box.ids.tempi
+            self.ids.search_box.remove_widget(tempi)
+        self.ids.search_box.remove_widget(self.lab)
+        self.ids.search_box.remove_widget(self.of)
+        ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name,sub_cat_name)
+        # bad search
         if len(ans) == 0:
+            self.of.insert_offers(list=[])
             self.lab.text = sub_cat_name + " has 0 offers"
-            self.ids.search_box.ids.helper.add_widget(self.lab)
+            self.ids.search_box.add_widget(self.lab)
         # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.ids.helper.add_widget(self.of)
+            self.ids.search_box.add_widget(self.of)
+        self.first_time_bad_search = False
+
+    def search_by_category(self, cat_name):
+        if self.first_time_bad_search:
+            tempi = self.ids.search_box.ids.tempi
+            self.ids.search_box.remove_widget(tempi)
+        self.ids.search_box.remove_widget(self.lab)
+        self.ids.search_box.remove_widget(self.of)
+        ans = App.get_running_app().controller.get_offers_by_category(cat_name)
+        # bad search
+        if len(ans) == 0:
+            self.of.insert_offers(list=[])
+            self.lab.text = cat_name + " has 0 offers"
+            self.ids.search_box.add_widget(self.lab)
+        # good search
+        else:
+            self.of.insert_offers(list=ans)
+            self.ids.search_box.add_widget(self.of)
+        self.first_time_bad_search = False
+
+
+
+
+
+
 
     def show_dropdown_search_by_category(self):
         categories = App.get_running_app().controller.get_categories()
@@ -184,22 +211,33 @@ class SEARCHScreen(Screen):
         self.ids.search_box.ids.drop_category.text = sub_cat
         self.drop_down_category.dismiss()
 
-    def search_by_category(self):
-        self.ids.search_box.ids.helper.remove_widget(self.lab)
-        self.ids.search_box.ids.helper.remove_widget(self.of)
-        cat_name = self.ids.search_box.ids.drop_category.text
-        # if cat_name not in App.get_running_app().controller.get_categories().keys():
-        if cat_name == 'search by category':
-            Utils.pop(self, 'have to choose category')
-            return
-        ans = App.get_running_app().controller.get_offers_by_category(cat_name)
-        if len(ans) == 0:
-            self.lab.text = cat_name + " has 0 offers"
-            self.ids.search_box.ids.helper.add_widget(self.of)
-        # good search
-        else:
-            self.of.insert_offers(list=ans)
-            self.ids.search_box.ids.helper.add_widget(self.of)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # self.ids.search_box.ids.helper.remove_widget(self.lab)
+        # self.ids.search_box.ids.helper.remove_widget(self.of)
+        #
+        # ans = App.get_running_app().controller.get_offers_by_category(cat_name)
+        # if len(ans) == 0:
+        #     self.lab.text = cat_name + " has 0 offers"
+        #     self.ids.search_box.ids.helper.add_widget(self.of)
+        # else:
+        #     self.of.insert_offers(list=ans)
+        #     self.ids.search_box.ids.helper.add_widget(self.of)
 
 
 class Search_box(BoxLayout):

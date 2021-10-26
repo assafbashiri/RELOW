@@ -8,6 +8,16 @@ from kivymd.toast import toast
 
 
 class CheckValidity:
+    def contains_only_digits(self, str, obj):
+        if not str.isdecimal():
+            Utils.pop(self, f'{obj} must contain only digits', 'alert')
+            return False
+        return True
+    def contains_only_letters(self, str, obj):
+        if not str.isalpha():
+            Utils.pop(self, f'{obj} must contain only digits', 'alert')
+            return False
+        return True
     def checkValidityName(self, name):
         if ' ' in name:
             res = "Name Shouldnt contain any spaces"

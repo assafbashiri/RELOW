@@ -1,11 +1,14 @@
 from kivy.app import App
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.app import MDApp
 # from kivy.config import Config
 # Config.set('kivy', 'exit_on_escape', '0')
 from kivymd.uix.menu import MDDropdownMenu
+from kivy.uix.popup import Popup
 
 from assets.windows.SideBar import SideBar
 from assets.windows.accountWindow import ACCOUNTScreen
@@ -37,36 +40,6 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
-
-    def open_cat_drop(self):
-        categories = self.get_all_categories()
-        menu_items = []
-        for cat in categories:
-            menu_items.append(
-                {
-                    'text': cat.name,
-                    "viewclass": "TwoLineListItem",
-                    "on_release": lambda x=cat: self.open_offers_category(x),
-                }
-            )
-            for sub_cat in cat.sub_categories_list_names:
-                menu_items.append(
-                    {
-                        'text': sub_cat,
-                        "viewclass": "OneLineListItem",
-                        "on_release": lambda x=sub_cat: self.open_offers_category(x),
-                    }
-                )
-
-        self.drop_down_cat = MDDropdownMenu(
-            caller=self.ids.categories,
-            items=menu_items,
-            width_mult=10,
-
-        )
-
-        self.drop_down_cat.open()
-
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
     def search_by_name(self):
@@ -95,33 +68,36 @@ class Side_box(BoxLayout):
 
     def open_cat_drop(self):
         categories = self.get_all_categories()
-        menu_items = []
+        cat_grid = GridLayout(cols=1, size_hint=(.8,.8), pos_hint={'top':1})
+        categories_names = GridLayout(cols=len(categories), size_hint_y=.3)
+        max_sub_cat=0
         for cat in categories:
-            menu_items.append(
-                {
-                    'text': cat.name,
-                    "viewclass": "TwoLineListItem",
-                    "on_release": lambda x=cat: self.open_offers_category(x),
-                }
-            )
+            categories_names.add_widget(Button(text=cat.name,size_hint=(.3,.3),color= (24/255,211/255,199/255,1), on_press= lambda x=cat: self.open_offers_category(x)))
+            if (len(cat.sub_categories_list_names)>max_sub_cat):
+                max_sub_cat = len(cat.sub_categories_list_names)
+        cat_grid.add_widget(categories_names)
+        sub_cat_names=GridLayout(cols=len(categories))
+        for cat in categories:
+            one_cat_grid =GridLayout(cols=1)
             for sub_cat in cat.sub_categories_list_names:
-                menu_items.append(
-                    {
-                        'text': sub_cat,
-                        "viewclass": "OneLineListItem",
-                        "on_release": lambda x=sub_cat: self.open_offers_category(x),
-                    }
-                )
+                one_cat_grid.add_widget(Button(pos_hint={'top':1},background_color= (0,0,0,0),text=sub_cat, on_press=lambda x=sub_cat, y=cat: self.open_offers_sub_category(x,y)))
+            for i in range (0,max_sub_cat-len(cat.sub_categories_list_names)):
+                one_cat_grid.add_widget(GridLayout(cols=1))
+            sub_cat_names.add_widget(one_cat_grid)
+        cat_grid.add_widget(sub_cat_names)
+        self.popup = Popup(title="categories",content=cat_grid , size_hint=(.8,.8))
+        self.popup.open()
 
-        self.drop_down_cat = MDDropdownMenu(
-            caller=self.ids.categories,
-            items=menu_items,
-            width_mult=10,
 
-        )
+    def open_offers_category(self,cat_button):
+        self.popup.dismiss()
+        App.get_running_app().root.current="search_screen"
+        SEARCHScreen.search_by_category(App.get_running_app().root.current_screen, cat_button.text)
 
-        self.drop_down_cat.open()
-
+    def open_offers_sub_category(self, sub_cat_button, cat):
+        self.popup.dismiss()
+        App.get_running_app().root.current = "search_screen"
+        SEARCHScreen.search_by_sub_category(App.get_running_app().root.current_screen, cat.name, sub_cat_button.text)
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
 
@@ -286,9 +262,9 @@ class TestApp(MDApp):
             self.controller.guest_login(self.controller.user_service.user_id)
         if self.controller.user_service is None:
             print("login failed")
-            f = open('hello.json', 'r+')
+            f = open('assets/hello.json', 'r+')
             f.truncate(0)
-            self.controller.store = JsonStore('hello.json')
+            self.controller.store = JsonStore('assets/hello.json')
             self.check_connection()
 
 

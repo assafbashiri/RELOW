@@ -75,7 +75,8 @@ class EchoClientFactory(ClientFactory):
 
 def net(req):
     factory = EchoClientFactory(req)
-    reactor.connectTCP("20.81.119.147", 4000, factory)  # "129.168.1.19"
+    reactor.connectTCP('localhost', 4000, factory)  # "129.168.1.19"
+    #reactor.connectTCP("20.81.119.147", 4000, factory)  # "129.168.1.19"
     reactor.run(installSignalHandlers=False)
 
 
