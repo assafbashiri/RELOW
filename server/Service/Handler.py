@@ -64,6 +64,7 @@ class Handler:
                          34: self.remove_photo,
                          35: self.update_category_name,
                          36: self.update_sub_category_name,
+                         37: self.get_sub_cat_name,
                          #  check 38
                          38: self.update_sub_category_for_offer,
                          39: self.update_end_date,
@@ -462,6 +463,13 @@ class Handler:
                                                               argument['sub_category_name'],
                                                               argument['name'])
             return Response(None, "Update Sub-Category Name Successfully", True)
+        except Exception as e:
+            return Response(None, str(e), False)
+
+    def get_sub_cat_name(self, argument):
+        try:
+            sub_cat_name = self.category_controller.get_sub_cat_name(argument['cat_id'], argument['sub_cat_id'])
+            return Response(sub_cat_name, "got sub Category name Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 

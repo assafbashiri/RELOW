@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.storage.jsonstore import JsonStore
 
 from kivymd.toast import toast
-
+from assets.Utils.Utils import Utils
 from assets.Service.Object.OfferService import OfferService
 from assets.Service.Object.UserService import UserService
 from assets.Service.Object.CategoryService import CategoryService
@@ -40,6 +40,12 @@ class Backend_controller:
                 y = CategoryService(cat)
                 self.categories.append(y)
 
+    def get_sub_cat_name(self,cat_id, sub_cat_id):
+        req = {'op': 37, 'cat_id': cat_id, 'sub_cat_id': sub_cat_id}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
+        return ans
+
     def update_password(self, old_password, new_password):
         update_password_req = {'op': 6, 'old_password': old_password, 'new_password': new_password}
         self.req_answers.add_request(update_password_req)
@@ -74,7 +80,7 @@ class Backend_controller:
             self.store.put('user_guest', user_id= guest_id)
 
     def register(self, first_name, last_name, phone, email, password, birth_date, gender):
-        store = JsonStore('hello.json')
+        store = JsonStore('assets/hello.json')
         if store.exists('user_guest'):
             user = store.get('user_guest')
             register_req = {
@@ -134,7 +140,7 @@ class Backend_controller:
         pass
 
     def login_from_exist_user(self, email, password):
-        store = JsonStore('hello.json')
+        store = JsonStore('assets/hello.json')
         login_req = {'op': 3, 'email': email, 'password': password}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
@@ -157,7 +163,7 @@ class Backend_controller:
         return ans
 
     def login(self, email, password):
-        store = JsonStore('hello.json')
+        store = JsonStore('assets/hello.json')
         login_req = {'op': 82, 'email': email, 'password': password, 'guest_id': self.user_service.user_id}
         self.req_answers.add_request(login_req)
         ans = self.req_answers.get_answer()
@@ -179,7 +185,7 @@ class Backend_controller:
         return ans
 
     def logout(self):
-        store = JsonStore('hello.json')
+        store = JsonStore('assets/hello.json')
         logout_req = {'op': 4}
         self.req_answers.add_request(logout_req)
         ans = self.req_answers.get_answer()

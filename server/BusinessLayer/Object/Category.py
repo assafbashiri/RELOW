@@ -3,7 +3,7 @@ class Category:
     def __init__(self, name, id):
         self.name = name
         self.id = id
-        self.sub_categories_dictionary  = {}
+        self.sub_categories_dictionary = {}
 
     def add_sub_category_for_load(self, sub_category):
         self.sub_categories_dictionary[sub_category.id] = sub_category

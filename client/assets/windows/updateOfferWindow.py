@@ -113,6 +113,9 @@ class Update_offer_box(BoxLayout):
         self.ids.product_name_input.text = offer.product.name
         self.ids.company_name_input.text = offer.product.company
         self.ids.description_input.text = offer.product.description
+        sub_cat_name_ans = App.get_running_app().controller.get_sub_cat_name(offer.get_offer_id(), offer.get_sub_category_id())
+        if sub_cat_name_ans.res is True:
+            self.ids.drop_category.text = sub_cat_name_ans.data
         # self.init_colors_update(offer.product.colors)
         Clock.schedule_once(self.init_colors_update, 0)
         self.size_list = offer.product.sizes
@@ -133,9 +136,9 @@ class Update_offer_box(BoxLayout):
             self.ids[str(i)] = self.step_to_add
             self.ids.steps_box.add_widget(self.step_to_add, 1)
             #init fields
-            self.ids[str(i)].ids.min_input.text = offer.steps[i-1].limit + 1
-            self.ids[str(i)].ids.max_input.text = offer.steps[i].limit
-            self.ids[str(i)].ids.price_input.text = offer.steps[i].price
+            self.ids[str(i)].ids.min_input.text = str(offer.steps[i-1].limit + 1)
+            self.ids[str(i)].ids.max_input.text = str(offer.steps[i].limit)
+            self.ids[str(i)].ids.price_input.text = str(offer.steps[i].price)
         date = offer.end_date.split('-')
         self.ids.year_input.text = date[0]
         self.ids.month_input.text = date[1]
