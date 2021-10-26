@@ -1,0 +1,145 @@
+<MENUScreen>
+    id: menu
+    orientation: "horizontal"
+    name: 'menu_screen'
+    Side_box:
+        id: side_box
+    Main_page_box:
+        id: Main_page_box
+    Down_menu:
+        id: down_menu
+
+<Down_menu>
+    canvas.before:
+        Color:
+            rgba: (255/255,255/255,255/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+    padding: [50,10,50,10]
+    size_hint: 1,0.1
+    id: after
+    MDIconButton:
+        text: "ACCOUNT"
+        icon: "assets/windows/images/account1.png"
+        on_press:
+            root.move_to_account();
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+
+
+    MDIconButton:
+        text: "MY OFFERS"
+        icon: "assets/windows/images/my_offers_icon.png"
+        on_press:
+            root.move_to_my_offers();
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+
+    MDIconButton:
+        text: "SEARCH"
+        icon: "assets/windows/images/search1.png"
+        on_press:
+            root.move_to_search();
+            root.parent.current = 'search_screen'
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+
+    MDIconButton:
+        text: "CONTACT US"
+        icon: "assets/windows/images/contactus1.png"
+        on_press:
+            root.move_to_contact_us()
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
+
+    MDIconButton:
+        id : add_offer
+        icon: "assets/windows/images/addoffer1.png"
+        on_press:
+            root.move_to_add_offer()
+<Main_page_box>
+    size_hint: 1,0.89
+    id: Main_page_box
+    orientation: "horizontal"
+    BoxLayout:
+        spacing:2
+        orientation: "vertical"
+        MDLabel:
+            size_hint: 1,0.05
+            text: "   Who Are Us?"
+            font_size: 24
+        MDLabel:
+            size_hint: 1,0.05
+            text: "   we want to reduce your expenses"
+            font_size: 16
+        MDLabel:
+            size_hint: 1,0.05
+            text: ""
+        MDLabel:
+            size_hint: 1,0.05
+            text: "   Categories"
+            font_size: 24
+        MDLabel:
+            size_hint: 1,0.05
+            text: "   sport, electric, fashion"
+            font_size: 16
+        MDLabel:
+            size_hint: 1,0.05
+            text: ""
+        MDLabel:
+            size_hint: 1,0.05
+            text: "   Most Popular"
+            font_size: 24
+        MDLabel:
+            size_hint: 1,0.05
+            text: ""
+        Offers_Screen:
+            id: recycle1
+        BoxLayout:
+            size_hint_y: .18
+
+
+<Side_box>
+    id: side_box
+    size_hint_y: 0.1
+    size_hint_x: 0.55
+    pos_hint: {'top':1}
+    spacing: 10
+    orientation: "horizontal"
+    MDIconButton:
+        id: logo
+        icon: "assets/windows/images/main2.png"
+        text: "Share IT"
+        on_press:
+            root.parent.parent.current = 'menu_screen'
+    MDLabel:
+        id: hello
+        size_hint_x: 0.15
+        text: root.get_user_name()
+
+    Button:
+        id: logout_register
+        text: root.login_or_connect()
+        size_hint_x: 0.1
+        background_color: (0,0,0,0)
+        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+        on_press:
+            root.logout_connect()
+
+    Button:
+        text: "Terms"
+        size_hint_x: 0.1
+        background_color: (0,0,0,0)
+        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+        on_press:
+            root.parent.parent.current = 'terms_screen'
+
+
+
+
+

@@ -1,0 +1,326 @@
+<REGISTERScreen>
+    id: register
+    name:'register_screen'
+    GridLayout:
+        cols:1
+        Register_box:
+
+
+<Register_box>
+    GridLayout:
+        cols:1
+        id: icon_box
+        size_hint: .5,.3
+        MDIconButton:
+            icon: "assets/windows/images/back_btn.png"
+            on_press:root.back()
+
+        GridLayout:
+            cols:1
+            id: title_box
+            size_hint: .95,.1
+            MDLabel:
+                pos_hint_x: None
+                pos_hint: {'center_x': 0.5}
+                size_hint: .5,.5
+                id : contact_us_label
+                text : "Register"
+                font_size: 32
+
+    ScrollView:
+        do_scroll_y:True
+
+        GridLayout:
+            cols:1
+
+            size_hint_y: 3.0
+            height: self.minimum_height
+            pos_hint:{'center_y':.1}
+            ############## grid of first name label and his text input
+
+            GridLayout:
+                cols:1
+                size_hint_y: None
+                height: self.minimum_height
+                id: first_name_box
+                #orientation: 'vertical'
+                size_hint: .5,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
+
+                MDLabel:
+                    id: first_name_label
+                    text: "First Name"
+                    font: 'sofia pro bold'
+                    font_size:15
+
+                TextInput:
+
+
+                    id: first_name_input
+
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
+
+            ############## grid of last name label and his text input
+
+            GridLayout:
+                cols:1
+                id: last_name_box
+                #orientation: 'vertical'
+                size_hint: .5,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
+
+                MDLabel:
+                    id: last_name_label
+                    text: "Last Name"
+                    font: 'sofia pro bold'
+                    font_size:15
+
+                TextInput:
+                    id:last_name_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
+
+            ############## grid of email label and his text input
+
+            GridLayout:
+                cols:1
+                id: email_box
+                #orientation: 'vertical'
+                size_hint: .5,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                MDLabel:
+                    id: email_label
+                    text: "Email"
+                    font: 'sofia pro bold'
+                    font_size:15
+
+                TextInput:
+                    id:email_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
+
+            GridLayout:
+                cols:1
+                id: password_box
+                size_hint: .5,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                MDLabel:
+                    id: password_label
+                    text: "Password"
+                    font: 'sofia pro bold'
+                    font_size:15
+
+                TextInput:
+                    id:password_input
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
+                    size_hint_y: .5
+                    write_tab: False
+                    multiline: False
+
+            ############## grid of phone label and his text input
+
+            GridLayout:
+                cols:1
+                id: phone_box
+                #orientation: 'vertical'
+                size_hint: .5,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                GridLayout:
+                    cols:1
+                    MDLabel:
+                        id: phone_label
+                        text: "Phone Number"
+                        font: 'sofia pro bold'
+                        font_size:14
+                    GridLayout:
+                        cols:1
+                        size_hint_y:2
+                    GridLayout:
+                        cols:3
+                        MDDropDownItem:
+                            id:area_input
+                            pos_hint: {'center_x': .1, 'center_y': .5}
+                            text: '052'
+                            font_name: "Arial"
+                            normal_color: 100,0,0,0
+                            color_active: 100,100,1,0
+                            write_tab: False
+                            multiline: False
+                            on_release: root.show_dropdown_area()
+
+                        TextInput:
+                            id:phone_input
+                            normal_color: 100,0,0,0
+                            color_active: 100,100,1,0
+                            size_hint:.1,.1
+                            write_tab: False
+                            multiline: False
+                        GridLayout:
+                            cols:1
+                            size_hint_x:.8
+
+            ############## grid of birth date label and his text input
+
+            GridLayout:
+                cols:1
+                id: birth_date_box
+                size_hint: .5,.6
+                padding: ['20dp','30dp', '20dp' , '0dp']
+
+                MDLabel:
+                    id: birth_date_label
+                    text: "Birth Date"
+                    font: 'sofia pro bold'
+                    font_size:20
+
+                #grid layout of year, month, day
+
+                GridLayout:
+                    cols:3
+
+                    pos_hint:{'center_x':.1, 'center_y':.5}
+                    MDDropDownItem:
+                        id:year_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Year'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_year()
+                    MDDropDownItem:
+                        id:month_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Month'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_month()
+                    MDDropDownItem:
+                        id:day_input
+                        pos_hint: {'center_x': .1, 'center_y': .5}
+                        text: 'Day'
+                        font_name: "Arial"
+                        normal_color: 100,0,0,0
+                        color_active: 100,100,1,0
+                        write_tab: False
+                        multiline: False
+                        on_release: root.show_dropdown_day()
+
+
+            ############## grid of gender label and his text input
+
+            GridLayout:
+                cols:1
+                size_hint: 0.6,.6
+                #size:.5,.6
+
+
+                padding: ['20dp','30dp', '20dp' , '0dp']
+                id: Gender_box
+                #orientation: 'horizontal'
+
+                MDLabel:
+                    id: gender_label
+                    text: "Gender"
+                    font: 'sofia pro bold'
+                    font_size:20
+
+
+                GridLayout:
+                    cols:5
+                    size_hint: .2,.5
+
+                    MDCheckbox:
+                        id: male
+                        text: "Male"
+                        group:1
+                        #thumb_color:(24/255,211/255,199/255,1)
+                        #selected_color:(24/255,211/255,199/255,1)
+                        #disabled_color:(24/255,211/255,199/255,1)
+                        on_active: root.save_male(self, self.active)
+
+                    MDLabel:
+                        id: male_label
+                        text: "Male"
+                    #MDIconButton:
+                        font_size:15
+                     #   icon: "assets/windows/images/male-user-icon.png"
+                      #  id: male_photo
+
+
+                    MDCheckbox:
+                        id: female
+                        text: "Female"
+                        group:1
+                        #thumb_color:(24/255,211/255,199/255,1)
+                        #selected_color:(24/255,211/255,199/255,1)
+                        #disabled_color:(24/255,211/255,199/255,1)
+                        on_active: root.save_female(self, self.active)
+
+                    MDLabel:
+                        id: male_label
+                        text: "Female"
+                        font_size:15
+                    #MDIconButton:
+                     #   id: female_photo
+                      #  icon: "assets/windows/images/female-user-icon.png"
+
+                    GridLayout:
+                        cols:1
+                        size_hint_x:10
+
+
+
+
+
+            ############## grid of update button
+            GridLayout:
+                cols:1
+                size_hint_y:.5
+            GridLayout:
+                size_hint: .5,.5
+                pos_hint:{'center_x':.1, 'center_y':.1}
+                cols:3
+                id: update_box
+                #padding: ['100dp','30dp', '100dp' , '10dp']
+                GridLayout:
+                    cols:1
+                    size_hint_x:.01
+                Button:
+                    size_hint :0.3,3
+                    id: sign_up_btn
+                    text: "Sign Up"
+                    font_size: 30
+                    background_color: (0,0,0,0)
+                    background_normal: ''
+                    canvas.before:
+                        Color:
+                            rgba: (24/255,211/255,199/255,1)
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                    on_press: root.register()
+                GridLayout:
+                    cols:1
+                    size_hint_x:.01
+
+            GridLayout:
+                cols:1
+                size_hint_y:.15
+
+    GridLayout:
+        cols:1
+        size_hint_y:.1
