@@ -31,6 +31,7 @@ class Offers_Screen(ScrollView):
     def insert_offers(self, **kwargs):
         # get the offer list from the user
         # loop all the offer and add them to the recycle
+        runner = 1
         offers_list = []
         for offer in kwargs['list']:
             name = offer.product.name
@@ -53,11 +54,13 @@ class Offers_Screen(ScrollView):
                 photo_lis.append(photo)
             offers_list.append({'offer': [offer],
                                 'photo_lis': photo_lis})
-            offer_to_add = RecycleViewRow(offer, photo_lis)
+            offer_to_add = RecycleViewRow(offer, photo_lis, runner)
             self.ids.scroll_box.add_widget(offer_to_add)
+            self.ids.scroll_box.size_hint_y +=1
+            runner += 3
         # self.data = offers_list
         # need to add the photos here
-        Clock.schedule_once(self.bolo,0)
+        # Clock.schedule_once(self.bolo,0)
     def bolo(self, num):
         print('fuck')
 
@@ -76,20 +79,20 @@ class RecycleViewRow(SmartTileWithLabel):
     # offer_id = NumericProperty()
     # offer = ObjectProperty()
 
-    def __init__(self,offer, photo_list, **kwargs):
+    def __init__(self,offer, photo_list, index, **kwargs):
         super(RecycleViewRow, self).__init__(**kwargs)
         # Clock.schedule_once(self.insert, 0)
         self.offer = offer
         
         self.photo_list = photo_list
-        self.overlap = False
-        self.always_release = False
+        self.overlap = True
         self.text = self.offer.product.name + "\n"+ self.offer.product.description
         self.box_color = (0, 0, 0, 0.2)
         self.size_hint_y = 0.8
         a = self.insert2(photo_list[0])
-        a.save('windows/images/test.png')
-        self.source = 'windows/images/test.png'
+        address = f"windows/images/test{index}.png"
+        a.save(address)
+        self.source = address
         self.on_press= self.check
         btn = MDIconButton()
         btn.icon = "windows/images/like.png"
@@ -103,7 +106,7 @@ class RecycleViewRow(SmartTileWithLabel):
         # btn.padding = [450,100,0,0]
         btn1.bind(on_press= lambda x:print('bolo'))
         btn1.background_color = (0,0,0,0)
-        self.add_widget(btn1)
+        # self.add_widget(btn1)
         # self.add_widget(btn, 2)
         self.lines = 2
 

@@ -1,6 +1,6 @@
 import csv
 import io
-import pandas as pd
+# import pandas as pd
 from kivy.uix.gridlayout import GridLayout
 from Utils.Utils import Utils
 from kivy.app import App
@@ -306,7 +306,6 @@ class OfferScreen(Screen):
         self.description.color = (0, 0, 0, 0.27)
         self.labels_box.add_widget(self.description)
         self.labels_icons.add_widget(self.labels_box)
-        self.color_size = BoxLayout(orientation='horizontal')
 
         # icons box
         self.icons_box = BoxLayout(orientation='horizontal')
@@ -325,7 +324,6 @@ class OfferScreen(Screen):
         self.icons_box.padding = [250, 0, 0, 0]
         self.labels_icons.add_widget(self.icons_box)
         self.box.add_widget(self.labels_icons)
-        self.box.add_widget(self.color_size)
         # price
         self.curr_price = MDLabel(text="price")
         self.curr_price.size_hint_y = 0.2
@@ -555,7 +553,8 @@ class OfferScreen(Screen):
         # colors
         colors_counter = 0
         colors = self.offer.product.colors
-        for color in colors:
+        color_lis = colors[0].split(',')
+        for color in color_lis:
             ip = "windows/images/colors/un_" + color + ".png"
             btn = MDIconButton(icon=ip)
             btn.text = color

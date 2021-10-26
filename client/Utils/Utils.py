@@ -1,5 +1,4 @@
 from datetime import datetime
-from fpdf import FPDF
 import time
 import requests
 from kivymd.uix.button import MDFlatButton
