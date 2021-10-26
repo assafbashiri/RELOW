@@ -98,6 +98,22 @@ class Category:
                 ans.extend(curr_sub_category_offers)
         return ans
 
+    def get_offers_by_price(self, price):
+        ans = []
+        for sub_category_id in self.sub_categories_dictionary.keys():
+            curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_price(price)
+            if curr_sub_category_offers is not None:
+                ans.extend(curr_sub_category_offers)
+        return ans
+
+    def get_offers_by_end_date(self, end_date):
+        ans = []
+        for sub_category_id in self.sub_categories_dictionary.keys():
+            curr_sub_category_offers = self.sub_categories_dictionary[sub_category_id].get_offers_by_end_date(end_date)
+            if curr_sub_category_offers is not None:
+                ans.extend(curr_sub_category_offers)
+        return ans
+
     def get_offers_by_status(self, status):
         ans = []
         for sub_category_id in self.sub_categories_dictionary.keys():
