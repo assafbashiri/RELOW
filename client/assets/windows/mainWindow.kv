@@ -138,16 +138,13 @@
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
             root.parent.parent.current = 'terms_screen'
-    Button:
-        text: "cat"
-        id:categories
-        size_hint_x: 0.1
-        background_color: (0,0,0,0)
-        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-        on_press:
-            root.open_cat_drop()
 
 
+    MDIconButton:
+        id: categories
+        size:6,6
+        icon: "assets/windows/images/categories.png"
+        on_press:root.open_cat_drop()
 
 
 
