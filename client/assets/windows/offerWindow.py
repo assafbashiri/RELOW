@@ -380,10 +380,10 @@ class OfferScreen(Screen):
         self.slider.min = 0
         self.slider.max = 100  # steps[-1][1]
         self.slider.value = 10  # self.offer.current_buyers
-        self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.4)
+        self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.3)
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
-        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.5)
         for step_id in steps:
             step = steps[step_id]
             self.people_per_step.add_widget(
@@ -393,7 +393,7 @@ class OfferScreen(Screen):
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            x = MDCheckbox(group="price", size_hint_x=.1)
+            x = MDCheckbox(group="price", size_hint_x=.3)
             x.bind(active=self.set_total_price)
             self.price_per_step.add_widget(x)
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
@@ -406,7 +406,7 @@ class OfferScreen(Screen):
         self.labels_box = BoxLayout(orientation='vertical')
         self.name1 = MDLabel(text=" "+self.offer.product.name)
         self.name1.bold = True
-        self.name1.font_size = 22.0
+        self.name1.font_size = 45
         self.name1.color = (0, 0, 0, 1)
         self.labels_box.add_widget(self.name1)
         self.company = MDLabel(text="  "+self.offer.product.company)
@@ -487,7 +487,7 @@ class OfferScreen(Screen):
         for ch in y.children:
             ch.icon = f'assets/windows/images/colors/un_{self.get_btn_color(ch)}.png'
         # change color of the selected button
-        btn.icon = f'assets/windows/images/colors{str(text)}.png'
+        btn.icon = f'assets/windows/images/colors/{str(text)[1:]}.png'
         # chosen colors for add offer
         self.chosen_colors[num_of_quantity] = text
         x = 5
@@ -547,7 +547,7 @@ class OfferScreen(Screen):
         colors = self.offer.product.colors
         color_lis = colors[0].split(',')
         for color in color_lis:
-            ip = "assets/windows/images/colors/un_" + color + ".png"
+            ip = "assets/windows/images/colors/un_" + color[1:] + ".png"
             btn = MDIconButton(icon=ip)
             btn.text = color
             btn.pos_hint = {'top': 0.95}
