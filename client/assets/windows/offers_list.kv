@@ -2,15 +2,18 @@
 
 <RecycleViewRow>
     id: RecycleViewRow
-
     on_press: root.www()
 
 
 <Offers_Screen>
     background_color: (0,0,0,0)
     id:scrolls
-    BoxLayout:
+    MDGridLayout:
+        cols: 1
+        row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
+        row_force_default: True
+        adaptive_height: True
         id: scroll_box
-        size_hint: 1,1.5
-        orientation: 'vertical'
+        size_hint: 1,.9
+        #orientation: 'vertical'
         spacing:10

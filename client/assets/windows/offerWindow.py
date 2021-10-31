@@ -382,7 +382,8 @@ class OfferScreen(Screen):
         self.slider.min = 0
         self.slider.max = 100  # steps[-1][1]
         self.slider.value = 10  # self.offer.current_buyers
-        self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.3)
+        self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.4)
+        self.steps_box.padding = [0,15,0,0]
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.5)
