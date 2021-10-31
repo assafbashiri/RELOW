@@ -10,22 +10,23 @@
 <Add_offer_box>
     orientation: "vertical"
     id: add_offer_box
+
     BoxLayout:
-        id: back_box
-        size_hint: 1 , .05
+        id: icon_box
+        size_hint: 1,.1
+        orientation: 'horizontal'
+        spacing:250
         MDIconButton:
             icon: "assets/windows/images/back_btn.png"
             on_press:root.back()
-            pos_hint: { 'center_y': .5}
-    BoxLayout:
-        id: title_box
-        size_hint: 1 , .2
+            #pos_hint: { 'center_y': .5}
         MDLabel:
-            pos_hint: {'top':1}
-            size_hint: 1 , 1
-            id : add_offer_label
+            pos_hint_x: None
+            pos_hint: {'center_x': 0.5}
+            size_hint: .5,.5
+            id : contact_us_label
             text : "Add Offer"
-            font_size: 32
+            font_size: 70
     ScrollView:
         id: scrollview
         do_scroll_y: True
@@ -57,7 +58,7 @@
                     id: product_name_label
                     size_hint: 1 , .4
                     text: "Product Name"
-                    font_size:20
+                    font_size:35
 
                 TextInput:
                     id: product_name_input
@@ -86,7 +87,7 @@
                     id: company_name_label
                     text: "Company Name"
                     size_hint: 1 , .4
-                    font_size:20
+                    font_size:35
                 TextInput:
                     id: company_name_input
                     size_hint: 1 , .6
@@ -106,7 +107,7 @@
                     size_hint: 1 , .1
                     text: "Description"
                     font: 'sofia pro bold'
-                    font_size:20
+                    font_size:35
                 TextInput:
                     id: description_input
                     size_hint: 1 , .6
@@ -124,7 +125,7 @@
                     id: color_label
                     size_hint: 1 , .1
                     text: "Colors"
-                    font_size:20
+                    font_size:35
                 ScrollView:
                     id: scrollview_colors
                     do_scroll_y: False
@@ -149,7 +150,7 @@
                     id: size_label
                     text: "Sizes"
                     size_hint: 1 , .4
-                    font_size:20
+                    font_size:35
                 GridLayout:
                     id:size_drop_box
                     cols:5
@@ -218,7 +219,7 @@
                     id: step_label
                     text: "Steps"
                     size_hint: 1 , .1
-                    font_size:20
+                    font_size:35
                 StepLayoutStart:
                     id: 1
                 StepLayoutStart:
@@ -269,7 +270,7 @@
                         id: step_label
                         text: "End Date"
                         size_hint: 1 , 1
-                        font_size:20
+                        font_size:35
                 GridLayout:
                     cols:3
                     MDDropDownItem:
@@ -316,7 +317,7 @@
                         size_hint: 1 , .1
                         text: "Choose Photos"
                         font: 'sofia pro bold'
-                        font_size:20
+                        font_size:35
                 GridLayout:
                     id: choose
                     cols:5

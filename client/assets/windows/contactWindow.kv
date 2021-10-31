@@ -8,29 +8,36 @@
 
 <Contact_box1>
     id: contact_box
-    padding: [10,10,10,10]
+    padding: [10,50,50,50]
     BoxiLayout1:
         id: boxi
-        BoxLayout:
+
 
 <BoxiLayout1>
-    spacing: 1
+    spacing: 30
     orientation: "vertical"
-    MDIconButton:
-        icon: "assets/windows/images/back_btn.png"
-        on_press:root.back()
-    MDLabel:
-        id : contact_us_label
-        text : "Contact Us"
-        font_size: 32
-        size_hint: 1,0.8
+    BoxLayout:
+        id: icon_box
+        size_hint: 1,.2
+        orientation: 'horizontal'
+        spacing:250
+        MDIconButton:
+            icon: "assets/windows/images/back_btn.png"
+            on_press:root.back()
+        MDLabel:
+            pos_hint_x: None
+            pos_hint: {'center_x': 0.5}
+            size_hint: .5,1
+            id : contact_us_label
+            text : "Contact Us"
+            font_size: 70
     GridLayout:
         size_hint: 1,3
         cols: 1
         MDLabel:
             id : subject_label
             text : "Subject"
-            font_size: 16
+            font_size: 40
             size_hint: 0.3,0.3
         TextInput:
             write_tab: False
@@ -40,7 +47,7 @@
             id : description_label
             text : "Description"
             size_hint: 0.3,0.3
-            font_size: 16
+            font_size: 40
         TextInput:
             write_tab: False
             id:description

@@ -107,7 +107,7 @@
 <Side_box>
     id: side_box
     size_hint_y: 0.1
-    size_hint_x: 0.55
+    size_hint_x: 1
     pos_hint: {'top':1}
     spacing: 10
     orientation: "horizontal"
@@ -119,13 +119,13 @@
             root.parent.parent.current = 'menu_screen'
     MDLabel:
         id: hello
-        size_hint_x: 0.15
+        size_hint_x: 1
         text: root.get_user_name()
 
     Button:
         id: logout_register
         text: root.login_or_connect()
-        size_hint_x: 0.1
+        size_hint_x: 1
         background_color: (0,0,0,0)
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
@@ -133,7 +133,7 @@
 
     Button:
         text: "Terms"
-        size_hint_x: 0.1
+        size_hint_x: 1
         background_color: (0,0,0,0)
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
@@ -142,7 +142,6 @@
 
     MDIconButton:
         id: categories
-        size:6,6
         icon: "assets/windows/images/categories.png"
         on_press:root.open_cat_drop()
 

@@ -76,6 +76,7 @@ class MY_OFFERS_Screen(Screen):
         # good search
         else:
             self.of.insert_offers(list=ans)
+            # self.ids.offers_box.ids.offi.size_hint_x =
             self.ids.offers_box.ids.offi.add_widget(self.of)
 
     def history_sell(self):
