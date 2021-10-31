@@ -1,5 +1,7 @@
 import io
 # import pandas as pd
+from kivymd.uix.boxlayout import MDBoxLayout
+
 from assets.Utils.Utils import Utils
 from kivy.app import App
 from kivy.uix.image import Image, CoreImage
@@ -402,7 +404,8 @@ class OfferScreen(Screen):
 
         # labels box
         self.labels_icons = BoxLayout(orientation='horizontal')
-        self.labels_icons.size_hint_y = 0.5
+        self.labels_icons.size_hint_y = 1
+        self.labels_icons.padding = [0,40,0,0]
         self.labels_box = BoxLayout(orientation='vertical')
         self.name1 = MDLabel(text=" "+self.offer.product.name)
         self.name1.bold = True
@@ -417,7 +420,8 @@ class OfferScreen(Screen):
         self.labels_box.add_widget(self.description)
         self.labels_icons.add_widget(self.labels_box)
         # icons box
-        self.icons_box = BoxLayout(orientation='horizontal')
+        self.icons_box = MDBoxLayout(orientation='horizontal')
+        self.icons_box.size_hint_y = .5
         self.another_item = MDIconButton(icon="assets/windows/images/add.png")
         self.another_item.bind(on_press=lambda x: print(self.add_item()))
         self.icons_box.add_widget(self.another_item)
@@ -430,8 +434,10 @@ class OfferScreen(Screen):
             self.like = MDIconButton(icon="assets/windows/images/like.png")
         self.like.bind(on_press=lambda x: self.like_unlike())
         self.icons_box.add_widget(self.like)
-        self.icons_box.padding = [250,0,0,0]
-        self.labels_icons.add_widget(self.icons_box)
+        self.icons_box.padding = [0,0,0,0]
+        self.icons_box.spacing = 100
+
+        # self.labels_icons.add_widget(self.icons_box)
         self.box.add_widget(self.labels_icons)
 
         # colors and sizes
@@ -441,6 +447,9 @@ class OfferScreen(Screen):
         self.box.add_widget(self.color_size)
         self.chosen_colors = {}
         self.chosen_sizes = {}
+        #like and add item:
+
+        self.box.add_widget(self.icons_box)
 
         # price
         self.curr_price = MDLabel(text="price")
@@ -566,7 +575,7 @@ class OfferScreen(Screen):
         for size in sizes:
             btn = Button(text=size)
             btn.pos_hint = {'top': 0.9}
-            btn.size_hint_y = 0.1
+            btn.size_hint_y = 0.5
             btn.bind(on_press=lambda item_number=self.num_of_quantity, size11=size,
                                      item_number1=self.num_of_quantity, size_num=sizes_counter: self.chose_size(
                 item_number, size11,
