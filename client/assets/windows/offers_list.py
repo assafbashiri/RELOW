@@ -72,12 +72,11 @@ class RecycleViewRow(SmartTileWithLabel):
         super(RecycleViewRow, self).__init__(**kwargs)
         # Clock.schedule_once(self.insert, 0)
         self.offer = offer
-        
         self.photo_list = photo_list
         self.overlap = True
         self.text = self.offer.product.name + "\n"+ self.offer.product.description
         self.box_color = (0, 0, 0, 0.2)
-        self.size_hint_y = 0.8
+        self.size_hint_y = 0.2
         a = self.insert2(photo_list[0])
         address = f"assets/windows/images/test{index}.png"
         a.save(address)
@@ -86,7 +85,7 @@ class RecycleViewRow(SmartTileWithLabel):
         btn = MDIconButton()
         btn.icon = "assets/windows/images/like.png"
         # self.add_widget(btn)
-        btn1 = Button(text = 'bolo')
+        btn1 = Button(text='bolo')
         btn1.size_hint = (.1,.1)
         btn1.background_active = "assets/windows/images/like.png"
         # btn1.pos_hint = {'x':.8}

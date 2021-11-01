@@ -68,7 +68,9 @@ class SEARCHScreen(Screen):
         self.ids.search_box.remove_widget(self.of)
         prod_price = self.ids.search_box.ids.price.text
         if not prod_price.isnumeric():
-            Utils.pop(self, "price has to be number", 'alert')
+            self.of.insert_offers(list=[])
+            self.lab.text = "   We are sorry, price has to be number"
+            self.ids.search_box.add_widget(self.lab)
             return
         ans = App.get_running_app().controller.get_offers_by_product_price(prod_price)
         # bad search

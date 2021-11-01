@@ -393,7 +393,7 @@ class OfferScreen(Screen):
         self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
         for step_id in steps:
             step = steps[step_id]
-            x = MDCheckbox(group="price", size_hint_x=.1)
+            x = MDCheckbox(group="price")
             x.bind(active=self.set_total_price)
             self.price_per_step.add_widget(x)
             self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
@@ -406,7 +406,7 @@ class OfferScreen(Screen):
         self.labels_box = BoxLayout(orientation='vertical')
         self.name1 = MDLabel(text=" "+self.offer.product.name)
         self.name1.bold = True
-        self.name1.font_size = 22.0
+        self.name1.font_size = 40
         self.name1.color = (0, 0, 0, 1)
         self.labels_box.add_widget(self.name1)
         self.company = MDLabel(text="  "+self.offer.product.company)
@@ -430,7 +430,7 @@ class OfferScreen(Screen):
             self.like = MDIconButton(icon="assets/windows/images/like.png")
         self.like.bind(on_press=lambda x: self.like_unlike())
         self.icons_box.add_widget(self.like)
-        self.icons_box.padding = [250,0,0,0]
+        self.icons_box.padding = [200,0,0,0]
         self.labels_icons.add_widget(self.icons_box)
         self.box.add_widget(self.labels_icons)
 
@@ -683,6 +683,7 @@ class OfferScreen(Screen):
         App.get_running_app().root.current = 'menu_screen'
 
     def like_unlike(self):
+        print("did like")
         if self.user.is_a_liker(self.offer_id):
             self.controller.remove_liked_offer(self.offer_id)
             self.like.icon="assets/windows/images/like.png"
