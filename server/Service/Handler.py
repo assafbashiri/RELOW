@@ -245,7 +245,7 @@ class Handler:
             if offer.end_date not in self.offers_by_date.keys():
                 self.offers_by_date[offer.end_date]=[]
             self.offers_by_date[offer.end_date].append(offer)
-            return Response(OfferService(offer), "Offer Added Successfully", True)
+            return Response(vars(OfferService(offer)), "Offer Added Successfully", True)
         except Exception as e:
             self.category_controller.remove_offer(offer)
             return Response(None, str(e), False)
@@ -254,7 +254,7 @@ class Handler:
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
             self.user_controller.add_like_offer(self.user.user_id, offer)
-            return Response(OfferService(offer), "Offer Added SuccessfullyTo Liked Offers", True)
+            return Response(vars(OfferService(offer)), "Offer Added SuccessfullyTo Liked Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 

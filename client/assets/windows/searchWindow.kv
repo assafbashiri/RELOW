@@ -14,16 +14,23 @@
 
 <Search_box>
     orientation: 'vertical'
+
     BoxLayout:
-        orientation: 'vertical'
-        size_hint: 1,0.1
+        id: icon_box
+        size_hint: 1,.05
+        orientation: 'horizontal'
+        spacing:250
         MDIconButton:
             icon: "assets/windows/images/back_btn.png"
             on_press:root.back()
+            #pos_hint: { 'center_y': .5}
         MDLabel:
-            id : search_label
-            text : " Search"
-            font_size: 32
+            pos_hint_x: None
+            pos_hint: {'center_x': 0.5}
+            size_hint: .5,.5
+            id : contact_us_label
+            text : "Search"
+            font_size: 70
 
     BoxLayout:
         id: helper
@@ -34,7 +41,7 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
-        padding: [20,20,20,20]
+        padding: [20,50,20,20]
         orientation: 'vertical'
         GridLayout:
             id: gridi
@@ -51,8 +58,8 @@
             Button:
                 id: search_by_name
                 text:"Search"
-                font_size: 12
-                size_hint_x: 0.1
+                font_size: 30
+                size_hint_x: 0.3
                 on_press:root.parent.search_by_name()
 
             TextInput:
@@ -67,7 +74,7 @@
             Button:
                 id: search_by_company
                 text:"Search"
-                font_size: 12
+                font_size: 30
                 size_hint_x: 0.1
                 on_press:root.parent.search_by_company()
 
@@ -83,7 +90,7 @@
             Button:
                 id: search_by_price
                 text:"Search"
-                font_size: 12
+                font_size: 30
                 size_hint_x: 0.1
                 on_press:root.parent.search_by_price()
 
@@ -99,7 +106,7 @@
             Button:
                 id: search_by_date
                 text:"Search"
-                font_size: 12
+                font_size: 30
                 size_hint_x: 0.1
                 on_press:root.parent.search_by_end_date()
     BoxLayout:

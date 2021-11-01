@@ -7,27 +7,36 @@
         id: down_menu
 
 <Offers_box>
+    spacing: 30
     orientation: 'vertical'
+    size_hint: 1,1
     BoxLayout:
-        orientation: 'vertical'
-        size_hint: 1,0.22
+        id: icon_box
+        size_hint: 1,.1
+        orientation: 'horizontal'
+        spacing:250
         MDIconButton:
             icon: "assets/windows/images/back_btn.png"
             on_press:root.back()
+            #pos_hint: { 'center_y': .5}
         MDLabel:
-            pos_hint: {'top':1}
-            id : my_offers_label
-            text : " My Offers"
-            font_size: 32
+            pos_hint_x: None
+            pos_hint: {'center_x': 0.5}
+            size_hint: .5,.5
+            id : contact_us_label
+            text : "My Offers"
+            font_size: 70
+
     BoxLayout:
         orientation: 'vertical'
         size_hint: 1,0.05
         id: buttons
-        MDGridLayout:
-            id: bolbol
-            cols:5
-            size_hint_y: 5
+        ScrollView:
+            id : scroll_list
+            do_scroll_y: False
+            do_scroll_x: True
             BoxLayout:
+                size_hint_x: 3
                 spacing: 2
                 Button:
                     pos_hint: {'top':1}

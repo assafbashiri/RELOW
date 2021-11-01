@@ -17,12 +17,14 @@ class Offers_Screen(ScrollView):
     def __init__(self, **kwargs):
         super(Offers_Screen, self).__init__(**kwargs)
         a = App.get_running_app()
+
     def insert_offers(self, **kwargs):
         # get the offer list from the user
         # loop all the offer and add them to the recycle
         runner = 1
         offers_list = []
         for offer in kwargs['list']:
+            self.ids.scroll_box.size_hint_y +=.8
             name = offer.product.name
             company = offer.product.company
             description = offer.product.description
@@ -73,7 +75,9 @@ class RecycleViewRow(SmartTileWithLabel):
         # Clock.schedule_once(self.insert, 0)
         self.offer = offer
         self.photo_list = photo_list
-        self.overlap = True
+        # self.overlap = False
+        self.allow_stretch = True
+        self.keep_ratio = False
         self.text = self.offer.product.name + "\n"+ self.offer.product.description
         self.box_color = (0, 0, 0, 0.2)
         self.size_hint_y = 0.2

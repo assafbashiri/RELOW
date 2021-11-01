@@ -1,5 +1,7 @@
 import io
 # import pandas as pd
+from kivymd.uix.boxlayout import MDBoxLayout
+
 from assets.Utils.Utils import Utils
 from kivy.app import App
 from kivy.uix.image import Image, CoreImage
@@ -381,9 +383,10 @@ class OfferScreen(Screen):
         self.slider.max = 100  # steps[-1][1]
         self.slider.value = 10  # self.offer.current_buyers
         self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.4)
+        self.steps_box.padding = [0,15,0,0]
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
-        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.5)
         for step_id in steps:
             step = steps[step_id]
             self.people_per_step.add_widget(
@@ -402,11 +405,12 @@ class OfferScreen(Screen):
 
         # labels box
         self.labels_icons = BoxLayout(orientation='horizontal')
-        self.labels_icons.size_hint_y = 0.5
+        self.labels_icons.size_hint_y = 1
+        self.labels_icons.padding = [0,40,0,0]
         self.labels_box = BoxLayout(orientation='vertical')
         self.name1 = MDLabel(text=" "+self.offer.product.name)
         self.name1.bold = True
-        self.name1.font_size = 40
+        self.name1.font_size = 45
         self.name1.color = (0, 0, 0, 1)
         self.labels_box.add_widget(self.name1)
         self.company = MDLabel(text="  "+self.offer.product.company)
@@ -417,7 +421,8 @@ class OfferScreen(Screen):
         self.labels_box.add_widget(self.description)
         self.labels_icons.add_widget(self.labels_box)
         # icons box
-        self.icons_box = BoxLayout(orientation='horizontal')
+        self.icons_box = MDBoxLayout(orientation='horizontal')
+        self.icons_box.size_hint_y = .5
         self.another_item = MDIconButton(icon="assets/windows/images/add.png")
         self.another_item.bind(on_press=lambda x: print(self.add_item()))
         self.icons_box.add_widget(self.another_item)
@@ -432,6 +437,10 @@ class OfferScreen(Screen):
         self.icons_box.add_widget(self.like)
         self.icons_box.padding = [200,0,0,0]
         self.labels_icons.add_widget(self.icons_box)
+        self.icons_box.padding = [0,0,0,0]
+        self.icons_box.spacing = 100
+
+        # self.labels_icons.add_widget(self.icons_box)
         self.box.add_widget(self.labels_icons)
 
         # colors and sizes
@@ -441,6 +450,9 @@ class OfferScreen(Screen):
         self.box.add_widget(self.color_size)
         self.chosen_colors = {}
         self.chosen_sizes = {}
+        #like and add item:
+
+        self.box.add_widget(self.icons_box)
 
         # price
         self.curr_price = MDLabel(text="price")
@@ -487,7 +499,7 @@ class OfferScreen(Screen):
         for ch in y.children:
             ch.icon = f'assets/windows/images/colors/un_{self.get_btn_color(ch)}.png'
         # change color of the selected button
-        btn.icon = f'assets/windows/images/colors{str(text)}.png'
+        btn.icon = f'assets/windows/images/colors/{str(text)[1:]}.png'
         # chosen colors for add offer
         self.chosen_colors[num_of_quantity] = text
         x = 5
@@ -547,7 +559,7 @@ class OfferScreen(Screen):
         colors = self.offer.product.colors
         color_lis = colors[0].split(',')
         for color in color_lis:
-            ip = "assets/windows/images/colors/un_" + color + ".png"
+            ip = "assets/windows/images/colors/un_" + color[1:] + ".png"
             btn = MDIconButton(icon=ip)
             btn.text = color
             btn.pos_hint = {'top': 0.95}
@@ -566,7 +578,7 @@ class OfferScreen(Screen):
         for size in sizes:
             btn = Button(text=size)
             btn.pos_hint = {'top': 0.9}
-            btn.size_hint_y = 0.1
+            btn.size_hint_y = 0.5
             btn.bind(on_press=lambda item_number=self.num_of_quantity, size11=size,
                                      item_number1=self.num_of_quantity, size_num=sizes_counter: self.chose_size(
                 item_number, size11,
@@ -683,7 +695,6 @@ class OfferScreen(Screen):
         App.get_running_app().root.current = 'menu_screen'
 
     def like_unlike(self):
-        print("did like")
         if self.user.is_a_liker(self.offer_id):
             self.controller.remove_liked_offer(self.offer_id)
             self.like.icon="assets/windows/images/like.png"
