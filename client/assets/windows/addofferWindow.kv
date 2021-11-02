@@ -10,7 +10,9 @@
 <Add_offer_box>
     orientation: "vertical"
     id: add_offer_box
-
+    GridLayout:
+        cols: 1
+        size_hint_y : .1
     BoxLayout:
         id: icon_box
         size_hint: 1,.1
@@ -27,14 +29,17 @@
             id : contact_us_label
             text : "Add Offer"
             font_size: 70
+        GridLayout:
+            cols: 1
+            size_hint_y : .2
     ScrollView:
         id: scrollview
         do_scroll_y: True
-        size_hint: 1 , 1
+        size_hint: 1 , 2
         GridLayout:
             id: cover
             cols: 1
-            padding: [25,0,25,0]
+            padding: [40,0,40,80]
             size_hint_y: 2.25
             GridLayout:
                 id: category_box
@@ -57,24 +62,16 @@
                 MDLabel:
                     id: product_name_label
                     size_hint: 1 , .4
-                    text: "Product Name"
-                    font_size:35
+                    text: "Product name"
+                    font_size:40
 
                 TextInput:
                     id: product_name_input
                     size_hint: 1 , .6
-                    #background_normal : ''
-                    #background_active: ''
-                    #background_color: 24/255,211/255,199/255,.2
+                    normal_color: 100,0,0,0
+                    color_active: 100,100,1,0
                     write_tab: False
                     multiline: False
-                    canvas:
-                        Color:
-                            rgba: 24/255,211/255,199/255, .5
-                        RoundedRectangle:
-                            pos: self.pos
-                            size: self.size
-                    background_color: 24/255,211/255,199/255, .5
 
 
             GridLayout:
@@ -85,9 +82,9 @@
                 size_hint: 1, .07
                 MDLabel:
                     id: company_name_label
-                    text: "Company Name"
+                    text: "Company name"
                     size_hint: 1 , .4
-                    font_size:35
+                    font_size:40
                 TextInput:
                     id: company_name_input
                     size_hint: 1 , .6
@@ -107,7 +104,7 @@
                     size_hint: 1 , .1
                     text: "Description"
                     font: 'sofia pro bold'
-                    font_size:35
+                    font_size:40
                 TextInput:
                     id: description_input
                     size_hint: 1 , .6
@@ -125,7 +122,7 @@
                     id: color_label
                     size_hint: 1 , .1
                     text: "Colors"
-                    font_size:35
+                    font_size:40
                 ScrollView:
                     id: scrollview_colors
                     do_scroll_y: False
@@ -150,7 +147,7 @@
                     id: size_label
                     text: "Sizes"
                     size_hint: 1 , .4
-                    font_size:35
+                    font_size:40
                 GridLayout:
                     id:size_drop_box
                     cols:5
@@ -158,24 +155,12 @@
                     size_hint: 1 , .8
                     TextInput:
                         id:size_num_input
-                        size_hint: .5, .7
-                        #pos_hint: {'center_x': .1, 'center_y': .5}
-                        text_hint: 'Size Number'
-                        #font_name: "Arial"
-                        #text_color: 0,0,0,0
-                        #normal_color: 100,0,0,0
+                        normal_color: 100,0,0,0
                         color_active: 100,100,1,0
-                        #text_color: 1,1,1,1
+                        size_hint: .5, .7
+                        text_hint: 'Size Number'
                         write_tab: False
                         multiline: False
-                        background_color: 1,1,1,0
-                        canvas.before:
-                            Color:
-                                rgba: (24/255,211/255,199/255, .5)
-                            RoundedRectangle:
-                                size: self.size
-                                pos: self.pos
-                        #on_release: root.show_dropdown_size_num()
                     MDDropDownItem:
                         id:size_type_input
                         size_hint: .5,.7
@@ -219,11 +204,9 @@
                     id: step_label
                     text: "Steps"
                     size_hint: 1 , .1
-                    font_size:35
-                StepLayoutStart:
-                    id: 1
-                StepLayoutStart:
-                    id: 2
+                    font_size:40
+                StepLayoutStart1:
+                StepLayoutStart2:
                 GridLayout:
                     cols:2
                     padding: [0,5,0,5]
@@ -270,7 +253,7 @@
                         id: step_label
                         text: "End Date"
                         size_hint: 1 , 1
-                        font_size:35
+                        font_size:40
                 GridLayout:
                     cols:3
                     MDDropDownItem:
@@ -317,7 +300,7 @@
                         size_hint: 1 , .1
                         text: "Choose Photos"
                         font: 'sofia pro bold'
-                        font_size:35
+                        font_size:40
                 GridLayout:
                     id: choose
                     cols:5
@@ -342,19 +325,9 @@
                 padding: [30,30,30,30]
                 spacing: 10
                 size_hint: 1 , .1
-                Button:
-                    id: submit
-                    text: 'submit'
-                    size_hint: 1 , 1
-                    background_color: (0,0,0,0)
-                    background_normal: ''
-                    canvas.before:
-                        Color:
-                            rgba: (24/255,211/255,199/255,1)
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                    pos_hint: {'bottom':.5}
+                Main_Button:
+                    id:submit
+                    text:'submit'
                     on_press: root.add_offer()
 
 
@@ -379,13 +352,13 @@
     text: "MyLabel"
 
 
-<StepLayoutStart>:
-    id: root.root.step
+<StepLayoutStart1>:
+    id: "step1"
     cols: 1
     size: 1 , .5
     MDLabel:
         size: 1 , .02
-        text:'Step '+str(root.get_step())
+        text:'Step 1'
     GridLayout:
         id:content
         cols:2
@@ -397,6 +370,8 @@
             text: "min buyfriends"
         TextInput:
             id: min_input
+            text: '0'
+            input_filter: 'int'
             size_hint: .7 , .8
             write_tab: False
             multiline: False
@@ -406,6 +381,8 @@
             text: 'max buyfriends'
         TextInput:
             id:max_input
+            input_filter: 'int'
+            on_text: root.parent.parent.parent.parent.set_next_minimum(1)
             size_hint: .7 , .8
             write_tab: False
             multiline: False
@@ -415,6 +392,51 @@
             text: "price"
         TextInput:
             id:price_input
+            input_filter: 'int'
+            size_hint: .7 , .8
+            write_tab: False
+            multiline: False
+<StepLayoutStart2>:
+    id: "step2"
+    cols: 1
+    size: 1 , .5
+    MDLabel:
+        size: 1 , .02
+        text:'Step 2'
+    GridLayout:
+        id:content
+        cols:2
+        size_hint: 1 , 1
+        spacing: 15
+        MDLabel:
+            id: minimum
+            size_hint: 1 , .8
+            text: "min buyfriends"
+        TextInput:
+            id: min_input
+            input_filter: 'int'
+            on_text: root.parent.parent.parent.parent.set_prev_maximum(2)
+            size_hint: .7 , .8
+            write_tab: False
+            multiline: False
+        MDLabel:
+            id: maximum
+            size_hint: 1 , .8
+            text: 'max buyfriends'
+        TextInput:
+            id:max_input
+            input_filter: 'int'
+            on_text: root.parent.parent.parent.parent.set_next_minimum(2)
+            size_hint: .7 , .8
+            write_tab: False
+            multiline: False
+        MDLabel:
+            id: price
+            size_hint: 1 , .8
+            text: "price"
+        TextInput:
+            id:price_input
+            input_filter: 'int'
             size_hint: .7 , .8
             write_tab: False
             multiline: False
@@ -424,7 +446,7 @@
     size: 1 , .5
     MDLabel:
         size: 1 , .02
-        text:'Step '+root.step
+        text:'Step '+root.get_step()
     GridLayout:
         id:content
         cols:2
@@ -436,6 +458,8 @@
             text: "min buyfriends"
         TextInput:
             id: min_input
+            input_filter: 'int'
+            on_text: root.parent.parent.parent.parent.set_prev_maximum(root.get_step())
             size_hint: .7 , .8
             write_tab: False
             multiline: False
@@ -445,6 +469,8 @@
             text: 'max buyfriends'
         TextInput:
             id:max_input
+            input_filter: 'int'
+            on_text: root.parent.parent.parent.parent.set_next_minimum(3)
             size_hint: .7 , .8
             write_tab: False
             multiline: False
@@ -454,6 +480,7 @@
             text: "price"
         TextInput:
             id:price_input
+            input_filter: 'int'
             size_hint: .7 , .8
             write_tab: False
             multiline: False
@@ -473,3 +500,15 @@
             pos: self.pos
             size: self.size
             #radius: [50,]
+
+<Main_Button@Button>
+    size_hint: 1 , 1
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (24/255,211/255,199/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+    pos_hint: {'bottom':.5}

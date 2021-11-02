@@ -64,8 +64,8 @@ class UPDATEOFFERScreen(Screen):
 
 class Category_box(BoxLayout):
     pass
-MIN_DIFFERNCE_LIMIT = 10
-MIN_DIFFERNCE_PRICE = 100
+MIN_difference_LIMIT = 10
+MIN_difference_PRICE = 100
 class Update_offer_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Update_offer_box, self).__init__(**kwargs)
@@ -281,8 +281,8 @@ class Update_offer_box(BoxLayout):
             toast('limit should be greater then her following limit '+str(limit1)+" "+str(limit2))
             return False
 
-        if (limit2 - limit1) < MIN_DIFFERNCE_LIMIT:
-            toast('the differnce between your limit is too short -> '+ str(limit1) + " "+str(limit2)+ 'this is the min differnce: '+str(MIN_DIFFERNCE_LIMIT))
+        if (limit2 - limit1) < MIN_difference_LIMIT:
+            toast('the difference between your limit is too short -> '+ str(limit1) + " "+str(limit2)+ 'this is the min difference: '+str(MIN_difference_LIMIT))
             return False
         return True
 
@@ -291,8 +291,8 @@ class Update_offer_box(BoxLayout):
             toast('price should be smaller then his following price '+str(price1) + " " + str(price2))
             return False
 
-        if (price1 - price2) < MIN_DIFFERNCE_PRICE:
-            toast('the differnce between your price is too short -> '+ str(price1) +" "+str(price2)+'this is the min differnce: '+str(MIN_DIFFERNCE_PRICE))
+        if (price1 - price2) < MIN_difference_PRICE:
+            toast('the difference between your price is too short -> '+ str(price1) +" "+str(price2)+'this is the min difference: '+str(MIN_difference_PRICE))
             return False
         return True
 
