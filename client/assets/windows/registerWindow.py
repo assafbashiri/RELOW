@@ -43,7 +43,7 @@ class Register_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def back(self):
-        App.get_running_app().root.current ="menu_screen"
+        App.get_running_app().root.current ="connect_screen"
 
     def clear_register(self):
         self.ids.phone.text=""
@@ -144,7 +144,7 @@ class Register_box(BoxLayout):
 
     def show_dropdown_month(self):
         menu_items = []
-        for month in range(12, 1, -1):
+        for month in range(12, 0, -1):
             menu_items.append(
                 {
                     'text': str(month),
@@ -166,7 +166,7 @@ class Register_box(BoxLayout):
 
     def show_dropdown_day(self):
         menu_items = []
-        for day in range(31, 1, -1):
+        for day in range(31, 0, -1):
             menu_items.append(
                 {
                     'text': str(day),

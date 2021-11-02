@@ -163,24 +163,37 @@ class CheckValidity:
             isValidDate = False
         if not isValidDate:
             toast("Input date is not valid..")
-            print("Input date is not valid..")
             return False
         today = datetime.datetime.now()
         today_day = today.day.real
         today_month = today.month.real
         today_year = today.year.real
-        # difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
-        if today_year > int(year):
+
+        year = int(year)
+        month = int(month)
+        day = int(day)
+
+        if month == 2:
+            if day > 28:
+                return False
+        if month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12:
+            if day > 31:
+                return False
+        if month == 4 or month == 6 or month == 9 or month == 11:
+            if day > 30:
+                return False
+
+        if today_year > year:
             toast("bad year")
             return False
-        if today_year < int(year):
+        if today_year < year:
             return True
-        if today_month > int(month):
+        if today_month > month:
             toast("bad month")
             return False
-        if today_month < int(month):
+        if today_month < month:
             return True
-        if today_day > int(day):
+        if today_day > day:
             toast("bad day")
             return False
         return True

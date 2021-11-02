@@ -4,8 +4,8 @@
     Connect_box:
 
 <Connect_box>
-    #padding: [275,25,0,10]
     id: words
+    orientation: 'vertical'
     canvas.before:
         Color:
             rgba: (24/255,211/255,199/255,1)
@@ -13,58 +13,60 @@
             size: self.size
             pos: self.pos
     size_hint: 1,1
+    BoxLayout:
+        id: icon_box
+        size_hint: 1,.1
+        orientation: 'horizontal'
+        spacing:250
+        MDIconButton:
+            icon: "assets/windows/images/back_btn.png"
+            on_press:root.back()
+
     GridLayout:
-
         cols:1
-        GridLayout:
 
-            cols:1
-            size_hint_y:.2
         GridLayout:
-
             size_hint:.5,.5
             pos_hint:{'bottom':.5}
-
             cols:3
             pos_hint:.5, .5
+
             GridLayout:
                 cols:1
-
                 pos_hint_x:.2
-            MDIconButton:
 
+            MDIconButton:
                 icon: "assets/windows/images/hqdefault.png"
                 width: 100
                 height: 100
                 id: logo
                 user_font_size:150
                 on_press:root.back_to_menu()
+
             GridLayout:
                 cols:1
                 pos_hint_x:.2
-
 
         GridLayout:
             padding: ['20dp','30dp', '20dp' , '0dp']
             cols:1
 
             GridLayout:
-
                 cols:1
-                size_hint: 1.5,4
-
+                size_hint: 1,4
                 MDLabel:
                     text : "Lets Get Started!"
-                    font_size: 32
+                    font_size: 100
                     color: 1,1,1,1
+
                 GridLayout:
                     cols:1
                     size_hint_y:.3
-
                 MDLabel:
                     text : "This platform was created to facilitate the creation of purchasing groups on a variety of products, Let's make connections in order to participate in a joint purchase that aims to significantly reduce the price"
-                    font_size: 24
+                    font_size: 40
                     color: 1,1,1,1
+
             GridLayout:
                 cols:1
                 pos_hint_y:.1
@@ -82,7 +84,7 @@
                     Button:
                         id: login_btn
                         text: "Login"
-                        font_size: 20
+                        font_size: 40
                         size_hint: 0.2,0.2
                         background_color: (0,0,0,0)
                         background_normal: ''
@@ -98,25 +100,19 @@
                     Button:
                         id: register_btn
                         text: "Register"
-                        font_size: 20
+                        font_size: 40
                         size_hint: 0.2,0.2
                         background_color: (0,0,0,0)
                         background_normal: ''
-                        color: (1,1,1,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        borders: 2, 'solid', (1,1,0,0)
+                        color: (24/255,211/255,199/255,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
                         canvas.before:
                             Color:
-                                rgba: (0,0,0,0)
+                                rgba: (1,1,1,1)
                             RoundedRectangle:
                                 size: self.size
                                 pos: self.pos
-                            Line:
-                                width: 2
-                                #rectangle: self.x, self.y, self.width, self.height
-                                #rgba:(24/255,211/255,199/255,1)
-
                         on_press: root.register_new()
-
-
 
                 GridLayout:
                     cols:1

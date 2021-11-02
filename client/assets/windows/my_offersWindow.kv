@@ -41,14 +41,14 @@
                 Button:
                     pos_hint: {'top':1}
                     id: active_buy
-                    text:"my active buy offers"
+                    text:"My purchases"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
                     on_press:root.parent.active_buy()
                 Button:
                     pos_hint: {'top':1}
                     id: active_sell
-                    text:"my active sell offers"
+                    text:"My sell offers"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
                     on_press:root.parent.active_sell()
@@ -56,7 +56,7 @@
                 Button:
                     id: liked
                     pos_hint: {'top':1}
-                    text:"my liked offers"
+                    text:"Liked offers"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
                     on_press:root.parent.like_offers()
@@ -64,7 +64,7 @@
                 Button:
                     id: history_buy
                     pos_hint: {'top':1}
-                    text:"my history buy offers"
+                    text:"History purchases"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
                     on_press:root.parent.history_buy()
@@ -72,7 +72,7 @@
                 Button:
                     id: history_sell
                     pos_hint: {'top':1}
-                    text:"my history sell offers"
+                    text:"History sell offers"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
                     on_press:root.parent.history_sell()

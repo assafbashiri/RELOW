@@ -34,6 +34,9 @@ class Connect_box(BoxLayout):
     def exit(self):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
+    def back(self):
+        App.get_running_app().root.current ="menu_screen"
+
     def __init__(self, **kwargs):
         super(Connect_box, self).__init__(**kwargs)
         self.cat = Category_box()
