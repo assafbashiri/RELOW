@@ -81,9 +81,9 @@ class RecycleViewRow(SmartTileWithLabel):
         self.text = self.offer.product.name + "\n"+ self.offer.product.description
         self.box_color = (0, 0, 0, 0.2)
         self.size_hint_y = 0.2
-        a = self.insert2(photo_list[0])
+        photo_main = self.insert2(photo_list[0])
         address = f"assets/windows/images/test{index}.png"
-        a.save(address)
+        photo_main.save(address)
         self.source = address
         self.on_press= self.check
         btn = MDIconButton()
