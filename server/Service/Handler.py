@@ -254,7 +254,7 @@ class Handler:
         try:
             offer = self.category_controller.get_offer_by_offer_id(argument['offer_id'])
             self.user_controller.add_like_offer(self.user.user_id, offer)
-            return Response(vars(OfferService(offer)), "Offer Added SuccessfullyTo Liked Offers", True)
+            return Response(vars(OfferService(offer)), "Offer Added Successfully To Liked Offers", True)
         except Exception as e:
             return Response(None, str(e), False)
 
