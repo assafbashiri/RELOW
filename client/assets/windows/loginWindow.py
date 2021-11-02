@@ -29,6 +29,8 @@ class Sub_Category_box(BoxLayout):
 
 class Login_box(BoxLayout):
 
+    def back(self):
+        App.get_running_app().root.current ="connect_screen"
 
     def exit(self):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())

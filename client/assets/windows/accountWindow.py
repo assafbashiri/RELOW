@@ -221,7 +221,7 @@ class Personal_box(BoxLayout):
 
     def show_dropdown_month(self):
         menu_items = []
-        for month in range(12, 1, -1):
+        for month in range(12, 0, -1):
             menu_items.append(
                 {
                     'text': str(month),
@@ -244,7 +244,7 @@ class Personal_box(BoxLayout):
 
     def show_dropdown_day(self):
         menu_items = []
-        for day in range(31, 1, -1):
+        for day in range(31, 0, -1):
             menu_items.append(
                 {
                     'text': str(day),
