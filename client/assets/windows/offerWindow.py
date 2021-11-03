@@ -152,7 +152,8 @@ class OfferScreen(Screen):
         print("as a seller")
         a = App.get_running_app()
         # App.get_running_app().root.screens[5].children[0].init_offer(self.offer, photo_lis)
-        App.get_running_app().root.current = 'update_offer_screen'
+        App.get_running_app().root.change_screen("update_offer_screen")
+        #App.get_running_app().root.current = 'update_offer_screen'
         # self.title = self.offer.product.name
         # self.box = BoxLayout(orientation='vertical')
         # self.carousel = Carousel(size_hint_y=6)
@@ -682,7 +683,8 @@ class OfferScreen(Screen):
 
     def update_offer(self):
         self.dismiss()
-        App.get_running_app().root.current = 'update_offer'
+        App.get_running_app().root.change_screen("update_offer")
+        #App.get_running_app().root.current = 'update_offer'
         c = App.get_running_app().root
         e = App.get_running_app().root.screens
         f = App.get_running_app().root.screens[6]
@@ -690,7 +692,10 @@ class OfferScreen(Screen):
         f = App.get_running_app().root.screens[6].update_offer(self.offer)
 
     def out(self):
-        App.get_running_app().root.current = 'menu_screen'
+
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = 'menu_screen'
+
 
     def like_unlike(self):
         if self.user.is_a_liker(self.offer_id):

@@ -159,16 +159,11 @@
             id : search_label
             text : "Search"
             font_size: 70
-        GridLayout:
-            size_hint:.2,.2
-            cols:2
-            MDIconButton:
-                icon: "assets/windows/images/minus1.png"
-                padding:[0,0,0,10]
-                on_press:root.parent.hide_search_by()
-            MDIconButton:
-                icon: "assets/windows/images/more3.png"
-                padding:[0,0,0,10]
-                on_press:root.parent.show_search_by()
+
+
+        MDIconButton:
+            icon: "assets/windows/images/more3.png"
+            padding:[0,0,0,10]
+            on_press:root.parent.show_search_by()
 
 

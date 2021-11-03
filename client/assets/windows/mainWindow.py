@@ -9,7 +9,7 @@ from kivymd.app import MDApp
 # Config.set('kivy', 'exit_on_escape', '0')
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.popup import Popup
-
+from kivy.core.window import Window
 from assets.windows.SideBar import SideBar
 from assets.windows.accountWindow import ACCOUNTScreen
 from assets.windows.connectWindow import CONNECTScreen
@@ -40,20 +40,39 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
+
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
     def search_by_name(self):
         search_word = self.children[2].children[0].children[1].text
         App.get_running_app().root.screens[3].ids.side_box.children[0].children[1].text = search_word
         App.get_running_app().root.screens[3].search_by_prod_name(search_word)
-        App.get_running_app().root.current = 'search_screen'
+        App.get_running_app().root.change_screen("search_screen")
+        #App.get_running_app().root.current = 'search_screen'
 
 
 class Manager(ScreenManager):
-    # def __init__(self, **kwargs):
-    #     self.name = 'home'
-    #     super(Manager, self).__init__(**kwargs)
-    #     self.add_widget(ADDOFFERScreen)
+    def __init__(self, **kwargs):
+
+        self.name = 'home'
+        super(Manager, self).__init__(**kwargs)
+        #self.add_widget(ADDOFFERScreen)
+        self.screen_list = []
+
+    def change_screen(self, next_screen):
+        # App.get_running_app().root.current ="connect_screen"
+        if App.get_running_app().root.current not in self.screen_list:
+            self.screen_list.append(App.get_running_app().root.current)
+            App.get_running_app().root.current=next_screen
+
+    def on_back_btn(self):
+
+        if self.screen_list:
+            App.get_running_app().root.current = self.screen_list.pop()
+
+            return True
+        return False
+
     def back_to_main(self):
         self.current = "menu_screen"
 
@@ -91,12 +110,14 @@ class Side_box(BoxLayout):
 
     def open_offers_category(self,cat_button):
         self.popup.dismiss()
-        App.get_running_app().root.current="search_screen"
+        App.get_running_app().root.change_screen("search_screen")
+        #App.get_running_app().root.current="search_screen"
         SEARCHScreen.search_by_category(App.get_running_app().root.current_screen, cat_button.text)
 
     def open_offers_sub_category(self, sub_cat_button, cat):
         self.popup.dismiss()
-        App.get_running_app().root.current = "search_screen"
+        App.get_running_app().root.change_screen("search_screen")
+        #App.get_running_app().root.current = "search_screen"
         SEARCHScreen.search_by_sub_category(App.get_running_app().root.current_screen, cat.name, sub_cat_button.text)
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
@@ -127,7 +148,8 @@ class Side_box(BoxLayout):
         return "        Hello, "+App.get_running_app().controller.user_service.first_name
 
     def connect(self):
-        App.get_running_app().root.current = 'connect_screen'
+        App.get_running_app().root.change_screen("connect_screen")
+        #App.get_running_app().root.current = 'connect_screen'
 
     def close_offers_windows(self):
         screens = App.get_running_app().root.screens
@@ -145,7 +167,9 @@ class Side_box(BoxLayout):
         ans = App.get_running_app().controller.logout()
         # after logout back to the main menu
         if ans.res is True:
-            App.get_running_app().root.current = "menu_screen"
+
+            App.get_running_app().root.change_screen("menu_screen")
+            #App.get_running_app().root.current = "menu_screen"
             if App.get_running_app().root is not None:
                 self.update_hello_name("        Hello, " + "guest")
                 self.update_connect_logout_btn_text("CONNECT")
@@ -176,7 +200,8 @@ class Down_menu(BoxLayout):
         if controller.guest is True:
             Utils.pop(self, 'guest cant go to contact us window', 'alert')
             return
-        App.get_running_app().root.current = 'contact_us_screen'
+        App.get_running_app().root.change_screen("contact_us_screen")
+        #App.get_running_app().root.current = 'contact_us_screen'
 
     def move_to_add_offer(self):
         controller = App.get_running_app().controller
@@ -185,12 +210,15 @@ class Down_menu(BoxLayout):
             # toast("guest cant go to add offer window")
             return
         if controller.seller == 0:
-            App.get_running_app().root.current = 'seller_screen'
+            App.get_running_app().root.change_screen("seller_screen")
+            #App.get_running_app().root.current = 'seller_screen'
         else:
-            App.get_running_app().root.current = 'add_offer_screen'
+            App.get_running_app().root.change_screen("add_offer_screen")
+            #App.get_running_app().root.current = 'add_offer_screen'
 
     def move_to_my_offers(self):
-        App.get_running_app().root.current = 'my_offers_screen'
+        App.get_running_app().root.change_screen("my_offers_screen")
+        #App.get_running_app().root.current = 'my_offers_screen'
 
     def move_to_account(self):
         controller = App.get_running_app().controller
@@ -198,7 +226,8 @@ class Down_menu(BoxLayout):
             Utils.pop(self, 'guest cant go to account window', 'alert')
             # toast("guest cant go to account window")
             return
-        App.get_running_app().root.current = 'account_screen'
+        App.get_running_app().root.change_screen("account_screen")
+        #App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.init_fields()
 
     def is_seller(self):
@@ -209,7 +238,8 @@ class Down_menu(BoxLayout):
             return 'ADD OFFER'
 
     def move_to_search(self):
-        App.get_running_app().root.current = 'search_screen'
+        App.get_running_app().root.change_screen("search_screen")
+        #App.get_running_app().root.current = 'search_screen'
 
 
 class Main_page_box(BoxLayout):
@@ -231,8 +261,10 @@ class TestApp(MDApp):
     def __init__(self, controller):
         super(TestApp, self).__init__()
         self.controller = controller
-
-
+        Window.bind(on_keyboard=self.on_back_btn)
+    def on_back_btn(self, window, key, *args):
+        if key in [27, 1001]:
+            return self.root.on_back_btn()
     def on_start(self):
         b = self.root.current_screen.ids.Main_page_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.hot_deals)

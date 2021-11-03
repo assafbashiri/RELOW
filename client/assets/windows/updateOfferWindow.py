@@ -200,7 +200,8 @@ class Update_offer_box(BoxLayout):
         self.color_dropdown.open()
         a =5
     def back(self):
-        App.get_running_app().root.current = "menu_screen"
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = "menu_screen"
 
 
     def add_color_start(self,  num):
@@ -383,7 +384,8 @@ class Update_offer_box(BoxLayout):
             # Utils.pop(self, '\n'.join(ans.message), 'succes')
             Utils.pop(self, 'your offer is waiting for approve by admin', 'succes')
             # self.clear_fields()
-            App.get_running_app().root.current = 'menu_screen'
+            App.get_running_app().root.change_screen("menu_screen")
+            #App.get_running_app().root.current = 'menu_screen'
         else:
             Utils.pop(self, ans.message, 'alert')
 

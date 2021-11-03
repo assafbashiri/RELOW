@@ -1,4 +1,4 @@
-from kivymd.uix.picker import MDDatePicker
+
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from assets.Utils.CheckValidity import CheckValidity
@@ -35,7 +35,8 @@ class Connect_box(BoxLayout):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
     def back(self):
-        App.get_running_app().root.current ="menu_screen"
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current ="menu_screen"
 
     def __init__(self, **kwargs):
         super(Connect_box, self).__init__(**kwargs)
@@ -44,10 +45,12 @@ class Connect_box(BoxLayout):
         self.gender = 0
 
     def register_new(self):
-        App.get_running_app().root.current = 'register_screen'
+        App.get_running_app().root.change_screen("register_screen")
+        #App.get_running_app().root.current = 'register_screen'
 
     def login_new(self):
-        App.get_running_app().root.current = 'login_screen'
+        App.get_running_app().root.change_screen("login_screen")
+        #App.get_running_app().root.current = 'login_screen'
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
@@ -156,7 +159,8 @@ class Connect_box(BoxLayout):
 
 
     def back_to_menu(self):
-        App.get_running_app().root.current = 'menu_screen'
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = 'menu_screen'
 
 
 

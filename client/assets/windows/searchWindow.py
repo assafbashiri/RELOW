@@ -24,8 +24,9 @@ class SEARCHScreen(Screen):
         self.search_box = Search_box()
 
     def show_search_by(self):
-        self.ids.main_search.add_widget(self.search_box)
-        self.ids.main_search.ids['search_box']=self.search_box
+        if 'search_box' not in self.ids.main_search.ids:
+            self.ids.main_search.add_widget(self.search_box)
+            self.ids.main_search.ids['search_box']=self.search_box
 
     def hide_search_by(self):
         self.ids.main_search.remove_widget(self.search_box)
@@ -49,6 +50,7 @@ class SEARCHScreen(Screen):
         else:
             self.of.insert_offers(list=ans)
             self.ids.main_search.remove_widget(self.search_box)
+            # remove the id from theids dict
             self.ids.main_search.add_widget(self.of)
         self.first_time_bad_search = False
 
@@ -254,7 +256,9 @@ class SEARCHScreen(Screen):
 class Main_search_window(BoxLayout):
     pass
 class Top_menu_box(BoxLayout):
-    pass
+    def back(self):
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = "menu_screen"
 class Search_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Search_box, self).__init__(**kwargs)
@@ -265,8 +269,7 @@ class Search_box(BoxLayout):
     def change_to_cat(self):
         SideBar.change_to_cat(self)
 
-    def back(self):
-        App.get_running_app().root.current = "menu_screen"
+
 
 
 

@@ -52,10 +52,12 @@ class SellerScreen(Screen):
             Utils.pop(self, ans.message, 'alert')
 
     def back_to_account_window(self):
-        App.get_running_app().root.current = 'account_screen'
+        App.get_running_app().root.change_screen("account_screen")
+        #App.get_running_app().root.current = 'account_screen'
 
     def back_to_main(self):
-        App.get_running_app().root.current = 'menu_screen'
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = 'menu_screen'
         a = App.get_running_app().root.screens[0].ids.Main_page_box.ids.side_box.ids.add_offer.text = 'ADD OFFER'
         b = 5
 
