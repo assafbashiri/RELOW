@@ -128,6 +128,7 @@ class Update_offer_box(BoxLayout):
         self.steps_pointers[2].ids.max_input.text = str(offer.steps[2].limit)
         self.steps_pointers[2].ids.price_input.text = str(offer.steps[2].price)
         if self.step > 2:
+            self.step -=1
             self.add_step()
             self.steps_pointers[3].ids.min_input.text = str(offer.steps[2].limit)
             self.steps_pointers[3].ids.max_input.text = str(offer.steps[3].limit)
