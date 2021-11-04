@@ -187,7 +187,7 @@ class Down_menu(BoxLayout):
         if controller.seller == 0:
             App.get_running_app().root.current = 'seller_screen'
         else:
-            App.get_running_app().root.current = 'add_offer_screen'
+            App.get_running_app().root.current = 'add_screen'
 
     def move_to_my_offers(self):
         App.get_running_app().root.current = 'my_offers_screen'

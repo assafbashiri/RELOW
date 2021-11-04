@@ -32,6 +32,14 @@ class Login_box(BoxLayout):
     def back(self):
         App.get_running_app().root.current ="connect_screen"
 
+    def move_to_register(self):
+        App.get_running_app().root.current ="register_screen"
+
+    def move_to_forget_password(self):
+        pass
+        # App.get_running_app().root.current ="change_password_screen"
+
+
     def exit(self):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 

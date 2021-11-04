@@ -29,7 +29,7 @@ class CheckValidity:
             return False
         if name.replace(" ", "").isalpha():
 
-            res =  "Good Name"
+            res = "Good Name"
             # Utils.pop(self, res, 'success')
             #toast(res)
 

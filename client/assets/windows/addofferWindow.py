@@ -26,7 +26,7 @@ from assets.Utils.CheckValidity import CheckValidity
 
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):
-        self.name = 'add_offer_screen'
+        self.name = 'add_screen'
 
         super(ADDOFFERScreen, self).__init__(**kwargs)
 
@@ -269,10 +269,6 @@ class Add_offer_box(BoxLayout):
 
     def add_offer(self):
         list = [v for k, v in self.photo_list.items()]
-        # list = self.ids.choose.photo_list.values() #convert dict to list
-        if len(list) == 0:
-            Utils.pop(self, f'at least 1 photo for offer', 'alert')
-
         name = self.ids.product_name_input.text
         category_name = self.chosen_cat_name
         sub_category_name = self.sub_cat12
@@ -280,33 +276,38 @@ class Add_offer_box(BoxLayout):
         description = self.ids.description_input.text
         sizes = self.build_string_from_list(self.size_list)
         colors = self.build_string_from_list(self.color_list)
-        if not self.check_steps_validity():
-            return
-        if self.size_list == []:
-            Utils.pop(self, f'have to add size', 'alert')
-            return
-        if self.color_list == []:
-            Utils.pop(self, f'have to add color', 'alert')
-            return
-        if self.sub_cat12 is None:
-            Utils.pop(self, f'have to chose sub category', 'alert')
-            return
-        if self.ids.year_input.text == "Year":
-            Utils.pop(self, f'have to chose year', 'alert')
-            return
-        if self.ids.month_input.text == "Month":
-            Utils.pop(self, f'have to chose month', 'alert')
-            return
-        if self.ids.day_input.text == "Day":
-            Utils.pop(self, f'have to chose day', 'alert')
-            return
-
-        end_date = self.ids.year_input.text + '-' + self.ids.month_input.text + '-' + self.ids.day_input.text
-
         if not CheckValidity.checkValidityName(self, name):
             return
         if not CheckValidity.checkValidityName(self, company):
             return
+        # photos check
+        if len(list) == 0:
+            Utils.pop(self, f'at least 1 photo for offer', 'alert')
+            return
+        if not self.check_steps_validity():
+            return
+        if self.size_list == []:
+            Utils.pop(self, f'at least 1 size', 'alert')
+            return
+        if self.color_list == []:
+            Utils.pop(self, f'at least 1 color', 'alert')
+            return
+        if self.sub_cat12 is None:
+            Utils.pop(self, f'please chose sub category', 'alert')
+            return
+        if self.ids.year_input.text == "Year":
+            Utils.pop(self, f'please chose year', 'alert')
+            return
+        if self.ids.month_input.text == "Month":
+            Utils.pop(self, f'please chose month', 'alert')
+            return
+        if self.ids.day_input.text == "Day":
+            Utils.pop(self, f'please chose day', 'alert')
+            return
+
+        end_date = self.ids.year_input.text + '-' + self.ids.month_input.text + '-' + self.ids.day_input.text
+
+
         if not CheckValidity.checkEndDate(self, end_date):
             return
 
@@ -803,91 +804,15 @@ class StepLayout(GridLayout):
 
 class StepLayoutStart1(GridLayout):
     def __init__(self, **kwargs):
-        print("aaaaaaaaaa1")
         super(StepLayoutStart1, self).__init__(**kwargs)
-        print("aaaaaaaaaa2")
-        # self.cols = 1
-        # self.size = (1, .5)
-        # step_label = MDLabel(text='Step 1')
-        # step_label.size = (1, .02)
-        # self.add_widget(step_label)
-        #
-        # grid1 = GridLayout()
-        # grid1.cols = 2
-        # grid1.size_hint = (1, 1)
-        # grid1.spacing = 15
-        #
-        # min_buyfriends_label_step1 = MDLabel(text="Min BuyFriends")
-        # min_buyfriends_label_step1.size = (1, .8)
-        #
-        # min_buyfriends_label_step1_input = TextInput(text="0")
-        # min_buyfriends_label_step1_input.size_hint = (.7, .8)
-        #
-        # max_buyfriends_label_step1 = MDLabel(text="Max BuyFriends")
-        # max_buyfriends_label_step1.size = (1, .8)
-        #
-        # max_buyfriends_label_step1_input = TextInput()
-        # max_buyfriends_label_step1_input.size_hint = (.7, .8)
-        #
-        # price_label_step1 = MDLabel(text="price")
-        # price_label_step1.size_hint = (1, .8)
-        #
-        # price_label_step1_input = TextInput()
-        # price_label_step1_input.size_hint = (.7, .8)
-        #
-        # grid1.add_widget(min_buyfriends_label_step1)
-        # grid1.add_widget(min_buyfriends_label_step1_input)
-        # grid1.add_widget(max_buyfriends_label_step1)
-        # grid1.add_widget(max_buyfriends_label_step1_input)
-        # grid1.add_widget(price_label_step1)
-        # grid1.add_widget(price_label_step1_input)
-        # self.add_widget(grid1)
 
     def get_step(self):
         return self.parent.parent.parent.parent.get_step()
 
 class StepLayoutStart2(GridLayout):
     def __init__(self, **kwargs):
-        print("BBBBBBBB1")
         super(StepLayoutStart2, self).__init__(**kwargs)
-        print("BBBBBBBB2")
-        #
-        # self.cols = 1
-        # self.size = (1, .5)
-        # step_label = MDLabel(text='Step 2')
-        # step_label.size = (1, .02)
-        # self.add_widget(step_label)
-        #
-        # grid1 = GridLayout()
-        # grid1.cols = 2
-        # grid1.size_hint = (1, 1)
-        # grid1.spacing = 15
-        #
-        # min_buyfriends_label_step1 = MDLabel(text="Min BuyFriends")
-        # min_buyfriends_label_step1.size = (1, .8)
-        #
-        # min_buyfriends_label_step1_input = TextInput()
-        # min_buyfriends_label_step1_input.size_hint = (.7, .8)
-        #
-        # max_buyfriends_label_step1 = MDLabel(text="Max BuyFriends")
-        # max_buyfriends_label_step1.size = (1, .8)
-        #
-        # max_buyfriends_label_step1_input = TextInput()
-        # max_buyfriends_label_step1_input.size_hint = (.7, .8)
-        #
-        # price_label_step1 = MDLabel(text="price")
-        # price_label_step1.size_hint = (1, .8)
-        #
-        # price_label_step1_input = TextInput()
-        # price_label_step1_input.size_hint = (.7, .8)
-        #
-        # grid1.add_widget(min_buyfriends_label_step1)
-        # grid1.add_widget(min_buyfriends_label_step1_input)
-        # grid1.add_widget(max_buyfriends_label_step1)
-        # grid1.add_widget(max_buyfriends_label_step1_input)
-        # grid1.add_widget(price_label_step1)
-        # grid1.add_widget(price_label_step1_input)
-        # self.add_widget(grid1)
+
 
     def get_step(self):
         return self.parent.parent.parent.parent.get_step()
