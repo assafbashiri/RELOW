@@ -20,7 +20,11 @@ class UserService():
         self.email = business_user.get_email()
         self.password = business_user.get_password()
         self.birth_date = json.dumps(business_user.get_birth_date(), indent=4, sort_keys=True, default=str)
-        self.gender = str(business_user.get_gender())
+        self.birth_date=self.birth_date[1:-1]
+        bussiness_gender = business_user.get_gender()
+        self.gender = str(bussiness_gender)
+        self.gender = self.gender[7:len(self.gender)]
+
 
         # user address
         self.city = business_user.get_city()

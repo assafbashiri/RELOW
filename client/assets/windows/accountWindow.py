@@ -7,7 +7,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import ObjectProperty
-from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.textfield import MDTextField
 from assets.windows.SideBar import SideBar
 import csv
@@ -74,7 +73,8 @@ class Account_box(BoxLayout):
         self.address_box.init_fields()
 
     def back(self):
-        App.get_running_app().root.current = "menu_screen"
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = "menu_screen"
 
     def active_offers(self):
         ans = App.get_running_app().controller.get_all_active_buy_offers()
@@ -102,12 +102,18 @@ class Personal_box(BoxLayout):
         last_name = self.ids.last_name_input.text
         email = self.ids.email_input.text
         phone_number = self.ids.phone_input.text
+        area_number = self.ids.area_input.text
+        self.area = area_number
+        phone_number =area_number+phone_number
         year = self.ids.year_input.text
         month = self.ids.month_input.text
         day = self.ids.day_input.text
+
+
         date_str = ''
         if year != '' and month != '' and day != '':
             date_str = f'{year}-{month}-{day}'
+
         if first_name != "":
             ans = CheckValidity.checkValidityName(self, first_name)
             if ans is False:
@@ -122,6 +128,7 @@ class Personal_box(BoxLayout):
             ans = CheckValidity.checkValidityEmail(self, email)
             if ans is False:
                 return
+
         if phone_number != "":
             ans = CheckValidity.checkValidityPhone(self, phone_number)
             if ans is False:
@@ -130,17 +137,15 @@ class Personal_box(BoxLayout):
             Utils.pop(self, "Please Choose Gender", "alert")
             return
         # ---------------------------------------------haveee toooo checkkk birthdateeee----------------------
-        # if date_str != "":
-        #     ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
-        #     if ans is False:
-        #         return
+        if date_str != "":
+            ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
+            if ans is False:
+                return
 
         ans = App.get_running_app().controller.update_user_details(first_name, last_name, email, phone_number, date_str,
                                                                    self.gender)
         if ans.res is True:
             self.user = Struct(**ans.data)
-            # update the json------------------------------------------------
-            # self.parent.parent.manager.back_to_main()
             self.init_fields()
         return ans
 
@@ -172,15 +177,12 @@ class Personal_box(BoxLayout):
             else:
                 self.ids.email_input.text = self.user.email
 
-            if (self.user.gender == 1):
-                self.gender = 1
-            elif self.user.gender == 2:
-                self.gender = 2
+
+
+            if self.user.gender=="male" :
+                self.ids.male.active = True
             else:
-                if self.user.gender == 'male':
-                    self.ids.male.active = True
-                else:
-                    self.ids.female.active = True
+                self.ids.female.active = True
 
             if (self.user.birth_date is None):
                 self.ids.year_input.text = ""
@@ -194,7 +196,10 @@ class Personal_box(BoxLayout):
                 self.ids.year_input.text = year
                 self.ids.month_input.text = month
                 self.ids.day_input.text = day
-            self.gender = self.user.gender
+            if(self.user.gender == 'male'):
+                self.gender=1
+            else:
+                self.gender = 2
 
     def show_dropdown_year(self):
         menu_items = []
@@ -343,10 +348,11 @@ class Password_box(BoxLayout):
             Utils.pop(self, 'your password has been successfully changed', 'success')
             self.back_to_account_window()
         else:
-            Utils.pop(self, ans.message, 'alert')
+            Utils.pop(self, "change password failed", 'alert')
 
     def back_to_account_window(self):
-        App.get_running_app().root.current = 'account_screen'
+        App.get_running_app().root.change_screen("account_screen")
+        #App.get_running_app().root.current = 'account_screen'
         # App.get_running_app().root.prev = 'menu_screen'
 
 
@@ -587,7 +593,8 @@ class BoxiLayout(BoxLayout):
             print('done')
 
     def change_password(self):
-        App.get_running_app().root.current = 'change_password_screen'
+        App.get_running_app().root.change_screen("change_password_screen")
+        #App.get_running_app().root.current = 'change_password_screen'
 
     def change_password(self):
         temp1 = MDTextField(hint_text="old password")
@@ -730,31 +737,6 @@ class BoxiLayout(BoxLayout):
     def on_save_exp_date(self, instance, value, date_range):
         self.ids.exp_date.text = str(value)
 
-    def show_dropdown(self):
-
-        menu_items = [
-            {
-                "text": "male",
-                "viewclass": "OneLineListItem",
-                "on_release": lambda x=1: self.menu_callback(x, "male"),
-            },
-            {
-                "text": "female",
-                "viewclass": "OneLineListItem",
-                "on_release": lambda x=2: self.menu_callback(x, "female"),
-            }
-        ]
-        self.drop_down = MDDropdownMenu(
-            caller=self.ids.gender,
-            items=menu_items,
-            width_mult=4,
-        )
-        self.drop_down.open()
-
-    def menu_callback(self, gender_int, gender_string):
-        self.gender = gender_int
-        self.ids.gender.text = gender_string
-        self.drop_down.dismiss()
 
 
     def show_dropdown_address(self):

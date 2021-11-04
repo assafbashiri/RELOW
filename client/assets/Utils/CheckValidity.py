@@ -136,6 +136,7 @@ class CheckValidity:
 
     # check if this function is important due to date picker
     def checkValidityDateOfBirth(self, date):
+        min_age = 12.0
         if ' ' in date:
             date, e = date.split(' ')
         year, month, day = date.split('-')
@@ -149,10 +150,9 @@ class CheckValidity:
             raise Exception("Input date is not valid..")
         difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
         difference_in_years = (difference.days + difference.seconds / 86400) / 365.2425
-        if difference_in_years > 12.0:
-            raise Exception("Input date is not valid..")
-        elif difference_in_years > 100.0:
-            raise Exception("Input date is not valid..")
+        if difference_in_years < min_age:
+            raise Exception(f'Sorry, Your are too young, your age is {difference_in_years} years old, yoh have to be at least {min_age} years old')
+
 
     def checkEndDate(self, end_date):
         isValidDate = True

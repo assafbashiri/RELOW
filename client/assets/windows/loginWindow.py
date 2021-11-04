@@ -34,11 +34,9 @@ class Login_box(BoxLayout):
         #App.get_running_app().root.current ="connect_screen"
 
     def move_to_register(self):
-        App.get_running_app().root.current ="register_screen"
+        App.get_running_app().root.change_screen("register_screen")
+        #App.get_running_app().root.current ="register_screen"
 
-    def move_to_forget_password(self):
-        pass
-        # App.get_running_app().root.current ="change_password_screen"
 
 
     def exit(self):
@@ -190,7 +188,7 @@ class Login_box(BoxLayout):
 
     def forgot_password(self):
         email = self.ids.email.text
-        ans = App.get_running_app().controller.forgot_password(email)
+        ans = App.get_running_app().controller.forget_password(email)
         if ans.res is True:
             Utils.pop(self, "your new password send to your mail", 'alert')
         else:

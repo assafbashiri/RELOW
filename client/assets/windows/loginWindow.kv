@@ -68,6 +68,7 @@
                     color_active: 100,100,1,0
                     size_hint_y: .7
                     write_tab: False
+                    font_name:"Arial"
                     multiline: False
 
             GridLayout:
@@ -90,6 +91,7 @@
                     color_active: 100,100,1,0
                     size_hint_y: .7
                     write_tab: False
+                    font_name:"Arial"
                     multiline: False
                     password: True
 
@@ -113,7 +115,7 @@
                     color: (0,0,0,1) if self.state == 'normal' else (24/255,211/255,199/255,1)
                     background_color: (0,0,0,0)
                     halign: 'left'
-                    on_press: root.move_to_forget_password()
+                    on_press: root.forgot_password()
                     #valign: 'center'
             GridLayout:
                 cols:1

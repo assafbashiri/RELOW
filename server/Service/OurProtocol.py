@@ -36,7 +36,8 @@ class OurProtocol(Protocol):
             return
         print('[RECEIVE] '+'got all')
         res = self.handler.handling(data)
-        to_send = pickle.dumps(vars(res))
+        a=vars(res)
+        to_send = pickle.dumps(a)
         print( '[SEND] ' + str(sys.getsizeof(to_send)))
         self.transport.write(to_send)
         self.counter = 1

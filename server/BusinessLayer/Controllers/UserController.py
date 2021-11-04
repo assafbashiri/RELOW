@@ -100,9 +100,9 @@ class UserController:
         self.users_dao.insert(userDTO)
         self.user_id += 1
         # send email
-        msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
+        msg = "welcome to RELOW, your confirm code is: " + str(user.user_id)
         message = """\
-        Subject: welcome to share-it
+        Subject: welcome to relow
 
         """ + msg
         self.emailHandler.sendemail(email, message)

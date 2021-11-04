@@ -195,7 +195,7 @@ class Handler:
     def forgot_password(self, argument):
         try:
             new_password = self.user_controller.forgot_password(argument['email'])
-            return Response(new_password, "password changed Successfully", True)
+            return Response(True, "password changed Successfully", True)
         except Exception as e:
             return Response(None,str(e), False)
 
@@ -377,9 +377,26 @@ class Handler:
         except Exception as e:
             exceptions.append(str(e))
 
+        try:
+            self.user_controller.update_phone(self.user.user_id, argument['phone_number'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_gender(self.user.user_id, argument['gender'])
+        except Exception as e:
+            exceptions.append(str(e))
+
+        try:
+            self.user_controller.update_birth_date(self.user.user_id, argument['birth_date'])
+        except Exception as e:
+            exceptions.append(str(e))
+
         finally:
             user = self.user_controller.get_user_by_id(self.user.user_id)
-            return Response(vars(UserService(user)), exceptions, True)
+            u=UserService(user)
+            user_service=vars(u)
+            return Response(user_service, exceptions, True)
 
 
     def update_password(self, argument):

@@ -65,54 +65,60 @@ class Register_box(BoxLayout):
         if controller.user_service is not None:
             if controller.guest is False:
                 Utils.pop(self,"you need to logout first", 'alert')
-                #toast('you need to logout first')
                 return
 
-        if self.area=='':
-            Utils.pop(self,"Please Choose area code","alert")
-            return
-        phone = self.ids.phone_input.text
-        phone_with_area = f'{self.area}{phone}'
-        phone_bool  = CheckValidity.checkValidityPhone(self, phone_with_area)
-
-        if not phone_bool:
-            return
-
-
         first_name = self.ids.first_name_input.text
-        bool_ans=self.validate_name(first_name)
-        if not bool_ans:
-            return
-
         last_name = self.ids.last_name_input.text
-        bool_ans = self.validate_name(last_name)
-        if not bool_ans:
-            return
-
         email = self.ids.email_input.text
-        email_bool = CheckValidity.checkValidityEmail(self,email)
-        if not email_bool:
-            return
-
+        phone_number = self.ids.phone_input.text
+        area_number = self.ids.area_input.text
+        self.area = area_number
+        phone_number = area_number + phone_number
         password = self.ids.password_input.text
-        password_bool = CheckValidity.checkValidityPassword(self,password)
-        if not password_bool:
-            return
-
-        gender = self.gender
-        if gender==0:
-            Utils.pop(self,"Please Choose Gender","alert")
-            return
-
         year = self.ids.year_input.text
         month = self.ids.month_input.text
         day = self.ids.day_input.text
+
         date_str = ''
         if year != '' and month != '' and day != '':
             date_str = f'{year}-{month}-{day}'
-        birth_date = Utils.string_to_datetime_without_hour(self, date_str)
-        ans = App.get_running_app().controller.register(first_name, last_name, phone_with_area, email, password, birth_date,
-                                                        gender)
+
+        if first_name != "":
+            bool_ans=self.validate_name(first_name)
+            if not bool_ans:
+                return
+
+        if last_name != "":
+            bool_ans = self.validate_name(last_name)
+            if not bool_ans:
+                return
+
+        if email != "":
+            email_bool = CheckValidity.checkValidityEmail(self,email)
+            if not email_bool:
+                return
+
+        if phone_number != "":
+            phone_bool = CheckValidity.checkValidityPhone(self, phone_number)
+            if not phone_bool:
+                return
+
+        if password!="":
+            password_bool = CheckValidity.checkValidityPassword(self,password)
+            if not password_bool:
+                return
+
+        if self.gender==0:
+            Utils.pop(self,"Please Choose Gender","alert")
+            return
+
+        if date_str != "":
+            ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
+            if ans is False:
+                return
+
+        ans = App.get_running_app().controller.register(first_name, last_name, phone_number, email, password, date_str,
+                                                        self.gender)
         if ans.res is True:
             App.get_running_app().root.change_screen("confirmation_screen")
             #App.get_running_app().root.current = 'confirmation_screen'

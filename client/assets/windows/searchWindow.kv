@@ -7,6 +7,8 @@
         id: Top_menu_box
     Main_search_window:
         id: main_search
+    Down_menu:
+        id: down_menu
 
 <Main_search_window>
     orientation:'vertical'
@@ -40,6 +42,7 @@
             color_active: 100,100,1,0
             write_tab: False
             multiline: False
+            font_name:"Arial"
         Button:
             id: search_by_name
             text:"Search"
@@ -54,6 +57,7 @@
             color_active: 100,100,1,0
             size_hint_y: .1
             write_tab: False
+            font_name:"Arial"
             multiline: False
 
         Button:
@@ -70,6 +74,7 @@
             color_active: 100,100,1,0
             size_hint_y: .1
             write_tab: False
+            font_name:"Arial"
             multiline: False
 
         Button:
@@ -86,6 +91,7 @@
             color_active: 0,0,0,0
             size_hint_y: .1
             write_tab: False
+            font_name:"Arial"
             multiline: False
 
         Button:
@@ -134,7 +140,7 @@
 
 
         MDIconButton:
-            icon: "assets/windows/images/more3.png"
+            icon: "assets/windows/images/add.png"
             padding:[0,0,0,10]
             on_press:root.parent.show_search_by()
 
