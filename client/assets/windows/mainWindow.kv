@@ -66,24 +66,25 @@
     BoxLayout:
         spacing:2
         orientation: "vertical"
-        MDLabel:
-            size_hint: 1,0.05
-            text: "   Who Are Us?"
-            font_size: 40
-        MDLabel:
-            size_hint: 1,0.05
-            text: "   we want to reduce your expenses"
-            font_size: 35
-        MDLabel:
-            size_hint: 1,0.05
-            text: ""
+        #MDLabel:
+        #    size_hint: 1,0.05
+        #    text: "  Who Are Us?"
+        #    font_size: 60
+        #MDLabel:
+        #    size_hint: 1,0.05
+        #   text: "   we want to reduce your expenses"
+        #    font_size: 50
+        #MDLabel:
+        #    size_hint: 1,0.05
+        #    text: ""
         MDLabel:
             size_hint: 1,0.05
             text: "   Most Popular"
-            font_size: 24
-        MDLabel:
-            size_hint: 1,0.05
-            text: ""
+            font_size: 40
+            halign: 'center'
+        #MDLabel:
+        #    size_hint: 1,0.05
+        #    text: ""
         Offers_Screen:
             id: recycle1
         BoxLayout:
@@ -96,6 +97,7 @@
     size_hint_x: 1
     pos_hint: {'top':1}
     spacing: 10
+    padding: [20,0,20,0]
     orientation: "horizontal"
     MDIconButton:
         id: logo
@@ -130,8 +132,6 @@
         id: categories
         icon: "assets/windows/images/menu_cat.png"
         on_press:root.open_cat_drop()
-    GridLayout:
-        cols:1
-        size_hint_x:.1
+
 
 

@@ -1,38 +1,38 @@
 <SEARCHScreen>
-    orientation:'vertical'
     id: search
     name:'search_screen'
+    BoxLayout:
+        id:try
+        orientation:'vertical'
+        Top_menu_box:
+            id: Top_menu_box
+        Main_search_window:
+            id: main_search
+        Down_menu:
+            id: down_menu
+            size_hint:1,.15
 
-    Top_menu_box:
-        id: Top_menu_box
-    Main_search_window:
-        id: main_search
-    Down_menu:
-        id: down_menu
 
 <Main_search_window>
     orientation:'vertical'
     id:main_search
-    size_hint:1,.9
 
 
 
 
 <Search_Box>
     id: search_Box
-    size_hint: 1,.1
-    pos_hint:{'top':1}
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
+
     #padding: [20,50,20,20]
     orientation: 'vertical'
     GridLayout:
+        canvas.before:
+            Color:
+                rgba: 1, .5, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         id: gridi
-        size_hint: 1, .3
         spacing: 5
         cols:2
         TextInput:
@@ -48,7 +48,7 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.3
-            on_press:root.parent.parent.search_by_name()
+            on_press:root.parent.parent.parent.search_by_name()
 
         TextInput:
             id:company
@@ -65,7 +65,7 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
-            on_press:root.parent.parent.search_by_company()
+            on_press:root.parent.parent.parent.search_by_company()
 
         TextInput:
             id:price
@@ -82,7 +82,7 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
-            on_press:root.parent.parent.search_by_price()
+            on_press:root.parent.parent.parent.search_by_price()
 
         TextInput:
             id:date
@@ -99,11 +99,18 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
-            on_press:root.parent.parent.search_by_end_date()
-
+            on_press:root.parent.parent.parent.search_by_end_date()
     GridLayout:
+        id: extra
         cols:1
-        size_hint_y:.5
+        size_hint:1,2
+        canvas.before:
+            Color:
+                rgba: .5, .5, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
 
 
 <Offers_drop>
@@ -119,29 +126,20 @@
 
 
 <Top_menu_box>
-    id:search_box
+    id:Top_menu_box
+    size_hint: 1,.1
     GridLayout:
-        pos_hint:{'top':1}
-        size_hint:1,.1
         cols:3
         id: icon_box
-        spacing:200
-        #padding:[20,20,20,20]
         MDIconButton:
             icon: "assets/windows/images/back_btn.png"
             on_press:root.back()
-            padding:[0,0,0,10]
         MDLabel:
-            pos_hint_x: .5
-            size_hint: .5,.5
             id : search_label
             text : "Search"
-            font_size: 70
-
-
         MDIconButton:
             icon: "assets/windows/images/add.png"
-            padding:[0,0,0,10]
-            on_press:root.parent.show_search_by()
+            on_press:root.parent.parent.show_search_by()
+
 
 

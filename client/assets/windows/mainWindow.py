@@ -82,6 +82,8 @@ class Side_box(BoxLayout):
     def __init__(self, **kwargs):
         super(Side_box, self).__init__(**kwargs)
         self.dialog = None
+    def back_to_main(self):
+        App.get_running_app().root.change_screen("menu_screen")
 
     def open_cat_drop(self):
         categories = self.get_all_categories()
