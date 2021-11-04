@@ -63,7 +63,7 @@ class Manager(ScreenManager):
         # App.get_running_app().root.current ="connect_screen"
         if App.get_running_app().root.current not in self.screen_list:
             self.screen_list.append(App.get_running_app().root.current)
-            App.get_running_app().root.current=next_screen
+        App.get_running_app().root.current=next_screen
 
     def on_back_btn(self):
 
