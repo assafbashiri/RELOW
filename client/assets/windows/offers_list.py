@@ -133,7 +133,7 @@ class RecycleViewRow(SmartTileWithLabel):
         screens_len = len(App.get_running_app().root.screens)
         screens = App.get_running_app().root.screens
         # if offer.is_a_seller(App.get_running_app().controller.user_service.user_id):
-        #     screen_name = 'update_offer_screen' + str(offer_id)
+        #     screen_name = 'update_screen' + str(offer_id)
         #     for screen in screens:
         #         if screen.name == screen_name:
         #             # screen.init_offer(offer, photo_list)
@@ -142,7 +142,7 @@ class RecycleViewRow(SmartTileWithLabel):
         #     screens.append(UPDATEOFFERScreen())
         #     screens[screens_len].init_offer(offer, self.photo_list)
         #    App.get_running_app().root.change_screen(screen_name)
-        #     #craete update_offer_screen
+        #     #craete update_screen
         # else:
         screen_name = 'offer_screen'+str(offer_id)
         # check if there is a screen for this offer

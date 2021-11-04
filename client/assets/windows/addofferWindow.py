@@ -154,7 +154,7 @@ class Add_offer_box(BoxLayout):
             self.ids.size_out.text = self.size_list[0]
 
     def init_colors(self, num):
-        colors = ['softgrey', 'argaman', 'azure', 'brown', 'green', 'grey', 'orange', 'pink', 'purple',
+        colors = ['argaman', 'azure', 'brown', 'green', 'grey', 'orange', 'pink', 'purple',
                   'softblue', 'softgreen', 'softgrey', 'red', 'black', 'blue', 'yellow', 'white']
         colors_counter = 0
         for color in colors:
@@ -266,7 +266,6 @@ class Add_offer_box(BoxLayout):
 
         if ans.res is True:
             Utils.pop(self, 'your offer is waiting for approve by admin', 'success')
-            # self.clear_fields()
             screens = App.get_running_app().root.screens
             index = 0
             for screen in screens:
@@ -331,52 +330,7 @@ class Add_offer_box(BoxLayout):
             return False
         return True
 
-    def clear_fields(self):
-        self.ids.product_name_input.text = ""
-        self.ids.company_name_input.text = ""
-        self.ids.description_input.text = ""
-        self.ids.year_input.text = "Year"
-        self.ids.month_input.text = "Month"
-        self.ids.day_input.text = "Day"
-        # self.ids.size_input.text = ""
-        for i in range(1, self.step + 1):
-            self.clear_step(i)
-        self.clear_colors()
-        self.color_list = []
-        self.size_list = []
-        self.ids.size_num_input.text = ''
-        self.ids.size_type_input.text = 'Size Type'
-        self.ids.size_out.text = 'My Sizes'
-        self.size_list = []
-        # self.ids.limit1.text = ""
-        # self.ids.limit2.text = ""
-        # self.ids.limit3.text = ""
-        # self.ids.price1.text = ""
-        # self.ids.price2.text = ""
-        # self.ids.price3.text = ""
-        # self.ids.drop_category.text='Category'
-        # for limit in self.limit:
-        #     limit.text = ""
-        # for price in self.price:
-        #     price.text = ""
 
-    def clear_step(self, num):
-        self.ids[str(num)].ids.min_input.text = ''
-        self.ids[str(num)].ids.max_input.text = ''
-        self.ids[str(num)].ids.price_input.text = ''
-
-    def clear_colors(self):
-        for child in self.ids.color_grid.children:
-            if 'un_' not in child.icon:
-                child.icon = child.icon[:22] + 'un_' + child.icon[22:]
-
-    def change_to_cat(self):
-        SideBar.change_to_cat(self)
-
-    def show_date_picker(self):
-        date_dialog = MDDatePicker(year=2022, month=12, day=15)
-        date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-        date_dialog.open()
 
     # ------------------------------DROPDOWN----------------------------------
     def show_dropdown_size_num(self):

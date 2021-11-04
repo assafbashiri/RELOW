@@ -1,6 +1,6 @@
 <UPDATEOFFERScreen>
     id: update_offer
-    name: 'update_offer_screen'
+    name: 'update_screen'
     Update_offer_box:
         id: update_offer_box
     #Down_menu:
@@ -11,22 +11,23 @@
     orientation: "vertical"
     id: update_offer_box
     BoxLayout:
+        orientation: "horizontal"
         id: back_box
         size_hint: 1 , .05
         MDIconButton:
             icon: "assets/windows/images/back_btn.png"
             on_press:root.back()
             pos_hint: { 'center_y': .5}
-
-    BoxLayout:
-        id: title_box
-        size_hint: 1 , .2
+        MDLabel:
+            text:''
+            size_hint_x: 0.1
         MDLabel:
             pos_hint: {'top':1}
             size_hint: 1 , 1
             id : add_offer_label
             text : "Update Offer"
-            font_size: 32
+            font_size: 70
+
 
     ScrollView:
         id: scrollview
@@ -129,7 +130,7 @@
                     GridLayout:
                         id: color_grid
                         size_hint: 1.5,1
-                        cols:10
+                        cols:20
 
 
 
@@ -219,13 +220,28 @@
                         id: add_step
                         text: 'add step'
                         size_hint: 1 , 1
-                        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
                         on_press: root.add_step()
                     Button:
                         id: remove_step
                         size_hint: 1 , 1
                         text: 'remove step'
-                        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                        pos_hint: {'bottom':.5}
                         on_press: root.remove_step()
             GridLayout:
                 id:end_date_box
@@ -309,39 +325,51 @@
                         font_size: 40
                         on_press: root.remove_photo()
 
-            GridLayout:
-                cols:1
-                padding: [30,30,30,30]
-                spacing: 10
-                size_hint: 1 , .1
-                Button:
-                    id: update
-                    text: 'Update'
-                    size_hint: 1 , 1
-                    background_color: (0,0,0,0)
-                    background_normal: ''
-                    canvas.before:
-                        Color:
-                            rgba: (24/255,211/255,199/255,1)
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                    pos_hint: {'bottom':.5}
-                    on_press: root.update_offer()
-                Button:
-                    id: cancel
-                    text: 'Cancel'
-                    size_hint: 1 , 1
-                    background_color: (0,0,0,0)
-                    background_normal: ''
-                    canvas.before:
-                        Color:
-                            rgba: (24/255,211/255,199/255,1)
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                    pos_hint: {'bottom':.5}
-                    on_press: root.remove_offer()
+
+                GridLayout:
+                    cols:1
+                    padding: [30,30,30,30]
+                    spacing: 10
+                    size_hint: 1 , 0.5
+                    Main_Button:
+                        id:update
+                        text:'update'
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                        pos_hint: {'bottom':.5}
+                        on_press: root.update_offer()
+
+                    Main_Button:
+                        id:cancel
+                        text:'cancel'
+                        background_color: (0,0,0,0)
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: (24/255,211/255,199/255,1)
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                        pos_hint: {'bottom':.5}
+                        on_press: root.remove_offer()
+
+<Main_Button@Button>
+    size_hint: 1 , 1
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (24/255,211/255,199/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+    pos_hint: {'bottom':.5}
 
 
 

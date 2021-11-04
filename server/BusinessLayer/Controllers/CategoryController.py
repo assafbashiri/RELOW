@@ -288,7 +288,8 @@ class CategoryController:
         return offer_to_move
 
     def get_sub_cat_name(self, cat_id, sub_cat_id):
-        return self.category_dictionary[cat_id].sub_categories_dictionary[sub_cat_id].name
+        return [self.category_dictionary[cat_id].sub_categories_dictionary[sub_cat_id].name,
+        self.category_dictionary[cat_id].name]
 
     # -------------------------------------------------load methods -----------------------------------------
     def load(self):

@@ -485,8 +485,8 @@ class Handler:
 
     def get_sub_cat_name(self, argument):
         try:
-            sub_cat_name = self.category_controller.get_sub_cat_name(argument['cat_id'], argument['sub_cat_id'])
-            return Response(sub_cat_name, "got sub Category name Successfully", True)
+            ans = self.category_controller.get_sub_cat_name(argument['cat_id'], argument['sub_cat_id'])
+            return Response(ans, "got sub Category name Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
