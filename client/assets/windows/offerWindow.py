@@ -51,7 +51,7 @@ class OfferScreen(Screen):
 
         if self.controller.guest is True:
             self.show_as_guest(photo_lis)
-        elif self.user.is_a_seller(self.offer.offer_id):
+        elif self.offer.is_a_seller(self.user.user_id):
             self.show_as_seller(photo_lis)
         elif self.user.is_a_buyer(self.offer.offer_id):
             self.show_as_buyer(photo_lis)
@@ -73,7 +73,7 @@ class OfferScreen(Screen):
         self.product_name.bold = True
         self.product_name.font_size = 45
         self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'center'
+        self.product_name.halign = 'left'
         self.product_name.valign = 'bottom'
         self.title.add_widget(self.back)
         self.title.add_widget(self.product_name)
@@ -190,7 +190,7 @@ class OfferScreen(Screen):
         self.join_offer.padding = [40,40,40,40]
         self.join = Button(text="JOIN")
         self.join.background_normal =''
-        self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
+
 
 
         self.join.bind(on_press=lambda x: self.guest_try_to_join())
@@ -214,7 +214,7 @@ class OfferScreen(Screen):
         self.product_name.bold = True
         self.product_name.font_size = 45
         self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'center'
+        self.product_name.halign = 'left'
         self.product_name.valign = 'bottom'
         self.title.add_widget(self.back)
         self.title.add_widget(self.product_name)
@@ -378,7 +378,7 @@ class OfferScreen(Screen):
         self.product_name.bold = True
         self.product_name.font_size = 45
         self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'center'
+        self.product_name.halign = 'left'
         self.product_name.valign = 'bottom'
         self.title.add_widget(self.back)
         self.title.add_widget(self.product_name)
@@ -637,8 +637,8 @@ class OfferScreen(Screen):
 
         self.icons_box.add_widget(self.another_item)
         label_spacing1 = MDLabel(text='')
-
         self.icons_box.add_widget(label_spacing1)
+
         self.remove = MDIconButton(icon="assets/windows/images/minus.png")
         self.remove.bind(on_press=lambda x: self.remove_item())
         self.icons_box.add_widget(self.remove)
@@ -760,10 +760,16 @@ class OfferScreen(Screen):
         self.num_of_quantity += 1
         # BOX
         colors_sizes2 = BoxLayout(orientation='horizontal')
-        colors2 = BoxLayout(orientation='horizontal')
-        sizes2 = BoxLayout(orientation='horizontal')
-        colors_sizes2.add_widget(colors2)
-        colors_sizes2.add_widget(sizes2)
+        colors2 = BoxLayout(orientation='horizontal', size_hint_x = 1.5)
+        sizes2 = BoxLayout(orientation='horizontal', size_hint_x = 1.5)
+        size_scroll = ScrollView(do_scroll_x=True, do_scroll_y=False, size_hint=(1, 1))
+        color_scroll = ScrollView(do_scroll_x=True, do_scroll_y=False, size_hint=(1, 1))
+        size_scroll.add_widget(sizes2)
+        color_scroll.add_widget(colors2)
+        colors_sizes2.add_widget(color_scroll)
+
+        colors_sizes2.add_widget(size_scroll)
+
         self.color_size.add_widget(colors_sizes2)
         # colors
         colors_counter = 0
