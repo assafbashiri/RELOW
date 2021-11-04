@@ -385,7 +385,6 @@ class Update_offer_box(BoxLayout):
             Utils.pop(self, 'your offer is waiting for approve by admin', 'succes')
             # self.clear_fields()
             App.get_running_app().root.change_screen("menu_screen")
-            #App.get_running_app().root.current = 'menu_screen'
         else:
             Utils.pop(self, ans.message, 'alert')
 
@@ -394,7 +393,6 @@ class Update_offer_box(BoxLayout):
 
     def check_steps_validity(self):
         for i in range(1,self.step):
-
             step_prev = self.ids[str(i)]
             step_next = self.ids[str(i+1)]
             flag = self.check_limits(int(step_prev.ids.max_input.text),
