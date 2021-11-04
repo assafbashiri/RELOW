@@ -622,7 +622,7 @@ class OfferScreen(Screen):
         self.box.add_widget(self.labels_box)
         # colors and sizes
         self.color_size = BoxLayout(orientation='vertical')
-        self.color_size.size_hint_y = 0.1
+        self.color_size.size_hint_y = 0
         # self.color_size.spacing= 25
         self.box.add_widget(self.color_size)
         self.chosen_colors = {}
@@ -631,7 +631,7 @@ class OfferScreen(Screen):
 
         self.icons_box = BoxLayout()
         self.icons_box.padding = [20, 0, 20, 0]
-        self.icons_box.size_hint_y = .1
+        self.icons_box.size_hint_y = .2
         self.another_item = MDIconButton(icon="assets/windows/images/add.png")
         self.another_item.bind(on_press=lambda x: print(self.add_item()))
 
@@ -754,7 +754,7 @@ class OfferScreen(Screen):
                 Utils.pop(self, 'have to chose size', 'alert')
                 return
         self.box.size_hint_y +=.1
-        self.color_size.size_hint_y += .3
+        self.color_size.size_hint_y += .2
 
 
         self.num_of_quantity += 1
@@ -794,7 +794,7 @@ class OfferScreen(Screen):
         for size in sizes:
             btn = Button(text=size)
             btn.pos_hint = {'top': 0.9}
-            btn.size_hint_y = 0.5
+            btn.size_hint_y = 1
             btn.bind(on_press=lambda item_number=self.num_of_quantity, size11=size,
                                      item_number1=self.num_of_quantity, size_num=sizes_counter: self.chose_size(
                 item_number, size11,
@@ -903,15 +903,15 @@ class OfferScreen(Screen):
         offer_id = offer.offer_id
         screens_len = len(App.get_running_app().root.screens)
         screens = App.get_running_app().root.screens
-        screen_name = 'update_offer_screen' + str(offer_id)
+        screen_name = 'update_screen' + str(offer_id)
         for screen in screens:
             if screen.name == screen_name:
                 # screen.init_offer(offer, photo_list)
-                App.get_running_app().root.current = screen_name
+                App.get_running_app().root.change_screen(screen_name)
                 return
         screens.append(UPDATEOFFERScreen())
         screens[screens_len].init_offer(offer, self.photo_lis)
-        App.get_running_app().root.current = screen_name
+        App.get_running_app().root.change_screen(screen_name)
         # App.get_running_app().root.change_screen("update_offer")
         # c = self.offer
         # f = App.get_running_app().root.screens[6].update_offer(self.offer)
