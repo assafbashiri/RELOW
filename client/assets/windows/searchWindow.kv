@@ -26,12 +26,6 @@
     #padding: [20,50,20,20]
     orientation: 'vertical'
     GridLayout:
-        canvas.before:
-            Color:
-                rgba: 1, .5, 1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
         id: gridi
         spacing: 5
         cols:2
@@ -76,6 +70,7 @@
             write_tab: False
             font_name:"Arial"
             multiline: False
+            input_filter: 'int'
 
         Button:
             id: search_by_price
@@ -104,12 +99,7 @@
         id: extra
         cols:1
         size_hint:1,2
-        canvas.before:
-            Color:
-                rgba: .5, .5, 1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+
 
 
 
