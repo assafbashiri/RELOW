@@ -138,7 +138,12 @@ class Personal_box(BoxLayout):
             return
         # ---------------------------------------------haveee toooo checkkk birthdateeee----------------------
         if date_str != "":
-            ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
+            try:
+                ans = CheckValidity.checkValidityDateOfBirth(self, date_str)
+            except Exception as e:
+                print(str(e))
+                Utils.pop(self, str(e), "alert")
+                return
             if ans is False:
                 return
 

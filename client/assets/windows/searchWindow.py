@@ -18,7 +18,8 @@ class SEARCHScreen(Screen):
         self.mes = BoxLayout(orientation='horizontal', size_hint_y=.2)
         self.of = Offers_Screen(size_hint_y=0.4)
         self.first_time_bad_search = True
-        self.lab = MDLabel(text="",size_hint_y = 0.009)
+        self.lab = MDLabel(text="",size_hint=(1,.5), halign='center')
+        #self.lab.pos_hint_y=1
         self.lab.background_normal = ''
         self.lab.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
         self.category_name = None
@@ -77,7 +78,7 @@ class SEARCHScreen(Screen):
         self.first_time_bad_search = False
 
     def search_by_price(self):
-        prod_price = self.ids.main_search.ids.price.text
+        prod_price = self.ids.main_search.ids.search_box.ids.price.text
         if not prod_price.isnumeric():
             if "lab" not in self.ids.main_search.ids:
                 self.lab.text = "   We are sorry, price has to be number"
@@ -104,7 +105,7 @@ class SEARCHScreen(Screen):
         self.first_time_bad_search = False
 
     def search_by_end_date(self):
-        prod_date = self.ids.main_search.ids.date.text
+        prod_date = self.ids.main_search.ids.search_box.ids.date.text
         if not CheckValidity.checkEndDate(self, prod_date):
             if "lab" not in self.ids.main_search.ids:
                 self.lab.text = "   We are sorry, invalid end date"

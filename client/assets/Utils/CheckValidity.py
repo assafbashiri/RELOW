@@ -151,7 +151,7 @@ class CheckValidity:
         difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
         difference_in_years = (difference.days + difference.seconds / 86400) / 365.2425
         if difference_in_years < min_age:
-            raise Exception(f'Sorry, Your are too young, your age is {difference_in_years} years old, yoh have to be at least {min_age} years old')
+            raise Exception(f'Sorry, Your are too young, your age is {int(difference_in_years)} years old, you have to be at least {int(min_age)} years old')
 
 
     def checkEndDate(self, end_date):
