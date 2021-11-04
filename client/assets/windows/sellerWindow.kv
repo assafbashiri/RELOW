@@ -2,10 +2,19 @@
     id: seller_screen
     name: 'seller_screen'
     BoxLayout:
-        orientation: 'horizontal'
+        orientation: 'vertical'
+        MDLabel:
+            text: ""
+            size_hint_y: 0.001
+        Side_box:
+            id: side_box
+        MDLabel:
+            pos_hint: {'center_x': 0.9, 'center_y': 0}
+            text: "for become a seller you should: \n 1.do first \n 2.do second \n"
         Button:
             text:"become a seller"
             font_size: 12
+            size_hint_y: 0.1
+            background_color: (24/255,211/255,199/255,1)
             on_press: root.become_seller()
-        Side_box:
-            id: side_box
+

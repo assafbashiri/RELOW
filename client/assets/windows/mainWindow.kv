@@ -41,7 +41,6 @@
         icon: "assets/windows/images/search1.png"
         on_press:
             root.move_to_search();
-            root.parent.current = 'search_screen'
     MDLabel:
         text: ""
         size_hint_x: 0.5
@@ -70,11 +69,11 @@
         MDLabel:
             size_hint: 1,0.05
             text: "   Who Are Us?"
-            font_size: 24
+            font_size: 40
         MDLabel:
             size_hint: 1,0.05
             text: "   we want to reduce your expenses"
-            font_size: 16
+            font_size: 35
         MDLabel:
             size_hint: 1,0.05
             text: ""
@@ -101,18 +100,18 @@
     MDIconButton:
         id: logo
         icon: "assets/windows/images/main2.png"
-        text: "Share IT"
+        text: "Relow"
         on_press:
-            root.parent.parent.current = 'menu_screen'
+            root.back_to_main()
     MDLabel:
         id: hello
-        size_hint_x: 1
+        size_hint_x: 0.6
         text: root.get_user_name()
 
     Button:
         id: logout_register
         text: root.login_or_connect()
-        size_hint_x: 1
+        size_hint_x: 0.2
         background_color: (0,0,0,0)
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
@@ -120,11 +119,11 @@
 
     Button:
         text: "Terms"
-        size_hint_x: 1
+        size_hint_x: 0.2
         background_color: (0,0,0,0)
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
-            root.parent.parent.current = 'terms_screen'
+            root.move_to_terms()
 
 
     MDIconButton:

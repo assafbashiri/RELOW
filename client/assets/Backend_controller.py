@@ -46,13 +46,6 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         return ans
 
-    def update_password(self, old_password, new_password):
-        update_password_req = {'op': 6, 'old_password': old_password, 'new_password': new_password}
-        self.req_answers.add_request(update_password_req)
-        ans = self.req_answers.get_answer()
-        print(ans.message)
-        return ans
-
     def guest_register(self):
         req = {'op': 78}
         self.req_answers.add_request(req)
@@ -227,10 +220,22 @@ class Backend_controller:
         else:
             for ex in ans.message:
                 Utils.pop(self,ex, "Alert")
-        changed_user = ans.data
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
 
+        return ans
+
+    def update_password(self, old_password, new_password):
+        update_password_req = {'op': 6, 'old_password': old_password, 'new_password': new_password}
+        self.req_answers.add_request(update_password_req)
+        ans = self.req_answers.get_answer()
+        print(ans.message)
+        return ans
+
+    def forget_password(self, email):
+        req = {'op': 92, 'email': email}
+        self.req_answers.add_request(req)
+        ans = self.req_answers.get_answer()
         return ans
 
     # def update_first_name(self, first_name):
@@ -722,7 +727,7 @@ class Backend_controller:
         print(ans.message)
         return ans
 
-    def become_a_seller(self,email):
+    def become_a_seller(self, email):
         complete_register_req = {'op': 100, 'email':email}
         self.req_answers.add_request(complete_register_req)
         ans = self.req_answers.get_answer()
@@ -801,15 +806,15 @@ class Backend_controller:
 
     def build_user(self, data):
         birth_date = data['birth_date']
-        length= len(data['birth_date'])-1
-        birth =  birth_date[1:length]
         user_temp = UserService(data['user_id'], data['first_name'], data['last_name'], data['phone'], data['email'],
-                                data['password'], birth, data['gender'], data['seller'], data['city'],
+                                data['password'], birth_date, data['gender'], data['seller'], data['city'],
                                 data['street'], data['apartment_number'], data['zip_code'], data['floor'],
-                                data['id_number'], data['credit_card_number'], data['credit_card_exp_date'], data['cvv'],
+                                data['id_number'], data['credit_card_number'], data['credit_card_exp_date'],
+                                data['cvv'],
                                 data['card_type'],
-                                data['history_buy_offers'], data['history_sell_offers'], data['liked_offers'], data['active_sell_offers'],
-                                data['active_buy_offers'],)
+                                data['history_buy_offers'], data['history_sell_offers'], data['liked_offers'],
+                                data['active_sell_offers'],
+                                data['active_buy_offers'], )
         return user_temp
 
     def get_user_service(self):

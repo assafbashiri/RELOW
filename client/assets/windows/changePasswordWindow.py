@@ -33,7 +33,7 @@ class PasswordScreen(Screen):
             Utils.pop(self, 'your password has been successfully changed', 'success')
             self.back_to_account_window()
         else:
-            Utils.pop(self, ans.message, 'alert')
+            Utils.pop(self, "change password failed", 'alert')
 
     def back_to_account_window(self):
         App.get_running_app().root.change_screen("account_screen")

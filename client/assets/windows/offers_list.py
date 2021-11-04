@@ -82,22 +82,27 @@ class RecycleViewRow(SmartTileWithLabel):
         self.box_color = (0, 0, 0, 0.2)
         self.size_hint_y = 0.2
         photo_main = self.insert2(photo_list[0])
+        if photo_main is None:
+            return
+
         address = f"assets/windows/images/test{index}.png"
         photo_main.save(address)
         self.source = address
         self.on_press= self.check
+
+
         btn = MDIconButton()
         btn.icon = "assets/windows/images/like.png"
         # self.add_widget(btn)
-        btn1 = Button(text='bolo')
-        btn1.size_hint = (.1,.1)
-        btn1.background_active = "assets/windows/images/like.png"
+        #btn1 = Button(text='bolo')
+        # btn1.size_hint = (.1,.1)
+        # btn1.background_active = "assets/windows/images/like.png"
         # btn1.pos_hint = {'x':.8}
         # btn1.icon = "assets/windows/images/like.png"
         # btn1.padding = [200,0,0,0]
         # btn.padding = [450,100,0,0]
-        btn1.bind(on_press= lambda x:print('bolo'))
-        btn1.background_color = (0,0,0,0)
+        # btn1.bind(on_press= lambda x:print('bolo'))
+        # btn1.background_color = (0,0,0,0)
         # self.add_widget(btn1)
         # self.add_widget(btn, 2)
         self.lines = 2
@@ -127,29 +132,28 @@ class RecycleViewRow(SmartTileWithLabel):
         offer_id = offer.offer_id
         screens_len = len(App.get_running_app().root.screens)
         screens = App.get_running_app().root.screens
-        if offer.is_a_seller(App.get_running_app().controller.user_service.user_id):
-            screen_name = 'update_offer_screen' + str(offer_id)
-            for screen in screens:
-                if screen.name == screen_name:
-                    # screen.init_offer(offer, photo_list)
-                    App.get_running_app().root.current = screen_name
-                    return
-            screens.append(UPDATEOFFERScreen())
-            screens[screens_len].init_offer(offer, self.photo_list)
-            App.get_running_app().root.current = screen_name
-            #craete update_offer_screen
-        else:
-            screen_name = 'offer_screen'+str(offer_id)
-            # check if there is a screen for this offer
-            for screen in screens:
-                if screen.name == screen_name:
-                    App.get_running_app().root.current = screen_name
-                    return
+        # if offer.is_a_seller(App.get_running_app().controller.user_service.user_id):
+        #     screen_name = 'update_offer_screen' + str(offer_id)
+        #     for screen in screens:
+        #         if screen.name == screen_name:
+        #             # screen.init_offer(offer, photo_list)
+                      #App.get_running_app().root.change_screen(screen_name)
+        #             return
+        #     screens.append(UPDATEOFFERScreen())
+        #     screens[screens_len].init_offer(offer, self.photo_list)
+        #    App.get_running_app().root.change_screen(screen_name)
+        #     #craete update_offer_screen
+        # else:
+        screen_name = 'offer_screen'+str(offer_id)
+        # check if there is a screen for this offer
+        for screen in screens:
+            if screen.name == screen_name:
+                App.get_running_app().root.change_screen(screen_name)
+                return
             # open new screen for this offer
-            screens.append(OfferScreen())
-            screens[screens_len].init_offer(offer, self.photo_list)
-            App.get_running_app().root.current = screen_name
-
+        screens.append(OfferScreen())
+        screens[screens_len].init_offer(offer, self.photo_list)
+        App.get_running_app().root.change_screen(screen_name)
 
     def move_right(self):
         self.ids.car.load_next(mode='next')

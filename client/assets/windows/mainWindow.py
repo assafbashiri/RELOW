@@ -40,15 +40,15 @@ class MENUScreen(Screen):
         self.name = 'home'
         super(MENUScreen, self).__init__(**kwargs)
 
-
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
+
     def search_by_name(self):
         search_word = self.children[2].children[0].children[1].text
         App.get_running_app().root.screens[3].ids.side_box.children[0].children[1].text = search_word
         App.get_running_app().root.screens[3].search_by_prod_name(search_word)
         App.get_running_app().root.change_screen("search_screen")
-        #App.get_running_app().root.current = 'search_screen'
+        # App.get_running_app().root.current = 'search_screen'
 
 
 class Manager(ScreenManager):
@@ -56,14 +56,15 @@ class Manager(ScreenManager):
 
         self.name = 'home'
         super(Manager, self).__init__(**kwargs)
-        #self.add_widget(ADDOFFERScreen)
+        # self.add_widget(ADDOFFERScreen)
         self.screen_list = []
 
     def change_screen(self, next_screen):
-        # App.get_running_app().root.current ="connect_screen"
         if App.get_running_app().root.current not in self.screen_list:
             self.screen_list.append(App.get_running_app().root.current)
-        App.get_running_app().root.current=next_screen
+        App.get_running_app().root.current = next_screen
+        if next_screen == 'search_screen':
+            SEARCHScreen.show_search_by(App.get_running_app().root.current_screen)
 
     def on_back_btn(self):
 
@@ -74,8 +75,7 @@ class Manager(ScreenManager):
         return False
 
     def back_to_main(self):
-        self.current = "menu_screen"
-
+        App.get_running_app().root.change_screen("menu_screen")
 
 
 class Side_box(BoxLayout):
@@ -83,42 +83,42 @@ class Side_box(BoxLayout):
         super(Side_box, self).__init__(**kwargs)
         self.dialog = None
 
-
-
     def open_cat_drop(self):
         categories = self.get_all_categories()
-        cat_grid = GridLayout(cols=1, size_hint=(.8,.8), pos_hint={'top':1})
+        cat_grid = GridLayout(cols=1, size_hint=(.8, .8), pos_hint={'top': 1})
         categories_names = GridLayout(cols=len(categories), size_hint_y=.3)
-        max_sub_cat=0
+        max_sub_cat = 0
         for cat in categories:
-            categories_names.add_widget(Button(text=cat.name,size_hint=(.3,.3),color= (24/255,211/255,199/255,1), on_press= lambda x=cat: self.open_offers_category(x)))
-            if (len(cat.sub_categories_list_names)>max_sub_cat):
+            categories_names.add_widget(Button(text=cat.name, size_hint=(.3, .3), color=(1, 1, 1, 1),
+                                               background_color=(24 / 255, 211 / 255, 199 / 255, 1),
+                                               on_press=lambda x=cat: self.open_offers_category(x)))
+            if (len(cat.sub_categories_list_names) > max_sub_cat):
                 max_sub_cat = len(cat.sub_categories_list_names)
         cat_grid.add_widget(categories_names)
-        sub_cat_names=GridLayout(cols=len(categories))
+        sub_cat_names = GridLayout(cols=len(categories))
         for cat in categories:
-            one_cat_grid =GridLayout(cols=1)
+            one_cat_grid = GridLayout(cols=1)
             for sub_cat in cat.sub_categories_list_names:
-                one_cat_grid.add_widget(Button(pos_hint={'top':1},background_color= (0,0,0,0),text=sub_cat, on_press=lambda x=sub_cat, y=cat: self.open_offers_sub_category(x,y)))
-            for i in range (0,max_sub_cat-len(cat.sub_categories_list_names)):
+                one_cat_grid.add_widget(Button(pos_hint={'top': 1}, background_color=(0, 0, 0, 0), text=sub_cat,
+                                               on_press=lambda x=sub_cat, y=cat: self.open_offers_sub_category(x, y)))
+            for i in range(0, max_sub_cat - len(cat.sub_categories_list_names)):
                 one_cat_grid.add_widget(GridLayout(cols=1))
             sub_cat_names.add_widget(one_cat_grid)
         cat_grid.add_widget(sub_cat_names)
-        self.popup = Popup(title="categories",content=cat_grid , size_hint=(.8,.8))
+        self.popup = Popup(title="Categories",title_align='center',title_size='18sp', content=cat_grid, background_color=(1, 1, 1, 1), size_hint=(.8, .8))
         self.popup.open()
 
-
-    def open_offers_category(self,cat_button):
+    def open_offers_category(self, cat_button):
         self.popup.dismiss()
         App.get_running_app().root.change_screen("search_screen")
-        #App.get_running_app().root.current="search_screen"
         SEARCHScreen.search_by_category(App.get_running_app().root.current_screen, cat_button.text)
 
     def open_offers_sub_category(self, sub_cat_button, cat):
         self.popup.dismiss()
         App.get_running_app().root.change_screen("search_screen")
-        #App.get_running_app().root.current = "search_screen"
+        # App.get_running_app().root.current = "search_screen"
         SEARCHScreen.search_by_sub_category(App.get_running_app().root.current_screen, cat.name, sub_cat_button.text)
+
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
 
@@ -144,12 +144,12 @@ class Side_box(BoxLayout):
     def get_user_name(self):
         answer = App.get_running_app().controller.user_service.first_name
         if answer is None:
-            return "        Hello, "+"guest"
-        return "        Hello, "+App.get_running_app().controller.user_service.first_name
+            return "        Hello, " + "guest"
+        return "        Hello, " + App.get_running_app().controller.user_service.first_name
 
     def connect(self):
         App.get_running_app().root.change_screen("connect_screen")
-        #App.get_running_app().root.current = 'connect_screen'
+        # App.get_running_app().root.current = 'connect_screen'
 
     def close_offers_windows(self):
         screens = App.get_running_app().root.screens
@@ -169,7 +169,7 @@ class Side_box(BoxLayout):
         if ans.res is True:
 
             App.get_running_app().root.change_screen("menu_screen")
-            #App.get_running_app().root.current = "menu_screen"
+            # App.get_running_app().root.current = "menu_screen"
             if App.get_running_app().root is not None:
                 self.update_hello_name("        Hello, " + "guest")
                 self.update_connect_logout_btn_text("CONNECT")
@@ -182,6 +182,10 @@ class Side_box(BoxLayout):
 
     def update_hello_name(self, msg):
         self.ids.hello.text = msg
+
+    def move_to_terms(self):
+        App.get_running_app().root.change_screen('terms_screen')
+
 
 class Category_box(BoxLayout):
     pass
@@ -201,7 +205,7 @@ class Down_menu(BoxLayout):
             Utils.pop(self, 'guest cant go to contact us window', 'alert')
             return
         App.get_running_app().root.change_screen("contact_us_screen")
-        #App.get_running_app().root.current = 'contact_us_screen'
+        # App.get_running_app().root.current = 'contact_us_screen'
 
     def move_to_add_offer(self):
         controller = App.get_running_app().controller
@@ -211,14 +215,13 @@ class Down_menu(BoxLayout):
             return
         if controller.seller == 0:
             App.get_running_app().root.change_screen("seller_screen")
-            #App.get_running_app().root.current = 'seller_screen'
+            # App.get_running_app().root.current = 'seller_screen'
         else:
             App.get_running_app().root.change_screen("add_screen")
 
-
     def move_to_my_offers(self):
         App.get_running_app().root.change_screen("my_offers_screen")
-        #App.get_running_app().root.current = 'my_offers_screen'
+        # App.get_running_app().root.current = 'my_offers_screen'
 
     def move_to_account(self):
         controller = App.get_running_app().controller
@@ -227,7 +230,7 @@ class Down_menu(BoxLayout):
             # toast("guest cant go to account window")
             return
         App.get_running_app().root.change_screen("account_screen")
-        #App.get_running_app().root.current = 'account_screen'
+        # App.get_running_app().root.current = 'account_screen'
         App.get_running_app().root.ids.account.ids.account_box.init_fields()
 
     def is_seller(self):
@@ -239,7 +242,9 @@ class Down_menu(BoxLayout):
 
     def move_to_search(self):
         App.get_running_app().root.change_screen("search_screen")
-        #App.get_running_app().root.current = 'search_screen'
+
+    def back_to_main(self):
+        App.get_running_app().root.change_screen("menu_screen")
 
 
 class Main_page_box(BoxLayout):
@@ -247,7 +252,7 @@ class Main_page_box(BoxLayout):
         super(Main_page_box, self).__init__(**kwargs)
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
-    
+
     def change_to_cat(self):
         SideBar.change_to_cat(self)
 
@@ -262,9 +267,11 @@ class TestApp(MDApp):
         super(TestApp, self).__init__()
         self.controller = controller
         Window.bind(on_keyboard=self.on_back_btn)
+
     def on_back_btn(self, window, key, *args):
         if key in [27, 1001]:
             return self.root.on_back_btn()
+
     def on_start(self):
         b = self.root.current_screen.ids.Main_page_box.ids.recycle1.insert_offers(
             list=App.get_running_app().controller.hot_deals)
@@ -298,5 +305,3 @@ class TestApp(MDApp):
             f.truncate(0)
             self.controller.store = JsonStore('assets/hello.json')
             self.check_connection()
-
-

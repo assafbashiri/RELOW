@@ -15,7 +15,7 @@
         size_hint_y : .1
     BoxLayout:
         id: icon_box
-        size_hint: 1,.1
+        size_hint: 2,.1
         orientation: 'horizontal'
         spacing:250
         MDIconButton:
@@ -67,6 +67,7 @@
 
                 TextInput:
                     id: product_name_input
+                    font_name:"Arial"
                     size_hint: 1 , .6
                     normal_color: 100,0,0,0
                     color_active: 100,100,1,0
@@ -87,6 +88,7 @@
                     font_size:40
                 TextInput:
                     id: company_name_input
+                    font_name:"Arial"
                     size_hint: 1 , .6
                     normal_color: 100,0,0,0
                     color_active: 100,100,1,0
@@ -107,6 +109,7 @@
                     font_size:40
                 TextInput:
                     id: description_input
+                    font_name:"Arial"
                     size_hint: 1 , .6
                     normal_color: 100,0,0,0
                     color_active: 100,100,1,0
@@ -131,7 +134,7 @@
                     GridLayout:
                         id: color_grid
                         size_hint: 1.5,1
-                        cols:10
+                        cols:20
 
 
 
@@ -155,6 +158,7 @@
                     size_hint: 1 , .8
                     TextInput:
                         id:size_num_input
+                        font_name:"Arial"
                         normal_color: 100,0,0,0
                         color_active: 100,100,1,0
                         size_hint: .5, .7
@@ -371,6 +375,7 @@
         TextInput:
             id: min_input
             text: '0'
+            on_text: root.change_first_min_buyfriends()
             input_filter: 'int'
             size_hint: .7 , .8
             write_tab: False
