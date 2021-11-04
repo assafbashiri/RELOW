@@ -30,7 +30,8 @@ class Sub_Category_box(BoxLayout):
 class Login_box(BoxLayout):
 
     def back(self):
-        App.get_running_app().root.current ="connect_screen"
+        App.get_running_app().root.change_screen("connect_screen")
+        #App.get_running_app().root.current ="connect_screen"
 
     def move_to_register(self):
         App.get_running_app().root.current ="register_screen"
@@ -173,7 +174,8 @@ class Login_box(BoxLayout):
 
         else:
             if ans.message == "user is not active":
-                App.get_running_app().root.current = "confirmation_screen"
+                App.get_running_app().root.change_screen("confirmation_screen")
+                #App.get_running_app().root.current = "confirmation_screen"
             if ans.message == "there is no such an email address in the system":
                 Utils.pop(self, "there is no such an email address in the system", "alert")
             if ans.message == "incorrect Password":
@@ -226,4 +228,5 @@ class Login_box(BoxLayout):
         # # seller screen 12
         # App.get_running_app().root.screens[12].ids.side_box.ids.hello.text = msg
     def back_to_menu(self):
-        App.get_running_app().root.current = 'menu_screen'
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = 'menu_screen'

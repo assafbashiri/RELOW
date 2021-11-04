@@ -19,7 +19,8 @@ class CONFIRMATIONScreen(Screen):
         else:
             ans = App.get_running_app().controller.complete_register(code, email)
             if ans.res is True:
-                App.get_running_app().root.current = 'menu_screen'
+                App.get_running_app().root.change_screen("menu_screen")
+                #App.get_running_app().root.current = 'menu_screen'
                 App.get_running_app().controller.login_from_exist_user(email, password)
                 self.update_hello_name("        Hello, " + App.get_running_app().controller.user_service.first_name)
             else:

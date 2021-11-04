@@ -64,7 +64,9 @@ class BoxiLayout1(BoxLayout):
             Utils.pop(self, 'thank you for contact us, we will answer you soon via your mail', 'success')
             self.ids.subject.text = ""
             self.ids.description.text = ""
-            App.get_running_app().root.current = 'menu_screen'
+            App.get_running_app().root.change_screen("menu_screen")
+            #App.get_running_app().root.current = 'menu_screen'
 
     def back(self):
-        App.get_running_app().root.current ="menu_screen"
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current ="menu_screen"

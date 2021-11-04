@@ -47,8 +47,6 @@ class OfferScreen(Screen):
 
         if self.controller.guest is True:
             self.show_as_guest(photo_lis)
-        # elif self.offer.is_a_seller(self.user.user_id):
-        #     self.show_as_seller(photo_lis)
         elif self.user.is_a_buyer(self.offer.offer_id):
             self.show_as_buyer(photo_lis)
         else:
@@ -154,7 +152,8 @@ class OfferScreen(Screen):
         print("as a seller")
         a = App.get_running_app()
         # App.get_running_app().root.screens[5].children[0].init_offer(self.offer, photo_lis)
-        App.get_running_app().root.current = 'update_offer_screen'
+        App.get_running_app().root.change_screen("update_offer_screen")
+        #App.get_running_app().root.current = 'update_offer_screen'
         # self.title = self.offer.product.name
         # self.box = BoxLayout(orientation='vertical')
         # self.carousel = Carousel(size_hint_y=6)
@@ -436,7 +435,7 @@ class OfferScreen(Screen):
         self.like.bind(on_press=lambda x: self.like_unlike())
         self.icons_box.add_widget(self.like)
         self.icons_box.padding = [200,0,0,0]
-        self.labels_icons.add_widget(self.icons_box)
+        #self.labels_icons.add_widget(self.icons_box)
         self.icons_box.padding = [0,0,0,0]
         self.icons_box.spacing = 100
 
@@ -499,7 +498,7 @@ class OfferScreen(Screen):
         for ch in y.children:
             ch.icon = f'assets/windows/images/colors/un_{self.get_btn_color(ch)}.png'
         # change color of the selected button
-        btn.icon = f'assets/windows/images/colors/{str(text)[1:]}.png'
+        btn.icon = f'assets/windows/images/colors/{str(text)}.png'
         # chosen colors for add offer
         self.chosen_colors[num_of_quantity] = text
         x = 5
@@ -516,7 +515,7 @@ class OfferScreen(Screen):
 
     def get_btn_color(self, btn):
         str = btn.icon
-        ans = str[22:len(str)-4]
+        ans = str[29:len(str)-4]
         if ans[0:3] =="un_":
             ans = ans[3:len(ans)]
         return ans
@@ -559,7 +558,7 @@ class OfferScreen(Screen):
         colors = self.offer.product.colors
         color_lis = colors[0].split(',')
         for color in color_lis:
-            ip = "assets/windows/images/colors/un_" + color[1:] + ".png"
+            ip = "assets/windows/images/colors/un_" + color + ".png"
             btn = MDIconButton(icon=ip)
             btn.text = color
             btn.pos_hint = {'top': 0.95}
@@ -684,7 +683,8 @@ class OfferScreen(Screen):
 
     def update_offer(self):
         self.dismiss()
-        App.get_running_app().root.current = 'update_offer'
+        App.get_running_app().root.change_screen("update_offer")
+        #App.get_running_app().root.current = 'update_offer'
         c = App.get_running_app().root
         e = App.get_running_app().root.screens
         f = App.get_running_app().root.screens[6]
@@ -692,7 +692,10 @@ class OfferScreen(Screen):
         f = App.get_running_app().root.screens[6].update_offer(self.offer)
 
     def out(self):
-        App.get_running_app().root.current = 'menu_screen'
+
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = 'menu_screen'
+
 
     def like_unlike(self):
         if self.user.is_a_liker(self.offer_id):

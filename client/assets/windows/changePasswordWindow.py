@@ -36,6 +36,7 @@ class PasswordScreen(Screen):
             Utils.pop(self, ans.message, 'alert')
 
     def back_to_account_window(self):
-        App.get_running_app().root.current = 'account_screen'
+        App.get_running_app().root.change_screen("account_screen")
+        #App.get_running_app().root.current = 'account_screen'
 
 

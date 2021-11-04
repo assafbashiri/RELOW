@@ -43,7 +43,8 @@ class Register_box(BoxLayout):
         SideBar.change_to_cat(self)
 
     def back(self):
-        App.get_running_app().root.current ="connect_screen"
+        App.get_running_app().root.change_screen("connect_screen")
+        #App.get_running_app().root.current ="connect_screen"
 
     def clear_register(self):
         self.ids.phone.text=""
@@ -113,7 +114,8 @@ class Register_box(BoxLayout):
         ans = App.get_running_app().controller.register(first_name, last_name, phone_with_area, email, password, birth_date,
                                                         gender)
         if ans.res is True:
-            App.get_running_app().root.current = 'confirmation_screen'
+            App.get_running_app().root.change_screen("confirmation_screen")
+            #App.get_running_app().root.current = 'confirmation_screen'
             # self.parent.parent.parent.back_to_main()
 
     def validate_name(self,name):

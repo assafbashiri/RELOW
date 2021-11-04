@@ -159,7 +159,8 @@ class Add_offer_box(BoxLayout):
         self.color_dropdown.open()
 
     def back(self):
-        App.get_running_app().root.current = "menu_screen"
+        App.get_running_app().root.change_screen("menu_screen")
+        #App.get_running_app().root.current = "menu_screen"
 
     def add_color_start(self, num):
         self.ids.color_box.add_widget(self.color_mainbutton)
@@ -324,7 +325,8 @@ class Add_offer_box(BoxLayout):
         if ans.res is True:
             Utils.pop(self, 'your offer is waiting for approve by admin', 'success')
             self.clear_fields()
-            App.get_running_app().root.current = 'menu_screen'
+            App.get_running_app().root.change_screen("menu_screen")
+            #App.get_running_app().root.current = 'menu_screen'
         else:
             Utils.pop(self, ans.message, 'alert')
 
