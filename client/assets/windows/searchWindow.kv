@@ -2,12 +2,6 @@
     orientation:'vertical'
     id: search
     name:'search_screen'
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
 
     Top_menu_box:
         id: Top_menu_box
@@ -19,12 +13,7 @@
     id:main_search
     size_hint:1,.9
 
-    canvas.before:
-        Color:
-            rgba: 0, 1, 111/255, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
+
 
 
 <Search_Box>
@@ -72,7 +61,7 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
-            on_press:root.search_by_company()
+            on_press:root.parent.parent.search_by_company()
 
         TextInput:
             id:price
@@ -88,7 +77,7 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
-            on_press:root.search_by_price()
+            on_press:root.parent.parent.search_by_price()
 
         TextInput:
             id:date
@@ -104,7 +93,7 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
-            on_press:root.search_by_end_date()
+            on_press:root.parent.parent.search_by_end_date()
 
     GridLayout:
         cols:1
@@ -114,11 +103,6 @@
 <Offers_drop>
     id:offers_drop
     canvas.before:
-        Color:
-            rgba: 109/255, 0, 181/255, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
     size_hint:1, .9
 
 
@@ -130,22 +114,10 @@
 
 <Top_menu_box>
     id:search_box
-    canvas.before:
-        Color:
-            rgba: 159/255, 1, 111/255, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
     GridLayout:
         pos_hint:{'top':1}
         size_hint:1,.1
         cols:3
-        canvas.before:
-            Color:
-                rgba: 166/255, 0, 144/255, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
         id: icon_box
         spacing:200
         #padding:[20,20,20,20]

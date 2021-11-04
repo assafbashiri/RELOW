@@ -70,12 +70,12 @@ class OfferScreen(Screen):
         self.slider.max = 150
         self.slider.value = 15
         steps = self.offer.steps
-        # for step in steps:
-        #     pass
+
         self.slider.min = 0
         self.slider.max = 100  # steps[-1][1]
         self.slider.value = 10  # self.offer.current_buyers
         self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.4)
+        self.steps_box.padding = [0, 15, 0, 0]
         self.progress = MDProgressBar()
         self.progress.value = self.slider.value
         self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
@@ -97,11 +97,12 @@ class OfferScreen(Screen):
 
         # labels box
         self.labels_icons = BoxLayout(orientation='horizontal')
-        self.labels_icons.size_hint_y = 0.5
+        self.labels_icons.size_hint_y = 1
+        self.labels_icons.padding = [0, 40, 0, 0]
         self.labels_box = BoxLayout(orientation='vertical')
         self.name1 = MDLabel(text=" " + self.offer.product.name)
         self.name1.bold = True
-        self.name1.font_size = 22.0
+        self.name1.font_size = 45
         self.name1.color = (0, 0, 0, 1)
         self.labels_box.add_widget(self.name1)
         self.company = MDLabel(text="  " + self.offer.product.company)
@@ -113,13 +114,14 @@ class OfferScreen(Screen):
         self.labels_icons.add_widget(self.labels_box)
         # icons box
         self.icons_box = BoxLayout(orientation='horizontal')
+        self.icons_box.size_hint_y = .5
         if self.user.is_a_liker(self.offer_id):
             self.like = MDIconButton(icon="assets/windows/images/unlike.png")
         else:
             self.like = MDIconButton(icon="assets/windows/images/like.png")
         self.like.bind(on_press=lambda x: self.like_unlike())
         self.icons_box.add_widget(self.like)
-        self.icons_box.padding = [250, 0, 0, 0]
+        self.icons_box.padding = [200, 0, 0, 0]
         self.labels_icons.add_widget(self.icons_box)
         self.box.add_widget(self.labels_icons)
 
@@ -376,8 +378,7 @@ class OfferScreen(Screen):
         self.slider.max = 150
         self.slider.value = 15
         steps = self.offer.steps
-        # for step in steps:
-        #     pass
+
         self.slider.min = 0
         self.slider.max = 100  # steps[-1][1]
         self.slider.value = 10  # self.offer.current_buyers

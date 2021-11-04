@@ -25,136 +25,129 @@ class SEARCHScreen(Screen):
 
     def show_search_by(self):
         if 'search_box' not in self.ids.main_search.ids:
+            self.ids.main_search.clear_widgets()
             self.ids.main_search.add_widget(self.search_box)
             self.ids.main_search.ids['search_box']=self.search_box
 
-    def hide_search_by(self):
-        self.ids.main_search.remove_widget(self.search_box)
+
 
     def search_by_name(self):
-        if self.first_time_bad_search:
-            pass
-            # tempi = self.ids.search_box.ids.tempi
-            # self.ids.search_box.remove_widget(tempi)
-        #self.ids.search_box.remove_widget(self.lab)
-        #self.ids.search_box.remove_widget(self.of)
         prod_name = self.ids.main_search.ids.search_box.ids.name.text
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
         # bad search
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
+            # self.of.insert_offers(list=[])
+            # self.ids.main_search.add_widget(self.of)
             self.lab.text = "We are sorry, we cant find offers for you"
-            #self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box',None)
+            self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.add_widget(self.lab)
         # good search
         else:
             self.of.insert_offers(list=ans)
             self.ids.main_search.remove_widget(self.search_box)
-            # remove the id from theids dict
+            self.ids.main_search.ids.pop('search_box',None)
             self.ids.main_search.add_widget(self.of)
         self.first_time_bad_search = False
 
     def search_by_company(self):
-        if self.first_time_bad_search:
-            tempi = self.ids.search_box.ids.tempi
-            self.ids.search_box.remove_widget(tempi)
-        self.ids.search_box.remove_widget(self.lab)
-        self.ids.search_box.remove_widget(self.of)
-        prod_company = self.ids.search_box.ids.company.text
+        prod_company = self.ids.main_search.ids.search_box.ids.company.text
         ans = App.get_running_app().controller.get_offers_by_product_company(prod_company)
         # bad search
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
+            # self.of.insert_offers(list=[])
+            # self.ids.main_search.add_widget(self.of)
+
             self.lab.text = "   We are sorry, we cant find offers for you"
-            self.ids.search_box.add_widget(self.lab)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.add_widget(self.lab)
             # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.add_widget(self.of)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.add_widget(self.of)
         self.first_time_bad_search = False
 
     def search_by_price(self):
-        if self.first_time_bad_search:
-            tempi = self.ids.search_box.ids.tempi
-            self.ids.search_box.remove_widget(tempi)
-        self.ids.search_box.remove_widget(self.lab)
-        self.ids.search_box.remove_widget(self.of)
         prod_price = self.ids.search_box.ids.price.text
         if not prod_price.isnumeric():
-            self.of.insert_offers(list=[])
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box', None)
             self.lab.text = "   We are sorry, price has to be number"
-            self.ids.search_box.add_widget(self.lab)
+            self.ids.main_search.add_widget(self.lab)
             return
         ans = App.get_running_app().controller.get_offers_by_product_price(prod_price)
         # bad search
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
             self.lab.text = "   We are sorry, we cant find offers for you"
-            self.ids.search_box.add_widget(self.lab)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.add_widget(self.lab)
             # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.add_widget(self.of)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.add_widget(self.of)
+
         self.first_time_bad_search = False
 
     def search_by_end_date(self):
-        if self.first_time_bad_search:
-            tempi = self.ids.search_box.ids.tempi
-            self.ids.search_box.remove_widget(tempi)
-        self.ids.search_box.remove_widget(self.lab)
-        self.ids.search_box.remove_widget(self.of)
         prod_date = self.ids.search_box.ids.date.text
         if not CheckValidity.checkEndDate(self, prod_date):
-            self.of.insert_offers(list=[])
             self.lab.text = "   We are sorry, invalid end date"
-            self.ids.search_box.add_widget(self.lab)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.add_widget(self.lab)
             return
         ans = App.get_running_app().controller.get_offers_by_product_end_date(prod_date)
         # bad search
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
             self.lab.text = "   We are sorry, we cant find offers for you"
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.add_widget(self.lab)
             self.ids.search_box.add_widget(self.lab)
             # good search
         else:
             self.of.insert_offers(list=ans)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.ids.pop('search_box', None)
             self.ids.search_box.add_widget(self.of)
         self.first_time_bad_search = False
 
     def search_by_sub_category(self, cat_name, sub_cat_name):
-        if self.first_time_bad_search:
-            tempi = self.ids.search_box.ids.tempi
-            self.ids.search_box.remove_widget(tempi)
-        self.ids.search_box.remove_widget(self.lab)
-        self.ids.search_box.remove_widget(self.of)
         ans = App.get_running_app().controller.get_offers_by_sub_category(cat_name,sub_cat_name)
         # bad search
         if len(ans) == 0:
-            self.of.insert_offers(list=[])
             self.lab.text = sub_cat_name + " has 0 offers"
-            self.ids.search_box.add_widget(self.lab)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.add_widget(self.lab)
         # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.add_widget(self.of)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.add_widget(self.of)
         self.first_time_bad_search = False
 
     def search_by_category(self, cat_name):
-        if self.first_time_bad_search:
-            tempi = self.ids.search_box.ids.tempi
-            self.ids.search_box.remove_widget(tempi)
-        self.ids.search_box.remove_widget(self.lab)
-        self.ids.search_box.remove_widget(self.of)
         ans = App.get_running_app().controller.get_offers_by_category(cat_name)
         # bad search
         if len(ans) == 0:
             self.of.insert_offers(list=[])
             self.lab.text = cat_name + " has 0 offers"
-            self.ids.search_box.add_widget(self.lab)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.add_widget(self.lab)
         # good search
         else:
             self.of.insert_offers(list=ans)
-            self.ids.search_box.add_widget(self.of)
+            self.ids.main_search.ids.pop('search_box', None)
+            self.ids.main_search.remove_widget(self.search_box)
+            self.ids.main_search.add_widget(self.of)
         self.first_time_bad_search = False
 
 
