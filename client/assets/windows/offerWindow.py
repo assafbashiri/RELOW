@@ -190,6 +190,7 @@ class OfferScreen(Screen):
         self.join_offer.padding = [40,40,40,40]
         self.join = Button(text="JOIN")
         self.join.background_normal =''
+        self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
 
 
 
@@ -331,6 +332,7 @@ class OfferScreen(Screen):
         self.join_offer.padding = [40, 40, 40, 40]
         self.join = Button(text="JOIN")
         self.join.background_normal = ''
+        self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
 
         self.join.bind(on_press=lambda x: self.guest_try_to_join())
         self.join_offer.add_widget(self.join)
@@ -716,6 +718,7 @@ class OfferScreen(Screen):
         for ch in y.children:
             ch.background_color = [1, 1, 1, 1]
         # change size of the selected button
+        btn.background_normal = ''
         btn.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
         # chosen sizes for add offer
         self.chosen_sizes[num_of_quantity] = text
