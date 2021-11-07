@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -38,7 +40,6 @@ class SEARCHScreen(Screen):
             self.ids.main_search.ids.search_box.ids.name.text=""
             self.ids.main_search.ids.search_box.ids.company.text=""
             self.ids.main_search.ids.search_box.ids.price.text=""
-            self.ids.main_search.ids.search_box.ids.date.text=""
 
 
 
@@ -115,7 +116,13 @@ class SEARCHScreen(Screen):
         self.first_time_bad_search = False
 
     def search_by_end_date(self):
-        prod_date = self.ids.main_search.ids.search_box.ids.date.text
+        # prod_date = self.ids.main_search.ids.search_box.ids.date.text
+        day = self.ids.main_search.ids.search_box.ids.date.children[1].text
+        month = self.ids.main_search.ids.search_box.ids.date.children[2].text
+        year = self.ids.main_search.ids.search_box.ids.date.children[3].text
+        prod_date = year + "-" + month + "-" + day
+
+
         if not CheckValidity.checkEndDate(self, prod_date):
             if "lab" not in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.lab.text = "   We are sorry, invalid end date"
@@ -132,7 +139,7 @@ class SEARCHScreen(Screen):
                 self.ids.main_search.ids.search_box.ids.extra.ids["lab"]=self.lab
 
 
-            # good search
+        # good search
         else:
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
@@ -209,9 +216,86 @@ class Search_box(BoxLayout):
 
     def change_to_cat(self):
         SideBar.change_to_cat(self)
+    def show_dropdown_year(self):
+        menu_items = []
+        today_year = datetime.today().year
+        for year in range(today_year + 1, today_year - 1, -1):
+            menu_items.append(
+                {
+                    'text': str(year),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(year): self.save_year(x),
+                }
+            )
 
+        self.drop_down_years = MDDropdownMenu(
+            caller=self.ids.year_input,
+            items=menu_items,
+            width_mult=4,
 
+        )
+        self.drop_down_years.open()
 
+    def save_year(self, year):
+        self.ids.year_input.text = year
+        self.drop_down_years.dismiss()
+
+    def show_dropdown_month(self):
+        menu_items = []
+        for month in range(12, 0, -1):
+            menu_items.append(
+                {
+                    'text': str(month),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(month): self.save_month(x),
+                }
+            )
+
+        self.drop_down_months = MDDropdownMenu(
+            caller=self.ids.month_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+        self.drop_down_months.open()
+
+    def save_month(self, month):
+        self.ids.month_input.text = month
+        self.drop_down_months.dismiss()
+
+    def show_dropdown_day(self):
+        if self.ids.month_input.text == "Month":
+            month = "1"
+        else:
+            month = self.ids.month_input.text
+        if month == "2":
+            max_day = 28
+        if month == "1" or month == "3" or month == "5" or month == "7" or month == "8" or month == "10" or month == "12":
+            max_day = 31
+        if month == "4" or month == "6" or month == "9" or month == "11":
+            max_day = 30
+        menu_items = []
+        for day in range(max_day, 0, -1):
+            menu_items.append(
+                {
+                    'text': str(day),
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=str(day): self.save_day(x),
+                }
+            )
+
+        self.drop_down_days = MDDropdownMenu(
+            caller=self.ids.day_input,
+            items=menu_items,
+            width_mult=4,
+
+        )
+
+        self.drop_down_days.open()
+
+    def save_day(self, day):
+        self.ids.day_input.text = day
+        self.drop_down_days.dismiss()
 
 
 

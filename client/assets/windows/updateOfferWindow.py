@@ -502,7 +502,8 @@ class Update_offer_box(BoxLayout):
 
     def show_dropdown_year(self):
         menu_items = []
-        for year in range(2021, 1900, -1):
+        today_year = datetime.today().year
+        for year in range(today_year + 1, today_year - 1, -1):
             menu_items.append(
                 {
                     'text': str(year),
@@ -525,7 +526,7 @@ class Update_offer_box(BoxLayout):
 
     def show_dropdown_month(self):
         menu_items = []
-        for month in range(12, 1, -1):
+        for month in range(12, 0, -1):
             menu_items.append(
                 {
                     'text': str(month),
@@ -549,8 +550,18 @@ class Update_offer_box(BoxLayout):
     # ----------------------------------------------------------------------------------------------------
 
     def show_dropdown_day(self):
+        if self.ids.month_input.text == "Month":
+            month = "1"
+        else:
+            month = self.ids.month_input.text
+        if month == "2":
+            max_day = 28
+        if month == "1" or month == "3" or month == "5" or month == "7" or month == "8" or month == "10" or month == "12":
+            max_day = 31
+        if month == "4" or month == "6" or month == "9" or month == "11":
+            max_day = 30
         menu_items = []
-        for day in range(31, 1, -1):
+        for day in range(max_day, 0, -1):
             menu_items.append(
                 {
                     'text': str(day),
