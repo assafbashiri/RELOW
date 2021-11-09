@@ -108,6 +108,7 @@ class Side_box(BoxLayout):
             sub_cat_names.add_widget(one_cat_grid)
         cat_grid.add_widget(sub_cat_names)
         self.popup = Popup(title="Categories",title_align='center',title_size='18sp', content=cat_grid, background_color=(1, 1, 1, 1), size_hint=(.8, .8))
+        bo = BoxLayout()
         self.popup.open()
 
     def open_offers_category(self, cat_button):

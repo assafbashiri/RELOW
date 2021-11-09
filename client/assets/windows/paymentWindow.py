@@ -45,8 +45,9 @@ class PAYMENTScreen(Popup):
         self.dismiss()
 
     def change_offer_screen_to_buyer(self):
+        # bug -> what if there is offer_screen1 and offer_screen13 ? bad condition
         screens = App.get_running_app().root.screens
         for screen in screens:
             if self.screen_name in screen.name:
-                screen.remove_widget(screen.box)
+                screen.box.clear_widgets()
                 screen.init_offer(self.offer, self.photo_list)

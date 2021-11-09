@@ -1,15 +1,30 @@
 <CONFIRMATIONScreen>
     id: confirm
     name: 'confirmation_screen'
+    Side_box:
+        id: side_box
     BoxLayout:
+        orientation: 'vertical'
         id: box
-        MDTextFieldRound:
+        MDLabel:
+            id: city_label
+            text: "please enter CONFIRMATION CODE"
+            font: 'sofia pro bold'
+            font_size:40
+
+        TextInput:
+            id:city_input
+            normal_color: 100,0,0,0
+            color_active: 100,100,1,0
+            size_hint_y: .7
+            font_name:'Arial'
             write_tab: False
-            id:code
-            hint_text: "CONFIRMATION CODE"
+            multiline: False
+            input_filter: 'int'
 
-
-        MDRoundFlatButton:
+        Button:
             text:"OK"
             font_size: 12
+            background_color: (0,0,0,0.11)
+            color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
             on_press: root.complete_register()

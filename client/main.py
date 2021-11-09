@@ -104,4 +104,8 @@ if __name__ == '__main__':
     time.sleep(2)
     store = JsonStore('assets/hello.json')
     controller = Backend_controller(req_answers, store)
+    # try:
     TestApp(controller).run()
+    # except Exception as e:
+    #     TestApp.get_running_app().root.current ='login_screen'
+
