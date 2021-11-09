@@ -85,30 +85,25 @@ class Register_box(BoxLayout):
         if year != '' and month != '' and day != '':
             date_str = f'{year}-{month}-{day}'
 
-        if first_name != "":
-            bool_ans=self.validate_name(first_name)
-            if not bool_ans:
-                return
+        bool_ans=self.validate_name(first_name)
+        if not bool_ans:
+            return
 
-        if last_name != "":
-            bool_ans = self.validate_name(last_name)
-            if not bool_ans:
-                return
+        bool_ans = self.validate_name(last_name)
+        if not bool_ans:
+            return
 
-        if email != "":
-            email_bool = CheckValidity.checkValidityEmail(self,email)
-            if not email_bool:
-                return
+        email_bool = CheckValidity.checkValidityEmail(self,email)
+        if not email_bool:
+            return
 
-        if phone_number != "":
-            phone_bool = CheckValidity.checkValidityPhone(self, phone_number)
-            if not phone_bool:
-                return
+        phone_bool = CheckValidity.checkValidityPhone(self, phone_number)
+        if not phone_bool:
+            return
 
-        if password!="":
-            password_bool = CheckValidity.checkValidityPassword(self,password)
-            if not password_bool:
-                return
+        password_bool = CheckValidity.checkValidityPassword(self,password)
+        if not password_bool:
+            return
 
         if self.gender==0:
             Utils.pop(self,"Please Choose Gender","alert")
