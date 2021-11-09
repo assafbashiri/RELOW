@@ -222,13 +222,20 @@ class Backend_controller:
                 Utils.pop(self,ex, "Alert")
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
-
+            ans.data = self.user_service
         return ans
 
     def update_password(self, old_password, new_password):
         update_password_req = {'op': 6, 'old_password': old_password, 'new_password': new_password}
         self.req_answers.add_request(update_password_req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            # update json
+            self.store.put("user", user_id=self.user_service.user_id,
+                           email=self.user_service.email,
+                           password= new_password)
+            # update self.user
+            self.user_service.set_password(new_password)
         print(ans.message)
         return ans
 
@@ -236,49 +243,16 @@ class Backend_controller:
         req = {'op': 92, 'email': email}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
+        if ans.res is True:
+            # update json
+            new_password = ans.data
+            self.store.put("user", user_id=self.user_service.user_id,
+                           email=self.user_service.email,
+                           password= new_password)
+            # update self.user
+            self.user_service.set_password(new_password)
         return ans
 
-    # def update_first_name(self, first_name):
-    #     update_first_name_req = {'op': 5, 'first_name': first_name}
-    #     self.req_answers.add_request(update_first_name_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
-    #
-    # def update_last_name(self, last_name):
-    #     update_last_name_req = {'op': 6, 'last_name': last_name}
-    #     self.req_answers.add_request(update_last_name_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
-    #
-    # def update_user_name(self, user_name):
-    #     update_user_name_req = {'op': 7, 'user_name': user_name}
-    #     self.req_answers.add_request(update_user_name_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
-    #
-    # def update_email(self, email):
-    #     update_email_req = {'op': 8, 'email': email}
-    #     self.req_answers.add_request(update_email_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
-    #
-    # def update_password(self, old_password, new_password):
-    #     update_password_req = {'op': 37, 'old_password': old_password, 'new_password': new_password}
-    #     self.req_answers.add_request(update_password_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
-    #
-    # def update_birth_date(self, birth_date):
-    #     update_birth_req = {'op': 9, 'birth_date': birth_date}
-    #     self.req_answers.add_request(update_birth_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
-    #
-    # def update_gender(self, gender):
-    #     update_birth_req = {'op': 10, 'gender': gender}
-    #     self.req_answers.add_request(update_birth_req)
-    #     ans = self.req_answers.get_answer()
-    #     return ans
 
     def add_address_details(self, city, street, zip_code, floor, apt):
         add_address_req = {'op': 11, 'city': city, 'street': street, 'zip_code': zip_code,
@@ -288,8 +262,9 @@ class Backend_controller:
         print(ans.message)
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
-
+            ans.data = self.user_service
         return ans
+
     def add_payment_method(self, credit_card_number, credit_card_exp_date, cvv, card_type, id):
         add_pay_req = {'op': 12, 'credit_card_number': credit_card_number,
                        'expire_date': credit_card_exp_date,

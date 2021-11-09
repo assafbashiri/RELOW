@@ -149,6 +149,9 @@ class UserService():
     def get_active_buy_offers(self):
         return self.active_buy_offers
 
+    def set_password(self, password):
+        self.password  = password
+
     def build_offer(self, x):
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
                                   x['status'],

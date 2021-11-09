@@ -150,8 +150,13 @@ class Personal_box(BoxLayout):
         ans = App.get_running_app().controller.update_user_details(first_name, last_name, email, phone_number, date_str,
                                                                    self.gender)
         if ans.res is True:
-            self.user = Struct(**ans.data)
+            # update the json------------------------------------------------
+            self.user = ans.data
+            Utils.pop(self, 'your personal details has been successfully changed', 'success')
+            App.get_running_app().root.back_to_main()
             self.init_fields()
+        else:
+            Utils.pop(self, 'update details has failed', 'alert')
         return ans
 
     def clear_personal(self):
@@ -362,6 +367,7 @@ class Password_box(BoxLayout):
         if ans.res is True:
             Utils.pop(self, 'your password has been successfully changed', 'success')
             self.back_to_account_window()
+            self.clear_fields()
         else:
             Utils.pop(self, "change password failed", 'alert')
 
@@ -370,6 +376,10 @@ class Password_box(BoxLayout):
         #App.get_running_app().root.current = 'account_screen'
         # App.get_running_app().root.prev = 'menu_screen'
 
+    def clear_fields(self):
+        self.ids.old_password_input.text = ""
+        self.ids.new_password_input.text = ""
+        self.ids.new_password_verification_input.text = ""
 
 class Address_box(BoxLayout):
 
@@ -529,8 +539,12 @@ class Address_box(BoxLayout):
         ans = App.get_running_app().controller.add_address_details(city, street, zip_code, building, apt)
         if ans.res is True:
             # update the json------------------------------------------------
+            self.user = ans.data
+            Utils.pop(self, 'your address has been successfully changed', 'success')
             App.get_running_app().root.back_to_main()
             self.init_fields()
+        else:
+            Utils.pop(self, 'update address has failed', 'alert')
         return ans
 
     def init_fields(self):

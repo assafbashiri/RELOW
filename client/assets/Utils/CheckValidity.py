@@ -112,18 +112,23 @@ class CheckValidity:
                 Utils.pop(self, res, 'alert')
                 #toast(res)
                 return False
+            elif not any(char.isdigit() or char.islower() or char.isupper() for char in password):
+                res = "Only english letters and digits"
+                Utils.pop(self, res, 'alert')
+                #toast(res)
+                return False
             elif not any(char.isdigit() for char in password):
                 res = "Make sure your password has a number in it"
                 Utils.pop(self, res, 'alert')
                 #toast(res)
                 return False
             elif not any(char.isupper() for char in password):
-                res= "Make sure your password has a lower letter in it"
+                res= "Make sure your password has a capital letter in it"
                 Utils.pop(self, res, 'alert')
                 #toast(res)
                 return False
             elif not any(char.islower() for char in password):
-                res= "Make sure your password has a capital letter in it"
+                res= "Make sure your password has a lower letter in it"
                 Utils.pop(self, res, 'alert')
                 #toast(res)
                 return False
@@ -147,11 +152,13 @@ class CheckValidity:
         except Exception as e:
             isValidDate = False
         if not isValidDate:
-            raise Exception("Input date is not valid..")
+            toast("Input date is not valid..")
+            return False
         difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
         difference_in_years = (difference.days + difference.seconds / 86400) / 365.2425
         if difference_in_years < min_age:
-            raise Exception(f'Sorry, Your are too young, your age is {int(difference_in_years)} years old, you have to be at least {int(min_age)} years old')
+            toast(f'Sorry, Your are too young, your age is {int(difference_in_years)} years old, you have to be at least {int(min_age)} years old')
+            return False
 
 
     def checkEndDate(self, end_date):

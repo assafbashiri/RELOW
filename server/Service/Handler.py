@@ -195,7 +195,7 @@ class Handler:
     def forgot_password(self, argument):
         try:
             new_password = self.user_controller.forgot_password(argument['email'])
-            return Response(True, "password changed Successfully", True)
+            return Response(new_password, "password changed Successfully", True)
         except Exception as e:
             return Response(None,str(e), False)
 

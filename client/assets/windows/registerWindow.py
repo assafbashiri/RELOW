@@ -126,6 +126,7 @@ class Register_box(BoxLayout):
             #App.get_running_app().root.current = 'confirmation_screen'
             # self.parent.parent.parent.back_to_main()
 
+
     def validate_name(self,name):
         name_bool = CheckValidity.checkValidityName(self,name)
         return name_bool
