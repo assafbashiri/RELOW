@@ -18,11 +18,14 @@ from assets.windows.SideBar import SideBar
 from assets.Utils.Utils import Utils
 from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.menu import MDDropdownMenu
-
+from kivy.utils import platform
+# from android.permissions import request_permissions, Permission
+# from android.storage import primary_external_storage_path
 from assets.Service.Object.StepService import StepService
 
 from assets.Utils.CheckValidity import CheckValidity
-
+import os
+import android
 
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):
@@ -610,7 +613,14 @@ class Add_offer_box(BoxLayout):
         self.carousel.load_previous()
 
     def file_manager_open(self):
-        path = '/'  # path to the directory that will be opened in the file manager
+        # request_permissions([Permission.WRITE_EXTERNAL_STORAGE,
+        #              Permission.READ_EXTERNAL_STORAGE])
+        path = '/'
+        if platform == 'android':
+            # path =  primary_external_storage_path()
+            path = '/'
+        #path = os.getenv('EXTERNAL_STORAGE')
+        #path = '"/storage/"'  # path to the directory that will be opened in the file manager
         self.manager = MDFileManager(
             exit_manager=self.exit_manager,  # function called when the user reaches directory tree root
             select_path=self.select_path,  # function called when selecting a file/directory
