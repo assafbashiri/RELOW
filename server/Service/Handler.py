@@ -32,7 +32,7 @@ class Handler:
                          2: self.unregister,
                          3: self.log_in,
                          4: self.logout,
-                         5: self.update,
+                         5: self.update_user_details,
                          6: self.update_password,
                          # 7: self.update_user_name,
                          # 8: self.update_email,
@@ -302,7 +302,7 @@ class Handler:
     def remove_active_buy_offer(self, argument):
         try:
             to_return = self.user_controller.remove_active_buy_offer(self.user.user_id, argument['offer_id'])
-            return Response(OfferService(to_return), "Offer Removed Successfully", True)
+            return Response(vars(OfferService(to_return)), "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
 
@@ -357,7 +357,8 @@ class Handler:
 
         return Response(vars(OfferService(offer)), exceptions, True)
 
-    def update(self, argument):
+    def update_user_details(self, argument):
+        flag=True
         if self.user is None:
             return Response(None, "not logged in motek", False)
         exceptions = []
@@ -370,12 +371,17 @@ class Handler:
         try:
             self.user_controller.update_last_name(self.user.user_id, argument['last_name'])
         except Exception as e:
+            flag=False
             exceptions.append(str(e))
-
-        try:
-            self.user_controller.update_email(self.user.user_id, argument['email'])
-        except Exception as e:
-            exceptions.append(str(e))
+        if flag:
+            try:
+                self.user_controller.check.check_register(argument['email'], argument['phone_number'], self.user_controller.usersDictionary)
+            except Exception as e:
+                exceptions.append(str(e))
+            try:
+                self.user_controller.update_email(self.user.user_id, argument['email'])
+            except Exception as e:
+                exceptions.append(str(e))
 
         try:
             self.user_controller.update_phone(self.user.user_id, argument['phone_number'])
