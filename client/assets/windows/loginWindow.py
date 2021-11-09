@@ -1,3 +1,4 @@
+from kivy.uix.textinput import TextInput
 from kivymd.uix.picker import MDDatePicker
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -6,8 +7,6 @@ from kivymd.uix.menu import MDDropdownMenu
 from assets.Utils.CheckValidity import CheckValidity
 from assets.Utils.Utils import Utils
 from assets.windows.SideBar import SideBar
-
-
 class Struct(object):
     def __init__(self, **entries):
         self.__dict__.update(entries)
@@ -28,6 +27,9 @@ class Sub_Category_box(BoxLayout):
 
 
 class Login_box(BoxLayout):
+
+    # def shaper(self, text):
+    #     self.ids.arabic.text =
 
     def back(self):
         App.get_running_app().root.change_screen("connect_screen")
@@ -228,3 +230,18 @@ class Login_box(BoxLayout):
     def back_to_menu(self):
         App.get_running_app().root.change_screen("menu_screen")
         #App.get_running_app().root.current = 'menu_screen'
+
+
+class txt(TextInput):
+
+    runner = 0
+
+    # def insert_text(self,string, a):
+    #     self.runner +=1
+    #     self.text = string +  self.text
+    #     self.cursor = (0,0)
+    #     # return super(txt, self).insert_text(string, from_undo=False)
+    #
+    # def do_backspace(self,from_undo=False, mode='bkspc'):
+    #     self.text = self.text[1:]
+    #     self.cursor = (0, 0)
