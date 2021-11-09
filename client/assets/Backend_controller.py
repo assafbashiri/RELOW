@@ -112,6 +112,8 @@ class Backend_controller:
             # have to delete guest from store
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
+        else:
+            Utils.pop(self,ans.message, "alert")
         return ans
 
     def unregister(self):
@@ -218,8 +220,10 @@ class Backend_controller:
         if len(ans.message) == 0:
             print("User Details Updated Succesfully")
         else:
+            exes =''
             for ex in ans.message:
-                Utils.pop(self,ex, "Alert")
+                exes+=ex+'\n'
+            Utils.pop(self,exes, "Alert")
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
             ans.data = self.user_service
