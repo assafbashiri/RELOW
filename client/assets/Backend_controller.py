@@ -26,13 +26,14 @@ class Backend_controller:
         pass
         # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
         # Main_page_box.insert_offers(self= Main_page_box)
+
     def get_categories(self):
         return self.categories
 
     def init_categories(self):
         self.categories = []
 
-        categories_req = {"op":56}
+        categories_req = {"op": 56}
         self.req_answers.add_request(categories_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
@@ -40,7 +41,7 @@ class Backend_controller:
                 y = CategoryService(cat)
                 self.categories.append(y)
 
-    def get_sub_cat_name(self,cat_id, sub_cat_id):
+    def get_sub_cat_name(self, cat_id, sub_cat_id):
         req = {'op': 37, 'cat_id': cat_id, 'sub_cat_id': sub_cat_id}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
@@ -52,11 +53,11 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         print(ans.message)
         if ans.res is True:
-            self.store.put("user_guest", user_id = ans.data['user_id'])
-            self.user_service = UserService(ans.data['user_id'], None, None,None,None,None,None,None,None,False,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
+            self.store.put("user_guest", user_id=ans.data['user_id'])
+            self.user_service = UserService(ans.data['user_id'], None, None, None, None, None, None, None, None, False,
+                                            None, None, None, None, None, None, None, None, None, [], [], [], [], [])
             self.guest = True
             self.seller = False
-
 
         # we removed the user_info dict, and we add element to user_guest insted- coplete tommorow
 
@@ -67,10 +68,11 @@ class Backend_controller:
         print(ans.message)
         if ans.res is True:
             user = self.store.get('user_guest')
-            self.user_service = UserService(guest_id, None, None,None,None,None,None,None,False,None,None,None,None,None,None,None,None,None,None,[],[],[],[],[])
+            self.user_service = UserService(guest_id, None, None, None, None, None, None, None, False, None, None, None,
+                                            None, None, None, None, None, None, None, [], [], [], [], [])
             self.guest = True
             self.seller = False
-            self.store.put('user_guest', user_id= guest_id)
+            self.store.put('user_guest', user_id=guest_id)
 
     def register(self, first_name, last_name, phone, email, password, birth_date, gender):
         store = JsonStore('assets/hello.json')
@@ -78,7 +80,7 @@ class Backend_controller:
             user = store.get('user_guest')
             register_req = {
                 'op': 80, 'user_id': user['user_id'], 'first_name': first_name, 'last_name': last_name, 'phone': phone,
-                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller':False
+                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller': False
             }
         #     active = self.store['user']['user_info']['active']
         #     if active is True:
@@ -89,8 +91,8 @@ class Backend_controller:
         else:
             register_req = {
                 'op': 1, 'first_name': first_name, 'last_name': last_name, 'phone': phone,
-                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller':False
-        }
+                'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller': False
+            }
         # adding to the req_answers, and the Main-Thread should send them to the server
         self.req_answers.add_request(register_req)
         # waiting for an answer from the server to the Main-Thread, and for the Main_thread adding the answer to the
@@ -106,14 +108,14 @@ class Backend_controller:
                 App.get_running_app().root.screens[0].ids.down_menu.ids.add_offer.text = 'ADD OFFER'
             if store.exists('user_guest'):
                 self.store.delete('user_guest')
-            self.store.put("user", user_id= ans.data['user_id'],
-                           password = ans.data['password'],
-                           email = ans.data['email'])
+            self.store.put("user", user_id=ans.data['user_id'],
+                           password=ans.data['password'],
+                           email=ans.data['email'])
             # have to delete guest from store
             self.register_unregister_json(True)
             self.user_service = self.build_user(ans.data)
         else:
-            Utils.pop(self,ans.message, "alert")
+            Utils.pop(self, ans.message, "alert")
         return ans
 
     def unregister(self):
@@ -198,7 +200,7 @@ class Backend_controller:
         update_req = {'op': 15, 'offer_id': offer_id, 'category_name': category_name,
                       'sub_category_name': sub_category_name, 'user_id': self.user_service.user_id, 'name': name,
                       'company': company, 'colors': colors, 'sizes': sizes, 'description': description,
-                      'steps': steps, 'end_date': end_date, 'photo_lis' :photos}
+                      'steps': steps, 'end_date': end_date, 'photo_lis': photos}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
 
@@ -211,22 +213,19 @@ class Backend_controller:
             print("Bad Offer Update")
         return ans
 
-
     def update_user_details(self, first_name, last_name, email, phone_number, birth_date, gender):
-        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email, 'phone_number':phone_number,
-                      'birth_date':birth_date, 'gender':gender}
+        update_req = {'op': 5, 'first_name': first_name, 'last_name': last_name, 'email': email,
+                      'phone_number': phone_number, 'birth_date': birth_date, 'gender': gender}
         self.req_answers.add_request(update_req)
         ans = self.req_answers.get_answer()
-        if len(ans.message) == 0:
-            print("User Details Updated Succesfully")
-        else:
-            exes =''
-            for ex in ans.message:
-                exes+=ex+'\n'
-            Utils.pop(self,exes, "Alert")
         if ans.res is True:
             self.user_service = self.build_user(ans.data)
             ans.data = self.user_service
+        else:
+            exes = ''
+            for ex in ans.message:
+                exes += ex + '\n'
+            Utils.pop(self, exes, "Alert")
         return ans
 
     def update_password(self, old_password, new_password):
@@ -237,7 +236,7 @@ class Backend_controller:
             # update json
             self.store.put("user", user_id=self.user_service.user_id,
                            email=self.user_service.email,
-                           password= new_password)
+                           password=new_password)
             # update self.user
             self.user_service.set_password(new_password)
         print(ans.message)
@@ -252,11 +251,10 @@ class Backend_controller:
             new_password = ans.data
             self.store.put("user", user_id=self.user_service.user_id,
                            email=self.user_service.email,
-                           password= new_password)
+                           password=new_password)
             # update self.user
             self.user_service.set_password(new_password)
         return ans
-
 
     def add_address_details(self, city, street, zip_code, floor, apt):
         add_address_req = {'op': 11, 'city': city, 'street': street, 'zip_code': zip_code,
@@ -308,12 +306,12 @@ class Backend_controller:
                 toast(address.message)
                 return address
         req = {'op': 23,
-                                    'offer_id': offer_id,
-                                    'quantity': quantity,
-                                    'step': step,
-                                    'color': color,
-                                    'size': size,
-                                    'address':address}
+               'offer_id': offer_id,
+               'quantity': quantity,
+               'step': step,
+               'color': color,
+               'size': size,
+               'address': address}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
@@ -325,28 +323,28 @@ class Backend_controller:
 
     def update_purchase(self, offer_id, quantity, step, color, size, address, user):
         req = {'op': 101,
-                                    'offer_id': offer_id,
-                                    'quantity': quantity,
-                                    'step': step,
-                                    'color': color,
-                                    'size': size,
-                                    'address':address}
+               'offer_id': offer_id,
+               'quantity': quantity,
+               'step': step,
+               'color': color,
+               'size': size,
+               'address': address}
         self.req_answers.add_request(req)
         ans = self.req_answers.get_answer()
-        updated_offer = self.build_offer(ans.data)
         if ans.res is True:
-            z = App.get_running_app().root.screens[0].ids.Main_page_box.children[0].children[0]
-            z.refresh_from_data()
+            # z = App.get_running_app().root.screens[0].ids.Main_page_box.children[0].children[0]
+            # z.refresh_from_data()
+            updated_offer = self.build_offer(ans.data)
             counter = 0
             for offer in user.active_buy_offers:
                 if offer.offer_id == offer_id:
                     user.active_buy_offers[counter] = updated_offer
                 counter = counter + 1
-            for object in z.data:
-                offer = object['offer']
-                if offer[0].offer_id == offer_id:
-                    curr_buyers = updated_offer.current_buyers
-                    offer[0].current_buyers = curr_buyers
+            # for object in z.data:
+            #     offer = object['offer']
+            #     if offer[0].offer_id == offer_id:
+            #         curr_buyers = updated_offer.current_buyers
+            #         offer[0].current_buyers = curr_buyers
 
             return updated_offer
         return False
@@ -364,7 +362,7 @@ class Backend_controller:
         return False
 
     def add_offer(self, name, company, colors, sizes, description, photos, category_name,
-                              sub_category_name, steps, end_date):
+                  sub_category_name, steps, end_date):
         add_active_sell_offer_req = {'op': 24, 'name': name, 'company': company, 'colors': colors,
                                      'sizes': sizes, 'description': description, 'photos': photos,
                                      'category_name': category_name, 'sub_category_name': sub_category_name,
@@ -373,8 +371,6 @@ class Backend_controller:
         ans = self.req_answers.get_answer()
         print(ans.message)
         return ans
-
-
 
     # ----- seller methods ---------------------------------
 
@@ -700,14 +696,14 @@ class Backend_controller:
         return ans
 
     def complete_register(self, code, email):
-        complete_register_req = {'op': 81, 'code': int(code), 'email':email}
+        complete_register_req = {'op': 81, 'code': int(code), 'email': email}
         self.req_answers.add_request(complete_register_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
         return ans
 
     def become_a_seller(self, email):
-        complete_register_req = {'op': 100, 'email':email}
+        complete_register_req = {'op': 100, 'email': email}
         self.req_answers.add_request(complete_register_req)
         ans = self.req_answers.get_answer()
         print(ans.message)
@@ -798,5 +794,3 @@ class Backend_controller:
 
     def get_user_service(self):
         return self.user_service
-
-
