@@ -60,7 +60,7 @@ class OfferScreen(Screen):
         self.sizes_btn[3] = {}
 
         # if the offer is valid(date not passed)
-        if Utils.check_end_date(self, self.offer.end_date):
+        if not Utils.check_end_date(self, self.offer.end_date):
             self.show_as_history(photo_lis)
         elif self.controller.guest is True:
             self.show_as_guest(photo_lis)
