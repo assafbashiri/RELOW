@@ -197,6 +197,7 @@ class Handler:
             new_password = self.user_controller.forgot_password(argument['email'])
             return Response(new_password, "password changed Successfully", True)
         except Exception as e:
+            print(str(e))
             return Response(None,str(e), False)
 
     # -------------------------------------------------ADD------------------------------------------------------------------
@@ -369,12 +370,12 @@ class Handler:
             if new_email != self.user.get_email():
                 self.user_controller.check.check_register(new_email, falsi_checker_for_check_register,
                                                           self.user_controller.usersDictionary)
-            if new_phone == self.user.get_phone():
+            if new_phone != self.user.get_phone():
                 self.user_controller.check.check_register(falsi_checker_for_check_register, new_phone,
                                                           self.user_controller.usersDictionary)
         except Exception as e:
             exceptions.append(str(e))
-            return Response(False, exceptions, True)
+            return Response(False, exceptions, False)
 
         try:
             self.user_controller.update_first_name(self.user.user_id, argument['first_name'])

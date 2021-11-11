@@ -81,13 +81,22 @@ class UserController:
         self.usersDictionary[user_id] = user
         self.users_dao.update(userDTO)
         self.user_id += 1
-        msg = "welcome to SHARE-IT, your confirm code is: " + str(user.user_id)
+        msg = "welcome to Relow, your confirm code is: " + str(user.user_id)
         message = """\
-        Subject: welcome to share-it
+        Subject: welcome to Relow
 
         """ + msg
         self.emailHandler.sendemail(email, message)
         return user
+
+    def send_email(self):
+        email = "moskoga02@gmail.com"
+        msg = "welcome to Relow, your confirm code is: " + "5555"
+        message = """\
+        Subject: welcome to Relow
+
+        """ + msg
+        self.emailHandler.sendemail(email, message)
 
     def register(self, first_name, last_name, phone, email, password, birth_date, gender):
         if gender not in Gender._value2member_map_:
@@ -100,9 +109,9 @@ class UserController:
         self.users_dao.insert(userDTO)
         self.user_id += 1
         # send email
-        msg = "welcome to RELOW, your confirm code is: " + str(user.user_id)
+        msg = "welcome to Relow, your confirm code is: " + str(user.user_id)
         message = """\
-        Subject: welcome to relow
+        Subject: welcome to Relow
 
         """ + msg
         self.emailHandler.sendemail(email, message)
@@ -149,11 +158,11 @@ class UserController:
         old_pass = user.password
         self.update_password(user_id, old_pass, new_password)
         # send email
-        msg = "your new password is: " + new_password
+        msg = "your new password is: " + str(new_password)
         message = """\
         Subject: your password has changed
         """ + msg
-        self.emailHandler.sendemail(email, "your password is changed, your password is : " + message)
+        self.emailHandler.sendemail(email, message)
 
     def add_payment_method(self, user_id, credit_card_number, credit_card_exp_date, cvv, card_type, id):
         user_to_add = self.check_user_state(user_id)

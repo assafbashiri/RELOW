@@ -72,9 +72,7 @@
 <Personal_box>:
     id:personal_box
     orientation: "vertical"
-    size_hint: 1,.8
-    pos_hint:{'center_y':.6}
-
+    size_hint: 1,1
     ScrollView:
         do_scroll_y:True
         GridLayout:
@@ -83,9 +81,8 @@
             size_hint_y: 1.8
             height: self.minimum_height
             pos_hint:{'center_y':.1}
-            padding: [25,30,25,0]
+            padding: [20,30,20,150]
             ############## grid of first name label and his text input
-
             GridLayout:
                 id: first_name_box
                 cols:1
@@ -295,11 +292,11 @@
 
             ############## grid of update button
             GridLayout:
-                size_hint: .5,1
+                size_hint: .5,.7
                 pos_hint:{'center_x':.1, 'center_y':.1}
                 cols:3
                 id: update_box
-                padding: ['70dp','30dp', '70dp' , '10dp']
+                padding: [0,0,0,0]
                 Button:
                     size_hint :0.3,3
                     id: sign_up_btn
@@ -323,22 +320,19 @@
     id:address_box
     orientation: 'vertical'
     size_hint: 1,1
-    pos_hint_y:3
 
     ScrollView:
-        size_hint_y:1.5
         do_scroll_y:True
         GridLayout:
             cols:1
-            size_hint_y: 1.5
+            size_hint_y:1.2
+            padding: [20,30,20,150]
             height: self.minimum_height
             pos_hint:{'center_y':.1}
             GridLayout:
                 cols:1
                 id: city_box
                 size_hint: 1,1
-                padding: ['20dp','30dp', '20dp' , '0dp']
-
                 MDLabel:
                     id: city_label
                     text: "City"
@@ -362,7 +356,7 @@
                 id: street_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: ['20dp','30dp', '20dp' , '0dp']
+                padding: [0,0,0,0]
 
                 MDLabel:
                     id: street_label
@@ -387,7 +381,7 @@
                 id: building_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: ['20dp','30dp', '20dp' , '0dp']
+                padding: [0,0,0,0]
 
                 MDLabel:
                     id: building_label
@@ -410,7 +404,7 @@
                 id: apt_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: ['20dp','30dp', '20dp' , '0dp']
+                padding: [0,0,0,0]
 
                 MDLabel:
                     id: apt_label
@@ -435,7 +429,7 @@
                 id: zip_code_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: ['20dp','30dp', '20dp' , '0dp']
+                padding: [0,0,0,0]
 
                 MDLabel:
                     id: zip_code_label
@@ -458,7 +452,7 @@
                 cols:1
                 id: update_box
                 #orientation: 'vertical'
-                padding: ['100dp','30dp', '100dp' , '10dp']
+                padding: [0,30,0,0]
                 Button:
                     id: login_btn
                     text: "Update"
@@ -472,22 +466,20 @@
                             size: self.size
                             pos: self.pos
                     on_press: root.address()
-            GridLayout:
-                cols:1
-                size_hint_y:.9
 
 
 <Password_box>:
     id:personal_box
     orientation: "vertical"
     size_hint: 1,1
+    padding: [20,30,20,30]
 
     GridLayout:
         cols:1
         id: old_password_box
         #orientation: 'vertical'
         size_hint: 1,.7
-        padding: ['20dp','30dp', '20dp' , '0dp']
+
 
         MDLabel:
             id: old_password_label
@@ -509,7 +501,7 @@
         cols:1
         id: new_password_box
         size_hint: 1,.7
-        padding: ['20dp','30dp', '20dp' , '0dp']
+        padding: [0,0,0,0]
 
         MDLabel:
             id: new_password_label
@@ -531,7 +523,7 @@
         id: new_password_verification_box
         #orientation: 'vertical'
         size_hint: 1,.7
-        padding: ['20dp','30dp', '20dp' , '0dp']
+        padding: [0,0,0,0]
 
         MDLabel:
             id: new_password_verification_label
@@ -552,7 +544,7 @@
         cols:1
         id: update_box
         #orientation: 'vertical'
-        padding: ['100dp','30dp', '100dp' , '50dp']
+        padding: [100,30,100,30]
         Button:
             id: login_btn
             text: "Change Password"
@@ -566,3 +558,5 @@
                     size: self.size
                     pos: self.pos
             on_press:root.change_password()
+
+        GridLayout:
