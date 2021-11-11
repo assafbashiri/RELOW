@@ -23,7 +23,7 @@ class Utils:
     def check_end_date(self, end_date):
         formatted_date_now = datetime.now()
         formatted_date_offer = datetime.strptime(end_date, '%Y-%m-%d')
-        if (formatted_date_now > formatted_date_offer):
+        if (formatted_date_now < formatted_date_offer):
             return True
         return False
 

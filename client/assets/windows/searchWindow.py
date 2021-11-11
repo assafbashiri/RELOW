@@ -119,6 +119,9 @@ class SEARCHScreen(Screen):
         day = self.ids.main_search.ids.search_box.ids.date.children[1].text
         month = self.ids.main_search.ids.search_box.ids.date.children[2].text
         year = self.ids.main_search.ids.search_box.ids.date.children[3].text
+        if day=="Day" or month=="Month" or year=="Year":
+            Utils.pop(self, "you have to choose complete date","alert")
+            return
         prod_date = year + "-" + month + "-" + day
 
 

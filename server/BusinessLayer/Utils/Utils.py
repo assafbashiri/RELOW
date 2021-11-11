@@ -1,18 +1,22 @@
 from fpdf import FPDF
-from BusinessLayer.Controllers.CategoryController import CategoryController
-from BusinessLayer.Controllers.UserController import UserController
-from BusinessLayer.Object.Category import Category
+
 import sqlite3
+from datetime import datetime
 
 
 class Utils:
 
 
-
+    def check_end_date(self, end_date):
+        formatted_date_now = datetime.now()
+        formatted_date_offer = datetime.strptime(end_date, '%Y-%m-%d')
+        if (formatted_date_now < formatted_date_offer):
+            return True
+        return False
     def create_summery_end_offer(self, expired_offer, u, c):
         # conn = sqlite3.connect('database.db', check_same_thread=False)
         # save FPDF() class into a variable pdf
-        u.move_all_expired_to_history()
+        u.move_all_expired_to_history(expired_offer)
         for offer in expired_offer:
             pdf = FPDF()
 
