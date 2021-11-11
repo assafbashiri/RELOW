@@ -18,10 +18,10 @@ import json
 from functools import partial
 from kivy.uix.button import Button
 from assets.windows.offers_list import Offers_Screen
-from langdetect import detect, DetectorFactory
+# from langdetect import detect, DetectorFactory
 from assets.Utils.CheckValidity import CheckValidity
-from textblob import TextBlob
-import langid
+# from textblob import TextBlob
+# import langid
 class Category_box(BoxLayout):
     pass
 
@@ -147,7 +147,7 @@ class Personal_box(BoxLayout):
             # update the json------------------------------------------------
             self.user = ans.data
             Utils.pop(self, 'your personal details has been successfully changed', 'success')
-            App.get_running_app().root.back_to_main()
+            App.get_running_app().root.on_back_btn()
             self.init_fields()
         else:
             Utils.pop(self, 'update details has failed: ' + ans.message, 'alert')
@@ -548,7 +548,7 @@ class Address_box(BoxLayout):
             # update the json------------------------------------------------
             self.user = ans.data
             Utils.pop(self, 'your address has been successfully changed', 'success')
-            App.get_running_app().root.back_to_main()
+            App.get_running_app().root.on_back_btn()
             self.init_fields()
         else:
             Utils.pop(self, 'update address has failed', 'alert')
