@@ -4,7 +4,7 @@ import requests
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivy.uix.button import Button
-
+from fpdf import FPDF
 class Utils:
 
 
@@ -18,31 +18,16 @@ class Utils:
             print("bad date - Utils 'string_to_datetime_without_hour'")
         return date_to_return
         a=5
-    def compare_dates(self, end_date1, end_date2):
-        a=0
 
-        # year1 = end_date1.year
-        # month1 = end_date1.month
-        # day1 = end_date1.day
-        #
-        # year2 = end_date2.year
-        # month2 = end_date2.month
-        # day2 = end_date2.day
-        #
-        #
+    #return true if the end_date is not passed, false elsewhere
+    def check_end_date(self, end_date):
+        formatted_date_now = datetime.now()
+        formatted_date_offer = datetime.strptime(end_date, '%Y-%m-%d')
+        if (formatted_date_now > formatted_date_offer):
+            return True
+        return False
 
 
-
-        formatted_date1 = time.strptime(end_date1, '%y-%m-%d %H:%M:%S')
-        formatted_date2 = time.strptime(end_date2, '%y-%m-%d %H:%M:%S')
-        print(formatted_date1 > formatted_date2)
-
-        # if date1 < date2:
-        #     return -1
-        # elif date1==date2:
-        #     return 0
-        # else:
-        #     return 1
 
     def datetime_to_string(self, date):
         now = datetime.now()  # current date and time
