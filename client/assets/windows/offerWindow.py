@@ -1,5 +1,6 @@
 import io
 # import pandas as pd
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.boxlayout import MDBoxLayout
 
@@ -57,7 +58,11 @@ class OfferScreen(Screen):
         self.sizes_btn[1] = {}
         self.sizes_btn[2] = {}
         self.sizes_btn[3] = {}
-        if self.controller.guest is True:
+
+        # if the offer is valid(date not passed)
+        if Utils.check_end_date(self, self.offer.end_date):
+            self.show_as_history(photo_lis)
+        elif self.controller.guest is True:
             self.show_as_guest(photo_lis)
         elif self.offer.is_a_seller(self.user.user_id):
             self.show_as_seller(photo_lis)
@@ -134,6 +139,8 @@ class OfferScreen(Screen):
         self.labels_box.size_hint_y = 1
         self.labels_box.padding = [0, 40, 0, 0]
 
+        self.create_end_date_widget()
+
         self.company_name = MDLabel(text="  " + self.offer.product.company, size_hint_y = .2)
         self.company_name.color = (0, 0, 0, 0.27)
         self.company_name.halign = 'center'
@@ -193,18 +200,15 @@ class OfferScreen(Screen):
         self.add_item()
 
         # join button
+
         self.join_offer = BoxLayout(orientation='vertical')
         self.join_offer.size_hint_y = .4
         self.join_offer.padding = [40,40,40,40]
         self.join = Button(text="JOIN")
         self.join.background_normal =''
         self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
-
-
-
         self.join.bind(on_press=lambda x: self.guest_try_to_join())
         self.join_offer.add_widget(self.join)
-
         self.box.add_widget(self.join_offer)
 
         self.scroll.add_widget(self.box)
@@ -276,6 +280,8 @@ class OfferScreen(Screen):
         self.labels_box.size_hint_y = 1
         self.labels_box.padding = [0, 40, 0, 0]
 
+        self.create_end_date_widget()
+
         self.company_name = MDLabel(text="  " + self.offer.product.company, size_hint_y=.2)
         self.company_name.color = (0, 0, 0, 0.27)
         self.company_name.halign = 'center'
@@ -338,20 +344,22 @@ class OfferScreen(Screen):
         self.join_offer = BoxLayout(orientation='vertical')
         self.join_offer.size_hint_y = .4
         self.join_offer.padding = [40, 40, 40, 40]
-        self.join = Button(text="JOIN")
-        self.join.background_normal = ''
-        self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
-
-        self.join.bind(on_press=lambda x: self.guest_try_to_join())
-        self.join_offer.add_widget(self.join)
+        # self.join = Button(text="JOIN")
+        # self.join.background_normal = ''
+        # self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
+        #
+        # self.join.bind(on_press=lambda x: self.guest_try_to_join())
+        # self.join_offer.add_widget(self.join)
 
         self.box.add_widget(self.join_offer)
 
         self.scroll.add_widget(self.box)
 
-        # self.update1 = Button(text="UPDATE")
-        # self.update1.bind(on_press=lambda x: self.update_offer())
-        # self.join_offer.add_widget(self.update1)
+        self.update1 = Button(text="UPDATE")
+        self.update1.background_normal = ''
+        self.update1.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
+        self.update1.bind(on_press=lambda x: self.update_offer())
+        self.join_offer.add_widget(self.update1)
 
     def show_as_buyer(self, photo_lis):
         print('as a buyer')
@@ -422,6 +430,8 @@ class OfferScreen(Screen):
         self.labels_box = BoxLayout(orientation='vertical')
         self.labels_box.size_hint_y = 1
         self.labels_box.padding = [0, 40, 0, 0]
+
+        self.create_end_date_widget()
 
         self.company_name = MDLabel(text="  " + self.offer.product.company, size_hint_y=.2)
         self.company_name.color = (0, 0, 0, 0.27)
@@ -575,11 +585,15 @@ class OfferScreen(Screen):
         self.labels_box.size_hint_y = 1
         self.labels_box.padding = [0, 40, 0, 0]
 
+        self.create_end_date_widget()
+
         self.company_name = MDLabel(text="  " + self.offer.product.company, size_hint_y=.2)
         self.company_name.color = (0, 0, 0, 0.27)
         self.company_name.halign = 'center'
         self.company_name.valign = 'bottom'
         self.labels_box.add_widget(self.company_name)
+
+
 
         self.description = MDLabel(text="  " + self.offer.product.description, size_hint_y=1)
         self.description.color = (0, 0, 0, 0.27)
@@ -631,7 +645,9 @@ class OfferScreen(Screen):
 
         self.add_item()
 
+
         # join button
+
         self.join_offer = BoxLayout(orientation='vertical')
         self.join_offer.size_hint_y = .6
         self.join_offer.padding = [40,40,40,40]
@@ -640,6 +656,7 @@ class OfferScreen(Screen):
         self.join.background_normal = ''
         self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
         self.join.bind(on_press=lambda x: self.join_())
+
         # another address button
         self.other_address = Button(text='NEW ADDRESS FOR THIS PRODUCT')
         self.other_address.bind(on_press=lambda x: self.add_address())
@@ -647,9 +664,170 @@ class OfferScreen(Screen):
         self.other_address.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
         self.join_offer.add_widget(self.other_address)
         self.join_offer.add_widget(self.join)
+
         self.box.add_widget(self.join_offer)
         self.scroll.add_widget(self.box)
 
+    def show_as_history(self, photo_lis):
+        # if the offer is valid(date not passed)
+        #if Utils.check_end_date(self, self.offer.end_date):
+        print('as a history offer')
+        self.scroll = ScrollView(do_scroll_y=True, size_hint=(1, 1))
+        self.add_widget(self.scroll)
+        self.box = BoxLayout(orientation='vertical', size_hint_y=1.5)
+        # title box
+        self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
+        self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
+        self.back.bind(on_press=lambda x: self.out())
+        self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top':.3})
+        self.product_name.bold = True
+        self.product_name.font_size = 45
+        self.product_name.color = (0, 0, 0, 1)
+        self.product_name.halign = 'left'
+        self.product_name.valign = 'bottom'
+        self.title.add_widget(self.back)
+        self.title.add_widget(self.product_name)
+        self.box.add_widget(self.title)
+        # photo_box
+        self.picture_box = BoxLayout(orientation='horizontal')
+        self.carousel = Carousel(size_hint_y=1, direction='right')
+        self.left_arr = MDIconButton(icon="assets/windows/images/left.png", pos_hint={'top': .6})
+        self.left_arr.bind(on_press=lambda x: self.carousel.load_previous())
+        self.right_arr = MDIconButton(icon="assets/windows/images/right.png", pos_hint={'top': .6})
+        self.right_arr.bind(on_press=self.carousel.load_next)
+        self.insert_photos(self.carousel, photo_lis)
+        self.box.add_widget(self.picture_box)
+        self.picture_box.add_widget(self.left_arr)
+        self.picture_box.add_widget(self.carousel)
+        self.picture_box.add_widget(self.right_arr)
+        # steps
+        # self.slider = MDSlider()
+        # self.slider.min = 0
+        # self.slider.max = 100  # steps[-1][1]
+        # self.slider.value = 10  # self.offer.current_buyers
+        #     steps = self.offer.steps
+        #     self.steps_box = BoxLayout(orientation='vertical', size_hint_y=.4)
+        #     self.steps_box.padding = [0, 15, 0, 0]
+        #     self.progress = MDProgressBar()
+        #     #self.progress.value = self.slider.value
+        #     self.people_per_step = BoxLayout(orientation='horizontal', size_hint_y=.5)
+        #     for step_id in steps:
+        #         step = steps[step_id]
+        #         self.people_per_step.add_widget(
+        #             MDLabel(text='people:' + str(step.get_buyers_amount()) + "/" + str(step.get_limit())))
+        #     self.steps_box.add_widget(self.people_per_step)
+        #     self.steps_box.add_widget(self.progress)
+        self.price_per_step = BoxLayout(orientation='horizontal', size_hint_y=.2)
+        #     for step_id in steps:
+        #         step = steps[step_id]
+        #         x = MDCheckbox(group="price")
+        #         x.bind(active=self.set_total_price)
+        #         self.price_per_step.add_widget(x)
+        #         self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+        #     self.steps_box.add_widget(self.price_per_step)
+        #     self.box.add_widget(self.steps_box)
+
+        # labels box
+        self.labels_box = BoxLayout(orientation='vertical')
+        self.labels_box.size_hint_y = 1
+        self.labels_box.padding = [0, 40, 0, 0]
+
+        self.create_end_date_widget()
+
+        self.company_name = MDLabel(text="  " + self.offer.product.company, size_hint_y=.2)
+        self.company_name.color = (0, 0, 0, 0.27)
+        self.company_name.halign = 'center'
+        self.company_name.valign = 'bottom'
+        self.labels_box.add_widget(self.company_name)
+
+        self.description = MDLabel(text="  " + self.offer.product.description, size_hint_y=1)
+        self.description.color = (0, 0, 0, 0.27)
+        self.description.halign = 'center'
+        self.description.valign = 'top'
+        self.labels_box.add_widget(self.description)
+
+        #self.user.is_a_buyer(self.offer.offer_id):
+        #################################################
+
+        self.box.add_widget(self.labels_box)
+        # colors and sizes
+        self.color_size = BoxLayout(orientation='vertical')
+        self.color_size.size_hint_y = 0
+        # self.color_size.spacing= 25
+        self.box.add_widget(self.color_size)
+        self.chosen_colors = {}
+        self.chosen_sizes = {}
+        # icons box
+
+        self.icons_box = BoxLayout()
+        self.icons_box.padding = [20, 0, 20, 0]
+        self.icons_box.size_hint_y = .2
+        self.another_item = MDIconButton(icon="assets/windows/images/add.png")
+        self.another_item.bind(on_press=lambda x: print(self.add_item()))
+        self.icons_box.add_widget(self.another_item)
+        label_spacing1 = MDLabel(text='')
+        self.icons_box.add_widget(label_spacing1)
+            #
+            # self.remove = MDIconButton(icon="assets/windows/images/minus.png")
+            # self.remove.bind(on_press=lambda x: self.remove_item())
+            # self.icons_box.add_widget(self.remove)
+            #
+            # label_spacing2 = MDLabel(text='')
+            # self.icons_box.add_widget(label_spacing2)
+            # if self.user.is_a_liker(self.offer_id):
+            #     self.like = MDIconButton(icon="assets/windows/images/unlike.png")
+            # else:
+            #     self.like = MDIconButton(icon="assets/windows/images/like.png")
+            # self.like.bind(on_press=lambda x: self.like_unlike())
+            # self.icons_box.add_widget(self.like)
+            #
+            # self.box.add_widget(self.icons_box)
+
+        # price
+        self.curr_price = MDLabel(text="price")
+        self.curr_price.size_hint_y = 0.2
+        self.curr_price.valign = 'center'
+        self.curr_price.halign = 'center'
+        self.box.add_widget(self.curr_price)
+
+        self.curr_buyers_amount = MDLabel(text="buyers amount")
+        self.curr_buyers_amount.size_hint_y = 0.2
+        self.curr_buyers_amount.valign = 'center'
+        self.curr_buyers_amount.halign = 'center'
+        self.box.add_widget(self.curr_buyers_amount)
+        self.curr_buyers_amount.text = "  buyers amount : " + str(self.offer.steps[self.offer.current_step].get_buyers_amount())
+
+        self.add_item()
+
+
+            # # join button
+            #
+            # self.join_offer = BoxLayout(orientation='vertical')
+            # self.join_offer.size_hint_y = .6
+            # self.join_offer.padding = [40,40,40,40]
+            # self.join_offer.spacing = 20
+            # self.join = Button(text="JOIN")
+            # self.join.background_normal = ''
+            # self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
+            # self.join.bind(on_press=lambda x: self.join_())
+            # self.join_offer.add_widget(self.other_address)
+            # self.join_offer.add_widget(self.join)
+            # # another address button
+            # self.other_address = Button(text='NEW ADDRESS FOR THIS PRODUCT')
+            # self.other_address.bind(on_press=lambda x: self.add_address())
+            # self.other_address.background_normal = ''
+            # self.other_address.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
+            #
+            # self.box.add_widget(self.join_offer)
+        self.scroll.add_widget(self.box)
+    def create_end_date_widget(self):
+        year, month, day = self.offer.end_date.split('-')
+        end_date = f'{day}-{month}-{year}'
+        self.end_date = MDLabel(text="  " + end_date, size_hint_y=.2)
+        self.end_date.color = (0, 0, 0, 0.27)
+        self.end_date.halign = 'center'
+        self.end_date.valign = 'bottom'
+        self.labels_box.add_widget(self.end_date)
     # as a guest
     def guest_try_to_join(self):
         Utils.pop(self, 'Hello! guest have to register before buy', 'alert')
@@ -771,34 +949,32 @@ class OfferScreen(Screen):
             sizes_counter = sizes_counter + 1
             self.sizes_btn[self.num_of_quantity][size] = btn
 
-        self.set_total_price(None, None)
+        self.set_total_price(None,None)
+
 
     def add_address(self):
-        if hasattr(self, 'm'):
-            self.m = Add_address(title='address', size_hint=(None, None), size=(400, 400))
-            self.m.open()
-        else:
-            self.m = Add_address(title='address', size_hint=(None, None), size=(400, 400))
-            self.m.open()
+        App.get_running_app().root.change_screen('account_screen')
+        App.get_running_app().root.screens[2].ids.account_box.change_to_address()
 
     def join_(self):
         # check buying details
+        self.user=self.controller.user_service
         step = self.get_step()
         if step == -1:
-            toast("you need to choose step ")
+            Utils.pop(self, "you need to choose step ", "alert")
             return
         offer_id = self.offer_id
         quantity = self.num_of_quantity
         # check Validity Quantity Per Step
         if quantity > self.offer.steps[step].limit - self.offer.steps[step].buyers_amount:
-            toast("there is not enough items for this step")
+            Utils.pop(self, "there is not enough items for this step ", "alert")
             return
 
         if len(self.chosen_colors) != self.num_of_quantity:
-            toast("you have to choose color")
+            Utils.pop(self, "you have to choose color", "alert")
             return
         if len(self.chosen_sizes) != self.num_of_quantity:
-            toast("you have to choose size")
+            Utils.pop(self, "you have to choose size", "alert")
             return
 
         colors = ""
@@ -809,35 +985,28 @@ class OfferScreen(Screen):
             sizes = sizes + self.chosen_sizes[size] + ','
         colors = colors[0:len(colors) - 1]
         sizes = sizes[0:len(sizes) - 1]
-
+        address_response = self.user.get_address()
+        if address_response.res is False:
+            Utils.pop(self,"you have to add address","alert")
+            return
         # move to payment screen
         # self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, self.new_address, self.user,
         #                                    self.offer).open()
-        self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, "new address s", self.user,
+        self.PaymentScreen = PAYMENTScreen(offer_id, int(quantity), step, colors, sizes, address_response.data, self.user,
                                            self.offer, self.name, self.photo_lis).open()
 
     # as a buyer
 
     def add_item_for_update(self, color, size, item_count):
         self.add_item()
-        len_of_colors = len(self.offer.product.colors)
-        len_of_sizes = len(self.offer.product.sizes)
 
         for item in self.colors_btn[self.num_of_quantity]:
-            if self.get_btn_color(self.colors_btn[self.num_of_quantity][item]) == color:
+            if item == color:
                 color_btn = self.colors_btn[self.num_of_quantity][item]
 
         for item in self.sizes_btn[self.num_of_quantity]:
-            if self.sizes_btn[self.num_of_quantity][item].text == size:
+            if item == size:
                 size_btn = self.sizes_btn[self.num_of_quantity][item]
-
-        # for i in range(0, len_of_colors):
-        #     if self.get_btn_color(self.color_size.children[item_count-1].children[1].children[0].children[i]) == color:
-        #         color_btn = self.color_size.children[item_count-1].children[1].children[0].children[i]
-        # for i in range(0, len_of_sizes):
-        #     if self.color_size.children[item_count-1].children[0].children[0].children[i].text == size:
-        #         size_btn = self.color_size.children[item_count-1].children[0].children[0].children[i]
-
         self.chose_color(color_btn, color, item_count, 0)
         self.chose_size(size_btn, size, item_count, 0)
 
@@ -952,26 +1121,4 @@ class OfferScreen(Screen):
                 car.add_widget(new_img)
 
 
-class Add_address(Popup):
-    def __init__(self, **kwargs):
-        super(Add_address, self).__init__(**kwargs)
-        self.box = BoxLayout(orientation='vertical')
-        self.address = MDTextField(hint_text='ADDRESS')
-        self.box.add_widget(self.address)
-        self.insert = Button(text="INSERT")
-        self.insert.bind(on_press=lambda x: self.insert_add())
-        self.box.add_widget(self.insert)
-        self.back = Button(text="BACK")
-        self.back.bind(on_press=lambda x: self.out())
-        self.box.add_widget(self.back)
-        self.add_widget(self.box)
 
-    def out(self):
-        self.dismiss()
-
-    def insert_add(self):
-        return 1
-        self.parent.children[0].new_address = self.address.text
-        self.parent.children[0].other_address.text = self.address.text
-        self.parent.children[0].change = True
-        self.dismiss()
