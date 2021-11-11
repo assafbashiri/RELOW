@@ -148,6 +148,6 @@ class OfferDAO:
         i = 0
         for item in list:
             if i != 0:
-                answer = answer + ", " + item
+                answer = answer + "," + item
             i = i + 1
         return answer
