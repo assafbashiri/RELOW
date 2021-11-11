@@ -60,8 +60,8 @@ class Manager(ScreenManager):
         self.screen_list = []
 
     def change_screen(self, next_screen):
-        if App.get_running_app().root.current not in self.screen_list:
-            self.screen_list.append(App.get_running_app().root.current)
+        #if App.get_running_app().root.current not in self.screen_list:
+        self.screen_list.append(App.get_running_app().root.current)
         App.get_running_app().root.current = next_screen
         if next_screen == 'search_screen':
             SEARCHScreen.show_search_by(App.get_running_app().root.current_screen)
