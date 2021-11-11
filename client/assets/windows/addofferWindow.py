@@ -25,7 +25,6 @@ from assets.Service.Object.StepService import StepService
 
 from assets.Utils.CheckValidity import CheckValidity
 import os
-import android
 
 class ADDOFFERScreen(Screen):
     def __init__(self, **kwargs):

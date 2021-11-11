@@ -400,6 +400,8 @@ class Address_box(BoxLayout):
         self.chosen_city_lat = 0
         self.chosen_city_lng = 0
         self.open = True
+        self.flag_city = True
+        self.flag_street = True
 
 
 
@@ -407,7 +409,8 @@ class Address_box(BoxLayout):
 
         if hasattr(self, 'drop_down_cities_autocomplete'):
             self.drop_down_cities_autocomplete.dismiss()
-
+        if (not self.flag_city) or text=="":
+            return
         menu_items = []
         input = text[::-1]
         api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
@@ -441,12 +444,14 @@ class Address_box(BoxLayout):
 
         self.drop_down_cities_autocomplete.open()
     def save_city(self, chosen_city, place_id):
+        self.ids.street_input.text=""
+        street,city = chosen_city.split(',')
         self.drop_down_cities_autocomplete.dismiss()
         api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
         self.get_lat_lng(api_key, place_id)
-        self.ids.city_input.on_text = self.do_nothing()
-        self.ids.city_input.text = chosen_city
-        self.ids.city_input.on_text = self.drop_cities_autocomplete(self.ids.city_input.text)
+        self.flag_city=False
+        self.ids.city_input.text = city
+        self.flag_city = True
 
     def do_nothing(self):
         print("kkkkkkkkkk")
@@ -457,7 +462,10 @@ class Address_box(BoxLayout):
             self.english = False
     def drop_streets_autocomplete(self, text):
         if hasattr(self, 'drop_down_streets_autocomplete'):
+            print(5)
             self.drop_down_streets_autocomplete.dismiss()
+        if (not self.flag_street) or text=="":
+            return
         menu_items = []
         if self.ids.city_input.text =='':
             self.chosen_city_lat=0
@@ -497,9 +505,11 @@ class Address_box(BoxLayout):
         )
         self.drop_down_streets_autocomplete.open()
     def save_street(self, chosen_street):
+        country,city,street = chosen_street.split(',')
         self.drop_down_streets_autocomplete.dismiss()
-        self.ids.street_input.text = chosen_street
-        self.drop_down_streets_autocomplete.dismiss()
+        self.flag_street = False
+        self.ids.street_input.text = street
+        self.flag_street = True
         #self.ids.city_input.on_text= self.do_nothing()
 
     def get_lat_lng(self, api_key, place_id):
