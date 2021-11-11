@@ -44,12 +44,7 @@ class Account_box(BoxLayout):
         self.personal_box = Personal_box()
         self.address_box = Address_box()
         self.password_box = Password_box()
-
         Clock.schedule_once(self.helper, 4)
-        # self.add_widget(self.current_box, len(self.children))
-        # self.cat = Category_box()
-        # self.sub_cat = Sub_Category_box()
-        # self.dialog = None
 
     def helper(self, num):
         self.ids.choose_box.add_widget(self.personal_box)
@@ -164,6 +159,7 @@ class Personal_box(BoxLayout):
         self.ids.email.text = ""
 
     def init_fields(self):
+        self.user = self.controller.user_service
         if (self.user is not None):
             if self.controller.guest is True:
                 return
@@ -560,16 +556,22 @@ class Address_box(BoxLayout):
 
     def init_fields(self):
         if (self.user.city is None):
+            self.flag_city = False
             self.ids.city_input.text = ""
+            self.flag_city = True
         else:
+            self.flag_city = False
             self.ids.city_input.text = self.user.city
-            self.drop_down_cities_autocomplete.dismiss()
+            self.flag_city = True
 
         if (self.user.street is None):
+            self.flag_street = False
             self.ids.street_input.text = ""
-            #self.drop_down_streets_autocomplete.dismiss()
+            self.flag_street = True
         else:
+            self.flag_street = False
             self.ids.street_input.text = self.user.street
+            self.flag_street = True
 
         if (self.user.zip_code is None):
             self.ids.zip_code_input.text = ""

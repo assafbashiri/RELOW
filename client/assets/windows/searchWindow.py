@@ -116,7 +116,6 @@ class SEARCHScreen(Screen):
         self.first_time_bad_search = False
 
     def search_by_end_date(self):
-        # prod_date = self.ids.main_search.ids.search_box.ids.date.text
         day = self.ids.main_search.ids.search_box.ids.date.children[1].text
         month = self.ids.main_search.ids.search_box.ids.date.children[2].text
         year = self.ids.main_search.ids.search_box.ids.date.children[3].text

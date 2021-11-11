@@ -66,7 +66,7 @@ class SubCategory:
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
             # change to compare-to
-            if curr_offer.get_end_date() >= end_date:
+            if curr_offer.get_end_date() <= end_date:
                 ans.append(curr_offer)
         return ans
 

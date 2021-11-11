@@ -387,6 +387,7 @@ class UserController:
         if not user.move_to_history_buyer(offer):
             raise Exception("offer didnt exist in user's active buy offers")
         self.offers_dao.delete_buy_offer(user_id, offer.get_offer_id())
+        self.remove_like_offer(user_id, offer_id)
         self.offers_dao.insert_to_history_buyers(user_id, offer_id, offer.get_status(), offer.get_current_step())
         self.update_curr_step(offer)
         return offer

@@ -1,8 +1,11 @@
 from assets.Service.Object.OfferService import OfferService
 from assets.Response import Response
+
+
 class UserService():
     # CLIENT
-    def __init__(self, user_id, first_name, last_name, phone, email, password, birth_date, gender, seller, city, street, apt, zip, floor,
+    def __init__(self, user_id, first_name, last_name, phone, email, password, birth_date, gender, seller, city, street,
+                 apt, zip, floor,
                  id_number, credit_card_number, credit_exp, cvv, card_type,
                  history_buy_offers, history_sale_offers, liked_offers, active_sale_offers, active_buy_offers):
         self.user_id = user_id
@@ -58,9 +61,7 @@ class UserService():
             offer_service = self.build_offer(offer)
             self.active_buy_offers.append(offer_service)
 
-
-# -------------------------------------------USER SUBMISSION-----------------------------------------------------------
-
+    # -------------------------------------------USER SUBMISSION-----------------------------------------------------------
 
     def get_active(self):
         return self.active
@@ -86,7 +87,7 @@ class UserService():
     def get_gender(self):
         return self.gender
 
-# -------------------------------------------USER ADDRESS-----------------------------------------------------------
+    # -------------------------------------------USER ADDRESS-----------------------------------------------------------
     def get_city(self):
         return self.city
 
@@ -103,19 +104,20 @@ class UserService():
         return self.floor
 
     def get_address(self):
-        output = ''
         if self.city is None:
-            return Response(False,'you need to add address first',False)
+            return Response(False, 'you need to add address first', False)
         if self.street is None:
-            return Response(False,'you need to add address first',False)
+            return Response(False, 'you need to add address first', False)
         if self.floor is None:
-            return Response(False,'you need to add address first',False)
+            return Response(False, 'you need to add address first', False)
         if self.apartment_number is None:
-            return Response(False,'you need to add address first',False)
-        adr_str = str(self.city)+' '+str(self.street)+' '+str(self.floor)+''+str(self.apartment_number)
-        return Response(adr_str,'you have an address',True)
+            return Response(False, 'you need to add address first', False)
+        if self.zip_code is None:
+            return Response(False, 'you need to add address first', False)
+        adr_str = str(self.city) + ' ' + str(self.street) + ' ' + str(self.floor) + ' ' + str(self.apartment_number) +' ' + str(self.zip_code)
+        return Response(adr_str, 'you have an address', True)
 
-# -------------------------------------------USER PAYMENT-----------------------------------------------------------
+    # -------------------------------------------USER PAYMENT-----------------------------------------------------------
 
     def get_card_number(self):
         return self.credit_card_number
@@ -132,7 +134,7 @@ class UserService():
     def get_card_type(self):
         return self.card_type
 
-# -------------------------------------------USER OFFERS-----------------------------------------------------------
+    # -------------------------------------------USER OFFERS-----------------------------------------------------------
 
     def get_history_buy_offers(self):
         return self.history_buy_offers
@@ -150,7 +152,7 @@ class UserService():
         return self.active_buy_offers
 
     def set_password(self, password):
-        self.password  = password
+        self.password = password
 
     def build_offer(self, x):
         offer_temp = OfferService(x['offer_id'], x['user_id'], x['product'], x['category_id'], x['sub_category_id'],
@@ -158,7 +160,6 @@ class UserService():
                                   x['steps'], x['start_date'], x['end_date'], x['current_step'],
                                   x['current_buyers'])
         return offer_temp
-
 
     # -------------------------------------------------------
 

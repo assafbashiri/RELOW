@@ -143,7 +143,7 @@ class Handler:
                 argument['phone'],
                 argument['email'],
                 argument['password'],
-                argument['birth_date'],
+                argument['birth_date']+" 00:00:00",
                 argument['gender'])
             self.user = user
             return Response(vars(UserService(user)), "Registered Successfully", True)
@@ -160,7 +160,7 @@ class Handler:
                 argument['phone'],
                 argument['email'],
                 argument['password'],
-                argument['birth_date'],
+                argument['birth_date']+" 00:00:00",
                 argument['gender'])
             self.user = user
             return Response(vars(UserService(user)), "Registered Successfully", True)
@@ -358,41 +358,44 @@ class Handler:
         return Response(vars(OfferService(offer)), exceptions, True)
 
     def update_user_details(self, argument):
-        flag=True
+        # this variable help to check unique fields existing - phone & email
+        falsi_checker_for_check_register = "00000000"
         if self.user is None:
             return Response(None, "not logged in motek", False)
         exceptions = []
+        try:
+            new_email = argument['email']
+            new_phone = argument['phone_number']
+            if new_email != self.user.get_email():
+                self.user_controller.check.check_register(new_email, falsi_checker_for_check_register,
+                                                          self.user_controller.usersDictionary)
+            if new_phone == self.user.get_phone():
+                self.user_controller.check.check_register(falsi_checker_for_check_register, new_phone,
+                                                          self.user_controller.usersDictionary)
+        except Exception as e:
+            exceptions.append(str(e))
+            return Response(False, exceptions, True)
 
         try:
             self.user_controller.update_first_name(self.user.user_id, argument['first_name'])
         except Exception as e:
             exceptions.append(str(e))
-
         try:
             self.user_controller.update_last_name(self.user.user_id, argument['last_name'])
         except Exception as e:
-            flag=False
             exceptions.append(str(e))
-        if flag:
-            try:
-                self.user_controller.check.check_register(argument['email'], argument['phone_number'], self.user_controller.usersDictionary)
-            except Exception as e:
-                exceptions.append(str(e))
-            try:
-                self.user_controller.update_email(self.user.user_id, argument['email'])
-            except Exception as e:
-                exceptions.append(str(e))
-
+        try:
+            self.user_controller.update_email(self.user.user_id, argument['email'])
+        except Exception as e:
+            exceptions.append(str(e))
         try:
             self.user_controller.update_phone(self.user.user_id, argument['phone_number'])
         except Exception as e:
             exceptions.append(str(e))
-
         try:
             self.user_controller.update_gender(self.user.user_id, argument['gender'])
         except Exception as e:
             exceptions.append(str(e))
-
         try:
             self.user_controller.update_birth_date(self.user.user_id, argument['birth_date'])
         except Exception as e:
@@ -400,10 +403,8 @@ class Handler:
 
         finally:
             user = self.user_controller.get_user_by_id(self.user.user_id)
-            u=UserService(user)
-            user_service=vars(u)
+            user_service=vars(UserService(user))
             return Response(user_service, exceptions, True)
-
 
     def update_password(self, argument):
         try:
