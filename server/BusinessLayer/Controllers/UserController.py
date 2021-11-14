@@ -27,6 +27,8 @@ from BusinessLayer.Utils.Gender import Gender
 
 from BusinessLayer.emailHandler import emailHandler
 
+from server.BusinessLayer.Utils.Utils import Utils
+
 
 class UserController:
     __instance = None
@@ -153,10 +155,9 @@ class UserController:
         user = self.get_user_by_email(email)
         if user is None:
             raise Exception("there is no such an email address in the system")
-        new_password = "aA12345678aA"
-        user_id = user.user_id
-        old_pass = user.password
-        self.update_password(user_id, old_pass, new_password)
+        new_password = Utils.generate_password(self)
+        user.set_password(new_password)
+        self.users_dao.update(UserDTO(user))
         # send email
         msg = "your new password is: " + str(new_password)
         message = """\
@@ -396,7 +397,6 @@ class UserController:
         if not user.move_to_history_buyer(offer):
             raise Exception("offer didnt exist in user's active buy offers")
         self.offers_dao.delete_buy_offer(user_id, offer.get_offer_id())
-        self.remove_like_offer(user_id, offer_id)
         self.offers_dao.insert_to_history_buyers(user_id, offer_id, offer.get_status(), offer.get_current_step())
         self.update_curr_step(offer)
         return offer
