@@ -48,6 +48,7 @@ class SEARCHScreen(Screen):
     def search_by_name(self):
         prod_name = self.ids.main_search.ids.search_box.ids.name.text
         ans = App.get_running_app().controller.get_offers_by_product_name(prod_name)
+        #self.of.ids.scroll_box.clear_widgets()
         # bad search
         if len(ans) == 0:
             if "lab" not in self.ids.main_search.ids.search_box.ids.extra.ids:
@@ -60,7 +61,8 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.insert_offers(list=ans)
+            self.of.ids.scroll_box.clear_widgets()
+            self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box',None)
             self.ids.main_search.add_widget(self.of)
@@ -80,7 +82,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.insert_offers(list=ans)
+            self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.add_widget(self.of)
@@ -108,7 +110,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.insert_offers(list=ans)
+            self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.add_widget(self.of)
@@ -146,7 +148,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.insert_offers(list=ans)
+            self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.add_widget(self.of)
@@ -166,7 +168,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.insert_offers(list=ans)
+            self.of.insert_offers(ans)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.add_widget(self.of)
@@ -187,7 +189,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.insert_offers(list=ans)
+            self.of.insert_offers(ans)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.add_widget(self.of)

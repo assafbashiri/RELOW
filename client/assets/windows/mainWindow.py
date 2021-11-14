@@ -277,7 +277,7 @@ class TestApp(MDApp):
 
     def on_start(self):
         b = self.root.current_screen.ids.Main_page_box.ids.recycle1.insert_offers(
-            list=App.get_running_app().controller.hot_deals)
+            App.get_running_app().controller.hot_deals)
 
     def on_stop(self):
         print('fuck we stoped')
