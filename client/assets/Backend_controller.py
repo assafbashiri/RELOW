@@ -18,21 +18,16 @@ class Backend_controller:
         self.categories = None
         self.guest = False
         self.seller = None
-        self.insert_offers()
         self.store = store
         self.init_categories()
+        self.photos_index = 0
 
-    def insert_offers(self):
-        pass
-        # Offers_Screen_search.insert_offers(self=Offers_Screen_search)
-        # Main_page_box.insert_offers(self= Main_page_box)
 
     def get_categories(self):
         return self.categories
 
     def init_categories(self):
         self.categories = []
-
         categories_req = {"op": 56}
         self.req_answers.add_request(categories_req)
         ans = self.req_answers.get_answer()
@@ -82,11 +77,6 @@ class Backend_controller:
                 'op': 80, 'user_id': user['user_id'], 'first_name': first_name, 'last_name': last_name, 'phone': phone,
                 'email': email, 'password': password, 'birth_date': birth_date, 'gender': gender, 'seller': False
             }
-        #     active = self.store['user']['user_info']['active']
-        #     if active is True:
-        #         toast("already register")
-        #         return Response(None, None, False)
-
         # encode the request for Server-Language
         else:
             register_req = {
@@ -119,10 +109,6 @@ class Backend_controller:
         return ans
 
     def unregister(self):
-        # active = self.store['user']['user_info']['active']
-        # if active is True:
-        #     toast("already unregister")
-        #     return Response(None, None, False)
         unregister_req = {'op': 2}
         self.req_answers.add_request(unregister_req)
         ans = self.req_answers.get_answer()
@@ -340,12 +326,6 @@ class Backend_controller:
                 if offer.offer_id == offer_id:
                     user.active_buy_offers[counter] = updated_offer
                 counter = counter + 1
-            # for object in z.data:
-            #     offer = object['offer']
-            #     if offer[0].offer_id == offer_id:
-            #         curr_buyers = updated_offer.current_buyers
-            #         offer[0].current_buyers = curr_buyers
-
             return updated_offer
         return False
 
@@ -354,11 +334,13 @@ class Backend_controller:
         self.req_answers.add_request(remove_act_buy_offer_req)
         ans = self.req_answers.get_answer()
         if ans.res is True:
+            updated_offer = self.build_offer(ans.data)
+            counter = 0
             for offer in user.active_buy_offers:
                 if offer.offer_id == offer_id:
-                    offer.current_buyers.pop(user.user_id)
-                    user.active_buy_offers.remove(offer)
-                    return offer
+                    user.active_buy_offers[counter] = updated_offer
+                counter = counter + 1
+            return updated_offer
         return False
 
     def add_offer(self, name, company, colors, sizes, description, photos, category_name,

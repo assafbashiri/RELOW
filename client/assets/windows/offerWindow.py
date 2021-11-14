@@ -201,15 +201,15 @@ class OfferScreen(Screen):
 
         # join button
 
-        self.join_offer = BoxLayout(orientation='vertical')
-        self.join_offer.size_hint_y = .4
-        self.join_offer.padding = [40, 40, 40, 40]
-        self.join = Button(text="JOIN")
-        self.join.background_normal = ''
-        self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
-        self.join.bind(on_press=lambda x: self.guest_try_to_join())
-        self.join_offer.add_widget(self.join)
-        self.box.add_widget(self.join_offer)
+        #self.join_offer = BoxLayout(orientation='vertical')
+        #self.join_offer.size_hint_y = .4
+        #self.join_offer.padding = [40, 40, 40, 40]
+        #self.join = Button(text="JOIN")
+        #self.join.background_normal = ''
+        #self.join.background_color = (24 / 255, 211 / 255, 199 / 255, 1)
+        #self.join.bind(on_press=lambda x: self.guest_try_to_join())
+        #self.join_offer.add_widget(self.join)
+        #self.box.add_widget(self.join_offer)
 
         self.scroll.add_widget(self.box)
 
@@ -1031,9 +1031,8 @@ class OfferScreen(Screen):
         # f = App.get_running_app().root.screens[6].update_offer(self.offer)
 
     def out(self):
+        App.get_running_app().root.on_back_btn()
 
-        App.get_running_app().root.change_screen("menu_screen")
-        # App.get_running_app().root.current = 'menu_screen'
 
     def like_unlike(self):
         if self.user.is_a_liker(self.offer_id):

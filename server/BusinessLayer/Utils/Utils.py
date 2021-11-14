@@ -2,10 +2,16 @@ from fpdf import FPDF
 
 import sqlite3
 from datetime import datetime
+import secrets
+import string
 
 
 class Utils:
 
+    def generate_password(self):
+        alphabet = string.ascii_letters + string.digits
+        password = ''.join(secrets.choice(alphabet) for i in range(10))
+        return password
 
     def check_end_date(self, end_date):
         formatted_date_now = datetime.now()
