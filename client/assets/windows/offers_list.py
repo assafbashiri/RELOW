@@ -16,44 +16,29 @@ from assets.windows.updateOfferWindow import UPDATEOFFERScreen
 class Offers_Screen(ScrollView):
     def __init__(self, **kwargs):
         super(Offers_Screen, self).__init__(**kwargs)
-        a = App.get_running_app()
 
-    def insert_offers(self, **kwargs):
+
+
+    def insert_offers(self, offers):
         # get the offer list from the user
         # loop all the offer and add them to the recycle
-        runner = 1
+        photos_index = App.get_running_app().controller.photos_index
         offers_list = []
-        for offer in kwargs['list']:
+        for offer in offers:
             self.ids.scroll_box.size_hint_y +=.8
-            name = offer.product.name
-            company = offer.product.company
-            description = offer.product.description
             photo_lis = []
-            # for photo in offer.product.photos:
-            #     photo_lis.append(photo)
             lis = offer.product.photos
-            steps = [[10, 1000], [20, 500]]  # offer.steps
-            offer_id = offer.offer_id
-            if offer.current_buyers is None:
-                current_buyers = 10
-            else:
-                current_buyers = offer.current_buyers
-            # for photo in lis:
-            #     image = AsyncImage(source = str(photo))
-            #     photo_lis.append(image)
             for photo in lis:
                 photo_lis.append(photo)
-            offers_list.append({'offer': [offer],
+            offers_list.append({'offer': offer,
                                 'photo_lis': photo_lis})
-            offer_to_add = RecycleViewRow(offer, photo_lis, runner)
+            offer_to_add = RecycleViewRow(offer, photo_lis, photos_index)
             self.ids.scroll_box.add_widget(offer_to_add)
             self.ids.scroll_box.size_hint_y +=1
-            runner += 3
-        # self.data = offers_list
-        # need to add the photos here
-        # Clock.schedule_once(self.bolo,0)
-    def bolo(self, num):
-        print('fuck')
+            photos_index += 1
+
+        #put in controller field "photo_index" the last index
+        App.get_running_app().controller.photos_index = photos_index
 
 
 

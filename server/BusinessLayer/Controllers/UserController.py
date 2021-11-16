@@ -27,7 +27,7 @@ from BusinessLayer.Utils.Gender import Gender
 
 from BusinessLayer.emailHandler import emailHandler
 
-from server.BusinessLayer.Utils.Utils import Utils
+from BusinessLayer.Utils.Utils import Utils
 
 
 class UserController:
