@@ -37,6 +37,16 @@ if __name__ == '__main__':
     u.load_users(offers, history_offers)
     print("server loaded users and categories")
 
+    # first method removes the exp offers from categories
+    # ter = c.get_all_expired_offers()
+    # u.move_all_expired_to_history(ter)
+
+
+
+
+
+
+
     # # ------- check --------------
     # step1 = Step(50, 20)
     # step2 = Step(100, 15)

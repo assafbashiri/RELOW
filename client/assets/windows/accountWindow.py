@@ -634,22 +634,22 @@ class BoxiLayout(BoxLayout):
             self.rect = Rectangle(pos=self.pos, size=self.size)
             print('done')
 
-    def change_password(self):
-        App.get_running_app().root.change_screen("change_password_screen")
-        #App.get_running_app().root.current = 'change_password_screen'
+    # def move_to_change_password(self):
+    #     App.get_running_app().root.change_screen("change_password_screen")
+    #     #App.get_running_app().root.current = 'change_password_screen'
 
-    def change_password(self):
-        temp1 = MDTextField(hint_text="old password")
-        temp2 = MDTextField(hint_text="new password")
-        temp3 = MDTextField(hint_text="new password again")
-        btn = Button(text='change!!', size_hint=(None, None), height=40)
-        btn.bind(on_release=lambda btn: self.controller.update_password(temp1.text, temp2.text))
-        # CHEK INPUT
-
-        self.ids.counti.add_widget(temp1)
-        self.ids.counti.add_widget(temp2)
-        self.ids.counti.add_widget(temp3)
-        self.ids.counti.add_widget(btn)
+    # def change_password(self):
+    #     temp1 = MDTextField(hint_text="old password")
+    #     temp2 = MDTextField(hint_text="new password")
+    #     temp3 = MDTextField(hint_text="new password again")
+    #     btn = Button(text='change!!', size_hint=(None, None), height=40)
+    #     btn.bind(on_release=lambda btn: self.controller.update_password(temp1.text, temp2.text))
+    #     # CHEK INPUT
+    #
+    #     self.ids.counti.add_widget(temp1)
+    #     self.ids.counti.add_widget(temp2)
+    #     self.ids.counti.add_widget(temp3)
+    #     self.ids.counti.add_widget(btn)
 
     def init_fields(self):
         controller = App.get_running_app().controller

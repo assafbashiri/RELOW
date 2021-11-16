@@ -141,6 +141,8 @@ class Add_offer_box(BoxLayout):
             return
 
         text = self.ids.size_num_input.text + ' ' + self.ids.size_type_input.text
+        text = text.replace(",", "-")
+
         if text not in self.size_list:
             self.size_list.append(text)
 
@@ -180,10 +182,6 @@ class Add_offer_box(BoxLayout):
             btn.icon = "assets/windows/images/colors/" + text + ".png"
             # chosen colors for add offer
             self.color_list.append(text)
-
-    # def get_step(self):  # only for the kivy- dont use it!!!!
-    #     self.step += 1
-    #     return self.step
 
     def init_steps_pointers(self):
         if self.first_time_pointers is True:
@@ -421,7 +419,11 @@ class Add_offer_box(BoxLayout):
     def show_dropdown_year(self):
         menu_items = []
         today_year = datetime.today().year
-        for year in range(today_year + 1, today_year - 1, -1):
+        today_month = datetime.today().month
+        limit_year = today_year
+        if today_month == 12:
+            limit_year = today_year + 1
+        for year in range(limit_year, today_year - 1, -1):
             menu_items.append(
                 {
                     'text': str(year),
@@ -444,7 +446,11 @@ class Add_offer_box(BoxLayout):
 
     def show_dropdown_month(self):
         menu_items = []
-        for month in range(12, 0, -1):
+        today_month = datetime.today().month
+        next_month = today_month + 1
+        if today_month == 12:
+            next_month = 1
+        for month in range(next_month, today_month-1, -1):
             menu_items.append(
                 {
                     'text': str(month),
@@ -477,7 +483,11 @@ class Add_offer_box(BoxLayout):
         if month == "4" or month == "6" or month == "9" or month == "11":
             max_day = 30
         menu_items = []
-        for day in range(max_day, 0, -1):
+        min_day = 0
+        if int(month) == datetime.today().month:
+            min_day = datetime.today().day - 1
+
+        for day in range(max_day, min_day, -1):
             menu_items.append(
                 {
                     'text': str(day),
@@ -574,6 +584,11 @@ class Add_offer_box(BoxLayout):
         # if step = 3 -> have to change step 2 maximum
         # if step = 4 -> have to change step 3 maximum
         temp = self.steps_pointers[step].children[0].children[4].text
+        if temp == '':
+            temp = 0
+        temp = int(temp)
+        temp = temp - 1
+        temp = str(temp)
         self.steps_pointers[step - 1].children[0].children[2].text = temp
 
     def set_next_minimum(self, step):
@@ -584,6 +599,10 @@ class Add_offer_box(BoxLayout):
         # if step = 3 -> have to check if there is step 4
         # if step = 4 -> nothing to do -> never happened
         temp = self.steps_pointers[step].children[0].children[2].text
+        if temp == '':
+            temp = 0
+        temp = int(temp) + 1
+        temp = str(temp)
         if step + 1 in self.steps_pointers.keys():
             self.steps_pointers[step + 1].children[0].children[4].text = temp
 

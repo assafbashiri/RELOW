@@ -13,11 +13,13 @@ class CheckValidity:
             Utils.pop(self, f'{obj} must contain only digits', 'alert')
             return False
         return True
+
     def contains_only_letters(self, str, obj):
         if not str.isalpha():
             Utils.pop(self, f'{obj} must contain only digits', 'alert')
             return False
         return True
+
     def checkValidityName(self, name):
         if ' ' in name:
             res = "Name Shouldnt contain any spaces"
@@ -31,7 +33,7 @@ class CheckValidity:
 
             res = "Good Name"
             # Utils.pop(self, res, 'success')
-            #toast(res)
+            # toast(res)
 
             return True
         else:
@@ -57,9 +59,8 @@ class CheckValidity:
         else:
             res = "Good User Name"
             # Utils.pop(self, res, 'succes')
-            #toast(res)
-            return  True
-
+            # toast(res)
+            return True
 
     # def checkValidityUserName(self, user_name):
     #     if len(user_name)<4:
@@ -88,56 +89,46 @@ class CheckValidity:
     #         #toast(res)
     #         return  True
 
-
     def checkValidityEmail(self, email):
         # have to check if email exist in the world
         if not re.match(regex, email):
             res = "Bad Email"
             Utils.pop(self, res, 'alert')
             return False
-        res= "Good Email"
+        res = "Good Email"
         # Utils.pop(self, res, 'succes')
-        #toast(res)
+        # toast(res)
         return True
 
     # password length 8-20
     def checkValidityPassword(self, password):
-            if len(password) < 8:
-                res= "Make sure your password is at lest 8 letters"
-                Utils.pop(self, res, 'alert')
-                #toast(res)
-                return False
-            elif len(password) > 20:
-                res= "Make sure your password is less then 20 letters"
-                Utils.pop(self, res, 'alert')
-                #toast(res)
-                return False
-            elif not any(char.isdigit() or char.islower() or char.isupper() for char in password):
+        if len(password) < 8:
+            res = "Make sure your password is at lest 8 letters"
+            Utils.pop(self, res, 'alert')
+            return False
+        elif len(password) > 20:
+            res = "Make sure your password is less then 20 letters"
+            Utils.pop(self, res, 'alert')
+            return False
+        elif not any(char.isdigit() for char in password):
+            res = "Make sure your password has a digit"
+            Utils.pop(self, res, 'alert')
+            return False
+        elif not any(char.isupper() for char in password):
+            res = "Make sure your password has a capital letter in it"
+            Utils.pop(self, res, 'alert')
+            return False
+        elif not any(char.islower() for char in password):
+            res = "Make sure your password has a lower letter in it"
+            Utils.pop(self, res, 'alert')
+            return False
+        for ch in password:
+            if (not ch.isdigit()) and (not ch.isupper()) and (not ch.islower()):
                 res = "Only english letters and digits"
                 Utils.pop(self, res, 'alert')
-                #toast(res)
                 return False
-            elif not any(char.isdigit() for char in password):
-                res = "Make sure your password has a number in it"
-                Utils.pop(self, res, 'alert')
-                #toast(res)
-                return False
-            elif not any(char.isupper() for char in password):
-                res= "Make sure your password has a capital letter in it"
-                Utils.pop(self, res, 'alert')
-                #toast(res)
-                return False
-            elif not any(char.islower() for char in password):
-                res= "Make sure your password has a lower letter in it"
-                Utils.pop(self, res, 'alert')
-                #toast(res)
-                return False
-            else:
-                res ="Your password seems fine"
-                # Utils.pop(self, res, 'succes')
-                #toast(res)
-                return True
-
+        else:
+            return True
 
     # check if this function is important due to date picker
     def checkValidityDateOfBirth(self, date):
@@ -147,8 +138,8 @@ class CheckValidity:
         year, month, day = date.split('-')
         isValidDate = True
         try:
-            x=datetime.datetime(int(year), int(month), int(day))
-            a=6
+            x = datetime.datetime(int(year), int(month), int(day))
+            a = 6
         except Exception as e:
             isValidDate = False
         if not isValidDate:
@@ -157,9 +148,9 @@ class CheckValidity:
         difference = datetime.datetime.now() - datetime.datetime(int(year), int(month), int(day))
         difference_in_years = (difference.days + difference.seconds / 86400) / 365.2425
         if difference_in_years < min_age:
-            toast(f'Sorry, Your are too young, your age is {int(difference_in_years)} years old, you have to be at least {int(min_age)} years old')
+            toast(
+                f'Sorry, Your are too young, your age is {int(difference_in_years)} years old, you have to be at least {int(min_age)} years old')
             return False
-
 
     def checkEndDate(self, end_date):
         isValidDate = True

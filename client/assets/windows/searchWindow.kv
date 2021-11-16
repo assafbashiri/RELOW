@@ -116,8 +116,6 @@
                 write_tab: False
                 multiline: False
                 on_release: root.show_dropdown_day()
-
-
             Button:
                 id: search_by_date
                 text:"Search"
@@ -158,6 +156,7 @@
         MDLabel:
             id : search_label
             text : "Search"
+            font_size: 70
         MDIconButton:
             icon: "assets/windows/images/search1.png"
             on_press:root.parent.parent.show_search_by()

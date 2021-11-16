@@ -85,8 +85,8 @@ class Handler:
                          54: self.update_step_for_offer,
                          55: self.exit,
                          56: self.get_all_categories,
-                         78 : self.guest_register,
-                         79 : self.guest_login,
+                         78: self.guest_register,
+                         79: self.guest_login,
                          80: self.merge_register,
                          81: self.complete_register,
                          82: self.log_in_from_guest,
@@ -95,11 +95,12 @@ class Handler:
                          97: self.get_offers_by_product_price,
                          98: self.get_offers_by_product_end_date,
                          99: self.get_offers_by_product_company,
+                         100: self.become_a_seller,
+                         101: self.update_active_buy_offer,
                          500: self.confirm_add_active_sell_offer,
                          501: self.confirm_remove_active_sell_offer,
                          502: self.get_offers_to_confirm,
-                         100: self.become_a_seller,
-                         101: self.update_active_buy_offer}
+                         505: self.move_exp_offers}
 
 
 
@@ -248,7 +249,10 @@ class Handler:
             self.offers_by_date[offer.end_date].append(offer)
             return Response(vars(OfferService(offer)), "Offer Added Successfully", True)
         except Exception as e:
-            self.category_controller.remove_offer(offer)
+            try:
+                self.category_controller.remove_offer(offer)
+            except Exception as e11:
+                pass
             return Response(None, str(e), False)
 
     def add_liked_offer(self, argument):
@@ -793,6 +797,15 @@ class Handler:
             return Response(None, "Offer Removed Successfully", True)
         except Exception as e:
             return Response(None, str(e), False)
+
+    def move_exp_offers(self, argument):
+        try:
+            exp_offers = self.category_controller.get_all_expired_offers()
+            Utils.create_summery_end_offers(self, exp_offers, self.user_controller, self.category_controller)
+            self.user_controller.move_all_expired_to_history(exp_offers)
+        except Exception as e:
+            return Response(None, str(e), False)
+
 
 
 

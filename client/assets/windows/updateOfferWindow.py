@@ -200,6 +200,7 @@ class Update_offer_box(BoxLayout):
             return
 
         text = self.ids.size_num_input.text + ' ' + self.ids.size_type_input.text
+        text = text.replace(",", "-")
         if text not in self.size_list:
             self.size_list.append(text)
 

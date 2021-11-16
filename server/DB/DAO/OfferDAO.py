@@ -87,13 +87,16 @@ class OfferDAO:
         self._conn.execute(
             """INSERT INTO history_buyers (user_id,offer_id,status,step) VALUES (?,?,?,?)""",
             [user_id, offer_id, status.name, step])
+        self._conn.commit()
 
     def insert_to_history_offers(self, offer_dto):
         self._conn.execute(
-            """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            """INSERT INTO history_offers (offer_id,user_id,start_date,end_date,status,step,
+            sold_products,category_id,sub_category_id,hot_deals) VALUES (?,?,?,?,?,?,?,?,?,?)""",
             [offer_dto.offer_id, offer_dto.user_id, offer_dto.start_date, offer_dto.end_date, offer_dto.status.name,
              offer_dto.current_step, offer_dto.total_products, offer_dto.category_id, offer_dto.sub_category_id,
              offer_dto.hot_deals])
+        self._conn.commit()
 
     def update_active_buy_offer(self, user_id, offer_id, quantity, step, color,size,address):
         self._conn.execute("""UPDATE active_buyers set quantity = ?, step =?, color=?, size=?, address=? WHERE offer_id = ? AND user_id = ?""",

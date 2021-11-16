@@ -467,8 +467,14 @@ class UserController:
     def move_all_expired_to_history(self, expired_offers):  # expired_offers - regular list
         # move all expired offers
         for curr_offer in expired_offers:
+            for user_id in self.usersDictionary:
+                try:
+                    self.remove_like_offer(user_id, curr_offer.offer_id)
+                except Exception as e:
+                    pass
             seller = self.check_user_state(curr_offer.user_id)
             curr_offer.check_exp_status()
+            curr_offer.set_hot_deals(False)
             if not seller.move_to_history_seller(curr_offer):
                 raise Exception("offer is not in the seller's sale offers")
             current_buyers = curr_offer.get_current_buyers()
@@ -588,7 +594,7 @@ class UserController:
             # history buyer
             for history_buyer in history_buyers_db:
                 if user_id == history_buyer[0]:
-                    user.add_to_history_buyer(offers[history_buyer[1]])
+                    user.add_to_history_buyer(history_offers[history_buyer[1]])
             # liked offers
             for like_offer in liked_offers_from_db:
                 if like_offer[1] == user_id:

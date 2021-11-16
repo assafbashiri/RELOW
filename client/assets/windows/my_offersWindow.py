@@ -30,6 +30,7 @@ class MY_OFFERS_Screen(Screen):
             toast("0 active buy offers")
         # good search
         else:
+            self.of.ids.scroll_box.clear_widgets()
             self.of.insert_offers(ans)
             self.ids.offers_box.ids.offi.add_widget(self.of)
 
@@ -45,6 +46,7 @@ class MY_OFFERS_Screen(Screen):
             toast("0 active sell offers")
         # good search
         else:
+            self.of.ids.scroll_box.clear_widgets()
             self.of.insert_offers(ans)
             self.ids.offers_box.ids.offi.add_widget(self.of)
 
@@ -60,6 +62,7 @@ class MY_OFFERS_Screen(Screen):
             toast("0 liked offers")
         # good search
         else:
+            self.of.ids.scroll_box.clear_widgets()
             self.of.insert_offers(ans)
             self.of.size_hint = 1,.5
             self.ids.offers_box.ids.offi.add_widget(self.of)
@@ -76,6 +79,7 @@ class MY_OFFERS_Screen(Screen):
             toast("0 history buy offers")
         # good search
         else:
+            self.of.ids.scroll_box.clear_widgets()
             self.of.insert_offers(ans)
             # self.ids.offers_box.ids.offi.size_hint_x =
             self.ids.offers_box.ids.offi.add_widget(self.of)
@@ -92,6 +96,7 @@ class MY_OFFERS_Screen(Screen):
             toast("0 history sell offers")
         # good search
         else:
+            self.of.ids.scroll_box.clear_widgets()
             self.of.insert_offers(ans)
             self.ids.offers_box.ids.offi.add_widget(self.of)
 

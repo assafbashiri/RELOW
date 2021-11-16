@@ -40,15 +40,21 @@ class SubCategory:
         ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
-            if curr_offer.product.name == product_name:
+            if self.serach_equles_string(curr_offer.product.name, product_name):
                 ans.append(curr_offer)
         return ans
+
+
+    def serach_equles_string(self, real_word, search_word):
+        search_word = search_word.lower()
+        real_word = real_word.lower()
+        return search_word in real_word
 
     def get_offers_by_company_name(self, company_name):
         ans = []
         for offer_id in self.offers_dictionary.keys():
             curr_offer = self.offers_dictionary[offer_id]
-            if curr_offer.get_product().get_company() == company_name:
+            if self.serach_equles_string(curr_offer.product.company, company_name):
                 ans.append(curr_offer)
         return ans
 

@@ -22,6 +22,10 @@ class Offers_Screen(ScrollView):
     def insert_offers(self, offers):
         # get the offer list from the user
         # loop all the offer and add them to the recycle
+        # child_len = len(self.ids.scroll_box.children)
+        # for i in range (0, child_len):
+        #     self.ids.scroll_box.children.pop()
+
         photos_index = App.get_running_app().controller.photos_index
         offers_list = []
         for offer in offers:
