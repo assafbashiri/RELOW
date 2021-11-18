@@ -18,7 +18,6 @@ class Offers_Screen(ScrollView):
         photos_index = App.get_running_app().controller.photos_index
         offers_list = []
         for offer in offers:
-            self.ids.scroll_box.size_hint_y += .8
             photo_lis = []
             lis = offer.product.photos
             for photo in lis:
@@ -27,7 +26,6 @@ class Offers_Screen(ScrollView):
                                 'photo_lis': photo_lis})
             offer_to_add = RecycleViewRow(offer, photo_lis, photos_index)
             self.ids.scroll_box.add_widget(offer_to_add)
-            self.ids.scroll_box.size_hint_y +=1
             photos_index += 1
         # put in controller field "photo_index" the last index
         App.get_running_app().controller.photos_index = photos_index
