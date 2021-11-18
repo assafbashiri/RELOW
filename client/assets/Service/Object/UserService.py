@@ -19,7 +19,8 @@ class UserService():
         if gender is None:
             self.gender = None
         else:
-            self.gender = gender[7:len(gender)]
+            self.gender = gender
+
 
         self.seller = seller
 

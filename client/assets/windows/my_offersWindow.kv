@@ -44,14 +44,14 @@
                     text:"My purchases"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-                    on_press:root.parent.active_buy()
+                    on_press:root.parent.show_purchases()
                 Button:
                     pos_hint: {'top':1}
                     id: active_sell
                     text:"My sell offers"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-                    on_press:root.parent.active_sell()
+                    on_press:root.parent.show_sell_offers()
 
                 Button:
                     id: liked
@@ -59,7 +59,7 @@
                     text:"Liked offers"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-                    on_press:root.parent.like_offers()
+                    on_press:root.parent.show_like_offers()
 
                 Button:
                     id: history_buy
@@ -67,7 +67,7 @@
                     text:"History purchases"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-                    on_press:root.parent.history_buy()
+                    on_press:root.parent.show_history_purchases()
 
                 Button:
                     id: history_sell
@@ -75,7 +75,7 @@
                     text:"History sell offers"
                     background_color: (0,0,0,0.11)
                     color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-                    on_press:root.parent.history_sell()
+                    on_press:root.parent.show_history_sell()
 
     BoxLayout:
         orientation: 'vertical'

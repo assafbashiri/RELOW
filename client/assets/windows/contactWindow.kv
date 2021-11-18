@@ -9,11 +9,11 @@
 <Contact_box1>
     id: contact_box
     padding: [10,50,50,50]
-    BoxiLayout1:
+    Desc_Subject_Box:
         id: boxi
 
 
-<BoxiLayout1>
+<Desc_Subject_Box>
     spacing: 30
     orientation: "vertical"
     BoxLayout:
@@ -73,7 +73,7 @@
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
-            on_press: root.send()
+            on_press: root.send_contact_us()
         GridLayout:
 
 

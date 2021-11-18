@@ -3,13 +3,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.label import MDLabel
 from kivy.properties import ObjectProperty
-
 from assets.Utils.Utils import Utils
-from assets.windows.SideBar import SideBar
 
-
-class Category_box(BoxLayout):
-    pass
 
 class CONTACTScreen(Screen):
     def __init__(self, **kwargs):
@@ -17,38 +12,29 @@ class CONTACTScreen(Screen):
         super(CONTACTScreen, self).__init__(**kwargs)
 
 class Contact_box1(BoxLayout):
-
     def __init__(self,**kwargs):
         super(Contact_box1, self).__init__(**kwargs)
-        self.cat = Category_box()
-        self.sub_cat = Sub_Category_box()
 
     def exit(self):
         App.get_running_app().controller.exit()
 
-    def change_to_cat(self):
-        SideBar.change_to_cat(self)
 
-
-class Sub_Category_box(BoxLayout):
-    pass
-class BoxiLayout1(BoxLayout):
+class Desc_Subject_Box(BoxLayout):
     drop_down = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(BoxiLayout1, self).__init__(**kwargs)
-        self.flag = 1 # 1 - update personal details   2 - add address details   3- add payment method
-        self.gender = 0
+        super(Desc_Subject_Box, self).__init__(**kwargs)
         self.controller = App.get_running_app().controller
         self.label = MDLabel(text="")
         self.dialog = None
 
+    def back(self):
+        App.get_running_app().root.change_screen("menu_screen")
 
-    def send(self):
+    def send_contact_us(self):
         if self.controller.guest is True:
             Utils.pop(self, 'have to log in or register to contact us', 'alert')
             return
-
         subject = self.ids.subject.text
         description = self.ids.description.text
         self.label.text = ""
@@ -65,8 +51,5 @@ class BoxiLayout1(BoxLayout):
             self.ids.subject.text = ""
             self.ids.description.text = ""
             App.get_running_app().root.change_screen("menu_screen")
-            #App.get_running_app().root.current = 'menu_screen'
 
-    def back(self):
-        App.get_running_app().root.change_screen("menu_screen")
-        #App.get_running_app().root.current ="menu_screen"
+
