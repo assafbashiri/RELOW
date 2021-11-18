@@ -29,6 +29,7 @@
         id: gridi
         spacing: 5
         cols:2
+        size_hint:1,.6
         TextInput:
             id:name
             hint_text: "search by name"
@@ -37,11 +38,20 @@
             write_tab: False
             multiline: False
             font_name:"Arial"
+
         Button:
             id: search_by_name
             text:"Search"
             font_size: 30
-            size_hint_x: 0.3
+            size_hint_x:1.2
+            background_color: (0,0,0,0)
+            background_normal: ''
+            canvas.before:
+                Color:
+                    rgba: (24/255,211/255,199/255,1)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
             on_press:root.parent.parent.parent.search_by_name()
 
         TextInput:
@@ -49,7 +59,6 @@
             hint_text: "search by company"
             normal_color: 100,0,0,0
             color_active: 100,100,1,0
-            size_hint_y: .1
             write_tab: False
             font_name:"Arial"
             multiline: False
@@ -59,6 +68,14 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
+            background_color: (0,0,0,0)
+            background_normal: ''
+            canvas.before:
+                Color:
+                    rgba: (24/255,211/255,199/255,1)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
             on_press:root.parent.parent.parent.search_by_company()
 
         TextInput:
@@ -77,51 +94,73 @@
             text:"Search"
             font_size: 30
             size_hint_x: 0.1
+            background_color: (0,0,0,0)
+            background_normal: ''
+            canvas.before:
+                Color:
+                    rgba: (24/255,211/255,199/255,1)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
             on_press:root.parent.parent.parent.search_by_price()
 
 
-
+    GridLayout:
+        cols:1
+        size_hint_y:.1
+    GridLayout:
+        id: date
+        cols:5
+        #spacing: 10
+        #pos_hint:{'center_x':.1, 'center_y':.5}
+        size_hint:1,.2
+        MDDropDownItem:
+            id:year_input
+            pos_hint: {'center_x': .1, 'center_y': .5}
+            text: 'Year'
+            font_name: "Arial"
+            normal_color: 100,0,0,0
+            color_active: 100,100,1,0
+            write_tab: False
+            multiline: False
+            on_release: root.show_dropdown_year()
+        MDDropDownItem:
+            id:month_input
+            pos_hint: {'center_x': .1, 'center_y': .5}
+            text: 'Month'
+            font_name: "Arial"
+            normal_color: 100,0,0,0
+            color_active: 100,100,1,0
+            write_tab: False
+            multiline: False
+            on_release: root.show_dropdown_month()
+        MDDropDownItem:
+            id:day_input
+            pos_hint: {'center_x': .1, 'center_y': .5}
+            text: 'Day'
+            font_name: "Arial"
+            normal_color: 100,0,0,0
+            color_active: 100,100,1,0
+            write_tab: False
+            multiline: False
+            on_release: root.show_dropdown_day()
         GridLayout:
-            id: date
-            cols:4
-            spacing: 10
-            pos_hint:{'center_x':.1, 'center_y':.5}
-            MDDropDownItem:
-                id:year_input
-                pos_hint: {'center_x': .1, 'center_y': .5}
-                text: 'Year'
-                font_name: "Arial"
-                normal_color: 100,0,0,0
-                color_active: 100,100,1,0
-                write_tab: False
-                multiline: False
-                on_release: root.show_dropdown_year()
-            MDDropDownItem:
-                id:month_input
-                pos_hint: {'center_x': .1, 'center_y': .5}
-                text: 'Month'
-                font_name: "Arial"
-                normal_color: 100,0,0,0
-                color_active: 100,100,1,0
-                write_tab: False
-                multiline: False
-                on_release: root.show_dropdown_month()
-            MDDropDownItem:
-                id:day_input
-                pos_hint: {'center_x': .1, 'center_y': .5}
-                text: 'Day'
-                font_name: "Arial"
-                normal_color: 100,0,0,0
-                color_active: 100,100,1,0
-                write_tab: False
-                multiline: False
-                on_release: root.show_dropdown_day()
-            Button:
-                id: search_by_date
-                text:"Search"
-                font_size: 30
-                size_hint_x: 0.1
-                on_press:root.parent.parent.parent.search_by_end_date()
+            cols:1
+            size_hint_x:.32
+        Button:
+            #size_hint:.1,.2
+            id: search_by_date
+            text:"Search By End Date"
+            font_size: 30
+            background_color: (0,0,0,0)
+            background_normal: ''
+            canvas.before:
+                Color:
+                    rgba: (24/255,211/255,199/255,1)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+            on_press:root.parent.parent.parent.search_by_end_date()
 
 
 

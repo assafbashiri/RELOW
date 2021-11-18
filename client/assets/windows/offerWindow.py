@@ -37,6 +37,7 @@ class OfferScreen(Screen):
         super(OfferScreen, self).__init__(**kwargs)
         self.name = "offer_screen"
 
+
     def init_offer(self, offer, photo_lis):
         self.photo_lis = photo_lis
         if self.name == "offer_screen":
@@ -58,6 +59,7 @@ class OfferScreen(Screen):
         self.sizes_btn[1] = {}
         self.sizes_btn[2] = {}
         self.sizes_btn[3] = {}
+        self.ids.product_name.text = self.offer.product.name
 
         # if the offer is valid(date not passed)
         if not Utils.check_end_date(self, self.offer.end_date):
@@ -74,22 +76,24 @@ class OfferScreen(Screen):
 
     def show_as_guest(self, photo_lis):
         print('as a guest')
+        self.grid = GridLayout(cols=1, padding=[0, 100, 0, 0])
         self.scroll = ScrollView(do_scroll_y=True, size_hint=(1, 1))
+        self.grid.add_widget(self.grid)
         self.add_widget(self.scroll)
         self.box = BoxLayout(orientation='vertical', size_hint_y=1.5)
 
         # title box
-        self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
-        self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
-        self.back.bind(on_press=lambda x: self.out())
-        self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
-        self.product_name.bold = True
-        self.product_name.font_size = 45
-        self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'left'
-        self.product_name.valign = 'bottom'
-        self.title.add_widget(self.back)
-        self.title.add_widget(self.product_name)
+        # self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
+        # self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
+        # self.back.bind(on_press=lambda x: self.out())
+        # self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
+        # self.product_name.bold = True
+        # self.product_name.font_size = 45
+        # self.product_name.color = (0, 0, 0, 1)
+        # self.product_name.halign = 'left'
+        # self.product_name.valign = 'bottom'
+        # self.title.add_widget(self.back)
+        # self.title.add_widget(self.product_name)
 
         # label_spacing1 = MDLabel(text='', size_hint_x = .4)
         # self.title.add_widget(label_spacing1)
@@ -130,7 +134,7 @@ class OfferScreen(Screen):
             x = MDCheckbox(group="price")
             x.bind(active=self.set_total_price)
             self.price_per_step.add_widget(x)
-            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())+"₪"))
         self.steps_box.add_widget(self.price_per_step)
         self.box.add_widget(self.steps_box)
 
@@ -215,22 +219,24 @@ class OfferScreen(Screen):
 
     def show_as_seller(self, photo_lis):
         print("as a seller")
+        self.grid = GridLayout(cols=1, padding=[0, 100, 0, 0])
         self.scroll = ScrollView(do_scroll_y=True, size_hint=(1, 1))
-        self.add_widget(self.scroll)
+        self.grid.add_widget(self.scroll)
+        self.add_widget(self.grid)
         self.box = BoxLayout(orientation='vertical', size_hint_y=1.5)
 
         # title box
-        self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
-        self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
-        self.back.bind(on_press=lambda x: self.out())
-        self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
-        self.product_name.bold = True
-        self.product_name.font_size = 45
-        self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'left'
-        self.product_name.valign = 'bottom'
-        self.title.add_widget(self.back)
-        self.title.add_widget(self.product_name)
+        # self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
+        # self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
+        # self.back.bind(on_press=lambda x: self.out())
+        # self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
+        # self.product_name.bold = True
+        # self.product_name.font_size = 45
+        # self.product_name.color = (0, 0, 0, 1)
+        # self.product_name.halign = 'left'
+        # self.product_name.valign = 'bottom'
+        # self.title.add_widget(self.back)
+        # self.title.add_widget(self.product_name)
 
         # label_spacing1 = MDLabel(text='', size_hint_x = .4)
         # self.title.add_widget(label_spacing1)
@@ -271,7 +277,7 @@ class OfferScreen(Screen):
             x = MDCheckbox(group="price")
             x.bind(active=self.set_total_price)
             self.price_per_step.add_widget(x)
-            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())+"₪"))
         self.steps_box.add_widget(self.price_per_step)
         self.box.add_widget(self.steps_box)
 
@@ -369,22 +375,24 @@ class OfferScreen(Screen):
             if p.buyer_id == self.user.user_id:
                 self.purchase = p
                 break
+        self.grid = GridLayout(cols=1, padding=[0, 100, 0, 0])
         self.scroll = ScrollView(do_scroll_y=True, size_hint=(1, 1))
-        self.add_widget(self.scroll)
+        self.grid.add_widget(self.scroll)
+        self.add_widget(self.grid)
         self.box = BoxLayout(orientation='vertical', size_hint_y=1.5)
         # title box
-        self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
-        self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
-        self.back.bind(on_press=lambda x: self.out())
-        self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
-        self.product_name.bold = True
-        self.product_name.font_size = 45
-        self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'left'
-        self.product_name.valign = 'bottom'
-        self.title.add_widget(self.back)
-        self.title.add_widget(self.product_name)
-        self.box.add_widget(self.title)
+        # self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
+        # self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
+        # self.back.bind(on_press=lambda x: self.out())
+        # self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
+        # self.product_name.bold = True
+        # self.product_name.font_size = 45
+        # self.product_name.color = (0, 0, 0, 1)
+        # self.product_name.halign = 'left'
+        # self.product_name.valign = 'bottom'
+        # self.title.add_widget(self.back)
+        # self.title.add_widget(self.product_name)
+        # self.box.add_widget(self.title)
         # photo list
         self.picture_box = BoxLayout(orientation='horizontal')
         self.carousel = Carousel(size_hint_y=1, direction='right')
@@ -426,7 +434,7 @@ class OfferScreen(Screen):
             self.price_per_step.add_widget(x)
             if self.purchase.step_id == step.step_number:
                 temp = x
-            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())+"₪"))
         self.steps_box.add_widget(self.price_per_step)
         self.box.add_widget(self.steps_box)
 
@@ -527,29 +535,32 @@ class OfferScreen(Screen):
         self.scroll.add_widget(self.box)
 
     def show_as_viewer(self, photo_lis):
+        # self = OfferScreen
         print('as a viewer')
+        self.grid = GridLayout(cols=1 ,padding=[0,100,0,0])
         self.scroll = ScrollView(do_scroll_y=True, size_hint=(1, 1))
-        self.add_widget(self.scroll)
+        self.grid.add_widget(self.scroll)
+        self.add_widget(self.grid)
         self.box = BoxLayout(orientation='vertical', size_hint_y=1.5)
         # title box
-        self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
-        self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
-        self.back.bind(on_press=lambda x: self.out())
-        self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
-        self.product_name.bold = True
-        self.product_name.font_size = 45
-        self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'left'
-        self.product_name.valign = 'bottom'
-        self.title.add_widget(self.back)
-        self.title.add_widget(self.product_name)
-        self.box.add_widget(self.title)
+        # self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
+        # self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
+        # self.back.bind(on_press=lambda x: self.out())
+        # self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
+        # self.product_name.bold = True
+        # self.product_name.font_size = 45
+        # self.product_name.color = (0, 0, 0, 1)
+        # self.product_name.halign = 'left'
+        # self.product_name.valign = 'bottom'
+        # self.title.add_widget(self.back)
+        # self.title.add_widget(self.product_name)
+        # self.box.add_widget(self.title)
         # photo_box
         self.picture_box = BoxLayout(orientation='horizontal')
         self.carousel = Carousel(size_hint_y=1, direction='right')
-        self.left_arr = MDIconButton(icon="assets/windows/images/left.png", pos_hint={'top': .6})
+        self.left_arr = MDIconButton(icon="chevron-left", pos_hint={'top': .6})
         self.left_arr.bind(on_press=lambda x: self.carousel.load_previous())
-        self.right_arr = MDIconButton(icon="assets/windows/images/right.png", pos_hint={'top': .6})
+        self.right_arr = MDIconButton(icon="chevron-right", pos_hint={'top': .6})
         self.right_arr.bind(on_press=self.carousel.load_next)
         self.insert_photos(self.carousel, photo_lis)
         self.box.add_widget(self.picture_box)
@@ -579,7 +590,7 @@ class OfferScreen(Screen):
             x = MDCheckbox(group="price")
             x.bind(active=self.set_total_price)
             self.price_per_step.add_widget(x)
-            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())))
+            self.price_per_step.add_widget(MDLabel(text="price: " + str(step.get_price())+"₪"))
         self.steps_box.add_widget(self.price_per_step)
         self.box.add_widget(self.steps_box)
 
@@ -672,20 +683,22 @@ class OfferScreen(Screen):
         # if the offer is valid(date not passed)
         # if Utils.check_end_date(self, self.offer.end_date):
         print('as a history offer')
+        self.grid = GridLayout(cols=1, padding=[0, 100, 0, 0])
         self.scroll = ScrollView(do_scroll_y=True, size_hint=(1, 1))
+        self.grid.add_widget(self.grid)
         self.box = BoxLayout(orientation='vertical', size_hint_y=1.5)
         # title box
-        self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
-        self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
-        self.back.bind(on_press=lambda x: self.out())
-        self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
-        self.product_name.bold = True
-        self.product_name.font_size = 45
-        self.product_name.color = (0, 0, 0, 1)
-        self.product_name.halign = 'left'
-        self.product_name.valign = 'bottom'
-        self.title.add_widget(self.back)
-        self.title.add_widget(self.product_name)
+        # self.title = BoxLayout(orientation='horizontal', size_hint_y=.1)
+        # self.back = MDIconButton(icon="assets/windows/images/back_btn.png", pos_hint={'top': .6})
+        # self.back.bind(on_press=lambda x: self.out())
+        # self.product_name = MDLabel(text=" " + self.offer.product.name, pos_hint={'top': .3})
+        # self.product_name.bold = True
+        # self.product_name.font_size = 45
+        # self.product_name.color = (0, 0, 0, 1)
+        # self.product_name.halign = 'left'
+        # self.product_name.valign = 'bottom'
+        # self.title.add_widget(self.back)
+        # self.title.add_widget(self.product_name)
         self.box_cover = BoxLayout(orientation='vertical')
         self.box_cover.add_widget(self.title)
         self.box_cover.add_widget(self.scroll)
@@ -786,7 +799,7 @@ class OfferScreen(Screen):
             step = self.offer.steps[step_id]
             price_per_step = step.get_price()
             total_price = self.num_of_quantity * price_per_step
-        self.curr_price.text = "  price : " + str(total_price)
+        self.curr_price.text = "  price : " + str(total_price) +"₪"
 
     def chose_color(self, btn, text, num_of_quantity, color_num):
         print("chosen color:" + str(text) + "\n" + "num_of_quantity:" + str(num_of_quantity) + "\n")
@@ -897,7 +910,7 @@ class OfferScreen(Screen):
 
     def add_address(self):
         App.get_running_app().root.change_screen('account_screen')
-        App.get_running_app().root.screens[2].ids.account_box.change_to_address()
+        App.get_running_app().root.screens[2].ids.account_box.change_to_address_screen()
 
     def join_(self):
         # check buying details

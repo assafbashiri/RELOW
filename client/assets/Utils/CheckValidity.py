@@ -26,20 +26,52 @@ class CheckValidity:
             Utils.pop(self, res, 'alert')
             return False
         if len(name) <= 1:
-            res = "name is too short"
+            res = "name is too short - less/equal then 1"
             Utils.pop(self, res, 'alert')
             return False
         if name.replace(" ", "").isalpha():
-
             res = "Good Name"
-            # Utils.pop(self, res, 'success')
-            # toast(res)
 
             return True
         else:
             res = "Bad Name - name should contain only letters"
             Utils.pop(self, res, 'alert')
             return False
+
+    def check_validity_product_company_name(self,product_name):
+        MAX_LENGTH = 20
+        if len(product_name) <= 1:
+            res = "product name is too short - less/equal then 1"
+            Utils.pop(self, res, 'alert')
+            return False
+        if len(product_name) > MAX_LENGTH:
+            res = f'product name is too long - more then {MAX_LENGTH}'
+            Utils.pop(self, res, 'alert')
+            return False
+        if not product_name[0].isalpha():
+            res = "product name have to start with a letter"
+            Utils.pop(self, res, 'alert')
+            return False
+
+        return True
+
+    #add more constraints by demand
+    def check_validity_description(self,description):
+        MAX_LENGTH = 200
+        if len(description) <= 1:
+            res = "description is too short - less/equal then 1"
+            Utils.pop(self, res, 'alert')
+            return False
+        if len(description) > MAX_LENGTH:
+            res = f'description is too long - more then {MAX_LENGTH}'
+            Utils.pop(self, res, 'alert')
+            return False
+        if not description[0].isalpha():
+            res = "description have to start with a letter"
+            Utils.pop(self, res, 'alert')
+            return False
+
+        return True
 
     # user name length is 8-20 letters
     def checkValidityPhone(self, phone):

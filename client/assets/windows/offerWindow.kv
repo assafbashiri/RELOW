@@ -1,1 +1,18 @@
 <OfferScreen>
+
+    BoxLayout:
+        pos_hint:{"top":1}
+        id: icon_box
+        size_hint: 1,.1
+        orientation: 'horizontal'
+        spacing:250
+        MDIconButton:
+            icon: "assets/windows/images/back_btn.png"
+            on_press:root.out()
+        MDLabel:
+            pos_hint_x: None
+            pos_hint: {'center_x': 0.5}
+            size_hint: .5,.5
+            id : product_name
+            #text : root.offer.product.name
+            font_size: 20

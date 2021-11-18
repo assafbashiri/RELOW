@@ -395,12 +395,22 @@
             id: price
             size_hint: 1 , .8
             text: "price"
-        TextInput:
-            id:price_input
-            input_filter: 'int'
-            size_hint: .7 , .8
-            write_tab: False
-            multiline: False
+
+        GridLayout:
+            cols:2
+            TextInput:
+                id:price_input
+                input_filter: 'int'
+                size_hint: .7 , .8
+                write_tab: False
+                multiline: False
+
+            MDIconButton:
+                id: shekel_logo
+                icon: "assets/windows/images/shekel.png"
+
+
+
 <StepLayoutStart2>:
     id: "step2"
     cols: 1
@@ -439,12 +449,18 @@
             id: price
             size_hint: 1 , .8
             text: "price"
-        TextInput:
-            id:price_input
-            input_filter: 'int'
-            size_hint: .7 , .8
-            write_tab: False
-            multiline: False
+        GridLayout:
+            cols:2
+            TextInput:
+                id:price_input
+                input_filter: 'int'
+                size_hint: .7 , .8
+                write_tab: False
+                multiline: False
+
+            MDIconButton:
+                id: shekel_logo
+                icon: "assets/windows/images/shekel.png"
 
 <StepLayout>:
     cols: 1
@@ -483,12 +499,21 @@
             id: price
             size_hint: 1 , .8
             text: "price"
-        TextInput:
-            id:price_input
-            input_filter: 'int'
-            size_hint: .7 , .8
-            write_tab: False
-            multiline: False
+
+        GridLayout:
+            cols:2
+            TextInput:
+                id:price_input
+                input_filter: 'int'
+                size_hint: .7 , .8
+                write_tab: False
+                multiline: False
+
+            MDIconButton:
+                id: shekel_logo
+                icon: "assets/windows/images/shekel.png"
+
+
 <Right>:
     icon: 'chevron-right'
     pos_hint: {'top': .5}
