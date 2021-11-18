@@ -17,7 +17,7 @@ class SEARCHScreen(Screen):
         self.name = 'search_screen'
         super(SEARCHScreen, self).__init__(**kwargs)
         self.mes = BoxLayout(orientation='horizontal', size_hint_y=.2)
-        self.of = Offers_Screen(size_hint_y=0.4)
+        self.of = Offers_Screen()
         self.first_time_bad_search = True
         self.lab = MDLabel(text="", size_hint=(1, .5), halign='center')
         # self.lab.pos_hint_y=1
@@ -55,8 +55,10 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.ids.scroll_box.clear_widgets()
+            self.of = Offers_Screen()
             self.of.insert_offers(ans)
+            #first_offer = self.of.ids.scroll_box.children[0]
+            #self.of.scroll_to(first_offer,padding=10, animate=True)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.add_widget(self.of)
@@ -79,7 +81,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.ids.scroll_box.clear_widgets()
+            self.of = Offers_Screen()
             self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
@@ -104,7 +106,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.ids.scroll_box.clear_widgets()
+            self.of = Offers_Screen()
             self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
@@ -113,9 +115,9 @@ class SEARCHScreen(Screen):
         self.first_time_bad_search = False
 
     def search_by_end_date(self):
-        day = self.ids.main_search.ids.search_box.ids.date.children[1].text
-        month = self.ids.main_search.ids.search_box.ids.date.children[2].text
-        year = self.ids.main_search.ids.search_box.ids.date.children[3].text
+        day = self.ids.main_search.ids.search_box.ids.date.children[2].text
+        month = self.ids.main_search.ids.search_box.ids.date.children[3].text
+        year = self.ids.main_search.ids.search_box.ids.date.children[4].text
         if day == "Day" or month == "Month" or year == "Year":
             Utils.pop(self, "you have to choose date", "alert")
             return
@@ -139,7 +141,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.ids.scroll_box.clear_widgets()
+            self.of = Offers_Screen()
             self.of.insert_offers(ans)
             self.ids.main_search.remove_widget(self.search_box)
             self.ids.main_search.ids.pop('search_box', None)
@@ -160,7 +162,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.ids.scroll_box.clear_widgets()
+            self.of = Offers_Screen()
             self.of.insert_offers(ans)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.remove_widget(self.search_box)
@@ -181,7 +183,7 @@ class SEARCHScreen(Screen):
             if "lab" in self.ids.main_search.ids.search_box.ids.extra.ids:
                 self.ids.main_search.ids.search_box.ids.extra.remove_widget(self.lab)
                 self.ids.main_search.ids.search_box.ids.extra.ids.pop('lab', None)
-            self.of.ids.scroll_box.clear_widgets()
+            self.of = Offers_Screen()
             self.of.insert_offers(ans)
             self.ids.main_search.ids.pop('search_box', None)
             self.ids.main_search.remove_widget(self.search_box)
@@ -206,8 +208,6 @@ class Search_box(BoxLayout):
         self.cat = Category_box()
         self.sub_cat = Sub_Category_box()
 
-    def change_to_cat(self):
-        SideBar.change_to_cat(self)
 
     def show_dropdown_year(self):
         menu_items = []

@@ -1,10 +1,13 @@
 import io
 
+from kivy import platform
 from kivy.app import App
+from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.image import Image, CoreImage
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivymd.uix.button import MDIconButton
 from kivy.uix.boxlayout import BoxLayout
@@ -290,9 +293,11 @@ class Update_offer_box(BoxLayout):
         description = self.ids.description_input.text
         sizes = self.build_string_from_list(self.size_list)
         colors = self.build_string_from_list(self.color_list)
-        if not CheckValidity.checkValidityName(self, name):
+        if not CheckValidity.check_validity_product_company_name(self, name):
             return
-        if not CheckValidity.checkValidityName(self, company):
+        if not CheckValidity.check_validity_product_company_name(self, company):
+            return
+        if not CheckValidity.check_validity_description(self, description):
             return
         # photos check
         if len(list) == 0:
@@ -698,20 +703,61 @@ class Update_offer_box(BoxLayout):
         self.carousel.load_previous()
 
     def file_manager_open(self):
-        path = '/'  # path to the directory that will be opened in the file manager
-        self.manager = MDFileManager(
-            exit_manager=self.exit_manager,  # function called when the user reaches directory tree root
-            select_path=self.select_path,  # function called when selecting a file/directory
+        print("wooooooooow")
+        # request_permissions([Permission.WRITE_EXTERNAL_STORAGE,
+        #              Permission.READ_EXTERNAL_STORAGE])
+        path = '/'
+        if platform == 'android':
+            # path =  primary_external_storage_path()
+            path = '/'
+        #path = os.getenv('EXTERNAL_STORAGE')
+        #path = '"/storage/"'  # path to the directory that will be opened in the file manager
+        self.photo_popup = Popup()
+        self.photo_popup_box = BoxLayout(orientation = 'vertical')
+        self.manager = FileChooserIconView(
+            # exit_manager=self.exit_manager,  # function called when the user reaches directory tree root
+            # select_path=self.select_path,  # function called when selecting a file/directory
         )
-        self.manager.show(path)
+        self.manager.bind(on_submit = self.photo_helper)
+        # self.manager.bind(on_selection= lambda *args:self.photo_helper2(self.manager.selection))
+        # self.manager.bind(on_subentry_to_entry= self.photo_helper2)
+        # self.manager.bind(on_press= lambda *args:self.photo_helper2(self.manager.selection))
+        add_photo_btn = Button(text = 'Add photo')
+        add_photo_btn.bind(on_press = self.select_path)
+        add_photo_btn.size_hint_y = .1
+        back_btn = Button(text='Back')
+        back_btn.bind(on_press=self.photo_popup.dismiss)
+        back_btn.size_hint_y = .1
+        self.popup_current_photo = Image(source = "")
 
-    def select_path(self, path):
+        self.photo_popup_box.add_widget(self.manager)
+        self.photo_popup_box.add_widget(add_photo_btn)
+        self.photo_popup_box.add_widget(back_btn)
+        self.photo_popup.add_widget(self.photo_popup_box)
+        self.photo_popup.open()
+        self.photo_first_time = True
+        # self.ids.choose.add_widget(self.manager)
+        # self.ids.choose.size_hint_y += 3
+    def photo_choose(self, path):
+        a = 8
+
+    def photo_helper(self,a,b,c):
+        # if self.popup_current_photo.source != "":
+        if self.photo_first_time is True:
+            self.photo_popup_box.add_widget(self.popup_current_photo, 3)
+            self.photo_first_time = False
+        self.popup_current_photo.source = b[0]
+
+
+
+    def select_path(self, a):
         '''It will be called when you click on the file name
         or the catalog selection button.
 
         :type path: str;
         :param path: path to the selected directory or file;
         '''
+        path = self.manager.selection[0]
         print('path      ' + path)
         # self.size_hint_y = 1.5
         im = Image(source=path)
@@ -737,8 +783,8 @@ class Update_offer_box(BoxLayout):
         self.i += 1
         # self.size_hint_y+= 10
         # self.bind(minimum_height = self.setter('height'))
-        self.manager.exit_manager()
-        Utils.pop(self, 'picture add successfully', 'success')
+        # self.manager.exit_manager()
+        Utils.pop(self, 'picture add succesfully', 'succes')
         # toast("picture add succesfully")
 
     def exit_manager(self, *args):
