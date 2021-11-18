@@ -1,6 +1,5 @@
 from kivy.app import App
 from kivy.uix.popup import Popup
-
 from assets.Utils.Utils import Utils
 
 

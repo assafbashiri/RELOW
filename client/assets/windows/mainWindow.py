@@ -10,7 +10,6 @@ from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
-from assets.windows.SideBar import SideBar
 from assets.windows.accountWindow import ACCOUNTScreen
 from assets.windows.connectWindow import CONNECTScreen
 from assets.windows.searchWindow import SEARCHScreen
@@ -21,7 +20,6 @@ from assets.windows.offers_list import RecycleViewRow
 from assets.windows.my_offersWindow import MY_OFFERS_Screen
 from assets.windows.contactWindow import CONTACTScreen
 from assets.windows.confirmationWindow import CONFIRMATIONScreen
-from assets.windows.changePasswordWindow import PasswordScreen
 from assets.windows.sellerWindow import SellerScreen
 from assets.windows.paymentWindow import PAYMENTScreen
 from assets.windows.termsWindow import TERMSScreen
@@ -234,7 +232,7 @@ class Down_menu(BoxLayout):
             return
         App.get_running_app().root.change_screen("account_screen")
         # App.get_running_app().root.current = 'account_screen'
-        App.get_running_app().root.ids.account.ids.account_box.init_fields()
+        App.get_running_app().root.ids.account.ids.account_box.init_account_window_fields()
 
     def is_seller(self):
         seller = App.get_running_app().controller.user_service.seller

@@ -7,7 +7,6 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.label import MDLabel
 from kivymd.uix.menu import MDDropdownMenu
 from assets.Utils.Utils import Utils
-from assets.windows.SideBar import SideBar
 from assets.windows.offers_list import Offers_Screen
 
 from assets.Utils.CheckValidity import CheckValidity

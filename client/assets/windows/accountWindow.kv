@@ -43,7 +43,7 @@
             #size_hint_y: .1
             background_color: (0,0,0,0.11)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-            on_press: root.change_to_personal()
+            on_press: root.change_to_personal_screen()
         Button:
             id: address_btn
             text:"Adderess"
@@ -52,7 +52,7 @@
             #size_hint_y: .1
             background_color: (0,0,0,0.11)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-            on_press: root.change_to_address()
+            on_press: root.change_to_address_screen()
         Button:
             id: password_btn
             text:"Password"
@@ -61,7 +61,7 @@
             #size_hint_y: .1
             background_color: (0,0,0,0.11)
             color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
-            on_press: root.change_to_update_password()
+            on_press: root.change_to_update_password_screen()
 
     BoxLayout:
         id: choose_box
@@ -310,7 +310,7 @@
                         RoundedRectangle:
                             size: self.size
                             pos: self.pos
-                    on_press: root.personal()
+                    on_press: root.update_personal_box()
 
 
 
@@ -465,7 +465,7 @@
                         RoundedRectangle:
                             size: self.size
                             pos: self.pos
-                    on_press: root.address()
+                    on_press: root.update_address()
 
 
 <Password_box>:

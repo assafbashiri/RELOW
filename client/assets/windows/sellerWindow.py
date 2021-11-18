@@ -1,11 +1,9 @@
 from kivy.uix.button import Button
-
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.textfield import MDTextField
-
 from assets.Utils.CheckValidity import CheckValidity
 from assets.Utils.Utils import Utils
 
