@@ -1,6 +1,7 @@
 from kivy.uix.textinput import TextInput
 
 from assets.Utils.Utils import Utils
+from assets.windows.loginWindow import Txt_in
 from urllib.parse import urlencode
 from kivy.app import App
 from kivy.clock import Clock
@@ -355,7 +356,7 @@ class Password_box(BoxLayout):
         self.ids.new_password_verification_input.text = ""
 
 
-class txt_address(TextInput):
+class Txt_hebrew(Txt_in):
     runner = 0
 
     def insert_text(self, string, a):
@@ -400,14 +401,15 @@ class Address_box(BoxLayout):
         for address in addresses:
             t = address['description']
             t = t[::-1]
-            menu_items.append(
+            if self.check_no_english_in_address(t):
+                menu_items.append(
 
-                {"text": f"[font=Arial]{t}[/font]",
-                 'font': 'Arial',
-                 "viewclass": "OneLineListItem",
-                 "on_release": lambda x=t, y=address['place_id']: self.save_city(x, y),
-                 }
-            )
+                    {"text": f"[font=Arial]{t}[/font]",
+                     'font': 'Arial',
+                     "viewclass": "OneLineListItem",
+                     "on_release": lambda x=t, y=address['place_id']: self.save_city(x, y),
+                     }
+                )
 
         self.drop_down_cities_autocomplete = MDDropdownMenu(
             caller=self.ids.city_input,
@@ -417,6 +419,11 @@ class Address_box(BoxLayout):
 
         self.drop_down_cities_autocomplete.open()
 
+    def check_no_english_in_address(self, address):
+        for char in address:
+            if char.isupper() or char.islower():
+                return False
+        return True
     def save_city(self, chosen_city, place_id):
         self.ids.street_input.text = ""
         street, city = chosen_city.split(',')
@@ -462,12 +469,13 @@ class Address_box(BoxLayout):
             # a = langid.classify(t)
             # if (a[0] == 'he'):
             #     t=t[::-1]
-            menu_items.append(
-                {"text": f"[font=Arial]{t}[/font]",
-                 'font': 'Arial',
-                 "viewclass": "OneLineListItem",
-                 "on_release": lambda x=t: self.save_street(x),
-                 }
+            if self.check_no_english_in_address(t):
+                menu_items.append(
+                    {"text": f"[font=Arial]{t}[/font]",
+                     'font': 'Arial',
+                     "viewclass": "OneLineListItem",
+                     "on_release": lambda x=t: self.save_street(x),
+                     }
             )
 
         self.drop_down_streets_autocomplete = MDDropdownMenu(
@@ -570,3 +578,5 @@ class Address_box(BoxLayout):
             # toast('the apt is not valid')
             return False
         return True
+
+
