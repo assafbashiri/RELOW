@@ -8,7 +8,7 @@
 
 <Contact_box1>
     id: contact_box
-    padding: [10,50,50,50]
+    padding: [50,50,50,50]
     Desc_Subject_Box:
         id: boxi
 
@@ -39,9 +39,7 @@
             text : "Subject"
             font_size: 40
             size_hint: 0.3,0.3
-        TextInput:
-            write_tab: False
-            font_name:"Arial"
+        Txt_in:
             id:subject
             size_hint_y: .25
         MDLabel:
@@ -49,11 +47,16 @@
             text : "Description"
             size_hint: 0.3,0.3
             font_size: 40
-        TextInput:
-            font_name:"Arial"
-            write_tab: False
-            id:description
+        BoxLayout:
+            id: box_for_padding
+            padding: [150,0,150,0]
             size_hint_y: 1.2
+            Txt_in_multiline:
+                font_size: root.ids.subject.font_size
+                id:description
+
+
+
         MDLabel:
             id : empty_label
             text : ""

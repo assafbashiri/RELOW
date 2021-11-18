@@ -75,16 +75,8 @@ class Login_box(BoxLayout):
         App.get_running_app().root.change_screen("menu_screen")
 
 
-class txt(TextInput):
+class Txt_in(TextInput):
+    pass
 
-    runner = 0
-
-    # def insert_text(self,string, a):
-    #     self.runner +=1
-    #     self.text = string +  self.text
-    #     self.cursor = (0,0)
-    #     # return super(txt, self).insert_text(string, from_undo=False)
-    #
-    # def do_backspace(self,from_undo=False, mode='bkspc'):
-    #     self.text = self.text[1:]
-    #     self.cursor = (0, 0)
+class Txt_in_multiline(TextInput):
+    pass

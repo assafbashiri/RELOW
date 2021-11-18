@@ -48,7 +48,7 @@
                 pos_hint_x:.2
 
         GridLayout:
-            padding: ['20dp','30dp', '20dp' , '0dp']
+            padding: [20,30,20,0]
             cols:1
 
             GridLayout:
@@ -61,6 +61,7 @@
 
                 GridLayout:
                     cols:1
+                    size_hint_x: 1
                     size_hint_y:.3
                 MDLabel:
                     text : "This platform was created to facilitate the creation of purchasing groups on a variety of products, Let's make connections in order to participate in a joint purchase that aims to significantly reduce the price"
@@ -69,23 +70,25 @@
 
             GridLayout:
                 cols:1
-                pos_hint_y:.1
+                pos_hint_y:1
             GridLayout:
-                cols:3
+                cols:1
                 id: buttons
-                size_hint: .5,2
+                size_hint: 1,4
 
                 GridLayout:
                     cols:1
-                    pos_hint_x:.1
+                    size_hint_x: 1
                 GridLayout:
                     cols:1
+                    size_hint_x: 1
+                    size_hint_y: 2
                     spacing:10
                     Button:
                         id: login_btn
                         text: "Login"
                         font_size: 40
-                        size_hint: 0.2,0.2
+                        size_hint: 1,1
                         background_color: (0,0,0,0)
                         background_normal: ''
                         borders: 2, 'solid', (1,1,0,0)
@@ -101,7 +104,7 @@
                         id: register_btn
                         text: "Register"
                         font_size: 40
-                        size_hint: 0.2,0.2
+                        size_hint: 1,1
                         background_color: (0,0,0,0)
                         background_normal: ''
                         borders: 2, 'solid', (1,1,0,0)
@@ -120,7 +123,7 @@
 
             GridLayout:
                 cols:1
-                pos_hint_y:.1
+                pos_hint_y:.5
 
 <Round@Button>
     background_normal: ''

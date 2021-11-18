@@ -30,14 +30,9 @@
         spacing: 5
         cols:2
         size_hint:1,.6
-        TextInput:
+        Txt_in:
             id:name
             hint_text: "search by name"
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            write_tab: False
-            multiline: False
-            font_name:"Arial"
 
         Button:
             id: search_by_name
@@ -54,14 +49,10 @@
                     pos: self.pos
             on_press:root.parent.parent.parent.search_by_name()
 
-        TextInput:
+        Txt_in:
             id:company
             hint_text: "search by company"
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            write_tab: False
-            font_name:"Arial"
-            multiline: False
+
 
         Button:
             id: search_by_company
@@ -78,15 +69,10 @@
                     pos: self.pos
             on_press:root.parent.parent.parent.search_by_company()
 
-        TextInput:
+        Txt_in:
             id:price
             hint_text: "search by price"
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
             size_hint_y: .1
-            write_tab: False
-            font_name:"Arial"
-            multiline: False
             input_filter: 'int'
 
         Button:

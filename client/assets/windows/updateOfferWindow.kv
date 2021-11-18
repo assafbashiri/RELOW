@@ -62,14 +62,9 @@
                     text: "Product Name"
                     font_size:20
 
-                TextInput:
+                Txt_in:
                     id: product_name_input
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
 
             GridLayout:
                 id: company_name_box
@@ -82,14 +77,9 @@
                     text: "Company Name"
                     size_hint: 1 , .4
                     font_size:20
-                TextInput:
+                Txt_in:
                     id: company_name_input
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
 
             GridLayout:
                 id: description_box
@@ -103,13 +93,9 @@
                     text: "Description"
                     font: 'sofia pro bold'
                     font_size:20
-                TextInput:
+                Txt_in:
                     id: description_input
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    font_name:"Arial"
 
             GridLayout:
                 id: color_box
@@ -152,16 +138,12 @@
                     cols:5
                     rows:1
                     size_hint: 1 , .8
-                    TextInput:
+                    Txt_in:
                         id:size_num_input
                         size_hint: .5, .7
                         pos_hint: {'center_x': .1, 'center_y': .5}
                         text_hint: 'Size Number'
                         font_name: "Arial"
-                        normal_color: 100,0,0,0
-                        color_active: 100,100,1,0
-                        write_tab: False
-                        multiline: False
                         #on_release: root.show_dropdown_size_num()
                     MDDropDownItem:
                         id:size_type_input

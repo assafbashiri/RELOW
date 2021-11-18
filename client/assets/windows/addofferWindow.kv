@@ -65,14 +65,9 @@
                     text: "Product name"
                     font_size:40
 
-                TextInput:
+                Txt_in:
                     id: product_name_input
-                    font_name:"Arial"
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    multiline: False
 
 
             GridLayout:
@@ -86,14 +81,9 @@
                     text: "Company name"
                     size_hint: 1 , .4
                     font_size:40
-                TextInput:
+                Txt_in:
                     id: company_name_input
-                    font_name:"Arial"
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
-                    multiline: False
 
             GridLayout:
                 id: description_box
@@ -107,13 +97,14 @@
                     text: "Description"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
-                    id: description_input
-                    font_name:"Arial"
+                BoxLayout:
+                    id: box_for_padding
+                    padding: [150,0,150,0]
                     size_hint: 1 , .6
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    write_tab: False
+                    Txt_in_multiline:
+                        id: description_input
+                        font_size: root.ids.company_name_input.font_size
+
 
             GridLayout:
                 id: color_box
@@ -133,7 +124,7 @@
                     size_hint: 1 , 1
                     GridLayout:
                         id: color_grid
-                        size_hint: 1.5,1
+                        size_hint: 3,1
                         cols:20
 
 
@@ -156,15 +147,10 @@
                     cols:5
                     rows:1
                     size_hint: 1 , .8
-                    TextInput:
+                    Txt_in:
                         id:size_num_input
-                        font_name:"Arial"
-                        normal_color: 100,0,0,0
-                        color_active: 100,100,1,0
                         size_hint: .5, .7
                         text_hint: 'Size Number'
-                        write_tab: False
-                        multiline: False
                     MDDropDownItem:
                         id:size_type_input
                         size_hint: .5,.7
@@ -372,42 +358,32 @@
             id: minimum
             size_hint: 1 , .8
             text: "min buyfriends"
-        TextInput:
+        Txt_in:
             id: min_input
             text: '0'
             on_text: root.change_first_min_buyfriends()
             input_filter: 'int'
             size_hint: .7 , .8
-            write_tab: False
-            multiline: False
         MDLabel:
             id: maximum
             size_hint: 1 , .8
             text: 'max buyfriends'
-        TextInput:
+        Txt_in:
             id:max_input
             input_filter: 'int'
             on_text: root.parent.parent.parent.parent.set_next_minimum(1)
             size_hint: .7 , .8
-            write_tab: False
-            multiline: False
         MDLabel:
             id: price
             size_hint: 1 , .8
             text: "price"
 
-        GridLayout:
-            cols:2
-            TextInput:
-                id:price_input
-                input_filter: 'int'
-                size_hint: .7 , .8
-                write_tab: False
-                multiline: False
+        Txt_in:
+            id:price_input
+            input_filter: 'int'
+            size_hint: .7 , .8
 
-            MDIconButton:
-                id: shekel_logo
-                icon: "assets/windows/images/shekel.png"
+
 
 
 
@@ -427,40 +403,31 @@
             id: minimum
             size_hint: 1 , .8
             text: "min buyfriends"
-        TextInput:
+        Txt_in:
             id: min_input
             input_filter: 'int'
             on_text: root.parent.parent.parent.parent.set_prev_maximum(2)
             size_hint: .7 , .8
-            write_tab: False
-            multiline: False
         MDLabel:
             id: maximum
             size_hint: 1 , .8
             text: 'max buyfriends'
-        TextInput:
+        Txt_in:
             id:max_input
             input_filter: 'int'
             on_text: root.parent.parent.parent.parent.set_next_minimum(2)
             size_hint: .7 , .8
-            write_tab: False
-            multiline: False
         MDLabel:
             id: price
             size_hint: 1 , .8
             text: "price"
-        GridLayout:
-            cols:2
-            TextInput:
-                id:price_input
-                input_filter: 'int'
-                size_hint: .7 , .8
-                write_tab: False
-                multiline: False
 
-            MDIconButton:
-                id: shekel_logo
-                icon: "assets/windows/images/shekel.png"
+        Txt_in:
+            id:price_input
+            input_filter: 'int'
+            size_hint: .7 , .8
+
+
 
 <StepLayout>:
     cols: 1
@@ -477,41 +444,32 @@
             id: minimum
             size_hint: 1 , .8
             text: "min buyfriends"
-        TextInput:
+        Txt_in:
             id: min_input
             input_filter: 'int'
             on_text: root.parent.parent.parent.parent.set_prev_maximum(root.get_step())
             size_hint: .7 , .8
-            write_tab: False
-            multiline: False
+
         MDLabel:
             id: maximum
             size_hint: 1 , .8
             text: 'max buyfriends'
-        TextInput:
+        Txt_in:
             id:max_input
             input_filter: 'int'
             on_text: root.parent.parent.parent.parent.set_next_minimum(3)
             size_hint: .7 , .8
-            write_tab: False
-            multiline: False
+
         MDLabel:
             id: price
             size_hint: 1 , .8
             text: "price"
 
-        GridLayout:
-            cols:2
-            TextInput:
-                id:price_input
-                input_filter: 'int'
-                size_hint: .7 , .8
-                write_tab: False
-                multiline: False
+        Txt_in:
+            id:price_input
+            input_filter: 'int'
+            size_hint: .7 , .8
 
-            MDIconButton:
-                id: shekel_logo
-                icon: "assets/windows/images/shekel.png"
 
 
 <Right>:

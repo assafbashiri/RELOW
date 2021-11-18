@@ -79,15 +79,15 @@
             cols:1
             spacing: 35
             size_hint_y: 1.8
-            height: self.minimum_height
+            #height: self.minimum_height
             pos_hint:{'center_y':.1}
-            padding: [20,30,20,150]
+            padding: [50,30,50,150]
             ############## grid of first name label and his text input
             GridLayout:
                 id: first_name_box
                 cols:1
-                size_hint_y: None
-                height: self.minimum_height
+                #size_hint_y: None
+                #size_y: self.minimum_height
                 size_hint: 1,.6
 
                 MDLabel:
@@ -95,12 +95,10 @@
                     text: "First Name"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
+                Txt_in:
                     id: first_name_input
-                    size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+                    size_hint_y: .5
+
 
             ############## grid of last name label and his text input
 
@@ -116,14 +114,9 @@
                     font: 'sofia pro bold'
                     font_size:40
 
-                TextInput:
+                Txt_in:
                     id:last_name_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+                    size_hint_y: .5
 
 
             ############## grid of email label and his text input
@@ -138,14 +131,9 @@
                     font: 'sofia pro bold'
                     font_size:40
 
-                TextInput:
+                Txt_in:
                     id:email_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    write_tab: False
-                    multiline: False
-                    font_name:"Arial"
+                    size_hint_y: .5
 
             ############## grid of phone label and his text input
 
@@ -176,15 +164,11 @@
                             multiline: False
                             on_release: root.show_dropdown_area()
 
-                        TextInput:
+                        Txt_in:
                             id:phone_input
-                            normal_color: 100,0,0,0
-                            color_active: 100,100,1,0
-                            write_tab: False
-                            font_name:"Arial"
-                            multiline: False
                             max_text_length: 7
                             input_filter: 'int'
+                            size_hint_y: .5
 
 
             ############## grid of birth date label and his text input
@@ -326,7 +310,7 @@
         GridLayout:
             cols:1
             size_hint_y:1.2
-            padding: [20,30,20,150]
+            padding: [50,30,50,150]
             height: self.minimum_height
             pos_hint:{'center_y':.1}
             GridLayout:
@@ -339,15 +323,10 @@
                     font: 'sofia pro bold'
                     font_size:40
 
-                txt_address:
+                Txt_hebrew:
                     id:city_input
                     hint_text:'ריע'
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    font_name:'Arial'
-                    write_tab: False
-                    multiline: False
+                    size_hint_y: .5
                     base_direction:'rtl'
                     on_text:root.drop_cities_autocomplete(self.text)
 
@@ -356,7 +335,6 @@
                 id: street_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: [0,0,0,0]
 
                 MDLabel:
                     id: street_label
@@ -364,15 +342,10 @@
                     font: 'sofia pro bold'
                     font_size:40
 
-                txt_address:
+                Txt_hebrew:
                     id: street_input
                     hint_text:'בוחר'
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    write_tab: False
-                    multiline: False
-                    font_name:'Arial'
+                    size_hint_y: .5
                     base_direction:'rtl'
                     on_text:root.drop_streets_autocomplete(self.text)
 
@@ -381,21 +354,15 @@
                 id: building_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: [0,0,0,0]
 
                 MDLabel:
                     id: building_label
                     text: "Building"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
+                Txt_in:
                     id: building_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+                    size_hint_y: .5
                     base_direction:'rtl'
                     text_language:'None'
 
@@ -404,7 +371,6 @@
                 id: apt_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: [0,0,0,0]
 
                 MDLabel:
                     id: apt_label
@@ -414,14 +380,9 @@
                 GridLayout:
                     cols:1
                     size_hint_y:.5
-                TextInput:
+                Txt_in:
                     id: apt_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+                    size_hint_y: .5
                     input_filter: 'int'
 
             GridLayout:
@@ -429,7 +390,6 @@
                 id: zip_code_box
                 #orientation: 'vertical'
                 size_hint: 1,1
-                padding: [0,0,0,0]
 
                 MDLabel:
                     id: zip_code_label
@@ -439,14 +399,9 @@
                 GridLayout:
                     cols:1
                     size_hint_y:.2
-                TextInput:
+                Txt_in:
                     id: zip_code_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
-                    size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+                    size_hint_y: .5
                     input_filter: 'int'
             GridLayout:
                 cols:1
@@ -472,12 +427,11 @@
     id:personal_box
     orientation: "vertical"
     size_hint: 1,1
-    padding: [20,30,20,30]
+    padding: [50,30,50,30]
 
     GridLayout:
         cols:1
         id: old_password_box
-        #orientation: 'vertical'
         size_hint: 1,.7
 
 
@@ -487,21 +441,15 @@
             font: 'sofia pro bold'
             font_size:40
 
-        TextInput:
+        Txt_in:
             id: old_password_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: .7
-            write_tab: False
-            font_name:"Arial"
-            multiline: False
+            size_hint_y: .4
 
 
     GridLayout:
         cols:1
         id: new_password_box
         size_hint: 1,.7
-        padding: [0,0,0,0]
 
         MDLabel:
             id: new_password_label
@@ -509,21 +457,16 @@
             font: 'sofia pro bold'
             font_size:40
 
-        TextInput:
+        Txt_in:
             id:new_password_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: .7
-            write_tab: False
-            font_name:"Arial"
-            multiline: False
+            size_hint_y: .4
+
 
     GridLayout:
         cols:1
         id: new_password_verification_box
         #orientation: 'vertical'
         size_hint: 1,.7
-        padding: [0,0,0,0]
 
         MDLabel:
             id: new_password_verification_label
@@ -531,14 +474,9 @@
             font: 'sofia pro bold'
             font_size:40
 
-        TextInput:
+        Txt_in:
             id:new_password_verification_input
-            normal_color: 100,0,0,0
-            color_active: 100,100,1,0
-            size_hint_y: .7
-            write_tab: False
-            font_name:"Arial"
-            multiline: False
+            size_hint_y: .4
 
     GridLayout:
         cols:1

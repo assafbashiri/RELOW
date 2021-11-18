@@ -50,12 +50,10 @@
                     text: "First Name"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
+                Txt_in:
                     id: first_name_input
                     size_hint_y: .5
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+
 
             ############## grid of last name label and his text input
 
@@ -70,14 +68,11 @@
                     text: "Last Name"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
+                Txt_in:
                     id:last_name_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
+
                     size_hint_y: .5
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+
 
             ############## grid of email label and his text input
 
@@ -92,14 +87,10 @@
                     text: "Email"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
+                Txt_in:
                     id:email_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
                     size_hint_y: .5
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
+
 
             GridLayout:
                 cols:1
@@ -112,14 +103,9 @@
                     text: "Password"
                     font: 'sofia pro bold'
                     font_size:40
-                TextInput:
+                Txt_in:
                     id:password_input
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
                     size_hint_y: .5
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
 
             ############## grid of phone label and his text input
 
@@ -150,14 +136,10 @@
                         write_tab: False
                         multiline: False
                         on_release: root.show_dropdown_area()
-                    TextInput:
+                    Txt_in:
                         id:phone_input
-                        normal_color: 100,0,0,0
-                        color_active: 100,100,1,0
                         size_hint_x: .5
-                        write_tab: False
-                        font_name:"Arial"
-                        multiline: False
+
                     GridLayout:
                         size_hint_x: .5
 

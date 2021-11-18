@@ -64,14 +64,9 @@
                     font: 'Ariel'
                     font_size:40
 
-                txt:
+                Txt_in:
                     id:email
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
                     size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
                     base_direction: 'rtl'
                     halign: 'right'
 
@@ -89,14 +84,9 @@
                     font: 'Ariel'
                     font_size:40
 
-                TextInput:
+                Txt_in:
                     id:password
-                    normal_color: 100,0,0,0
-                    color_active: 100,100,1,0
                     size_hint_y: .7
-                    write_tab: False
-                    font_name:"Arial"
-                    multiline: False
                     password: True
 
 
@@ -172,7 +162,45 @@
                     pos_hint_x:.05
 
 
-<txt>:
-    text_hint: 'Size Number'
+<Txt_in>:
+    font_name:"Arial"
+    font_size: self.height - 20
+    multiline: False
+    write_tab: False
+    background_color: 0,0,0,0
+    cursor_color: (24/255,211/255,199/255,1)
+    canvas.before:
+        Color:
+            rgba: (0/255,0/255,0/255,1)
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+        Line:
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+        Color:
+            rgba: (120/255,120/255,120/255,1)
 
 
+<Txt_in_multiline>:
+    font_name:"Arial"
+    font_size: 30
+    multiline: True
+    write_tab: False
+    background_color: 0,0,0,0
+    cursor_color: (24/255,211/255,199/255,1)
+    canvas.before:
+        Color:
+            rgba: (0/255,0/255,0/255,1)
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+        Line:
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+        Color:
+            rgba: (120/255,120/255,120/255,1)
