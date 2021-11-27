@@ -6,8 +6,7 @@ class checkValidity:
 
     def checkValidityName(self,name):
         if name.replace(" ", "").isalpha():
-            print
-            "Name is valid"
+            print("Name is valid")
         else:
             raise Exception("Name is invalid")
 

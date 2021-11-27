@@ -24,7 +24,7 @@ class CONFIRMATIONScreen(Screen):
                 App.get_running_app().controller.login_from_exist_user(email, password)
                 self.manager.ids.menu.ids.side_box.update_hello_name("        Hello, " + App.get_running_app().controller.user_service.first_name)
                 self.manager.ids.menu.ids.side_box.update_connect_logout_btn_text("LOGOUT")
-                App.get_running_app().root.screens[2].ids.account_box.ids.choose_box.children[0].init_account_window_fields()
+                App.get_running_app().root.screens[2].ids.account_box.init_account_window_fields()
                 App.get_running_app().root.screens[0].ids.side_box.close_offers_windows()
             else:
                 Utils.pop(self, "Incorrect code", 'alert')
