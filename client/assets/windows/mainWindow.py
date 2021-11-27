@@ -297,8 +297,7 @@ class TestApp(MDApp):
         self.controller.store = JsonStore(join(data_dir, 'hello.json'))
         self.check_connection()
         return Manager()
-        self.check_connection()
-        return Manager()
+        
 
     def check_connection(self):
         store = self.controller.store
