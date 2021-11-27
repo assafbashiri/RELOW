@@ -34,21 +34,13 @@ class Handler:
                          4: self.logout,
                          5: self.update_user_details,
                          6: self.update_password,
-                         # 7: self.update_user_name,
-                         # 8: self.update_email,
-                         # 9: self.update_birth_date,
-                         # 10: self.update_gender,
                          11: self.add_address_details,
                          12: self.add_payment_method,
                          13: self.get_all_history_buy_offers,
                          14: self.get_all_history_sell_offers,
                          15: self.update_offer,
-                         # 16: self.get_history_sell_offer,
                          17: self.get_all_active_buy_offers,
                          18: self.get_all_active_sell_offers,
-                         # 19: self.get_active_buy_offer,
-                         # 20: self.get_active_sell_offer,
-                         # 21: self.get_liked_offer,
                          22: self.get_all_liked_offers,
                          23: self.add_active_buy_offer,
                          24: self.add_active_sell_offer,
@@ -78,7 +70,6 @@ class Handler:
                          47: self.get_offers_by_category,
                          48: self.get_offers_by_sub_category,
                          49: self.get_offers_by_product_name,
-                         # 50: self.get_offers_by_status,
                          51: self.get_hot_deals,
                          52: self.add_to_hot_deals,
                          53: self.remove_from_hot_deals,
@@ -654,22 +645,23 @@ class Handler:
     def complete_register(self, argument):
         code = argument['code']
         email = argument['email']
-        user_id = self.user_controller.get_user_id_by_email(email)
-        if code == user_id:
-            try:
+        try:
+            user_id = self.user_controller.get_user_id_by_email(email)
+            if code == user_id:
                 self.user_controller.complete_register(user_id)
                 return Response(None, 'good confirmation', True)
-            except Exception as e:
-                return Response(None, str(e), False)
-        else:
-            return Response(None, 'the code is incorrect', False)
+            else:
+                return Response(None, 'the code is incorrect', False)
+        except Exception as e:
+            return Response(None, str(e), False)
+
 
     def become_a_seller(self, argument):
         email = argument['email']
-        user_id = self.user_controller.get_user_id_by_email(email)
         try:
+            user_id = self.user_controller.get_user_id_by_email(email)
             self.user_controller.become_a_seller(user_id)
-            return Response(None, 'you are a seller', True)
+            return Response(None, 'you became a seller', True)
         except Exception as e:
             return Response(None, str(e), False)
 

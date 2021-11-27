@@ -32,12 +32,12 @@ class Register_box(BoxLayout):
         self.ids.recycle1.insert_offers(list=App.get_running_app().controller.get_hot_deals())
 
     def clear_register(self):
-        self.ids.phone.text = ""
-        self.ids.first_name.text = ""
-        self.ids.last_name.text = ""
-        self.ids.email.text = ""
-        self.ids.password.text = ""
-        self.ids.birth_date.text = ""
+        self.ids.phone_input.text = ""
+        self.ids.first_name_input.text = ""
+        self.ids.last_name_input.text = ""
+        self.ids.email_input.text = ""
+        self.ids.password_input.text = ""
+        # self.ids.birth_date.text = ""
 
     def register(self):
         controller = App.get_running_app().controller
