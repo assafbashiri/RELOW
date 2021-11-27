@@ -1,3 +1,5 @@
+from os.path import join
+
 from kivy.app import App
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
@@ -152,6 +154,7 @@ class Side_box(BoxLayout):
         App.get_running_app().root.change_screen("connect_screen")
         # App.get_running_app().root.current = 'connect_screen'
 
+
     def close_offers_windows(self):
         screens = App.get_running_app().root.screens
         screen_name = 'offer_screen'
@@ -187,6 +190,12 @@ class Side_box(BoxLayout):
     def move_to_terms(self):
         App.get_running_app().root.change_screen('terms_screen')
 
+    def move_to_contact_us(self):
+        controller = App.get_running_app().controller
+        if controller.guest is True:
+            Utils.pop(self, 'guest cant go to contact us window', 'alert')
+            return
+        App.get_running_app().root.change_screen("contact_us_screen")
 
 class Category_box(BoxLayout):
     pass
@@ -200,14 +209,17 @@ class Down_menu(BoxLayout):
     def __init__(self, **kwargs):
         super(Down_menu, self).__init__(**kwargs)
 
-    def move_to_contact_us(self):
-        controller = App.get_running_app().controller
-        if controller.guest is True:
-            Utils.pop(self, 'guest cant go to contact us window', 'alert')
-            return
-        App.get_running_app().root.change_screen("contact_us_screen")
-        # App.get_running_app().root.current = 'contact_us_screen'
-
+    # def move_to_contact_us(self):
+    #     controller = App.get_running_app().controller
+    #     if controller.guest is True:
+    #         Utils.pop(self, 'guest cant go to contact us window', 'alert')
+    #         return
+    #     App.get_running_app().root.change_screen("contact_us_screen")
+    def get_user_name(self):
+        answer = App.get_running_app().controller.user_service.first_name
+        if answer is None:
+            return "        Hello, " + "guest"
+        return "        Hello, " + App.get_running_app().controller.user_service.first_name
     def move_to_add_offer(self):
         controller = App.get_running_app().controller
         if controller.guest is True:
@@ -281,6 +293,10 @@ class TestApp(MDApp):
         print('fuck we stoped')
 
     def build(self):
+        data_dir = getattr(self, 'user_data_dir')
+        self.controller.store = JsonStore(join(data_dir, 'hello.json'))
+        self.check_connection()
+        return Manager()
         self.check_connection()
         return Manager()
 
