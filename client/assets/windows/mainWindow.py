@@ -43,13 +43,6 @@ class MENUScreen(Screen):
     def get_all_categories(self):
         return App.get_running_app().controller.get_categories()
 
-    def search_by_name(self):
-        search_word = self.children[2].children[0].children[1].text
-        App.get_running_app().root.screens[3].ids.side_box.children[0].children[1].text = search_word
-        App.get_running_app().root.screens[3].search_by_prod_name(search_word)
-        App.get_running_app().root.change_screen("search_screen")
-        # App.get_running_app().root.current = 'search_screen'
-
 
 class Manager(ScreenManager):
     def __init__(self, **kwargs):
@@ -91,7 +84,7 @@ class Side_box(BoxLayout):
         categories_names = GridLayout(cols=len(categories), size_hint_y=.3)
         max_sub_cat = 0
         for cat in categories:
-            categories_names.add_widget(Button(text=cat.name,font_size=10, size_hint=(.3, .3), color=(1, 1, 1, 1),
+            categories_names.add_widget(Button(text=cat.name,font_size=30, size_hint=(.3, .3), color=(1, 1, 1, 1),
                                                background_color=(24 / 255, 211 / 255, 199 / 255, 1),
                                                on_press=lambda x=cat: self.open_offers_category(x)))
             if (len(cat.sub_categories_list_names) > max_sub_cat):
@@ -101,7 +94,7 @@ class Side_box(BoxLayout):
         for cat in categories:
             one_cat_grid = GridLayout(cols=1)
             for sub_cat in cat.sub_categories_list_names:
-                one_cat_grid.add_widget(Button(pos_hint={'top': 1}, background_color=(0, 0, 0, 0), text=sub_cat,font_size=10,
+                one_cat_grid.add_widget(Button(pos_hint={'top': 1}, background_color=(0, 0, 0, 0), text=sub_cat,font_size=30,
                                                on_press=lambda x=sub_cat, y=cat: self.open_offers_sub_category(x, y)))
             for i in range(0, max_sub_cat - len(cat.sub_categories_list_names)):
                 one_cat_grid.add_widget(GridLayout(cols=1))
