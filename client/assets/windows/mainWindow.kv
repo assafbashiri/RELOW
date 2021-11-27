@@ -17,8 +17,18 @@
             size: self.size
             pos: self.pos
     padding: [50,10,50,10]
+    spacing: 20
     size_hint: 1,0.1
     id: after
+    MDIconButton:
+        id: logo
+        icon: "assets/windows/images/main2.png"
+        text: "Relow"
+        on_press:
+            root.back_to_main()
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
     MDIconButton:
         text: "ACCOUNT"
         icon: "assets/windows/images/account1.png"
@@ -29,7 +39,7 @@
         size_hint_x: 0.5
     MDIconButton:
         text: "MY OFFERS"
-        icon: "assets/windows/images/my_offers_icon.png"
+        icon: "assets/windows/images/myoffers1.png"
         on_press:
             root.move_to_my_offers();
     MDLabel:
@@ -41,15 +51,12 @@
         icon: "assets/windows/images/search1.png"
         on_press:
             root.move_to_search();
-    MDLabel:
-        text: ""
-        size_hint_x: 0.5
 
-    MDIconButton:
-        text: "CONTACT US"
-        icon: "assets/windows/images/contactus1.png"
-        on_press:
-            root.move_to_contact_us()
+    #MDIconButton:
+     #   text: "CONTACT US"
+      #  icon: "assets/windows/images/contactus1.png"
+       # on_press:
+        #    root.move_to_contact_us()
     MDLabel:
         text: ""
         size_hint_x: 0.5
@@ -99,22 +106,24 @@
     spacing: 10
     padding: [20,0,20,0]
     orientation: "horizontal"
-    MDIconButton:
-        id: logo
-        icon: "assets/windows/images/main2.png"
-        text: "Relow"
-        on_press:
-            root.back_to_main()
+    #MDIconButton:
+     #   id: logo
+      #  icon: "assets/windows/images/main2.png"
+       # text: "Relow"
+        #on_press:
+         #   root.back_to_main()
     MDLabel:
         id: hello
-        size_hint_x: 0.5
+        size_hint_x: 0.3
         font_name: 'Arial'
         text: root.get_user_name()
-
+    MDLabel:
+        text: ""
+        size_hint_x: 0.5
     Button:
         id: logout_register
         text: root.login_or_connect()
-        size_hint_x: 0.2
+        size_hint_x: 0.15
         background_color: (0,0,0,0)
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
@@ -127,7 +136,18 @@
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
             root.move_to_terms()
-
+    #MDIconButton:
+    # text: "CONTACT US"
+    # icon: "assets/windows/images/contactus1.png"
+    # on_press:
+    # root.move_to_contact_us()
+    Button:
+        text: "Contact\n   Us"
+        size_hint_x: 0.1
+        background_color: (0,0,0,0)
+        color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
+        on_press:
+            root.move_to_contact_us()
 
     MDIconButton:
         id: categories
