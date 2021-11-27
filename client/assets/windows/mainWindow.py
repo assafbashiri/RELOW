@@ -1,3 +1,5 @@
+from os.path import join
+
 from kivy.app import App
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
@@ -291,6 +293,10 @@ class TestApp(MDApp):
         print('fuck we stoped')
 
     def build(self):
+        data_dir = getattr(self, 'user_data_dir')
+        self.controller.store = JsonStore(join(data_dir, 'hello.json'))
+        self.check_connection()
+        return Manager()
         self.check_connection()
         return Manager()
 
