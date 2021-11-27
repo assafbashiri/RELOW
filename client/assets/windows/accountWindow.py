@@ -115,11 +115,15 @@ class Personal_box(BoxLayout):
             # update the json------------------------------------------------
             self.user = ans.data
             Utils.pop(self, 'your personal details has been successfully changed', 'success')
+            self.update_hello_name("        Hello, " + App.get_running_app().controller.user_service.first_name)
             App.get_running_app().root.on_back_btn()
             self.init_fields()
         else:
             Utils.pop(self, 'update details has failed: ' + ans.message, 'alert')
         return ans
+
+    def update_hello_name(self, msg):
+        App.get_running_app().root.screens[0].ids.side_box.ids.hello.text = msg
 
     def init_fields(self):
         self.user = self.controller.user_service
