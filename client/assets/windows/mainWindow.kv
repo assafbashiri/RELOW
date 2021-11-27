@@ -119,7 +119,7 @@
         text: root.get_user_name()
     MDLabel:
         text: ""
-        size_hint_x: 0.5
+        size_hint_x: 0.2
     Button:
         id: logout_register
         text: root.login_or_connect()
@@ -128,14 +128,20 @@
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
             root.logout_connect()
-
+    MDLabel:
+        text: ""
+        size_hint_x: 0.1
     Button:
         text: "Terms"
-        size_hint_x: 0.2
+        size_hint_x: 0.1
+        size:.1,.1
         background_color: (0,0,0,0)
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
             root.move_to_terms()
+    MDLabel:
+        text: ""
+        size_hint_x: 0.1
     #MDIconButton:
     # text: "CONTACT US"
     # icon: "assets/windows/images/contactus1.png"
@@ -148,7 +154,9 @@
         color: (0,0,0,0.65) if self.state == 'normal' else (24/255,211/255,199/255,1)
         on_press:
             root.move_to_contact_us()
-
+    MDLabel:
+        text: ""
+        size_hint_x: 0.1
     MDIconButton:
         id: categories
         icon: "assets/windows/images/menu_cat.png"

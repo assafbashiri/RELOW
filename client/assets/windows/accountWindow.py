@@ -1,26 +1,14 @@
-from kivy.uix.textinput import TextInput
 
 from assets.Utils.Utils import Utils
 from assets.windows.loginWindow import Txt_in
 from urllib.parse import urlencode
 from kivy.app import App
 from kivy.clock import Clock
-from kivy.graphics import Color, Rectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.menu import MDDropdownMenu
-from kivy.properties import ObjectProperty
-from kivymd.uix.textfield import MDTextField
-import csv
 import requests
-import json
-from functools import partial
-from kivy.uix.button import Button
-from assets.windows.offers_list import Offers_Screen
-# from langdetect import detect, DetectorFactory
 from assets.Utils.CheckValidity import CheckValidity
-# from textblob import TextBlob
-# import langid
 
 class ACCOUNTScreen(Screen):
     def __init__(self, **kwargs):
@@ -63,12 +51,6 @@ class Account_box(BoxLayout):
 
     def back(self):
         App.get_running_app().root.change_screen("menu_screen")
-
-    # def active_offers(self):
-    #     ans = App.get_running_app().controller.get_all_active_buy_offers()
-    #     self.act_buy_offers = Offers_Screen()
-    #     self.act_buy_offers.insert_offers(list=ans)
-    #     self.ids.boxi.add_widget(self.act_buy_offers)
 
     def exit(self):
         App.get_running_app().controller.exit()
@@ -380,7 +362,19 @@ class Address_box(BoxLayout):
         self.open = True
         self.flag_city = True
         self.flag_street = True
+        self.api_key =  'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
 
+
+    # def initAuthocomplete(self):
+    #
+    #
+    #     gg = googlemaps.Client(key=self.api_key)
+    #     #g = googlemaps.places.places_autocomplete(client=gg,input_text=self.ids.cty_input.text)
+    #     a= "reh"
+    #     r=google.maps.places.SearchBox
+    #     g=googlemaps.places.places_autocomplete()
+    #     g = gg.places_autocomplete(input_text=a)
+    #     a=8
     def drop_cities_autocomplete(self, text):
         if hasattr(self, 'drop_down_cities_autocomplete'):
             self.drop_down_cities_autocomplete.dismiss()
@@ -388,10 +382,10 @@ class Address_box(BoxLayout):
             return
         menu_items = []
         input = text[::-1]
-        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
+
         params = {
             'input': input,
-            'key': api_key,
+            'key': self.api_key,
         }
         params_encoded = urlencode(params)
         url = f'https://maps.googleapis.com/maps/api/place/autocomplete/json?{params_encoded}&components=country:isr&types=(cities)&language=iw'  # &language=iw'
@@ -428,16 +422,12 @@ class Address_box(BoxLayout):
         self.ids.street_input.text = ""
         street, city = chosen_city.split(',')
         self.drop_down_cities_autocomplete.dismiss()
-        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
-        self.get_lat_lng(api_key, place_id)
+        self.get_lat_lng(self.api_key, place_id)
         self.flag_city = False
         self.ids.city_input.text = city
         self.flag_city = True
 
-    def check_lang(self, text):
-        a = langid.classify(text)
-        if (a[0] == 'he'):
-            self.english = False
+
 
     def drop_streets_autocomplete(self, text):
         if hasattr(self, 'drop_down_streets_autocomplete'):
@@ -450,10 +440,9 @@ class Address_box(BoxLayout):
             self.chosen_city_lat = 0
             self.chosen_city_lng = 0
         input = text[::-1]
-        api_key = 'AIzaSyCl3vD9sHXfJic-nNgxAGXmfA1g7Ymf_Rc'
         params = {
             'input': input,
-            'key': api_key,
+            'key': self.api_key,
         }
         params_encoded = urlencode(params)
         if (self.chosen_city_lng == 0 or self.chosen_city_lat == 0):
