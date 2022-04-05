@@ -4,7 +4,7 @@ import requests
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivy.uix.button import Button
-from fpdf import FPDF
+# from fpdf import FPDF
 class Utils:
 
 

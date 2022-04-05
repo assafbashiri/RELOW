@@ -1,8 +1,9 @@
 from datetime import datetime
-
+import os
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.properties import StringProperty
+from plyer import filechooser as bolo
 from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
@@ -619,12 +620,15 @@ class Add_offer_box(BoxLayout):
         print("wooooooooow")
         # request_permissions([Permission.WRITE_EXTERNAL_STORAGE,
         #              Permission.READ_EXTERNAL_STORAGE])
-        path = '/'
+        pathk = bolo.save_file()
+        # this method returns a list with the first index
+        # being the path of the file selected
+        print(pathk)
         if platform == 'android':
-            # path =  primary_external_storage_path()
-            path = '/'
-        #path = os.getenv('EXTERNAL_STORAGE')
-        #path = '"/storage/"'  # path to the directory that will be opened in the file manager
+            print("we are in")
+            request_permissions([Permission.WRITE_EXTERNAL_STORAGE,
+                                 Permission.READ_EXTERNAL_STORAGE])
+            self.manager.path = os.getenv('EXTERNAL_STORAGE')
         self.photo_popup = Popup()
         self.photo_popup_box = BoxLayout(orientation = 'vertical')
         self.manager = FileChooserIconView(
